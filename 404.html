@@ -46,10 +46,36 @@ a:hover, div:hover{
   line-height: 1.3;
   color: grey; --#20b2aa;
 }
-    
-  </style>
+.eye-white{
+  width: 200px;
+  height: 200px;
+  margin: 30px;
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  background: #fff;
+}
+.eye-ball{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background:black;    
+}
+  
+</style>
 </head>
 <body >
+
+  <div>
+  <div class="eye-white">
+  <div class="eye-ball"></div>
+</div>
+  
   <Br/>
   <p class='p1'>Error: 404</p>
 
@@ -168,6 +194,7 @@ a:hover, div:hover{
       " Actively piloting",
       " Typing in binary",
       " Handshaking three way",
+      " Abusing goodwill",
       " Skillfully negotiating",
       " Shuffling slowly", 
       " Obtaining Amnesia", 
@@ -180,5 +207,19 @@ a:hover, div:hover{
     smartBackspace: true,
     loop: true 
   });
+  
+var  eye = document.getElementsByClassName("eye-ball");
+document.onmousemove = function(){
+var width = window.innerWidth;
+var x = event.clientX;
+var a = x / width;
+a= a *100;
+var height = window.innerHeight;
+var y = event.clientY;
+var b = y / height;
+b= b *100;
+eye[0].style.cssText = "left: " + a + "%; top: " + b + "%;" + "transform:translate(-"+a+"%,-"+b+"%)";
+}
+  
 </script>
 </body>
