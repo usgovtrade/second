@@ -32,7 +32,7 @@
   border-radius:10px;
 }
 
-@media screen { .article { width: 60%; } } //desktops/laptops
+@media screen { .article { width: 100%; } } //desktops/laptops
 @media handheld { .article { width: 100%; } } //mobile devices from https://stackoverflow.com/questions/13979443/if-screen-resolution-is-less-than-x-append-css
 
 body {
