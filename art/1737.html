@@ -1,0 +1,171 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='1738.html'>The Gods Are Angry</a><Br/><a href='1739.html'>The Gloves Come Of</a><Br/><a href='1740.html'>The Generation Gap</a><Br/><a href='1741.html'>The End of Innocen</a><Br/><a href='1742.html'>The Big Adventure</a><Br/><a href='1743.html'>Suspicion</a><Br/><a href='1744.html'>Stranded</a><Br/><a href='1745.html'>Smoking Out the Sn</a><Br/><a href='1746.html'>Slip Through Your </a><Br/><a href='1747.html'>Sleeping with the </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='1736.html'>The Great Divide</a><Br/><a href='1735.html'>They took me home</a><Br/><a href='1734.html'>Fractured fairy ta</a><Br/><a href='1733.html'>The Importance of </a><Br/><a href='1732.html'>The Killing Fields</a><Br/><a href='1731.html'>they too me home a</a><Br/><a href='1730.html'>Sinister</a><Br/><a href='1729.html'>The Marooning</a><Br/><a href='1728.html'>The Merge</a><Br/><a href='1727.html'>that's not a unico</a></div><div class='nav'><a href='1736.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='1738.html'> >> </a></div><div class='article'>botdual.com/blog/2014/03/26/the-gates-are-pushing-your-code/
+======
+dangrossman
+There are a few people here at work that have developed the habit of
+commenting "this is good software engineering and this is not." If you like
+code like this, you will probably enjoy working with some of the stuff
+mentioned in this article.
+
+[https://github.com/Kodiak/kodiak](https://github.com/Kodiak/kodiak)
+
+~~~
+sean-duffy
+Wow, that is a very nice piece of code! It's pretty well commented too. Thanks
+for the link.
+
+~~~
+jlees
+Agreed, it's great, and I've been wanting a solid build tool that can handle
+multideps for a while. Lots of people have come up with bits of the
+mechanics, but Kodiak looks like the first to package them up nicely.
+
+------
+mwexler
+That is quite a bit of code in your sample, but it's very much work that
+requires thought and a fair amount of coding skills. I don't think your friend
+is "bashing" you for liking that kind of code; rather, it's really the same
+code she sees from time to time... and is glad not to find herself in. It's a
+different skill set than what she sees her day to day being a "computer
+engineer".
+
+Also, as she probably knows, the majority of code out there is not like that
+either; but again, as she knows, it's not something she works with every day,
+so it's only in passing that she'll see it. But from our side, it's not really
+a topic we dwell on much. I'll note though that it's often really quite
+simple, as simple as checking a boolean in a conditional branch. I have no
+idea of the code you wrote in your example, but if it was just an if/else
+statement checking a constant value, and you got paid by the kilobyte, no
+doubt it would be great code. There's certainly nothing wrong with that
+kinda' code.
+
+------
+billyjobob
+If you haven't read it yet, you really should read The Mythical Man Month.
+
+[http://www.cs.virginia.edu/~evans/cs655/reading/Mythical%20Mo...](http://www.cs.virginia.edu/~evans/cs655/reading/Mythical%20Month.pdf)
+
+~~~
+sdoering
+That is a great article. Thank you very much for your recommendation.
+
+------
+eudox
+A related piece that I recently came across that got my mind ticking:
+
+The Best Code is No Code at All
+[http://blog.codebaby.com/post/94815079073/the-best-code-
+is-n...](http://blog.codebaby.com/post/94815079073/the-best-code-is-no-code-at-
+all)
+
+------
+a3_nm
+One of the most enjoyable parts of my PhD was to build and work on a prototype
+of a tool that would do this: transform a piece of source code into a graph
+with different node types, and visualize the transformation it underwent in a
+graph where nodes were the different types of code. Because in the end it's
+just graphs!
+
+------
+j2kun
+For a long time now, I have referred to comments like these as "meta-code."
+
+~~~
+sp332
+meta-comment.
+
+------
+robertk
+I think a lot of people will disagree, but I find a lot of the same
+observations with the sort of Python code I'm writing these days. I find that
+when I'm writing Python (I have a lot of C experience) I'm thinking about my
+code far more as a compiler would think about my code. This has been my
+experience with all of the languages I've been "fluent" in, not just Python.
+Often a good chunk of time is spent worrying about making it human readable,
+while also ensuring the semantics are as simple and as close to the source
+material as possible. Sometimes, in an effort to ensure clarity and human
+readability the code is just a few extra characters away from being totally
+unreadable and almost impossible to understand. Sometimes I try to put myself
+into the writer's head. I think this is a good way to understand one's own
+code and how best to express it. Not every programming language lends itself
+well to this and I can see how not everyone thinks in code the same way.
+Perhaps most of us, and if not, should. I will agree that you will generally
+get fewer of these type comments in more complicated code. It's simply a
+natural result of the amount of code one must put up with in that code. I like
+"no code" code, because it's very important to focus on readability and
+flexibility. There's many ways to write code and you should find the one that
+works best for you.
+
+~~~
+danieldk
+I agree. But it is important to think about the difference between
+readability and 'humanity' ;). One could look at e.g. C++ code and see a
+million things that could be improved, but this does not automatically make
+the code more readable. Often it just makes it more complex and hard to read
+because it depends on too many things. Many people find that their Python code
+is fairly readable, while their C++ code is not. And the same people that
+enjoy Python do not necessarily enjoy C++.
+
+When I am working with Python, I prefer to stay away from code constructs that
+are obscure. In Python I prefer clear names and a minimal API that are
+consistent over long time. But also beware of Python's builtin types: some are
+unreadable and it is not obvious how to read the documentation (some methods
+in __repr__ etc.).
+
+But perhaps the most important thing in Python is that the code should be
+readable and reusable. If you don't, it will be a total pain in the neck when
+you look at it some years later, when you have forgotten many details that you
+took for granted at the time (the names of methods that are called on the
+object, the class, etc.). You will spend more time thinking about the code and
+remembering the API of Python than what you put in your program. That's
+certainly not a good use of your time! And this is not a Python-specific
+argument, but applies to all programming languages.
+
+------
+saraid216
+I thought this was going to be the author of the "Python, or the Good, the
+Bad, and the Ugly" blog.
+
+------
+spuz
+I just can't help myself quoting this:
+
+ _To see a lot of code without comments, where the code still doesn’t work,
+is in fact depressing. If the program works, it’s boring. I can’t have enough
+boring code. If it doesn’t work and you haven’t written a line of comments, I
+can’t get angry enough to fix it._
+
+~~~
+joeevans1000
+The thing is, sometimes there _are_ working code bases with no comments. Like
+when there's a well-structured "API".
+
+------
+dylangs1030
+I feel bad for the author, because he has to look at a lot of poor-quality
+code, only to then go in and write better code himself. That's not his
+problem, though. It's the same problem we have with our own code. It's just
+we're the only ones who have to look at it.
+
+It's just my opinion, but when someone is a beginner and makes lots of poor
+quality code, I believe it's natural to blame others for not helping them. But
+that's a mistake: the student is not a bad programmer. They just lack
+experience and know how, which means that they lack the _desire_ to learn.
+They'll probably continue to make poor quality code for the rest of their
+career. Blaming others is an excuse for them not to strive to grow beyond
+this, and is ultimately self-defeating.
+
+If the person _wants_ to be a better programmer, they'll _want_ to make the
+better code. After all, it's not their fault that the code is bad. And so
+they'll try harder to find better resources.
+
+------
+lcedp
+I think it is a matter of expectations. This quote perfectly shows that
+code_gods_are_out_there attitude:
+
+>I’m not saying this is “best code” at all. It’s not, but if I was to do it
+again I’d write something similar. The code is easy to understand, it gets the
+job done, and there’s nothing wrong with that.
+
+That person probably has a high expectation about code quality. I guess,
+</div></body></html><!-- 2022-06-12 21:03:25 

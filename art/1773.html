@@ -1,0 +1,49 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='1774.html'>A Big Surprise... </a><Br/><a href='1775.html'>Better wake up bec</a><Br/><a href='1776.html'>If you feel insign</a><Br/><a href='1777.html'>But it’s your arms</a><Br/><a href='1778.html'>try to hold it in </a><Br/><a href='1779.html'>I know you hear me</a><Br/><a href='1780.html'>Oh no, how did I m</a><Br/><a href='1781.html'>I’m still looking </a><Br/><a href='1782.html'>So be careful if y</a><Br/><a href='1783.html'>Now I’m dancing, a</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='1772.html'>Back From The Outb</a><Br/><a href='1771.html'>Back to the Beach</a><Br/><a href='1770.html'>Crack in the Allia</a><Br/><a href='1769.html'>Death of an Allian</a><Br/><a href='1768.html'>Desperate Measures</a><Br/><a href='1767.html'>Dinner, Movie and </a><Br/><a href='1766.html'>The secret dark ar</a><Br/><a href='1765.html'>Enough is Enough</a><Br/><a href='1764.html'>Family Values</a><Br/><a href='1763.html'>Friends?</a></div><div class='nav'><a href='1772.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='1774.html'> >> </a></div><div class='article'>Assumptions {#sec:as}
+-----------
+
+The model assumes independence of the observations:
+
+The observations ${{\bf y}}_{i1}, \ldots, {{\bf y}}_{iT_i}$ are mutually independent.
+
+The observations are generated according to a Markov process.
+
+Model Assumptions (A.1) is a simplification which is convenient for the purposes of this paper. This assumption can be removed at the expense of increasing the complexity of the notation, without increasing the computation burden. Without assuming (A.1), one would have to consider $T_{i1} \times \ldots \times T_{iN}$ density values rather than $T_{i}$ parameters, increasing computational requirements.
+
+The model is not intended to explain or explain or predict the underlying causes of an observed phenomenon, and no physical connection is assumed between the observed behavior and the driving variables. It is assumed that time, measured in minutes, has passed by before measurements are collected, as this is the case with observed movements of mobile sensors. The measurements include both the environmental factors, [*e.g.*]{} temperature, humidity, illuminance, and the influence of some biological entities that are not part of the environmental factors, [*e.g.*]{} animals and humans. Therefore, it is reasonable to assume that the distribution of observations for a given person or animal is conditionally independent of the time-history (or state) of other people or animals. This property is sometimes referred to as conditional stationarity. This model of observation errors implies that the joint distribution of measurements is Markovian and the measurements are not serially dependent. Also, this model implies that $T_i = 1$, thus all measurements are represented in a single “vector" which has to be defined. In this work, we focus on data with $T_i = 1$, and the dimensionality of the state variables is reduced by one: $\alpha_i$ becomes $\theta_{i}$, which is also called the [*intensity*]{} of the process. We use ${{\cal S}}_i$ to denote a subset of $\mathbb{R}^K$. The dimensionality of the state variable $\theta_{i}$ is also $K$. In the terminology of Kallenberg [@Kal:1981], the observation $Y_{ij}$ at the event $X_{ij}$ is distributed as the counting process $\sum_{\tau=0}^{\infty} {{\bf 1}}_{\{\theta_i\leq c\}} \delta_{\theta_i, \tau} - c$ where $c$ is a threshold and $\delta_{\theta_i, \tau}$ is the delta measure. This is a generalization of the Poisson process where each observed event is assigned a count of one unit. The model assumes that the vector process $ \left(  \theta_{i}, i=1,2,\ldots\right) $ is Markovian: $$\label{eqn:intensity}
+{\mathbb P} \left( \theta_{i+1} \in {{\cal S}}_{i+1} \mid \theta_i \in {{\cal S}}_i, X_{ij} \in {{\cal E}}_{ij} \right)
+= {\mathbb P} \left( \theta_{i+1} \in {{\cal S}}_{i+1} \mid \theta_i \in {{\cal S}}_i \right)$$ for all ${{\cal S}}_i, {{\cal S}}_{i+1}, {{\cal E}}_{ij}$, where ${{\cal E}}_{ij}$ is the set of events of type $j$ that occurred in the period from time $T_i$ to $T_{i+1}$. Moreover, this conditional probability is time homogeneous: $$\label{eqn:temporal-homogeneity}
+{\mathbb P} \left( \theta_{i+1} \in {{\cal S}}_{i+1} \mid \theta_i \in {{\cal S}}_i \right) 
+=  {\mathbb P} \left( \theta_{i+1} \in {{\cal S}}_{i+1} \mid \theta_i  \right) .$$
+
+The measurement $Y_{ij}$ is conditionally independent of all other observations, given $ \theta_{i}$: $$\label{eqn:Y_given_theta}
+{\mathbb P} \left( Y_{ij} \in {{\cal Y}}_{ij} \mid \theta_i \right) = {\mathbb P} \left( Y_{ij} \in {{\cal Y}}_{ij} \right).$$ This property implies that ${\mathbb P} \left( Y_{ij} \in {{\cal Y}}_{ij} \mid X_{ij} \right)$ is independent of $X_{ij}$. We also assume that the conditional density $p(\cdot \mid \theta_i)$ is bounded and continuous. In a continuous model, where the state variable $\theta_i$ is a continuous random variable, this assumption means that the conditional distribution of $Y_{ij}$ given $X_{ij}$ is an absolutely continuous distribution function of density function $p(\cdot \mid \theta_i)$.
+
+Data and Data Generation {#sec:data}
+------------------------
+
+Modeling a particular dataset with a PHMM requires defining model parameters. The model parameter vectors, $\alpha = (\alpha_1,\ldots,\alpha_N)$ and $\theta = (\theta_1,\ldots,\theta_N)$ are the solutions of the following least squares optimization problem: $$\label{eqn:optimize}
+(\hat{\alpha},\hat{\theta}) \in \arg \min \sum_{i=1}^N \sum_{j=1}^{T_i}
+\left(y_{ij}-\mu(\theta_i)\right)^2,$$ where $\mu$ is defined in and the observed process $\{y_{ij}\}$. The function $\mu$ is often chosen to be the density corresponding to the observations $y_{ij}$.
+
+PHMMs can be fit using many available software packages, including the [`R`]{} package [`pomp`]{} [@Pomp:2007]. Data used in this work was simulated with this software, using a time step of $10$ minutes and a maximum lag of three time steps in the Markov transition matrix. The density function used to model the observation is a Gaussian distribution. The parameters in the density function are estimated using maximum likelihood methods. Data generated using this method are shown in Figure \[fig:generated\_data\].
+
+![Data from the “walking sheep” model.[]{data-label="fig:generated_data"}](figures/results.pdf){width="\textwidth"}
+
+![Data from the “walking sheep” model.[]{data-label="fig:generated_data"}](figures/results.pdf){width="\textwidth"}
+
+![Data from the “walking sheep” model.[]{data-label="fig:generated_data"}](figures/results.pdf){width="\textwidth"}
+
+The model is fit to the data, and the estimate of the state process is shown in Figure \[fig:states\_estimated\]. The state transition matrix is inferred from the model using the method of @McCu:2005.
+
+![Inferred state sequence.[]{data-label="fig:states_estimated"}](figures/results.pdf){width="50.00000%"}
+
+It is obvious from this figure that the assumption that the data generating process satisfies conditional stationarity cannot hold: the conditional distribution of $\theta$ at time $T_2$ cannot be conditionally independent of the history of $\theta$, as it is in fact conditionally dependent on all observations made at time $T_1$ (see for example Figure \[fig:states\_estimated\_b\]). This is a property that can be checked using a Bayesian approach, however, this model does not satisfy the conditional stationarity assumption. In fact, if the true state sequence is known, then the conditional distribution of the model is the correct model of the data (except for an irrelevant shift), and the conditional distribution of the data given the state sequence is the true distribution of the data. In this case, this would imply that the data generating process is in fact conditionally stationary. In reality, since we do not know the true state sequence, the joint distribution of observations will be misspecified, and thus it is not a good model of the true data-generating process. If we fit a PHMM to this data with the parameters estimated with maximum likelihood, as shown in Figure \[fig:generated\_data\], the estimated conditional distribution of the state variables is very similar to the true distribution. This implies that a PHMM will estimate the parameters of the misspecified model quite accurately, and the estimated conditional distribution will be a good estimate of the true conditional distribution.
+
+Since the model used in this example is not conditionally stationary, it will produce a good fit of the data even though it is not a true model of the data generating process. In fact, we will demonstrate that if the data generating process is conditionally stationary, PHMMs will provide excellent estimates of parameters and a good fit of the data generating process, even if they are misspecified.
+
+In this work we will perform experiments and compare estimation performance using three model fitting methods: maximum likelihood, EM, and variational EM. For these experiments we use the PHMM implementation in the [`R`]{} package [`pomp`]{}.
+
+Bayesian Analysis {#sec:bayes}
+=================
+
+In this section, we describe a general Bayesian formulation of the model that includes a latent variable. We then discuss the assumptions that a parameter set for</div></body></html><!-- 2022-06-12 21:03:29 
