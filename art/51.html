@@ -1,0 +1,225 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='52.html'>Chris!  I told you</a><Br/><a href='53.html'>Once considered th</a><Br/><a href='54.html'>Once considered th</a><Br/><a href='55.html'>Once considered th</a><Br/><a href='56.html'>Stop dancing like </a><Br/><a href='57.html'>Chapter 1.  Once </a><Br/><a href='58.html'>Chapter 1.  Our st</a><Br/><a href='59.html'>Chapter 1.  Our st</a><Br/><a href='60.html'>Chapter 1.  Our st</a><Br/><a href='61.html'>Ships were lost du</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='50.html'>Tiffany, you reall</a><Br/><a href='49.html'>Tiffany, you reall</a><Br/><a href='48.html'>Tiffany, you reall</a><Br/><a href='47.html'>Joe's Bar and Gril</a><Br/><a href='46.html'>Quietly, Quiggly s</a><Br/><a href='45.html'>Quietly, Quiggly s</a><Br/><a href='44.html'>Quietly, Quiggly s</a><Br/><a href='43.html'>Quitetly, Quiggly </a><Br/><a href='42.html'>Concrete may have </a><Br/><a href='41.html'>Concrete may have </a></div><div class='nav'><a href='50.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='52.html'> >> </a></div><div class='article'>We've recently discovered a new method to 
+create and maintain a scalable, performant, and extensible web
+application. This is the presentation of that method:
+Creating a dynamic web application from a database 
+  - A quick introduction to the technique and example code.
+
+I had used this approach in another project. This project was much more complicated: there were a lot of
+business logic classes, more than 400 SQL queries, about 800 lines of code for each one, and, 
+because it was a big project, there was a lot of 
+change management; it was a web app that took over the main page of a newspaper (about a 
+hundred and fifty pages), and it had to be released periodically.
+The system did a lot of tasks on the server side, was very fast, and provided many features that make a lot of sense 
+for such application. But the development and change management processes in my previous application were very
+demanding and time consuming. So, I tried to make this faster, and, in addition to the web server, I
+created a PHP script that created a SQL database,
+used PHP code to read the database, and created the necessary pages for the application.
+I was able to make it work. The only problem was that the application could only work on a single server, and
+that the changes were made every time from the main page.
+For example: you can only go to the home page; when you want to go to a page from the menu, you must first
+go back to the home page and then to the requested page. The logic is simple: if you are at the home page,
+you cannot go to any other page. 
+
+That means that a lot of users will not be able to see all the features that the application provides. In my 
+previous approach, this did not matter. The users were only a few and, for my purposes, it was not important 
+if some of the pages did not show up.
+
+Using a single server for a dynamic web application means that you only have one server to serve your application. 
+A single server will never have enough resources to serve the amount of requests that would be made.
+If, for example, your web application needs to make about 50 requests, 
+when there are only 3 servers that are available to answer requests,
+it is useless. It is just as useless as making 50 requests to your e-mail program
+and not being able to open the e-mails because there are not enough servers available to receive requests.
+To address that problem, I solved it by using several PHP scripts to connect to the database.
+The server receives the requests and, for each one,
+creates a new connection to the database. Every new connection is an independent transaction.
+I used a file called server.php that did the initialization:
+read the configuration file and load the data from the database. For every new connection that needed
+to be opened, the server.php script
+uses the PDO extension to create a new PDO object. It uses the name that the user typed,
+and then it uses the credentials that the user typed, and the database.
+The script calls the method createNewConnection, which creates the connection and commits it.
+
+This means that there is only one script that connects to the database.
+
+A single script is a problem, because, as stated before, 
+only one script can connect to the database. In order for that script to accept new requests, it must wait until it 
+is closed, which is only possible when the script exits. 
+That means that if I have a script that is used to create a new connection, 
+it cannot open a connection to the database when a new request is made.
+The same happens to the other scripts that use a new connection.
+
+To solve this, I created a file called createconnection.php, which
+does the initialization for the script that creates new connections:
+creates a new PDO object,
+sends a query that loads the initial page (if it exists),
+accepts the user's name, user's password, and the database and username, and then,
+stores it in the configuration file.
+The script is called every time the server receives a request. If the initial page
+does not exist, the script adds it to the database and then sends the file that created the initial page
+back to the user.
+The same script checks every two minutes if the pages have changed,
+if a page was changed, it will be displayed to the user,
+and, if a user wants, he can change that page.
+
+There is a new connection for every request.
+
+I created another script, called getconnection.php,
+which is called every time a new page is requested by the user.
+When that script receives the request, it connects to the database and sends back the data to the user.
+
+Now that I have several scripts to create connections and open and close connections, I don't need to wait
+until a server is available to open connections to the database. I created a few of these scripts,
+and I have to server that, one for each function or service that the web application needs to be
+able to provide. 
+For example, in the home page, I create a new connection to the database,
+send the initial page to the user, then, when the user requests a page from the menu,
+I will use that page as a starting point, then I will create a new connection,
+go to that page, and then send the final page to the user.
+
+One of the problems that I did not manage to solve
+is that I am only able to use one user and one password to access the database. So, the user name and password
+that I am using in the scripts that I created are the ones that the user put in the configuration file.
+
+This is not a problem for me, but this will be a problem for other users that do not know what the 
+credentials are and have not configured the web application.
+They will not be able to access the application.
+
+When the user opens the application for the first time, the server.php script 
+will open a connection to the database. When the application is launched, it will ask the user
+for the credentials. The data will be saved in the configuration file. The user will see a message
+and he can choose the initial page, which, by the way,
+must exist before the application can be launched for the first time.
+In addition, the user must choose a user name and a password that will be used by all scripts
+that have to connect to the database. It is a simple text file with the user's name and the password.
+Then the server.php script will create a file called config.php. It will load the data 
+from the database. It will check if the user is connected, then it will check
+if there is a initial page that must be displayed.
+If there is no initial page, then the data that it has loaded
+and the initial page that it wants to display to the user will be sent to the browser.
+
+The config.php script is executed when the server.php script is loaded.
+The scripts are executed in the order that I wrote them. If, for example, the application needs to display 
+two pages, the server.php script will wait until it is finished to execute the
+createconnection.php script, then the getconnection.php will be executed, and then it will start
+the server.php script.
+
+The server.php script loads the data from the database, creates a new object for the PDO extension, and then
+creates the initial page that it will display to the user.
+This includes a welcome message, the user's name and password.
+
+Now, if I want to change something on the website, 
+I change the page that I have created and that will be executed to create
+a new connection to the database. 
+This way, I have complete control over the pages that will be displayed and I do not have to
+wait for another server to open a new connection.
+The script will create a new connection to the database, it will connect to the database and then
+check the database, if there is an initial page that must be displayed, 
+it will create the page and then the new connection will be closed.
+
+The connection will be closed because the method that created the connection will be called,
+and this means that the connection will be closed when the user closes the browser.
+This also means that there will be no more connections and I can use my server for other purposes.
+Now, if I want to change anything on the website, I just change the file
+that I created, execute the script again, and the server.php script will do everything that it did
+the first time and will also check if there is a file that it should display to the user.
+It will check if the file exists and will return the initial page if it is different from the page that it
+has already created.
+It will return the page that has been changed to the user.
+
+The getconnection.php script will create a connection to the database, load the data from the database,
+and then send back the data to the user. If there is a new connection that needs to be created,
+the createconnection.php script will create it.
+When the script closes the connection, it will wait for two minutes, 
+and then it will start it again and then close the connection.
+
+The getconnection.php script is executed when the server receives a request. It will wait until it
+is finished to execute the createconnection.php script, and then the script will execute the 
+getconnection.php script.
+When the script is finished, it will send back the data to the user.
+
+With this setup, I am able to have multiple pages in the same web application.
+If I have a page that opens the configuration file, and then I have another page that
+opens the data from the database, and a third page that allows the user to change the database data,
+all of them will be executed, and none of them will block the others. I will not need to wait
+until a server becomes available. All the requests will be processed, and I will be able to
+change the pages whenever I want. This is very important, because when I created this application,
+I did not know how many pages would I have in my application, and it is not a good idea
+to make the server wait for a server to become available.
+
+The database connection must be closed every time it is finished using it. If a request is made, 
+it will wait for a connection to be created, then, when the request is closed,
+it will wait for a couple of minutes, then it will close that connection. If I want to open
+another connection, the script that I use to create a connection will create a connection
+and then, when the script is finished, it will close the connection.
+
+When I want to change the database, I need to create a new script and to call the script in a new way.
+
+If I want to update the name of the user, 
+I need to call the createconnection.php script, because the user is already connected.
+I then need to call getconnection.php, which will create a new connection. I must pass the user
+name and the password. The connection will be closed when it is finished.
+
+If I want to update the page,
+I will create a new script and I will call it with the page number, like getconnection.php?page=1.
+This will send the data to the user, which must be a page that does not exist yet, and then,
+I will call the getconnection.php script, with the page that I want the user to see.
+The data will be returned to the user, and the new page that I created will be displayed to the user.
+
+As you can see, the scripts that I created are all different. They work independently. 
+I need to create several scripts to support all the requirements that my application needs.
+
+Now, there are other aspects that I did not manage to solve,
+but I did not try to solve them because I was satisfied with the setup that I was able to accomplish, 
+or because I did not know how to make it work.
+
+The first thing that I did not know how to accomplish is to be able to change the pages that will be displayed to the user.
+I will use the page, that I wrote in step 17, as an example.
+If a user wants to change the first page, 
+I need to call the getconnection.php script. I need to pass it the page that I want it to display to the user.
+The page that it will display to the user will be returned to the user.
+The getconnection.php script must find the page that I want the user to see, 
+and then I will create the page, send the user back to the home page,
+and then, when the user is back, the data will be sent to the page that I want.
+
+The getconnection.php script does not have to be changed, but if I want to change the
+script that changes the pages, I will have to make a new script.
+I will not have to add any new libraries to the system.
+All of my pages are independent.
+
+I will also need to change the way in which I send the data to the page.
+I need to send the data to the page before I close the connection.
+In addition, I will need to handle the situation that happens if the user does not have access to the page.
+I will need to call a different page.
+
+The other thing that I did not know how to accomplish is to check the username and the password.
+If I want to get the user's name from the user, I need to make a connection to the database,
+and then, when the connection is closed, I need to check the username.
+This is not a problem.
+
+I need to check if the user is a normal user, or if it is a super user.
+There is a page in my database, that contains all the information that I need to check. 
+The page contains a table that contains the user name and the level of access that the user has.
+In addition, if the user has access, I will send the page where the user's data is stored to the user.
+If the user does not have access, then I will show the login form to the user,
+and then, when the login form is submitted, I will check the username and the password. 
+If the username and the password are correct, then I will connect to the database,
+load the data from the database, and then send it to the user.
+If the data was not updated, the script will return the login form to the user and will display it.
+
+I need to check this information every time that the page that changes the data is called.
+
+As you can see, this was not a big problem.
+I think that I created a solution that works with my scenario, but if you want to create your own application,
+you will have to make changes.
+
+So, I hope that I have not scared you.
+I hope that you were able to see what the problem is.
+The steps that I wrote may seem long, but they are not, because all of this has been written on the computer and the monitor, 
+and I do not need to copy the codes of each step in this book.
+This is a working example of the solution that I created. I will also post this example in GitHub,
+so that it is easier for you to check it out. 
+It will be called step12Example.
+
+# Chapter 9:           
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </div></body></html><!-- 2022-06-12 21:01:03 
