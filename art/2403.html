@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2404.html'>Penetration Testin</a><Br/><a href='2405.html'>Apple in the Garde</a><Br/><a href='2406.html'>DWI/ DUI loss of v</a><Br/><a href='2407.html'>We’ve got a lot of</a><Br/><a href='2408.html'>Outraged</a><Br/><a href='2409.html'>Why Would You Trus</a><Br/><a href='2410.html'>Check out my ride </a><Br/><a href='2411.html'>Involuntary wealth</a><Br/><a href='2412.html'>aipuck.com</a><Br/><a href='2413.html'>bothyp.com</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2402.html'>Ready to Play Like</a><Br/><a href='2401.html'>That Girl is Like </a><Br/><a href='2400.html'>Enough is Enough</a><Br/><a href='2399.html'>Now considered a s</a><Br/><a href='2398.html'>Commercial and Res</a><Br/><a href='2397.html'>Man Down</a><Br/><a href='2396.html'>I'd Never Do It To</a><Br/><a href='2395.html'>Medical Emergency</a><Br/><a href='2394.html'>We Are Family</a><Br/><a href='2393.html'>artamuz</a></div><div class='nav'><a href='2402.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2404.html'> >> </a></div><div class='article'>ailimp.com/blog/billing-address/
+Also, this one here about using IP addresses to make sure if a person is returning to your site after a long period of inactivity.
+http://blog.serverfault.com/post/details-of-an-ip-address-based-anti-spam-measure
+What do you think?
+Do you agree? Do you like it? Do you hate it? Or do you have a better idea?
+In general, these two are the same thing, so I'll be posting another article sometime in the future on the topic.
+
+A:
+
+I agree with that conclusion. I'd only like to stress one thing.
+Don't depend on your web server having such a great uptime and having that connection available to use to verify the address. If you have your web server listening on the address and the machine goes down, you will have false positives.  This is only a problem if the IP has been previously registered and your code can only use that address to connect, or if the IP is registered on the ISP you are using to publish the pages.
+What I suggest is to perform this check at another IP from another host. If that is not available, fail silently, or give your users a warning. I suggest giving the user a warning.
+
+A:
+
+Don't try to reinvent the wheel here.
+IP addresses get registered with the RIRs (Registry of Internet Numbers), who also set up the IANA (The RIRs are funded by the US govt.). These people maintain their own servers, such as arin.net and apnic.net. These servers provide an online database where all the requests are handled.
+It's a great idea to start at the start (IANA) and go backwards (RIRs), but if you just want to check one IP address, you can use a few of the sites that do that exact thing:
+
+The one I keep bookmarked: What's my IP?
+http://whatsmyip.org/
+My personal favourite: PINGER.
+http://www.ping.eu/faq/
+
+And don't forget, if you don't like the terms of service of any of these sites, you can run your own free database. (I also provide a tutorial on that.)
+
+A:
+
+I have looked into this, but have not really investigated the details.  I have, however, come up with some guidelines:
+
+Make sure you include the http:// in your test.  If it isn't done, it won't work.
+I haven't found a good way to test if the browser is being authenticated.  Some websites will show that the user is using a client certificate or an "Authorized" cookie.  I would recommend writing your own login system, and testing with that.
+I haven't investigated any way to check the SSL cert.  This would be nice to be able to tell that the user has paid for the service, but I haven't found a way to test it.
+
+I haven't checked but I believe most of these methods require you to download data from an IP.  This means that you're downloading your own data, and so the user could use a proxy to get around the test.  This could lead to false results. 
+
+I don't know what I would use this for yet, but if you find anything, I would be glad to help test. 
+
+Update:
+This is a more detailed answer. 
+I have found a place to test and get the user agent from the browser:
+http://whatsmyuseragent.com/
+I found a great post by Tom on Server Fault that explains this. 
+http://blog.serverfault.com/post/details-of-an-ip-address-based-anti-spam-measure/
+The IP is not a good indicator of who is accessing a website, unless you control the users computer and monitor all of the data they send or receive. A user may be using a proxy server. This is also how other clients can spoof your user agent without giving you access to the user. 
+There are a number of ways to get around this, like testing the SSL cert on the user's computer, or using an authenticated cookie from a website. 
+You would need to have a valid user for the account on your application in order to test if a client cert was used. 
+However, I have just run into a different error message for this:
+http://blog.serverfault.com/post/details-of-an-ip-address-based-anti-spam-measure/
+Basically, the IP addresses in some cases won't resolve to the actual computer that the user is using. This may be because of several reasons. 
+For instance, your office has a domain, and the user is sitting at home. Their IP address will not resolve, and so will not match with what you see. Your code would try to connect and the connection will fail.
+This is not the only reason however. Your code might be using a proxy, and then your code would not be able to connect to anything on the Internet for that IP address, since you would be using a proxy for the connection. This would also make any other communication (e.g. FTP, IRC) fail to get the response. 
+You could also have a bad time if the user tries to spoof the IP by using a proxy in an office, and then trying to use the proxy to get access to the real IP.
+There are also a couple of things you can do to validate the IP address. The most effective way would be to send an HTTP request and verify if the IP responds. That doesn't mean however, that you should restrict access to resources only for these IP addresses. 
+What you need to do is:
+
+Choose a list of addresses that you are going to test. I am guessing that you might be doing something along these lines: 
+https://www.reddit.com/
+https://www.facebook.com/ 
+If you can't choose a list, then just test it against a bunch of IPs on the Internet.
+You will need to gather the IP addresses (e.g. using a site like http://www.whatsmyip.org/)
+Create an account for each IP address. A site that allows you to create an account is: http://www.whatsmyip.org/account/index.php. 
+Make sure to test with SSL enabled if possible. Make sure you use the browser that is used for testing. 
+Test the IPs to see if any errors are returned from the IP address. If the IP does not resolve, you should just go with whatever the OS is reporting for the IP. In the most ideal case, you will know the IP that a user has and check if that IP is on the list. If so, you are golden. 
+If your testing is in a web service, you can write some code to check to see if a given IP is on the list of acceptable I</div></body></html><!-- 2022-06-12 21:04:27 

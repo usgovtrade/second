@@ -1,0 +1,74 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2413.html'>bothyp.com</a><Br/><a href='2414.html'>all of which have </a><Br/><a href='2415.html'>A Closer Look</a><Br/><a href='2416.html'>Exile Island</a><Br/><a href='2417.html'>bothose.com</a><Br/><a href='2418.html'>The Martyr Approac</a><Br/><a href='2419.html'>You’re stuck in my</a><Br/><a href='2420.html'>Two Brains Are Bet</a><Br/><a href='2421.html'>Would You Be My Br</a><Br/><a href='2422.html'>Kindergarten Camp</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2411.html'>Involuntary wealth</a><Br/><a href='2410.html'>Check out my ride </a><Br/><a href='2409.html'>Why Would You Trus</a><Br/><a href='2408.html'>Outraged</a><Br/><a href='2407.html'>We’ve got a lot of</a><Br/><a href='2406.html'>DWI/ DUI loss of v</a><Br/><a href='2405.html'>Apple in the Garde</a><Br/><a href='2404.html'>Penetration Testin</a><Br/><a href='2403.html'>ailimp.com</a><Br/><a href='2402.html'>Ready to Play Like</a></div><div class='nav'><a href='2411.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2413.html'> >> </a></div><div class='article'>aipuck.com/forum/topic/how-to-use-cron-to-schedule-wget
+I am having problems getting this script to work:
+00 23 * * * wget -O - https://www.arabscans.com/arab-database | jq --slurp '$.body.message' > database.json
+
+(source: aipuck.com)
+
+A:
+
+You can't run it that way.
+
+00 23 * * * wget -O - https://www.arabscans.com/arab-database | jq --slurp '$.body.message' > database.json
+
+It will run the command and THEN display the output. The pipe runs the jq command after the wget (as it's stdout is redirected to stdin of jq). You need to have it run the jq first.
+00 23 * * * jq --slurp '$.body.message' | wget -O - https://www.arabscans.com/arab-database
+
+You can use date to set a proper time.
+00 23 * * * date +%H%M> /tmp/junk.txt
+
+00 23 * * * date +%H%M | wget -O - https://www.arabscans.com/arab-database > /tmp/database.json
+
+00 23 * * * sleep 60m | wget -O - https://www.arabscans.com/arab-database > /tmp/database.json
+
+A:
+
+I think the date command should work, but in general you have to wrap it in braces to get the exact syntax that you want:
+$ cat tst.cron
+SHELL=/bin/sh00 23 * * * ${0##*/} > ${0##*/}.status 2>&1
+date +%H%M> /tmp/database.json
+00 23 * * * sleep 60m | wget -O - https://www.arabscans.com/arab-database > /tmp/database.json
+
+Which you would run like
+$ crontab -e
+[...]
+$ cat /tmp/database.json
+[...]
+
+And, you could simplify it by changing to the 0 cron line:
+00 23 * * * 0 sh /tmp/tst.cron
+
+This has the advantage of being easily repeatable, it might be interesting.
+On the other hand, you can use @cron which works like a real cron job, except that it runs @reboot for root and @daily for regular users.  Which doesn't always work, because the kernel doesn't load cron.  So you have to use @reboot for the root users as well.  It really only works with system daemons.
+The key is that you need the @reboot job for root in this case, and that gets around the kernel bug (and also the need to run sudo or su -).
+
+A:
+
+@Tunaki's answer gave me a solution which I think is better than @cron.
+0 22 * * * echo "00 23 * * * wget -O - https://www.arabscans.com/arab-database | jq --slurp '$.body.message' > database.json" | sudo tee -a /etc/cron.d/arabscans > /dev/null
+
+I think this is good, because I will need to add some environment variables to the command that is run, so I think it would be a good idea to do this in a shell script and then run the script with sudo, like the above. 
+I should add that I know when I use the last command above, I need to run sudo as well. 
+
+To find out how I got the above answer, I tried a few things. 
+To start, I edited this question in Chrome (using Vivaldi for macOS). 
+Once I saved the question in Chrome, there was a little icon in the bottom right corner that gave me this:
+
+After a quick search, I found an answer which said that Chrome was letting me know that the question was "edited by you". So I used the above option to get that same information. 
+Next, when I saved the output in Vivaldi, I got a box with the contents of that output. In Chrome, I just got it to show the title, but in Vivaldi I could expand it to see the content. 
+
+The last thing I tried was to get the job to run by clicking on the time. This did not work for me, as explained here, in more detail here. 
+But there is a solution which has been around for a few years here: 
+
+I am not sure why this didn't work for me, but to get it to run with the GUI in gnome, the @reboot cron worked. 
+I also tried changing it to @startup and @everyone but that did not work either.
+
+I ended up keeping the @reboot cron because it let me write commands to run a script (i.e. sh /tmp/tst.cron) to execute the commands.  
+
+I should also mention that on Ubuntu 18.04, @reboot didn't work. But if I run it from the root shell: 
+
+I could get the job to run and show in the GUI as well as having the job work for the root user. 
+Of course I also tested this on macOS, it worked as well. 
+Here's the cron file which is in /etc/cron.d. The job runs every 2 minutes in my case. It runs every 5 minutes on Ubuntu 18.04 LTS: 
+@reboot /usr/local/bin/start-watchdog-on-boot.sh
+
+</div></body></html><!-- 2022-06-12 21:04:28 

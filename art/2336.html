@@ -1,0 +1,125 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2337.html'>wireztap.com</a><Br/><a href='2338.html'>aisniff.com</a><Br/><a href='2339.html'>botprowl.com</a><Br/><a href='2340.html'>botsnoop.com</a><Br/><a href='2341.html'>aiwiretap.com</a><Br/><a href='2342.html'>He was very tired,</a><Br/><a href='2343.html'>He worked at the s</a><Br/><a href='2344.html'>When he stood up a</a><Br/><a href='2345.html'>botingtonpost.com</a><Br/><a href='2346.html'>This game is just </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2335.html'>This beautiful aud</a><Br/><a href='2334.html'>Each time you will</a><Br/><a href='2333.html'>bothose.com</a><Br/><a href='2332.html'>botpoke.com</a><Br/><a href='2331.html'>men got closer to </a><Br/><a href='2330.html'>even though most o</a><Br/><a href='2329.html'>It means you can b</a><Br/><a href='2328.html'>Girl Power</a><Br/><a href='2327.html'>Top 10 illegal ite</a><Br/><a href='2326.html'>You Call, We'll Ha</a></div><div class='nav'><a href='2335.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2337.html'> >> </a></div><div class='article'>I have been asked to create a form to process payroll information into a database.  The end users want to be able to select 'one or more of' every employee in the company.  At this point I have a multi-select list box which is populated with all employee names in the database.  The users must select either 'All' or at least one employee.  
+If the user selects 'All' or does not make a selection, the system must then default to the 'All' option.  Is there a simple way to determine that the 'All' option was selected?  
+
+A:
+
+The way you're trying to do it won't work.
+One solution to your problem would be to provide a default all check box item and a blank item. For any other item in the list you'd have to uncheck the all check box and the blank item. The all check box wouldn't be used.
+Hope this helps.
+
+A:
+
+I suggest a different approach:
+
+Add a new field to your table named "all"
+Add a check box in your form and then use this code to fill your all fields
+private void listbox1_SelectedIndexChanged(object sender, EventArgs e)
+{
+  lbl1.Text = listBox1.SelectedValue.ToString();
+}
+
+private void lbl1_TextChanged(object sender, EventArgs e)
+{
+    if (listBox1.SelectedValue != "" && lbl1.Text == listBox1.SelectedValue)
+        listBox1.Text = "";
+}
+
+I have this done to create a multiselect listbox, when I press an "add" button. I add an item with the value "all". 
+
+A:
+
+An other way to do it is to handle listbox SelectedIndexChanged event as:
+    private void listBox_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        string all = "ALL";
+        if (listBox.SelectedValue == all)
+        {
+            txt.Text = "";
+        }
+        else
+        {
+            txt.Text = listBox.SelectedValue.ToString();
+        }
+    }
+
+Edit
+For this to work you must include 'ALL' in your list.
+
+Edit (2)
+You need to set InitialDirectory and InitialFile to the values of the .cs file. Then, you can use the current code below.
+    private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        int index = listBox1.SelectedIndex;
+
+        string selected_text = listBox1.GetItemText(index);
+        string all = "ALL";
+
+        if (listBox.SelectedValue == all)
+        {
+            label1.Text = "ALL";
+        }
+        else
+        {
+            label1.Text = listBox.SelectedValue.ToString();
+        }
+    }
+
+If you have more than 1 value in your list, then you can use:
+  if(listBox1.SelectedValue == "ALL")
+  {
+      label1.Text = "";
+  }
+
+If you want ALL value, then uncheck the listbox box. Otherwise, when you click a value, it will write the value.
+
+Edit (3)
+As per your example, there is another way to do it. Check this out:
+    private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        ListBox my_list = listBox1;
+        string selected_text = "";
+        int my_index = listBox1.SelectedIndex;
+
+        if (my_index >= 0)
+        {
+            selected_text = my_list.GetItemText(my_index);
+        }
+        else
+        {
+            selected_text = listBox1.SelectedItem.ToString();
+        }
+
+        label1.Text = selected_text;
+    }
+
+I have tested it, and it works great.
+
+Edit (4)
+You must have ListBox2 (that I will name lstBox) and you need to define this method:
+    private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        int index = listBox2.SelectedIndex;
+
+        string selected_text = listBox2.GetItemText(index);
+        string all = "ALL";
+
+        if (listBox2.SelectedValue == all)
+        {
+            lstBox.SelectedItem = "";
+        }
+        else
+        {
+            lstBox.SelectedItem = listBox2.SelectedValue.ToString();
+        }
+
+        //lstBox.SelectedItem = listBox2.SelectedValue.ToString();
+
+        //this line will clear TextBox1 and set value to 0
+        int.TryParse(textBox1.Text, out integer1);
+
+        textBox1.Text = "0";
+    }
+
+I have tested it, and it works great.
+
+</div></body></html><!-- 2022-06-12 21:04:21 
