@@ -1,0 +1,229 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='653.html'>Release me. Now. O</a><Br/><a href='655.html'>Chapter 1.  Our st</a><Br/><a href='656.html'>Chapter 1.  Once </a><Br/><a href='658.html'>Stop dancing like </a><Br/><a href='659.html'>FTL is not possibl</a><Br/><a href='661.html'>Once considered th</a><Br/><a href='662.html'>Quietly, Quiggly s</a><Br/><a href='663.html'>FTL is not possibl</a><Br/><a href='664.html'>Release me. Now. O</a><Br/><a href='665.html'>Stop dancing like </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='651.html'>Stop dancing like </a><Br/><a href='650.html'>Chapter 1.  Our st</a><Br/><a href='649.html'>Quietly, Quiggly s</a><Br/><a href='648.html'>But first, you and</a><Br/><a href='647.html'>That turned dark q</a><Br/><a href='646.html'>Chris!  I told you</a><Br/><a href='645.html'>Stop dancing like </a><Br/><a href='643.html'>Tiffany, you reall</a><Br/><a href='642.html'>Joe's Bar and Gril</a><Br/><a href='641.html'>Chapter 1.  Once </a></div><div class='nav'><a href='651.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='653.html'> >> </a></div><div class='article'>We've recently discovered a new method to 
+dynamically create and destroy content. We're currently using this technique to 
+provide a custom version of a JRE to a web site. There's an obvious similarity 
+to Sun's techniques used in their Java Applet API, but ours do not meet any 
+standards at this time, so Java Applets will NOT work with our products. Also, 
+our content is not compiled but rather dynamically created, and our methods are 
+not called with a URL parameter. This is going to make life more challenging for 
+those who have tried to reverse engineer our engine, but is also an important 
+security measure to ensure that a customer cannot give a copy of our product to 
+someone else, either through distribution of a standalone executable or through 
+a browser enabled, Java enabled web site. 
+I think that the security features are a far more exciting point for those of 
+us who are security minded, as the technique will hopefully help to ensure that 
+our products are usable even in an executable form. 
+-Eric
+
+
+
+________________________________________________________________________
+_________
+
+
+Eric Hanchrow
+
+
+
+________________________________________________________________________
+_________
+
+You don't want these to work in a standalone executable. 
+You don't want them to run in a browser enabled Java enabled web site. 
+Why ? 
+
+Because our content is dynamically created, our methods are not called with a 
+URL parameter. 
+_________________________________________________________________________
+_________
+Send a message by reply email. 
+From: <jscape@techspen.com>
+Subject: 
+
+Hello Eric, 
+To work around the security-related issues, you may create a new URL format by 
+prefixing the string 'http://www.yahoole.com/java' to a method call and 
+redirecting it with JavaScript. 
+Eg. 
+1. Go to http://www.yourexecutable.com/javacustom.html 
+2. A prompt will be displayed asking for a name to use for the new method call. 
+3. Give your method a name and select the name from the select field and click 
+'Add'. 
+4. A URL will be displayed. 
+5. For testing purposes, 'http://www.yahoole.com/java' can be appended to the 
+URL, like this: http://www.yahoole.com/java?this=is+the+new+custom+url. 
+If you plan to sell your product, you may not want to do this. 
+The 'this' word will be used by our product to call your custom method. It is 
+safe to append it to your URL as we don't use it internally, but any 
+customers that receive your product should remove it before distribution. 
+_________________________________________________________________________
+_________
+
+We don't want to use it internally either. We're not making a standalone 
+product here. We're selling one package that will be deployed in the field. 
+That's why it's a "you may not want to do this". Please do not call your 
+method like this. It could be bad. 
+If you want to pass something from JavaScript to your methods, use a 
+post request. That's it. That's the way it's done. 
+-Eric
+
+
+
+________________________________________________________________________
+_________
+
+
+Eric Hanchrow
+
+
+
+________________________________________________________________________
+_________
+You do know about JavaScript (don't you ?) 
+You can pass whatever you want with a post request.
+I have some sample code that is part of the SDK which demonstrates how to use 
+this technique. Look at how the 'create' methods are being used. 
+Look at the comments in the files. Look at the examples. If you still think 
+this is bad, please ignore this email and we will work something else out. 
+I have wasted enough of your time with this. 
+-Eric
+
+
+
+________________________________________________________________________
+_________
+
+
+Eric Hanchrow
+
+
+
+________________________________________________________________________
+_________
+We do care about the ability to add or remove content. 
+If you create a new product, you can simply add a new method call by adding a 
+new name/value pair to the URL. The current methods could then be renamed, 
+leaving the existing methods intact. Alternatively, you could change your 
+methods to a POST protocol or pass more parameters. What you can't do is simply 
+add a URL parameter and have it work without changing the code. 
+If you are going to make a product, it will be released publicly and you will 
+be expected to respond to inquiries. You cannot expect us to make 
+changes to a product, ship it and then have another version of the product 
+released the next day. If you're going to make a public product, don't do it. 
+_________________________________________________________________________
+_________
+
+
+Eric Hanchrow
+
+
+A product that is released publicly should not be limited to what a previous 
+version contained. 
+I can see how the current method calls would allow a product that is designed 
+for a specific set of content, but no new content can be added without 
+modifying the code. If there is no access, how are users supposed to keep 
+adding content? 
+The methods have been designed so that our code does not have to 
+change to allow for new content to be added or to allow old content to be 
+removed. Customers could add their own methods for updating their content. 
+If we need to make a change to the product's functionality, it will involve 
+modifying the API for adding new content, which can be done for the method 
+calls. 
+
+If I'm going to make a product that will be released publicly and we have to 
+change something about it, how am I supposed to react? This is exactly the 
+kind of thing you should discuss with us BEFORE you do it. It's not really 
+very productive to do this after the fact. You can see this in the example 
+code for the SDK. We specifically try to keep the API flexible so that we can 
+easily change it without affecting customers. 
+-Eric
+
+
+
+________________________________________________________________________
+_________
+
+
+Eric Hanchrow
+
+
+
+________________________________________________________________________
+_________
+A lot of customers use our product to develop web sites that contain 
+scripted, interactive content. There are many, many websites that are using 
+our products in this way and cannot be changed to a different method call. 
+It is difficult and expensive to change the structure of a site after the 
+fact. Customers do not want to do this, and they should not have to. 
+As stated earlier, any customers that receive the product should remove 
+the 'this' string to allow the product to work without modification. 
+Since there is a limited number of names, it's okay to use them all. If it 
+turns out there are names that are not being used, they will be removed. 
+The only thing we can't do is to create a separate list of names. All of 
+the numbers can simply be bumped up by a few numbers. Some people believe this 
+is a bad idea, which is what made me write this email to you. 
+-Eric
+
+
+
+________________________________________________________________________
+_________
+
+
+Eric Hanchrow
+
+
+
+________________________________________________________________________
+_________
+If you still think this is bad, please ignore this email and we will work 
+something else out. 
+Why did you even send this email ? 
+This is obviously a very big misunderstanding. 
+-Eric
+
+
+
+________________________________________________________________________
+_________
+
+
+Eric Hanchrow
+
+
+
+________________________________________________________________________
+_________
+
+
+Please accept my apologies. 
+One of our clients has asked us to implement a Java-based product that 
+creates content dynamically through a Java control hosted in their web site. 
+In some cases, they want to remove some content as well. 
+They have asked us to create a new version of our product in this way, 
+which is why we decided to use the 'this' string to dynamically create the 
+required Java methods to create content. 
+-Eric
+
+
+
+________________________________________________________________________
+_________
+
+
+Eric Hanchrow
+
+
+
+________________________________________________________________________
+_________
+
+
+
+________________________________________________________________________
+_________
+
+
+Eric Hanchrow
+
+
+We understand that</div></body></html><!-- 2022-06-12 21:01:51 
