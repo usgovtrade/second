@@ -1,0 +1,56 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='710.html'>Chapter 1.  Our st</a><Br/><a href='711.html'>Chris!  I told you</a><Br/><a href='712.html'>FTL is not possibl</a><Br/><a href='713.html'>Concrete may have </a><Br/><a href='714.html'>Stop dancing like </a><Br/><a href='716.html'>Joe's Bar and Gril</a><Br/><a href='717.html'>Concrete may have </a><Br/><a href='718.html'>Release me. Now. O</a><Br/><a href='719.html'>Release me. Now. O</a><Br/><a href='720.html'>Quitetly, Quiggly </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='708.html'>Tiffany, you reall</a><Br/><a href='707.html'>FTL is not possibl</a><Br/><a href='706.html'>That turned dark q</a><Br/><a href='705.html'>We've recently dis</a><Br/><a href='704.html'>Once considered th</a><Br/><a href='703.html'>But first, you and</a><Br/><a href='702.html'>Release me. Now. O</a><Br/><a href='700.html'>Release me. Now. O</a><Br/><a href='699.html'>FTL is not possibl</a><Br/><a href='698.html'>Concrete may have </a></div><div class='nav'><a href='708.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='710.html'> >> </a></div><div class='article'>Chapter 1.  Once 
+$$
+U=\{u_1,\ldots,u_n\}
+$$
+is a basis for $V$. Then the associated Gram-Schmidt process yields a new basis $U^\prime=\{u_1^\prime,\ldots,u_n^\prime\}$ where 
+$$
+u_i^\prime=\sum_{j=1}^ni_ju_j
+$$
+and where the first $n-1$ of the $u_i^\prime$ vectors are independent. 
+However, since the $u_i$ basis is a standard basis, the vectors $u_i^\prime$ will have integer coordinates in this case.
+In other words, with respect to the standard basis, one can only obtain a basis with integer coordinates (and thus a sublattice of ${\mathbb Z}^n$) by using the Gram-Schmidt process on the standard basis. 
+If one allows more general $U$, then one can obtain vectors with all rational coordinates. 
+
+Example.
+Let $U=\{1,-1,2,-2,3,-3\}$ and use the Gram-Schmidt process to obtain a new basis $U^\prime=\{u_1^\prime,\ldots,u_6^\prime\}$. Then 
+\begin{align*}
+u_1^\prime=&2u_1-u_2+2u_3-3u_4+u_5-2u_6\\
+u_2^\prime=&u_2-u_1+u_3-2u_4+3u_5-2u_6\\
+u_3^\prime=&u_3-u_1+2u_2-u_4+3u_5-2u_6\\
+u_4^\prime=&u_4-2u_1+u_5-u_2+3u_3-2u_6\\
+u_5^\prime=&u_5-u_1+2u_2-3u_3+u_4-2u_6\\
+u_6^\prime=&u_6-u_1+2u_2-3u_3+2u_4-u_5-2u_6
+\end{align*}
+In the example given in the text,
+\begin{align*}
+&4u_1-3u_2+2u_3-3u_4+u_5-u_6,\\
+&2u_1+2u_2+3u_3+3u_4+u_5+u_6,\\
+&u_1+u_2+2u_3+2u_4+3u_5+2u_6,\\
+&4u_1+2u_2+u_3+u_4+2u_5+u_6,\\
+&2u_1+3u_2+u_3+2u_4+u_5+u_6.
+\end{align*}
+
+A:
+
+No, this is wrong. We can take $e_1,e_2,e_3$ such that $U=Span(e_1,e_2,e_3)$ is a basis, $2e_1+3e_2$ is not in this basis. Then the vectors cannot be integer valued for any $a,b\in\mathbb{Z}$, and a different proof is just by the definition of a basis.
+
+A:
+
+If you start with $U = \{v_1,v_2,v_3,v_4\}$, you can’t guarantee that $2e_1+3e_2\in\operatorname{Span}(U)$. For example, you can have
+$$
+U = \{2e_1,3e_1-e_2,4e_1-e_3,e_4\}
+$$
+or
+$$
+U = \{4e_1,5e_1-2e_2,3e_1-e_2,e_4\}
+$$
+or any other number of options in between.
+One interesting property that a lattice always has is that $e_1+e_2\in\operatorname{Span}(U)$. It turns out that this property is what makes this so much easier, and the reason why the statement is correct.
+Without knowing why, I can probably guess that you know the most obvious statement about a vector being in the span of a set of linearly independent vectors. That is to say, if $v_1,v_2,\ldots,v_n$ are linearly independent, then $k_1v_1+k_2v_2+\cdots+k_nv_n=0\iff k_1=\cdots=k_n=0$. This follows immediately from the linear independence of the $v_i$ and the fact that all the $k_i$ must be zero. (For the sake of concreteness, I’ll assume $k_i\in\mathbb{Z}$ and $v_i\in\mathbb{R}$, but there’s nothing that’s important about this.)
+
+Theorem: If $U$ is a set of $n$ linearly independent vectors in $\mathbb{R}^n$, then $U\cap\mathbb{Z}^n = \{\vec 0\}$.
+
+The only thing that this might not be obvious for is that $U\cap\mathbb{Z}^n$ is empty. After that, you should know that $\operatorname{Span}(U\cap\mathbb{Z}^n)=\operatorname{Span}(U)$. A vector is in $\operatorname{Span}(U)$ iff it is in $\operatorname{Span}(U\cap\mathbb{Z}^n)$ because $\mathbb{R}^n$ is $\mathbb{Z}$-spaned, but $\mathbb{Z}^n\subseteq\operatorname{Span}(U)$ by definition.
+Since $\mathbb{Z}^n$ is the set of vectors that are the sum of $n$ integers, any vector in $U$ that’s not equal to $\vec 0$ cannot have all its components integers, and the proof is complete.
+
+</div></body></html><!-- 2022-06-12 21:01:56 

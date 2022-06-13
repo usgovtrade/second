@@ -1,0 +1,48 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='803.html'>Ships were lost du</a><Br/><a href='804.html'>Chapter 1.  Our st</a><Br/><a href='805.html'>Release me. Now. O</a><Br/><a href='806.html'>Quietly, Quiggly s</a><Br/><a href='807.html'>But first, you and</a><Br/><a href='809.html'>Concrete may have </a><Br/><a href='810.html'>Chapter 1.  Our st</a><Br/><a href='811.html'>FTL is not possibl</a><Br/><a href='814.html'>That turned dark q</a><Br/><a href='815.html'>Ships were lost du</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='801.html'>Tiffany, you reall</a><Br/><a href='798.html'>Chris!  I told you</a><Br/><a href='797.html'>But first, you and</a><Br/><a href='796.html'>Quietly, Quiggly s</a><Br/><a href='795.html'>FTL is not possibl</a><Br/><a href='794.html'>Chapter 1.  Once </a><Br/><a href='792.html'>Release me. Now. O</a><Br/><a href='791.html'>We've recently dis</a><Br/><a href='790.html'>Quietly, Quiggly s</a><Br/><a href='789.html'>That turned dark q</a></div><div class='nav'><a href='801.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='803.html'> >> </a></div><div class='article'>That turned dark quickly. Instead  of a single $5$-gram, we now need to consider all occurrences of $n\big(\lfloor b_1/2\rfloor, \ldots , \lfloor b_{k-1}/2\rfloor, b_{k-1}\big)$ and $n\big(\lfloor b_1/2\rfloor, \ldots , \lfloor b_{k-1}/2\rfloor, b_{k}\big)$ to produce an additional $O(n)$-term.
+
+In other words, there are now $k-1$ ‘classes’ of $5$-grams that require additional consideration. We might now assume that there are $m_0$ $5$-grams of the first type, $m_1$ of the second, and so forth. Thus, the entire set of $5$-grams is now encoded by $$\label{eq:first_enc}
+    \sum_{\ell = 0}^{k-1} m_\ell n\big(\lfloor b_1/2\rfloor, \ldots , \lfloor b_{\ell-1}/2\rfloor, b_{\ell-1}\big).$$ We must then find the frequencies of each combination, say $$n\big(b_{i_1}/2, \ldots , b_{i_r}/2\big).$$ However, as the number of bits in each $b_i$ grows linearly with $i$, it is actually simpler to find the $5$-gram $n\big(b_i, b_j, \ldots, b_k\big)$ with $i$ and $j$ the smallest indices satisfying $b_i\neq b_j$ and then use the fact that $n\big(b_i, b_j, \ldots, b_k\big) = n\big(b_i, b_j, \ldots, b_k\big) n\big(b_j, b_i, \ldots, b_k\big)$ and $n\big(b_i, b_j, \ldots, b_k\big) = n\big(b_i, b_j, \ldots, b_k\big) + n\big(b_j, b_i, \ldots, b_k\big)$.
+
+As a result, we would get for each $5$-gram $$\begin{aligned}
+    n\big(b_{i_1}, b_{i_2}, \ldots, b_{i_r}\big) &=& m_0 n\big(b_{i_1}/2, \ldots , b_{i_r}/2\big)\nonumber\\
+    &+& m_1 n\big(b_{i_1}/2, \ldots , b_{i_r}/2\big) + m_2 n\big(b_{i_1}/2, \ldots , b_{i_r}/2\big)\nonumber\\
+    &+& \cdots \nonumber\\
+    &+& m_{k-1} n\big(b_{i_1}/2, \ldots , b_{i_r}/2\big).
+    \label{eq:second_enc}\end{aligned}$$ Thus, the entire problem is still encoded as a sum with polynomial complexity; the only difference is that each term now has a polynomial number of terms as well.
+
+Of course, the number of $5$-grams grows rapidly with $n$, and even more rapidly with $k$ and $m_\ell$. For example, if $b_i$ takes $1+i$ binary digits, the number of $5$-grams becomes $k \choose i$ which grows factorially. The same would be the case if we were to simply consider all possible combinations of $b_i/2$, or, in other words, the $k$-ary representation of the numbers $b_i/2$ are written in base $k$ (here $k$ is a power of $2$). Thus, a more reasonable measure of the size of the first and second encodings would be $$\begin{aligned}
+    n\big(b_i/2\big) &=& n\big(b_i/2, b_j/2, \ldots, b_k/2\big)\nonumber\\
+    &+& n\big(b_j/2, b_i/2, \ldots, b_k/2\big)\nonumber\\
+    &+& \cdots \nonumber\\
+    &+& n\big(b_k/2, b_i/2, \ldots, b_j/2\big)\nonumber\\
+    &=& m_0 n\big(b_i/2, b_j/2, \ldots, b_k/2\big) + \cdots \nonumber\\
+    &+& m_{k-1} n\big(b_i/2, b_j/2, \ldots, b_k/2\big).
+    \label{eq:third_enc}\end{aligned}$$
+
+If $k$ is a power of $2$ and we are dealing with powers of $2$ to base $k$, as is necessary to represent integers (let us say $i_1 = \cdots = i_r = i$ such that $k^i = n$), then is the number of $5$-grams as given in the third line. We do not know a general solution to the sum of such numbers.
+
+Let us consider a simple example: $b_1=5$ and $b_2=b_3 = 3$.
+
+In , for $k=5$, this is $$\begin{aligned}
+    n\big(b_1/2, b_2/2, b_3/2, b_4/2, b_5/2\big) &=& m_0 n\big(b_1/2, b_2/2, b_3/2, b_4/2, b_5/2\big)\nonumber\\
+    &+& m_1 n\big(b_1/2, b_2/2, b_3/2, b_4/2, b_5/2\big) \nonumber\\
+    &+& m_2 n\big(b_1/2, b_2/2, b_3/2, b_4/2, b_5/2\big)\nonumber\\
+    &+& m_3 n\big(b_1/2, b_2/2, b_3/2, b_4/2, b_5/2\big) \nonumber\\
+    &+& m_4 n\big(b_1/2, b_2/2, b_3/2, b_4/2, b_5/2\big)\nonumber\\
+    &+& m_5 n\big(b_1/2, b_2/2, b_3/2, b_4/2, b_5/2\big).\end{aligned}$$ If the first of the sums is $$\begin{aligned}
+    m_0 n\big(5/2, 3/2, 5/2, 5/2, 3/2\big) &=& 10 \cdot 3^4\nonumber\\
+    &=& 3600,\end{aligned}$$ and the second is $$\begin{aligned}
+    m_1 n\big(3/2, 5/2, 3/2, 5/2, 3/2\big) &=& m_2 n\big(3/2, 5/2, 3/2, 5/2, 3/2\big)\nonumber\\
+    &=& m_3 n\big(3/2, 5/2, 3/2, 5/2, 3/2\big)\nonumber\\
+    &=& m_4 n\big(3/2, 5/2, 3/2, 5/2, 3/2\big)\nonumber\\
+    &=& m_5 n\big(3/2, 5/2, 3/2, 5/2, 3/2\big),\end{aligned}$$ then, using $n=15$, we would obtain for $n(15,3)$ $$\begin{aligned}
+    n(15,3) &=& 3600\nonumber\\
+    &+& 10 \cdot 3^4\nonumber\\
+    &+& m_2 \left(3600 + 10 \cdot 3^4\right)\nonumber\\
+    &+& m_3 \left(3600 + 10 \cdot 3^4\right)\nonumber\\
+    &+& m_4 \left(3600 + 10 \cdot 3^4\right)\nonumber\\
+    &+& m_5 \left(3600 + 10 \cdot 3^4\right)\nonumber\\
+    &+& m_2^2 \left(3600 + 10 \cdot 3^4\right)\nonumber\\
+    &+& m_3^2 \left(3600 + 10 \cdot 3^4\right)\nonumber\\
+    &+& m_4^2 \left(3600 + 10 \cdot 3^4\right)\nonumber\\
+    &+</div></body></html><!-- 2022-06-12 21:02:03 

@@ -1,0 +1,159 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='759.html'>Chris!  I told you</a><Br/><a href='760.html'>Stop dancing like </a><Br/><a href='761.html'>That turned dark q</a><Br/><a href='762.html'>Joe's Bar and Gril</a><Br/><a href='763.html'>Ships were lost du</a><Br/><a href='764.html'>Quitetly, Quiggly </a><Br/><a href='765.html'>FTL is not possibl</a><Br/><a href='767.html'>Concrete may have </a><Br/><a href='768.html'>We've recently dis</a><Br/><a href='769.html'>Joe's Bar and Gril</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='756.html'>Chapter 1.  Our st</a><Br/><a href='755.html'>Joe's Bar and Gril</a><Br/><a href='754.html'>Release me. Now. O</a><Br/><a href='752.html'>Ships were lost du</a><Br/><a href='751.html'>FTL is not possibl</a><Br/><a href='750.html'>But first, you and</a><Br/><a href='749.html'>Tiffany, you reall</a><Br/><a href='748.html'>Quietly, Quiggly s</a><Br/><a href='747.html'>Release me. Now. O</a><Br/><a href='746.html'>Concrete may have </a></div><div class='nav'><a href='756.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='759.html'> >> </a></div><div class='article'>Chapter 1.  Once 
+on page 2 a new Chapter is started
+Chapter 1.1
+the next lines are 
+Chapter 1.2.
+
+the third line is 
+Chapter 1.2.3.4.5.
+the next line starts a new Chapter 
+Chapter 2.
+
+i.e. 
+{Chapter 1.1, 2.1, 2.2, 2.3.4, 2.5}.
+the function is very complex and this is only a simplified example, for example i am extracting data from a website and it can be in any format and some formats are more complicated then above but i am extracting them all and want to make a book out of it.
+the function works fine but i want to make it more efficient since my real file is a bit larger, i am using "findall" to get my chapters.
+the format i have now: 
+[
+ [Chapter 1.1],
+ [Chapter 1.2],
+ [Chapter 1.3]
+]
+
+is there any way to make the function more efficient? 
+like i want it to make chapters with brackets and in between brackets it would put a dot and then the next chapter as a name.
+so it would be like : 
+[
+ [Chapter 1.1]
+ [Chapter 1.2]
+ [Chapter 1.3]
+]
+
+the only place where the above book format wont work is if there is a dot between the brackets, but there is no dot in the chapters i have. 
+
+A:
+
+The solution is just to loop through the text file a second time.
+def getChapter(self, page, path):
+    res = []
+    i=1
+    with open(path + str(i), "r") as f:
+        s = f.read()
+    res = re.findall("Chapter (.+?)", s)
+    for item in res:
+        self.getChapter(i, path)
+
+This loop will find all the numbered chapters in a file and then loop through them. It is an infinite loop which will continue to find and add each chapter until there are no more chapters. I'm sure you can see that the same chapter will be getting over and over. But because you have a chapter number (like 1.1, 1.2, 1.3) there shouldn't be a problem.
+
+A:
+
+The following code gives an infinite loop. I changed the function to not call itself again. It should give you an idea how you might be able to accomplish your goal.
+for p in range(1,5):
+    i = p*2
+    print i
+    i+=1
+    print i
+
+Here are the results
+1
+2
+
+2
+3
+
+3
+4
+
+4
+5
+
+Edit:
+The following code avoids the infinite loop.
+def func(s):
+    findall('Chapter (.+?)',s)
+
+def findall(pattern,s):
+    m=s.find(pattern)
+    for i in range(0,m):
+        print(pattern,i)
+        start=i+1
+        end=m
+        while (start<=end):
+            found=True
+            for j in range(i+1,end+1):
+                if (s[j]==pattern[0]):
+                    found=False
+                    break
+            if (found):
+                print("found " + pattern[1:], end = j)
+            end += 1
+
+with open('test.txt','r') as f:
+    s=f.read()
+func(s)
+
+Result:
+found 1 1.1
+found 1 1.2
+found 1 1.3
+found 2 1.4
+found 2 1.5
+found 2.1 2.1.1
+found 2.1 2.1.2
+found 2.1 2.1.3
+found 3 2.2
+found 3.1 3.1.1
+found 3.1 3.1.2
+found 3.1 3.1.3
+found 4.1 4.1.1
+found 4.1 4.1.2
+found 4.1 4.1.3
+found 5 4.2
+
+A:
+
+A couple of improvements to the other answer:
+
+Instead of calling findall() repeatedly on the same thing, use it once and store the result:
+found = re.findall(...)
+
+Use rfind() to get the end of chapter 1.3, rather than having to loop manually:
+if found.endswith('1.3') and found.find('1.4') < found.rfind('1.3'):
+    ...
+
+Don't use re.compile when you don't need it:
+
+The re module provides an object called regular expression. Regular expressions are used to match characters in strings.
+
+Using re.compile or its older syntax, re.finditer, creates a new regular expression object each time, which is overkill for this task, and the old-style re.compile has been deprecated for many years.
+
+Here's the updated code:
+import re
+found = []
+with open('test.txt') as f:
+    s = f.read()
+
+found = re.finditer(
+    r'(?:Chapter \d+\.\d+)\s*(.*)', s
+)
+
+found = [found.next()]
+
+prev = None
+for i, val in enumerate(found):
+    if prev is None:
+        if val.group(1) == '1.1':
+            found[i] = [prev, '1.1']
+        else:
+            found[i] = [prev, val.group(1)]
+
+    else:
+        if val.group(1) != prev.group(1):
+            prev.group(1) + '.1'
+            break
+        else:
+            prev.group(1) + '.2'
+            break
+    prev = val
+
+</div></body></html><!-- 2022-06-12 21:02:00 
