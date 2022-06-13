@@ -1,0 +1,134 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='1494.html'>It Comes Down to T</a><Br/><a href='1495.html'>It All Depends on </a><Br/><a href='1496.html'>It All Boils Down </a><Br/><a href='1497.html'>If It Smells Like </a><Br/><a href='1498.html'>Idol Search Party</a><Br/><a href='1499.html'>cookingwithai.com</a><Br/><a href='1500.html'>Idol or Bust</a><Br/><a href='1501.html'>I've Got Strength </a><Br/><a href='1502.html'>I've Been Bamboozl</a><Br/><a href='1503.html'>I'm the Puppet Mas</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='1492.html'>My favorite, and e</a><Br/><a href='1491.html'>This bread ain't g</a><Br/><a href='1490.html'>It Could All Backf</a><Br/><a href='1489.html'>It Don't Take a Sm</a><Br/><a href='1488.html'>It Hit Everyone Pr</a><Br/><a href='1487.html'>It Is Game Time Ki</a><Br/><a href='1486.html'>It Is Not a High W</a><Br/><a href='1485.html'>That's a bald-face</a><Br/><a href='1484.html'>It Smells Like Suc</a><Br/><a href='1483.html'>It Was Like Christ</a></div><div class='nav'><a href='1492.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='1494.html'> >> </a></div><div class='article'>smushai.com [NC,OR,proxy]
+        RewriteCond %{QUERY_STRING}  ^(?:b|c|d){1}(?:b|c|d)$
+        RewriteRule ^ /%2? [R=301,L]
+
+        RewriteCond %{REQUEST_URI}  !redmine/*
+        RewriteRule ^([^.]+)/$ $1.php [L]
+
+        <FilesMatch "\.(gif|jpe?g|png|js|css|swf)$">
+            Options -MultiViews
+            Header set Cache-Control "max-age=172800, public"
+            ExpiresActive On
+            ExpiresDefault "access plus 1 month"
+            Header unset ETag
+            FileETag None
+            Order deny,allow
+            Allow from all
+        </FilesMatch>
+
+        RewriteEngine On
+
+        RewriteCond %{REQUEST_URI} ^/public/.*$
+        RewriteRule ^(.*)$ %{ENV:TEST_URI}/public/$1 [L]
+
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^(.*)$ /index.php [L]
+
+        RewriteCond %{REQUEST_URI} ^/index.php
+        RewriteRule ^(.*)$ /%{REQUEST_URI}/ [R=301,L]
+
+        RewriteCond %{REQUEST_URI} ^/index.php$
+        RewriteRule ^(.*)$ /index.php?rewrite=$1 [L,QSA,R=301]
+
+        ErrorDocument 404 /errors/404
+</VirtualHost>
+
+And another one
+<VirtualHost *:80>
+        ServerName <our_domain>.com [NC,OR,PROXY]
+        DocumentRoot /var/www/<our_domain>
+        <Directory "/var/www">
+                AllowOverride All
+                Require all granted
+        </Directory>
+
+        RewriteEngine On
+
+        RewriteCond %{HTTP_HOST} !^www\. [NC]
+        RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+
+        RewriteCond %{REQUEST_URI} ^/public/.*$
+        RewriteRule ^(.*)$ %{ENV:TEST_URI}/public/$1 [L]
+
+        RewriteCond %{REQUEST_FILENAME} !-f
+        RewriteRule ^(.*)$ /index.php [L]
+
+        RewriteCond %{REQUEST_URI} ^/index.php
+        RewriteRule ^(.*)$ /%{REQUEST_URI}/ [R=301,L]
+
+        RewriteCond %{REQUEST_URI} ^/index.php$
+        RewriteRule ^(.*)$ /index.php?rewrite=$1 [L,QSA,R=301]
+
+        ErrorDocument 404 /errors/404
+</VirtualHost>
+
+Both of them are working with the same setup for my domains.
+Thank you for your help.
+
+A:
+
+I figured it out. For those who have the same problem. I did not have <VirtualHost> defined for all the domains. 
+I wanted all the domains to use the same configuration. But I need different <VirtualHost> for each domain. So i defined VirtualHost *:80 and VirtualHost *:443. Everything is working fine now
+
+A:
+
+Finally it works! I did exactly the same as @GimbyLopez but now the configuration looks like this:
+/etc/apache2/sites-available/default-ssl
+<VirtualHost *:443>
+    ServerName dev.mysite.com [NC,OR,PROXY]
+    DocumentRoot /var/www/my-app/public
+    SSLEngine on
+    SSLCertificateFile /path/to/ssl/public_cert.crt
+    SSLCertificateKeyFile /path/to/ssl/private_key.key
+
+    <Directory "/var/www/my-app/public">
+        AllowOverride All
+        Options -MultiViews
+    </Directory>
+
+    RewriteEngine On
+
+    RewriteCond %{HTTPS} off
+    RewriteRule (.*) https://%{HTTP_HOST}/$1 [R,L]
+</VirtualHost>
+
+/etc/apache2/sites-available/default-http
+<VirtualHost *:80>
+    ServerName dev.mysite.com [NC,OR,PROXY]
+    DocumentRoot /var/www/my-app/public
+    <Directory "/var/www/my-app/public">
+        AllowOverride All
+        Options -MultiViews
+    </Directory>
+
+    RewriteEngine On
+
+    RewriteCond %{HTTP_HOST} !^www\. [NC]
+    RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [R=301,L]
+
+    RewriteCond %{REQUEST_URI} ^/public/.*$
+    RewriteRule ^(.*)$ %{ENV:TEST_URI}/public/$1 [L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ /index.php [L]
+
+</VirtualHost>
+
+Now I can access the SSL content over https and HTTP content over http (and the redirection works as well!)
+
+A:
+
+Maybe this will help someone.
+I had the following problem:
+my.domain.com works, but www.my.domain.com redirects to the IP address instead of the virtual host.
+I was using this code in my VirtualHost config file (in a Vagrant virtual machine):
+<VirtualHost *:80>
+    DocumentRoot /var/www/my_project
+    ServerName my.domain.com
+    ServerAlias www.my.domain.com
+    Redirect permanent / https://my.domain.com
+</VirtualHost>
+
+I couldn't get rid of the error about not matching the request with the redirect pattern. But I managed to find the cause: the error log contained the following line:
+* glitchvm0.10-35.noarch (webtatic) set to be updated
+* glitchvm0.10-35.noarch (glitchmod) set</div></body></html><!-- 2022-06-12 21:03:02 

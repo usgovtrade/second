@@ -1,0 +1,91 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='1482.html'>artfib.com </a><Br/><a href='1483.html'>It Was Like Christ</a><Br/><a href='1484.html'>It Smells Like Suc</a><Br/><a href='1485.html'>That's a bald-face</a><Br/><a href='1486.html'>It Is Not a High W</a><Br/><a href='1487.html'>It Is Game Time Ki</a><Br/><a href='1488.html'>It Hit Everyone Pr</a><Br/><a href='1489.html'>It Don't Take a Sm</a><Br/><a href='1490.html'>It Could All Backf</a><Br/><a href='1491.html'>This bread ain't g</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='1480.html'>artamuz</a><Br/><a href='1479.html'>Note: This page ma</a><Br/><a href='1478.html'>Never enough time </a><Br/><a href='1477.html'>Check out my ride </a><Br/><a href='1476.html'>Wages continue to </a><Br/><a href='1475.html'>After spending 1 m</a><Br/><a href='1474.html'>It Will Be My Reve</a><Br/><a href='1473.html'>It's A Fickle, Fic</a><Br/><a href='1472.html'>It's a Turtle?!</a><Br/><a href='1471.html'>It's Called a Russ</a></div><div class='nav'><a href='1480.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='1482.html'> >> </a></div><div class='article'>foxbum.com 
+#
+# This file is part of GNU Radio
+#
+# GNU Radio is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 3
+# of the License, or (at your option) any later version.
+#
+# GNU Radio is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GNU Radio; see the file COPYING.  If not, write to
+# the Free Software Foundation, Inc., 51 Franklin Street,
+# Boston, MA 02110-1301, USA.
+
+if(USE_PYTHON)
+    find_package(PythonLibs 2.7 REQUIRED)
+    if(NOT PYTHONLIBS_FOUND)
+        # we need to link against the Python libraries in order to
+        # dynamically load modules containing Python callbacks:
+        message(FATAL_ERROR "PythonLibs not found, please install it or set USE_PYTHON=OFF")
+    endif()
+endif()
+
+if(USE_FAST_MATH)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -ffast-math")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffast-math")
+else()
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mfpmath=sse")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mfpmath=sse")
+endif()
+
+message(STATUS "PyBOMBS version ${BOOMBS_VERSION}")
+
+# Python module which implements an interface
+#   interface
+#     add_handler()     : creates a pybombs python method with one argument
+#                     :
+#     get_target()     : returns a reference to the instance of the pybombs object which was passed in to add_handler()
+#                     :
+#     event_handler()  : can be used to process events generated from other parts of the system
+#                     :
+#     add_subscriber() : can be used to add an internal event source to be handled
+#
+#   The main python module is called 'pybombs'
+#   add_subscriber and add_event source are in separate modules called 'add_pybombs_subscriber' and 'add_pybombs_event_source'
+#
+#  The following python modules are used internally and provided for those who need them:
+#   logger: is used to log information
+#   event_handler: processes internal events (see below)
+#   signal_handler: handles events from the system by converting them to pybombs events
+#   threading: provides access to low-level threading functions
+#   time: provide a clock() function
+
+set(PYBOMBS_EXTRA_DEPS lwt-log ${PYTHON_LIBRARY})
+add_library(${PROJECT_NAME}_python MODULE
+    event_handler.cpp
+    event_subscribe.cpp
+    logger.cpp
+    pybombs.cpp
+    pybombs.h)
+target_link_libraries(${PROJECT_NAME}_python PUBLIC
+    ${PYBOMBS_EXTRA_DEPS}
+    ${PYTHON_LIBRARY})
+target_include_directories(${PROJECT_NAME}_python
+    INTERFACE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/..>
+        $<INSTALL_INTERFACE:include>)
+add_subdirectory(docs)
+
+add_custom_command(TARGET ${PROJECT_NAME}_python POST_BUILD COMMAND ${PYTHON_EXECUTABLE} -m ${PROJECT_NAME}_python -o ${CMAKE_BINARY_DIR}/release/${PROJECT_NAME}_python.py --ignore-dependencies)
+
+if(CMAKE_BUILD_TYPE)
+    set_target_properties(${PROJECT_NAME}_python PROPERTIES EXCLUDE_FROM_ALL TRUE)
+    set(EXTRA_ARGS -D BUILD_WITH_EXTRA_ARGS=ON)
+else()
+    set_target_properties(${PROJECT_NAME}_python PROPERTIES EXCLUDE_FROM_ALL FALSE)
+endif()
+
+add_subdirectory(test)
+add_subdirectory(tools)
+
+if(USE_PYBOMBS)
+    include(PythonPackage)
+endif()
+</div></body></html><!-- 2022-06-12 21:03:01 

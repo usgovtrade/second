@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='1478.html'>Never enough time </a><Br/><a href='1479.html'>Note: This page ma</a><Br/><a href='1480.html'>artamuz</a><Br/><a href='1481.html'>foxbum.com </a><Br/><a href='1482.html'>artfib.com </a><Br/><a href='1483.html'>It Was Like Christ</a><Br/><a href='1484.html'>It Smells Like Suc</a><Br/><a href='1485.html'>That's a bald-face</a><Br/><a href='1486.html'>It Is Not a High W</a><Br/><a href='1487.html'>It Is Game Time Ki</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='1476.html'>Wages continue to </a><Br/><a href='1475.html'>After spending 1 m</a><Br/><a href='1474.html'>It Will Be My Reve</a><Br/><a href='1473.html'>It's A Fickle, Fic</a><Br/><a href='1472.html'>It's a Turtle?!</a><Br/><a href='1471.html'>It's Called a Russ</a><Br/><a href='1470.html'>It's Do or Die</a><Br/><a href='1469.html'>It's Funny When Pe</a><Br/><a href='1468.html'>It's Getting the B</a><Br/><a href='1467.html'>It's Gonna Be Chao</a></div><div class='nav'><a href='1476.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='1478.html'> >> </a></div><div class='article'>Check out my ride of 
+Vehicle Vimana https://www.youtube.com/watch?v=tQEzO-dVH1g
+
+A:
+
+I recommend using OpenCV 3 which is actively being developed. It's completely free and the official python interface is based on opencv4olib. I have used it successfully for stereo vision.
+Stereo Vision with OpenCV 3 using Python
+
+A:
+
+I'll recommend OpenCV with Python if you are looking to use with Python (as you stated). OpenCV has Python bindings as well.
+If you are going to get really fancy, there is always Intel's IPP, but if you're looking to do this as a hobby, I would not recommend it. I have found OpenCV to be a very solid tool for image processing in Python.
+
+A:
+
+For 3d reconstruction based on a single picture, you can use 3D-vision-toolkit (from my previous answer):
+http://www.youtube.com/watch?v=6E6VwVG7SJI
+There are plenty of other 3D reconstruction tools.
+
+A:
+
+The OpenCV (not OpenCV3) version is not actively developed or maintained (see https://sourceforge.net/p/opencv/tickets/9/).
+The only viable way to get the latest OpenCV source code as a Python module is to manually build the project from the sources (See http://docs.opencv.org/3.2.0/doc/tutorials/introduction/windows_visual_studio_Opencv_build_from_source/windows_visual_studio_Opencv_build_from_source.html). 
+But you can do it more easily with CMake:
+mkdir build && cd build
+cmake -D CMAKE_BUILD_TYPE=RELEASE ..
+make
+sudo make install
+
+When the build is complete, you can find the modules you need under opencv/python/python-package:
+cd opencv/python/python-package
+sudo python setup.py install
+
+This approach works for the latest OpenCV version (4.2.0). With CMake, you can also build OpenCV by simply typing make in the main opencv/ folder.
+You can find additional instructions in this tutorial:
+http://www.pyimagesearch.com/2015/11/03/opencv-using-python-as-a-module-on-mac-and-linux/
+
+Please see:
+
+Is OpenCV-Python the Python version used in opencv/samples/python2?
+http://docs.opencv.org/3.0-beta/modules/py_tutorials/py_gui/py_console/py_console.html#console-program
+
+You will need Python 2.7.9 or newer.
+
+Note that I suggest the older OpenCV (maybe OpenCV 2.4).
+OpenCV3 is quite different and not really ready for production use.
+
+http://www.pyimagesearch.com/2015/09/19/opencv-using-python-as-a-module-on-mac-and-linux/
+
+(The article is dated 2015. But the information on using OpenCV 3 is still relevant.)
+
+I suggest to look at your old versions of OpenCV because there have been some changes on the syntax of OpenCV with Python from OpenCV2 to OpenCV3.
+
+You can also try this 3D reconstruction code, but this one is for Python2.
+
+https://github.com/sebastianraschka/opencv-viz/
+
+It only has a "minimal" 3D viewer.
+The code includes the following lines:
+>>> from numpy import *
+>>> from numpy.linalg import *
+
+You should use Python3 because it supports a more complete Python standard library.
+In Python3, the code for this 3D visualization is here.
+
+Another option is to use the free version of VTK:
+https://github.com/Kitware/VTK
+
+(VTK/VTKpro only support Python2 and Python3 versions, so the code for VTK/VTKpro will not be available for Python2.7)
+(You need to use the Python interface of VTK.)
+
+OpenCV4.2 has recently added some support for C++11 and Python 3. The next release (probably 4.3.0) will be using C++11 syntax for OpenCV.
+But there is no plan to have Python 3 support in this release</div></body></html><!-- 2022-06-12 21:03:01 
