@@ -1,0 +1,37 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='1046.html'>Trade-war shortcut</a><Br/><a href='1047.html'>Darkweb entrapment</a><Br/><a href='1048.html'>Reptile husbandry</a><Br/><a href='1049.html'>One way vacations</a><Br/><a href='1050.html'>Bath salts and rec</a><Br/><a href='1051.html'>DWI/ DUI loss of v</a><Br/><a href='1052.html'>Mammalian genital </a><Br/><a href='1053.html'>Personal Escort se</a><Br/><a href='1054.html'>STD diagnosis and </a><Br/><a href='1055.html'>Exclude all CAPTCH</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='1044.html'>Involuntary wealth</a><Br/><a href='1043.html'>unlawful terminati</a><Br/><a href='1042.html'>Remote surveillanc</a><Br/><a href='1041.html'>Vehicle repossessi</a><Br/><a href='1040.html'>Phone tracking enr</a><Br/><a href='1039.html'>Jury duty auto enr</a><Br/><a href='1038.html'>IRS/Tax auditing e</a><Br/><a href='1037.html'>STD diagnosis and </a><Br/><a href='1036.html'>just-the-tip of th</a><Br/><a href='1035.html'>Tell me a joke</a></div><div class='nav'><a href='1044.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='1046.html'> >> </a></div><div class='article'>Wikileaks 0day exploit for Windows'
+
+This could possibly be the most important zero day for Microsoft Windows. As well as an exploit for a zero day for any Windows release? How could it go wrong? I mean it’s just… 0day.
+
+This looks like a great one for people who think Microsoft could ever actually be forced to be more open. This could mean a really big update to Windows from Microsoft. But is it a 0day that’s so bad Microsoft had to create a Windows patch for it today?
+
+Let’s look at the details:
+
+This exploit in Visual C++ (CVE-2013-3906, CVE-2013-3902) allows an attacker to force a Windows program to execute malware, such as a keylogger, as well as any unsigned or legitimately signed code, when the program is running in the program’s current user context (the “current” user, also referred to as “your” or “his” context, is the user who executes the Windows program). The Windows program does not need to be running with administrative permissions in order to force it to execute malware. For example, on Windows XP (or a later Windows version), an unsigned, or legitimately signed program can run with the “Run as administrator” option enabled to execute malware as the current user, even if the program does not have elevated permissions. This exploit does not require administrative permissions on the Windows computer, so it is possible for an attacker to execute arbitrary code on a Windows computer simply by invoking a malicious program.
+
+Ok, so the key to Microsoft’s announcement is “in the program’s current user context” – basically it could be any program that’s running that does something that affects the user. It can be one running on another user’s PC. One thing this does mean that Microsoft won’t do is fix “run as admin” on programs that are usually allowed to run as admin. Basically it allows programs to get around the user account security that allows or denies access to a program based on user permissions.
+
+So what can someone run on your machine that’s using this exploit? It’s likely just a keylogger which is a small program that records keystrokes, a password grabbing program or any other malware that could run as your user and could be made to do all sorts of other things. They could even have your whole hard disk image copied and encrypted to another machine. And, of course, there’s likely to be a lot of malware out there that will be built to take advantage of this.
+
+It seems likely there will be some anti-virus products that can protect you against this right away, or at least help detect when something happens. We’ll see if Microsoft will push out an update today or at some future date to mitigate against this. We’ll know more as we go along here.
+
+Here’s what the security firm Secunia says about the vulnerability. If Microsoft has done a patch to block this exploit (or has pushed out a tool), that info will also be here. I know Microsoft sometimes pushes out anti-exploit tools to deal with a problem right away, and this would be a good one for them to push out right now.
+
+Updated with comments about the “Exploit Protected” flag added to the comments and some more links.
+
+This story is still developing. I’ll update it as I learn more.
+
+Additional info: Secunia says its Secunia PSI, Secunia Personal Software Inspector, automatically detects and exploits most known vulnerabilities for you. This can be automatically triggered from the Secunia Personal Software Inspector (PSI) that comes with the Secunia PSI Plus program, or it can be manually triggered from Secunia PSI. It includes patches and tools to help you fix vulnerabilities that you may have missed.
+
+Thanks to Neowin for finding this article.
+
+Share this: Twitter
+
+Reddit
+
+Facebook
+
+Email
+
+Print
+
+Like this: Like Loading... Related</div></body></html><!-- 2022-06-12 21:02:22 

@@ -1,0 +1,183 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='1057.html'>Pandemic Mitigatio</a><Br/><a href='1058.html'>Medicare Advantage</a><Br/><a href='1059.html'>Prenuptial Escape </a><Br/><a href='1060.html'>MS Scarlett Feaver</a><Br/><a href='1061.html'>Internships, and I</a><Br/><a href='1062.html'>Student buy Essay </a><Br/><a href='1063.html'>DOT Prison Currenc</a><Br/><a href='1064.html'>Yakuza Pedicure/Ma</a><Br/><a href='1065.html'>Bleacher Graduate </a><Br/><a href='1066.html'>HIPPA PCI Complian</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='1055.html'>Exclude all CAPTCH</a><Br/><a href='1054.html'>STD diagnosis and </a><Br/><a href='1053.html'>Personal Escort se</a><Br/><a href='1052.html'>Mammalian genital </a><Br/><a href='1051.html'>DWI/ DUI loss of v</a><Br/><a href='1050.html'>Bath salts and rec</a><Br/><a href='1049.html'>One way vacations</a><Br/><a href='1048.html'>Reptile husbandry</a><Br/><a href='1047.html'>Darkweb entrapment</a><Br/><a href='1046.html'>Trade-war shortcut</a></div><div class='nav'><a href='1055.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='1057.html'> >> </a></div><div class='article'>Pro+ Categories in the search string.
+
+For example, let’s search for all plugins in the Dolphin Emulator and Dolphin-Tools repositories with the category tag “libretro” – this would search for libretro packages – it will look something like this:
+
+Code:
+
+$ apt list libretro* --all-sections
+
+–filter output: Allows for fine-grained control over packages, you could pass in a regular expression to filter out packages that have “libretro” anywhere in the description
+
+–show-origin allows you to see the exact origin of each package
+
+–show-rdepends: Shows a list of package dependency info for every package
+
+Example output:
+
+This shows the origin, the package name, description, and more for every installed package. More about using the -S flag below.
+
+There are more useful filters you can use as well, check out the man pages to see the full list of options available.
+
+List versions of a package:
+
+If you want to find out what version of a package is installed, you can use the following command:
+
+$ apt-cache show <package> | grep Version
+
+Example output:
+
+Code:
+
+$ apt-cache show gcc-6 | grep Version
+
+This command searches apt’s cache and shows the latest available version of the “gcc-6” package
+
+Example output:
+
+Code:
+
+$ apt-cache show vlc | grep Version
+
+This command searches apt’s cache and shows the latest available version of the “vlc” package
+
+See details about a package:
+
+This command will dump a ton of information about a package. The “package” variable here represents any installed package.
+
+This is a good command to run if you’re trying to find the official/standard package for a certain tool, or if you need to find out what version of a package to install in order to match with another distribution.
+
+See what packages are available in which repo:
+
+This command can be very useful to see exactly what versions of a package are available for a given repository.
+
+There are certain repositories that you might want to check out and see what versions of packages they have available. This command will take in the repo name and give a full list of packages available for that repo, even broken/non-installed ones.
+
+It uses aptitude (which you must have installed for this to work) so if you get an error about aptitude you’ll need to install aptitude first:
+
+$ apt install aptitude
+
+Example output:
+
+Code:
+
+$ apt list repos | grep unstable
+
+This command will list all the repositories, showing their origin as well as available packages (if any).
+
+Example output:
+
+Code:
+
+$ apt list repos | grep unstable
+
+You can grep through the output to locate a specific repository of your choice.
+
+Example output:
+
+Code:
+
+$ apt list repos | grep -i '(backports|testing)'
+
+You can grep through the output to locate a specific repository of your choice.
+
+Example output:
+
+Code:
+
+$ apt list repos | grep -i '(backports|testing)'
+
+You can grep through the output to locate a specific repository of your choice.
+
+Find dependencies of a package
+
+To find a package’s dependencies, you can use apt-cache, but first you have to use apt-get to install the apt-cache tool:
+
+$ apt-get install apt-cache
+
+Once you have apt-cache installed, you can run this command to see what dependencies a package has:
+
+$ apt-cache depends <package>
+
+Example output:
+
+Code:
+
+$ apt-cache depends vlc
+
+Example output:
+
+Code:
+
+Depends: libc6 (>= 2.2.5), libfreetype6 (>= 2.2.1), libjpeg62 (>= 6b1), libncurses5 (>= 5.6+20070828), libstdc++6 (>= 6), zlib1g (>= 1:1.2.3.3)
+
+Example output:
+
+Code:
+
+$ apt-cache depends vlc | grep gtk
+
+Example output:
+
+Code:
+
+Depends: gtk2 (>= 2.10), gtk3 (>= 3.16), vlc-nox (= 2.1.5-0ubuntu18), libc6 (>= 2.2.5), libfreetype6 (>= 2.2.1), libjpeg62 (>= 6b1), libncurses5 (>= 5.6+20070828), libstdc++6 (>= 6), zlib1g (>= 1:1.2.3.3), gstreamer1.0-plugins-base (>= 1.6), gstreamer1.0-plugins-base-apps (>= 1.8), gstreamer1.0-libav (>= 1.7.0), vlc (>= 2.1.5)
+
+Example output:
+
+Code:
+
+$ apt-cache depends vlc | grep gstreamer | grep gtk
+
+Example output:
+
+Code:
+
+Depends: gtk2 (>= 2.10), gtk3 (>= 3.16), vlc-nox (= 2.1.5-0ubuntu18), libc6 (>= 2.2.5), libfreetype6 (>= 2.2.1), libjpeg62 (>= 6b1), libncurses5 (>= 5.6+20070828), libstdc++6 (>= 6), zlib1g (>= 1:1.2.3.3), gstreamer1.0-libav (>= 1.7.0), vlc (>= 2.1.5)
+
+This is a pretty useful command to know, you can use it to see what packages you need to install before installing a package.
+
+Show a package’s “Provides” and “Conflicts” information:
+
+This command lets you see what packages are provided/required by a package, so you can know which other packages you need to install or remove before installing this package.
+
+You can also find out what other packages will conflict with your package.
+
+Example output:
+
+Code:
+
+$ apt-cache show vlc
+
+Example output:
+
+Code:
+
+Package: vlc
+
+Priority: optional
+
+Section: universe/sound
+
+Installed-Size: 2,9M
+
+Maintainer: David Bala <dba@ubuntu.com>
+
+Original-Maintainer: Debian Multimedia Maintainers
+
+Architecture: all
+
+Source: vlc
+
+Version: 2.2.4+snapshotsr39597+really2.2.4+r30876-0ubuntu1~ubuntu14.04.1
+
+Replaces: libva-vaapi-driver (<< 1.1.4-1ubuntu1)
+
+Breaks: libva-x11-1 (<< 1.1.4-1ubuntu1)
+
+Provides: libc6
+
+Conflicts: libva-x11-1 (<< 1.1.4-1ubuntu1), libva-x11-1:i386 (<< 1.1.4-1ubuntu1), libva-x11-1:i386 (<< 1.1.4-1ubuntu1)
+
+Description: VideoLAN client - the ultimate media player
+
+VLC is a highly portable multimedia player and framework that</div></body></html><!-- 2022-06-12 21:02:23 
