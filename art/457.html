@@ -1,0 +1,47 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='458.html'>Concrete may have </a><Br/><a href='459.html'>Ships were lost du</a><Br/><a href='460.html'>Joe's Bar and Gril</a><Br/><a href='461.html'>Ships were lost du</a><Br/><a href='462.html'>But first, you and</a><Br/><a href='464.html'>Chris!  I told you</a><Br/><a href='465.html'>Release me. Now. O</a><Br/><a href='466.html'>Concrete may have </a><Br/><a href='467.html'>Ships were lost du</a><Br/><a href='468.html'>Joe's Bar and Gril</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='456.html'>Chapter 1.  Once </a><Br/><a href='455.html'>Chris!  I told you</a><Br/><a href='454.html'>But first, you and</a><Br/><a href='453.html'>Tiffany, you reall</a><Br/><a href='452.html'>Joe's Bar and Gril</a><Br/><a href='450.html'>Release me. Now. O</a><Br/><a href='448.html'>Quietly, Quiggly s</a><Br/><a href='447.html'>Quitetly, Quiggly </a><Br/><a href='445.html'>Chapter 1.  Our st</a><Br/><a href='444.html'>That turned dark q</a></div><div class='nav'><a href='456.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='458.html'> >> </a></div><div class='article'>Stop dancing like that.  it looks like 
+A
+<BR />
+<BR />
+J
+
+I'm trying to do this using regex that will add a line break after every occurrence of  <BR />.
+So far, I tried 
+$new_str = preg_replace('/<BR\s*(\/?)>/', '<BR />\n', $str);
+
+but that is not working. 
+
+A:
+
+The problem is that your regex only allows one or zero  space before BR. In the second match, the group is empty.  
+Try this:
+$new_str = preg_replace('/\<BR\s*((\/?)>)/', '\n', $str);
+
+This regex will not find anything if the match is "not" inside of a tag, so I also replaced it with \n.
+
+A:
+
+i do not think there is a way to do it with simple regex, because you are trying to detect <br /> inside tags, which is not valid html.
+$str = 'I am <b>some random text</b> and a <br />.<br /> and <br /> again!';
+
+$newStr = preg_replace('/<br \/>/', ' <br /> ', $str);
+
+echo $newStr;
+
+// I am <b>some random text</b> and a <br />.<br /> and <br /> again!
+
+A:
+
+preg_replace('/<br ?\/?\>/','<br />',$string);
+
+That should do it for you. As @hwnd suggested, I've added in the ? to make it optional.  \/\> seems the right way to indicate a BR in a tag, but I wanted to make sure to cover more cases (perhaps in the future you'll want to leave off the space and have something else, like: 
+<b>This<br />is<br />some text.</b>
+
+For now, here's a full set of cases to cover:
+preg_replace('/<br\s*[ >]/','<br />',$string);
+preg_replace('/<br\>/','<br />',$string);
+preg_replace('/<br.*[ >]/','<br />',$string);
+preg_replace('/<br />(.*)/','<br />',$string);
+preg_replace('/<br\s*([ >])?[ ]?.*?\/?\>/i','$1',$string);
+
+And an example of the regex working on the html:
+<br><b>this is text before</b><br><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><</div></body></html><!-- 2022-06-12 21:01:35 
