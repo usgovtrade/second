@@ -1,0 +1,85 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='1682.html'>Always Be Moving</a><Br/><a href='1683.html'>All Hell Breaks Lo</a><Br/><a href='1684.html'>Actions vs. Accusa</a><Br/><a href='1685.html'>About to Have a Ru</a><Br/><a href='1686.html'>A Very Simple Plan</a><Br/><a href='1687.html'>A Thoughtful Gestu</a><Br/><a href='1688.html'>A Snake in the Gra</a><Br/><a href='1689.html'>A Smile, Velvet Gl</a><Br/><a href='1690.html'>A Slippery Little </a><Br/><a href='1691.html'>A Sinking Ship</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='1680.html'>An Emerging Plan</a><Br/><a href='1679.html'>An Evil Thought</a><Br/><a href='1678.html'>Anger, Tears and C</a><Br/><a href='1677.html'>Anger, Threats, Te</a><Br/><a href='1676.html'>Anything Could Hap</a><Br/><a href='1675.html'>Appearances are De</a><Br/><a href='1674.html'>Apple in the Garde</a><Br/><a href='1673.html'>Are We Gonna Live </a><Br/><a href='1672.html'>Are You Feeling Lu</a><Br/><a href='1671.html'>Aren’t Brochachos </a></div><div class='nav'><a href='1680.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='1682.html'> >> </a></div><div class='article'>Amazon Redux app by Jeffery Way](https://medium.com/product-management/aws-algorithms-as-a-service-for-product-management-b8e20a13cc8e), a blog post on AWS product management tools.
+
+### How's the internals work?
+* C++11, C++14, and C++17: A single backend for all targets.
+* C99: An optional external target, built using [ninja](http://martine.github.io/ninja/).
+* MSVC2015, GCC7, and Clang6: Builds via external targets.
+* Win64-only: No shared-object overhead.
+* Windows 10 MinWin: Only supports Windows 10, MinWin build tooling, and VS2017.
+* Clang 5.0 and C++17: All builds can be cross-compiled, so we make no attempt at cross-build compatibility.
+* C++17: Supports the following language features:
+    * Nested namespaces;
+    * [[deprecated]] attribute;
+    * Unrestricted unions;
+    * Contract programming features, including [[override_expectation]] and [[requires_same_return_value]] macros;
+    * `[[fallthrough]]` attribute;
+    * [[nodiscard]] attribute.
+    * More...
+* C++14: Supports:
+    * `auto` type deduction;
+    * Generic lambdas;
+    * `[[no_unique_address]]` attribute;
+    * Unrestricted unions;
+    * Initializer lists, which can be used to implement `std::initializer_list<T> xyz{1, 2};` and `constexpr array<T, N> xyz{1, 2, 3};`;
+    * [[nodiscard]] attribute.
+* C++11: Partial support for Lambdas, and full support for `std::array<T, N>` and `std::vector<T, A>`
+* C99: Some features are partial or not available at all.
+    * Initialization lists, which can be used to implement `float xyz = 3.0f;`;
+    * `inline` functions, which are not supported because of code size concerns;
+    * `const`/`volatile` objects, which are not supported;
+    * Non-standard floating-point types, e.g. `std::complex<float>`, which are not supported;
+    * `bool` conversion operators, which is not implemented because of performance concerns;
+    * Other platform-specific features, e.g.
+        * [[no_exceptions]] attribute;
+        * `uintptr_t` primitive types, which are mapped to `intptr_t` in most backends;
+        * `__restrict` pointers;
+        * `_Alignas` and `_Alignof` qualifiers;
+        * Unaligned memory access support, e.g. `std::u16string`;
+        * The `_Generic` feature that uses type traits to enable overloads for each type;
+    * Features available in C99:
+        * `long long int`;
+        * `_Static_assert` macro;
+        * `typedef` alias;
+        * `__func__` and `__FUNCTION__` macros;
+        * Some inline functions are available in C11.
+
+In addition to these supported features, users have access to [[`std::conditional`]].
+
+## Features and design choices
+* **Targeting performance from the beginning.** We are already aware of and have a good idea of what it will take to make a performant programming language. The choice to build a fast interpreter is a deliberate decision.
+* **Stable, single-language design.** Language features do not need to be retrofitted into the existing C++ standard. Instead, we built a fresh ground-up implementation from the ground up.
+* **Standard library support.** This lets us design and implement a highly consistent and predictable object model that makes use of the most performant native APIs for each platform. For example, a simple [[`std::map<std::string, float>`]] structure will map to a C++ `std::map<char const*, float>`. No complicated abstraction over data structures.
+* **Multi-threaded concurrency:** We deliberately avoided complex lock-based concurrency primitives and rely on the underlying threading model of C++ to support concurrent programming. This approach also simplifies the memory model and has the potential to be a huge performance boost. In practice, C++ already has a rich set of threading primitives.
+* **Memory safety, but without the bloat:** This language design makes it easy to generate code that safely captures state without incurring unnecessary garbage collection.
+
+## How is this different from C++17?
+* **No `template` keyword.** Users can define their own operators, etc. without requiring the `template` keyword and allowing for efficient performance even when the compiler doesn't know all the "implements" involved.
+* **Full ABI compatibility.** ABI compatibility was an important goal. This allows users to build libraries for one platform and then statically link to them on other platforms, including other platforms with other C++ compilers.
+* **No stdlib.** This is not C++11, so we won't support the "standard library" concept, which is a source of bloat. Users can build their own standard libraries.
+* **No STL.** We provide no support for standard library containers, iterators, algorithms, strings, and more, which is the source of many of the bloatiest features in C++. Users can build their own std::vector, std::string, and other containers.
+
+## Which feature should I learn first?
+One nice thing about the V8 internals is that we can share design ideas between JavaScript, Java, and V8 without worrying about the specific details of each language or platform. So, you should pick a feature to learn that is familiar to you. For example, if you're most comfortable with C++ lists, start there. Otherwise, learn about `std::list` and `std::vector` first.
+
+## See Also
+See [Wikipedia: Programming Language Interpreter](https://en.wikipedia.org/wiki/Programming_language_interpreter), [Implementing Interpreters](http://implementinginterpreters.com/contents.html) (PDF), and the [Implementing a Lisp Interpreter](http://compilers.iecc.com/comparch/article/92-01-004) (PDF) by Richard Kelsey.
+
+See [The C++ language: A tutorial](http://eel.is/c++draft/cpp.html) (draft C++14 standard) for an intro to C++.
+
+## Trivia
+The C++ language was introduced in 1995 as an attempt to address deficiencies in C, a language used to write native code on many operating systems, as well as applications such as web browsers, video games, compilers, operating systems, and so on. C's goal was to be a programming language that would be easy to read and write for beginners, while providing a superset of the facilities required for more complex software applications. What is this C++ programming language with which C competes? It is Common Lisp!
+
+References:
+* http://en.wikipedia.org/wiki/A_Tale_of_Two_Languages
+* http://blog.regehr.org/archives/319
+* [C++98 Revision History](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2002/n1392.htm)
+* [C++11 Revision History](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2011/n3290.htm)
+* http://www.drdobbs.com/cpp/how-does-the-new-c-standard-compare-to-java/240146845
+* http://en.wikipedia.org/wiki/Java_(programming_language)
+* http://en.wikipedia.org/wiki/Implementation#Pure_versus_impure_languages
+* http://en.wikipedia.org/wiki/Pure_virtual_call
+* [Comparing JavaScript with C# and Java (2012)](http://www.infoq.com/interviews/leeyang-comparing-javascript-csharp-java/)
+* [C++1x: What's Your Nearest Object? (2013)](http://www.informit.com/articles/article.aspx?p=2355454&seqNum=8)
+* [The Power of Lisp (2014)](https://medium.com/@natecull/the-power-of-lisp-c6fce8e4bdd8)
+* [How's the internals work?](http://programmers.stackexchange.com/questions/232378/hows-the-internals-work)
+* [What are some great examples of modern languages that share the same design principles?](http://</div></body></html><!-- 2022-06-12 21:03:20 
