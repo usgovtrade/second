@@ -1,0 +1,143 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2258.html'>AIEddie.com</a><Br/><a href='2259.html'>He is now in his s</a><Br/><a href='2260.html'>And what can I Say</a><Br/><a href='2261.html'>I remember enjoyin</a><Br/><a href='2262.html'>So let's begin thi</a><Br/><a href='2263.html'>It will be about t</a><Br/><a href='2264.html'>So that’s sort of </a><Br/><a href='2265.html'>Many of the apocal</a><Br/><a href='2266.html'>We’ve got a lot of</a><Br/><a href='2267.html'>We’ve looked into </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2256.html'>I'm not very good </a><Br/><a href='2255.html'>There are a lot of</a><Br/><a href='2254.html'>we’ve gotten valua</a><Br/><a href='2253.html'>This tool was crea</a><Br/><a href='2252.html'>Gifts for the busy</a><Br/><a href='2251.html'>I plan to make</a><Br/><a href='2250.html'>Kindergarten Camp</a><Br/><a href='2249.html'>Vigilante Internsh</a><Br/><a href='2248.html'>A nice fantasy wit</a><Br/><a href='2247.html'>Breadth-First Sear</a></div><div class='nav'><a href='2256.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2258.html'> >> </a></div><div class='article'>aieddy.com/blog/2007/03/17/a-more-polish-sqlite-query/
+======
+mbrubeck
+It would be nice to see benchmarks. The author is comparing SQLite to "other
+SQL databases" (PostgreSQL and MySQL) but does not provide any comparisons
+with SQLite's own non-relational DBMS.
+
+------
+jbert
+I'm wondering why SQLite doesn't use SQL's GROUP BY, rather than the string
+join based method.
+
+From a quick look at sqlite_master, you can see why.
+
+For example, to select all unique customer rows:
+
+select customer_id, count(*) from customers group by customer_id;
+
+(note this does allow duplicate counts for a given customer, but I'm guessing
+that's the most important part of the 'group by')
+
+A quick comparison shows that there are (from my limited sampling) over 20
+unique customer_id values in the system.
+
+For some smaller databases I might expect that a string join based query might
+be faster (probably only by a few percents, but 20% is significant when
+concerned about database tuning).
+
+However, as tables grow, it will probably be more efficient to use normal
+aggregate functions (e.g. aggregate on a group of sales transactions).
+
+How does one use a query like this with sqlite? I would expect it to be very
+slow.
+
+~~~
+tlrobinson
+SQLite already implements DISTINCT, so the only real benefit of this function
+is to group by on a column of another table, which is a very specialized case.
+
+~~~
+stcredzero
+DISTINCT was added in SQLite3 3.5.0
+
+------
+thomaspaine
+I'd love to hear the benchmarks for SQLite's query planner. I've read that it
+is really fast and that it out performs other SQL databases at querying. The
+query planner is the one part that makes writing an object relational mapper
+for SQLite like ActiveRecord in Rails possible (it uses SQLite's query planner
+to generate a query plan), so if you're writing an ORM for SQLite or any other
+relational database you should be extremely interested in this topic.
+
+<http://www.sqlite.org/queryplanner.html>
+
+~~~
+thomaspaine
+If the query planner is really so great, why do you think you need SQLite's
+query planner for ActiveRecord? I think the reason for that is because of
+SQLite's query planner.
+
+------
+Tichy
+How much space does it need for the "normal" (relational) tables?
+
+~~~
+jbert
+It's quite trivial to construct a database with just simple rows (i.e. just a
+file as large as the data), so for smallish data sets (say 100k rows), you'd
+use something like 5MB.
+
+That file can grow quite big though, for example a 1GB sqlite database has ~2
+billion rows.
+
+<http://www.sqlite.org/fileformat2.html#rows>
+
+------
+lacker
+Postgres' query planner is really fast, too.
+
+------
+Hexstream
+Doesn't MySQL use a similar mechanism?
+
+~~~
+babo
+That's the general idea. I've heard some time ago that modern Linux kernel
+also has an improved query plan.
+
+------
+TweedHeads
+"A more modern SQL language, with a complete query optimizer that works
+correctly and efficiently, with a straightforward language syntax."
+
+More like "SQLite needs a bit of a makeover, but is still quite a nice piece
+of software"
+
+------
+TweedHeads
+"Modern" SQL
+
+It was created in 1991.
+
+What a surprise, it didn't change much since then.
+
+~~~
+Zak
+This is a bit harsh. It doesn't change much in large part because it has a
+very fast execution engine. A common complaint about other RDBMS is that their
+query engines aren't that good. Maybe I'm not familiar with others' complaints,
+but I find SQLite's pretty impressive in that regard.
+
+~~~
+TweedHeads
+The syntax is too verbose for my taste. Why do they have tables and columns?
+It should be much easier to express what you want without all that nonsense.
+
+I do agree that SQLite is very fast but it isn't really much faster than
+MySQL, Postgres, Oracle or SQL Server.
+
+But they don't care about the complaints so the best thing to do is to tell
+them to change the syntax.
+
+~~~
+maximilian
+I like SQLite, I think it is a great programmig tool because it has an SQL
+interface with which to query databases. The problem is you are limited in the
+size of the database you can use with it. If you were limited to 2 gigs, then
+it would be great. but when you can have 20 gigs, then why use it? I tried and
+couldn't come up with a good answer.
+
+With that said, the syntax isn't so bad. Its actually a very easy to learn and
+use query interface. I personally don't like it so much because I don't like
+that it is a relational database.
+
+~~~
+babo
+SQLite's relational interface is not its main value. Its most valuable feature
+is that it implements a SQL-92 compliant database engine and the engine
+actually works like that. This allows developing new modules and extensions on
+the database backend without loosing support for SQL92. The fact that it is a
+relational interface is just a side-effect.
+
+</div></body></html><!-- 2022-06-12 21:04:13 

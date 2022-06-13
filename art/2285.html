@@ -1,0 +1,51 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2286.html'>Vegan-based Diet b</a><Br/><a href='2287.html'>mailbate.com</a><Br/><a href='2288.html'>Butte, MT PlugShar</a><Br/><a href='2289.html'>Butte, MT PlugShar</a><Br/><a href='2290.html'>Two for the Price </a><Br/><a href='2291.html'>Mutiny</a><Br/><a href='2292.html'>Awkward</a><Br/><a href='2293.html'>I Promise...</a><Br/><a href='2294.html'>Worst Case Scenari</a><Br/><a href='2295.html'>aisnub.com</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2284.html'>When you want to l</a><Br/><a href='2283.html'>The sound loops in</a><Br/><a href='2282.html'>And of course inte</a><Br/><a href='2281.html'>And, as I know per</a><Br/><a href='2280.html'>My tongue makes no</a><Br/><a href='2279.html'>We’re glad to see </a><Br/><a href='2278.html'>But how did it hap</a><Br/><a href='2277.html'>all of a sudden an</a><Br/><a href='2276.html'>The purpose of pra</a><Br/><a href='2275.html'>Performing a skill</a></div><div class='nav'><a href='2284.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2286.html'> >> </a></div><div class='article'>As a bonus:
+In a recent paper, the following has been shown:
+
+The first inequality  always holds true. However, the second one in general does not hold true. (E.g. consider the $d_1=d_2=d$ case, and let $n=2$.)
+
+A:
+
+The equality case for the triangular inequality for any norm $||\cdot||$ on $\mathbb{R}^n$ is only attained when the vectors are mutually collinear: $\|a-b\|=\|a-c\|+\|c-b\|$ holds if and only if $c=a-b$.
+
+A:
+
+The triangle inequality for the inner product is true in general.
+It is easy to see this, since
+$$ \langle x,y \rangle \le \| x \| \| y \| = | \langle x,y \rangle | $$
+Let $\langle x,y \rangle = a+bi$ then 
+$$ |\langle x,y \rangle | \le \sqrt{ a^2 + b^2 } \, \| x \| \, \| y \| = \| x \| \| y \| $$
+
+From my perspective, the following is very natural: Let $v$ be the unit vector along the hypothenus of the triangle.
+Then for any $x$ and $y$, the triangle inequality 
+$$ \| x + y \| \le \| x \| + \| y \| $$
+holds if $x$ and $y$ are parallel to $v$ because this becomes a trivial equality. This is the same reason why vectors of different norm along a line do not change distance.
+So, in some sense, one can interpret the triangle inequality as the Pythagorean theorem, but for parallel vectors in $R^3$.
+
+But the most natural triangle inequality for the Euclidean space is true. 
+A natural triangle inequality is when the triangle is similar to an isosceles, for example in your case. In this case we have a constant length  of each side of the triangle, so this is not obvious for me.
+
+And since we cannot use Pythagorean theorem, the only way for this triangle inequality to hold is for the sides to be equal. So this is equivalent to a triangle inequality, but with an equality instead.
+
+The proof of Pythagorean theorem for an arbitrary triangle inequality is not hard (see my answer here), and I think that it is intuitively obvious to find such a case.
+
+As a small note, I think it is interesting that the equality condition is true for all inner product in any dimension, but for some norms in higher dimensions.
+
+The equality condition for a triangle inequality is only attained when all vectors are collinear, but for $n>2$, this is only true for the Euclidean norm, that is the usual $\mathbb{R}^n$.
+
+In fact, the triangle inequality is the most natural one for the Euclidean space, and it holds in all dimensions in any inner product space, and thus the above equality is true for all norms in higher dimensions.
+
+As a bonus:
+In a recent paper, the following has been shown:
+The first inequality  always holds true. However, the second one in general does not hold true. (E.g. consider the $d_1=d_2=d$ case, and let $n=2$.)
+
+So for the triangle inequality I think that the statement is wrong, at least for general inner products and norms.
+But it is true for all these cases.
+If the statement was true, the triangle inequality for $L^2$-norms over the simplex would be true, and so would the Pythagorean theorem, which is false. So we conclude that the statement is false.
+
+A:
+
+The triangle inequality is a consequence of two properties, one is that $( \forall a \in A)$ $( \forall b \in B)$ $( \forall c \in C)$ $(a \leq b+c )$, the other is that $(a \leq b)$ and $(a \leq c) \Rightarrow (a \leq b+c)$.  Your equality for the first one implies that you have a vector $v$ such that the segment $Av$ is a geodesic on the graph of $v$, which immediately makes it obvious that the two properties hold true.  For the second, first let $v$ be a unit vector orthogonal to $Av$ and let $u$ be any vector.  Then the above argument shows that there is another unit vector $w$ such that $(Av+u) \bot (Aw)$.  Taking this a third unit vector, we can conclude that $Av+u = A(v+u)$. Taking it a fourth unit vector, we can see that $Av+u = Aw$, whence $(Av+u) \bot (Aw)$. 
+
+The equality for the triangle inequality holds if and only if the triangles are either $\Delta AAC$ or $\Delta BAB$. It's probably easier to start with either of these and see that the Pythagorean theorem holds. 
+
+</div></body></html><!-- 2022-06-12 21:04:15 

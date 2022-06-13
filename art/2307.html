@@ -1,0 +1,212 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2308.html'>Hungry for a Win</a><Br/><a href='2309.html'>Identify and Credi</a><Br/><a href='2310.html'>Our Time to Shine</a><Br/><a href='2311.html'>Like diamond rings</a><Br/><a href='2312.html'>Damage Control</a><Br/><a href='2313.html'>on their next atta</a><Br/><a href='2314.html'>A simple way of de</a><Br/><a href='2315.html'>If your character </a><Br/><a href='2316.html'>it was his idea to</a><Br/><a href='2317.html'>Fear of the Unknow</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2306.html'>The Past Will Eat </a><Br/><a href='2305.html'>Just Go For It</a><Br/><a href='2304.html'>One of Us is Going</a><Br/><a href='2303.html'>Houdini Magic</a><Br/><a href='2302.html'>A Snake in the Gra</a><Br/><a href='2301.html'>We Hate Our Tribe</a><Br/><a href='2300.html'>We've been robbed.</a><Br/><a href='2299.html'>Like a neon dream,</a><Br/><a href='2298.html'>They Both Went Ban</a><Br/><a href='2297.html'>My Kisses Are Very</a></div><div class='nav'><a href='2306.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2308.html'> >> </a></div><div class='article'>Breadth-First Search Algorithm
+
+I'm trying to create a Breadth-first Search algorithm using stacks. This is my attempt:
+public void BreadthFirstSearch(GraphNodes graph, int start, int finish, Stack<Integer> pathList) {
+    Stack<Integer> currentPath = new Stack<Integer>();
+    pathList.push(start);
+
+    for(int i = start; i < finish; i++) {
+        if(graph.hasVertex(i)) {
+            graph.createEdge(i, graph.getAdjacentVertex(i));
+            currentPath.push(i);
+            BreadthFirstSearch(graph, i, finish, currentPath);
+            currentPath.pop();
+        }
+    }
+}
+
+I have debugged it and the only thing the stack contains is the original vertex. I thought maybe I am pushing the correct numbers to the stack and maybe the recursion is creating a problem so I added a System.out.println statement in the stack pop:
+public int pop() {
+    int popped = stack[top-1];
+    stack[top-1] = 0;
+    top--;
+    return popped;
+}
+
+Now this is what it prints out, it is printing the index of the original vertex, not the next one in the path:
+0
+2
+0
+1
+0
+3
+0
+4
+0
+5
+0
+6
+0
+
+Am I making a logical mistake? I can't find any problems with my logic. 
+Edit: Here is my GraphNodes class:
+public class GraphNodes {
+
+    private Map<Integer, Integer> adjacencyMap = new HashMap<Integer, Integer>();
+
+    public void createEdge(int v, int w) {
+        adjacencyMap.put(v, w);
+    }
+
+    public boolean hasVertex(int v) {
+        return adjacencyMap.containsKey(v);
+    }
+
+    public int getAdjacentVertex(int v) {
+        return adjacencyMap.get(v);
+    }
+
+    public int getTotalNodes() {
+        return adjacencyMap.size();
+    }
+}
+
+Here is my Graph class:
+public class Graph {
+
+    private int nodes;
+
+    public Graph(int nodes) {
+        this.nodes = nodes;
+    }
+
+    public GraphNodes getAdjacentVertex(int vertex) {
+        return getAdjacentVertex(vertex, nodes);
+    }
+
+    public int getAdjacentVertex(int vertex, int depth) {
+        if(depth >= nodes) return 0;
+        return (getAdjacentVertex(vertex, depth+1));
+    }
+
+    public int getTotalVertices() {
+        return (getTotalNodes());
+    }
+
+    public GraphNodes getAdjacentVertex(int vertex) {
+        return (getAdjacentVertex(vertex, nodes));
+    }
+
+    public int getTotalNodes() {
+        return getTotalVertices();
+    }
+
+    public boolean hasVertex(int vertex) {
+        return (getAdjacentVertex(vertex, 0) != 0);
+    }
+}
+
+A:
+
+The main problem is that your graph is not being built correctly. You are pushing into a local variable (currentPath), but this is not the same instance as in the first call of BreadthFirstSearch(graph, 0, 5, stack), hence the "empty" stack when pop is invoked. So instead, you should be pushing into a field of the containing class:
+public void BreadthFirstSearch(GraphNodes graph, int start, int finish, Stack<Integer> pathList) {
+    // ...
+    pathList.push(start);
+
+    for(int i = start; i < finish; i++) {
+        // ...
+        if(graph.hasVertex(i)) {
+            graph.createEdge(i, graph.getAdjacentVertex(i));
+            // This pushes into the containing class field.
+            this.currentPath.push(i);
+            BreadthFirstSearch(graph, i, finish, this.currentPath);
+            // This pop into this.currentPath
+            this.currentPath.pop();
+        }
+    }
+}
+
+and of course, at the end, the callers must also pop from their stacks:
+public void search(GraphNodes graph) {
+    // Create a new stack (with startNode as the first value).
+    Stack<Integer> pathList = new Stack<Integer>(graph.getTotalNodes());
+    this.BreadthFirstSearch(graph, 0, graph.getTotalNodes(), pathList);
+    // Output the result.
+    for (int vertex : pathList) {
+        System.out.println(vertex);
+    }
+    System.out.println(pathList);
+}
+
+Another bug is that your graph implementation is incorrect. When you push the end node into the graph, you get a stack overflow. For example, if you push 8 nodes, you get StackOverflowError at depth 3 (the push is 6 times, not 5).
+
+I wrote a short program to test if the search algorithm is correct, using some smallish test graphs:
+import java.util.*;
+
+public class Test {
+    public static void main(String[] args) {
+        Graph g = new Graph(15);
+        int nodes = 5;
+        Node v1 = new Node(1);
+        Node v2 = new Node(2);
+        Node v3 = new Node(3);
+        Node v4 = new Node(4);
+        Node v5 = new Node(5);
+        g.createEdge(v1, v2);
+        g.createEdge(v2, v3);
+        g.createEdge(v2, v4);
+        g.createEdge(v3, v4);
+        g.createEdge(v2, v5);
+        g.createEdge(v5, v1);
+        test(g, nodes);
+        System.out.println();
+        g = new Graph(10);
+        v1 = new Node(1);
+        v2 = new Node(2);
+        v3 = new Node(3);
+        v4 = new Node(4);
+        g.createEdge(v1, v2);
+        g.createEdge(v2, v3);
+        g.createEdge(v2, v4);
+        test(g, 4);
+        System.out.println();
+        g = new Graph(9);
+        v1 = new Node(1);
+        v2 = new Node(2);
+        v3 = new Node(3);
+        g.createEdge(v1, v2);
+        g.createEdge(v2, v3);
+        test(g, 3);
+    }
+
+    public static void test(Graph g, int nodes) {
+        System.out.println("Test node size " + nodes);
+        g.createEdge(0, 1);
+        g.createEdge(1, 2);
+        g.createEdge(2, 3);
+        g.createEdge(3, 4);
+        g.createEdge(4, 5);
+        g.createEdge(5, 0);
+        System.out.println(g);
+
+        List<Integer> stack = new ArrayList<>();
+        g.hasVertex(0);
+        stack.add(0);
+        if (g.hasVertex(0)) {
+            g.getAdjacentVertex(0);
+            g.getAdjacentVertex(0, 0);
+            test(g, stack, 0);
+            stack.remove(stack.size() - 1);
+        } else {
+            test(g, stack);
+            stack.remove(stack.size() - 1);
+        }
+        g.hasVertex(1);
+        stack.add(1);
+        if (g.hasVertex(1)) {
+            g.getAdjacentVertex(1);
+            g.getAdjacentVertex(1, 1);
+            test(g, stack, 1);
+            stack.remove(stack.size() - 1);
+        } else {
+            test(g, stack);
+            stack.remove(stack.size() - 1);
+        }
+        g.hasVertex(2);
+        stack.add(2);
+        if (g.hasVertex(2)) {
+            g.getAdjacentVertex(2);
+            g.getAdjacentVertex(2, 2);
+            test(g, stack, 2);
+            stack.remove(stack.size() - 1);
+</div></body></html><!-- 2022-06-12 21:04:18 

@@ -1,0 +1,248 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2248.html'>A nice fantasy wit</a><Br/><a href='2249.html'>Vigilante Internsh</a><Br/><a href='2250.html'>Kindergarten Camp</a><Br/><a href='2251.html'>I plan to make</a><Br/><a href='2252.html'>Gifts for the busy</a><Br/><a href='2253.html'>This tool was crea</a><Br/><a href='2254.html'>we’ve gotten valua</a><Br/><a href='2255.html'>There are a lot of</a><Br/><a href='2256.html'>I'm not very good </a><Br/><a href='2257.html'>aieddy.com</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2246.html'>Stranded</a><Br/><a href='2245.html'>A Diamond in the R</a><Br/><a href='2244.html'>Skin of My Teeth</a><Br/><a href='2243.html'>Your Job is Recon</a><Br/><a href='2242.html'>A Thoughtful Gestu</a><Br/><a href='2241.html'>If you feel insign</a><Br/><a href='2240.html'>A Line Drawn in Co</a><Br/><a href='2239.html'>Japenese vending m</a><Br/><a href='2238.html'>foxbum.com </a><Br/><a href='2237.html'>We've been robbed.</a></div><div class='nav'><a href='2246.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2248.html'> >> </a></div><div class='article'>Breadth-First Search
+            // ------------------------------------------------------
+            // A Breadth-First search starts at the first node, and proceeds
+            // to traverse all of its immediate neighbors (except itself),
+            // following all arcs. The tree is traversed in left to right order.
+            // This algorithm has time complexity of O(number of nodes) and space
+            // complexity of O(max(width, height)).
+
+            private Queue<BNode> queue = new ArrayDeque<>();
+            private BNode current = root;
+            private Map<BNode, Set<Integer>> neighbors = new HashMap<>();
+
+            public boolean isComplete() {
+                return current == null;
+            }
+
+            private void breadthFirstTraversal(BNode x) {
+                Set<Integer> neighbors = neighbors.get(x);
+                if (neighbors != null) {
+                    neighbors.remove(current);
+                }
+                neighbors.add(current);
+
+                queue.add(x);
+
+                if (x.getLeft() == null) {
+                    current = x;
+                } else {
+                    current = x.getLeft();
+                }
+
+                if (x.getRight() == null) {
+                    current = x;
+                } else {
+                    breadthFirstTraversal(x.getRight());
+                }
+            }
+
+            private void markUnused() {
+                Set<Integer> neighbors = neighbors.get(current);
+                if (neighbors != null && neighbors != new HashSet<Integer>()) {
+                    neighbors.remove(current);
+                }
+            }
+
+            public void complete() {
+                markUnused();
+                current = null;
+            }
+
+            private boolean hasPathTo(BNode x) {
+                // TODO add Breadth First Search for DAG implementation
+                if (x == current) {
+                    return true;
+                }
+
+                // if x has an in-path from current,
+                // return true.
+                if (current.getLeft() != null) {
+                    return hasPathTo(current.getLeft());
+                }
+
+                // if x has an in-path from current,
+                // return true.
+                if (current.getRight() != null) {
+                    return hasPathTo(current.getRight());
+                }
+
+                return false;
+            }
+
+            private void findPathTo(BNode x) {
+                // find the neighbor with the minimum distance from the current node
+                int index = Collections.min(neighbors.values());
+                Set<Integer> neighbors = neighbors.get(current);
+                if (neighbors != null) {
+                    neighbors.remove(current);
+                }
+                neighbors.add(index);
+
+                // get the neighbor node
+                BNode neighbor = neighbors.get(index);
+
+                // traverse the tree to find an edge that leads to the node
+                if (neighbor.getRight() == null) {
+                    neighbor.getRight();
+                } else {
+                    // mark that we've used this node so that we don't traverse it again
+                    neighbors.put(current, new HashSet<Integer>(neighbors.get(neighbor.getRight()).contains(current)));
+                    breadthFirstTraversal(neighbor.getRight());
+                }
+            }
+
+            private void findPathToWithNoUnmarked(BNode x) {
+                int index = Collections.min(neighbors.values());
+                Set<Integer> neighbors = neighbors.get(current);
+                if (neighbors != null) {
+                    neighbors.remove(current);
+                }
+                neighbors.add(index);
+
+                // get the neighbor node
+                BNode neighbor = neighbors.get(index);
+
+                // traverse the tree to find an edge that leads to the node
+                if (neighbor.getRight() == null) {
+                    neighbor.getRight();
+                } else {
+                    // mark that we've used this node so that we don't traverse it again
+                    neighbors.put(current, new HashSet<Integer>(neighbors.get(neighbor.getRight()).contains(current)));
+                    breadthFirstTraversal(neighbor.getRight());
+                }
+            }
+
+            public boolean traverse(BNode x) {
+                // if current node is the goal, return false. Otherwise
+                // begin traversal of left subgraph with the node x.
+                if (x == current) {
+                    return false;
+                }
+
+                // if the node x has a child, follow the edge to it.
+                if (x.getRight() != null) {
+                    return traverse(x.getRight());
+                } else {
+                    return false;
+                }
+            }
+
+            public void finish() {
+                if (current == null) {
+                    // can't run a BFS without starting point, so just mark all nodes as unvisited.
+                    for (BNode n : root.getChildren()) {
+                        markUnused();
+                    }
+                } else {
+                    for (BNode n : root.getChildren()) {
+                        if (n == current) {
+                            // don't mark as visited the root that we started at
+                            // instead find a successor, starting at the root itself
+                            markUnused();
+                            current = n.getLeft();
+                        } else if (n.getRight() != null) {
+                            if (!hasPathTo(n.getRight())) {
+                                markUnused();
+                            }
+                            current = n.getRight();
+                        } else {
+                            if (!hasPathToWithNoUnmarked(n.getLeft())) {
+                                markUnused();
+                            }
+                            current = n.getLeft();
+                        }
+                    }
+                }
+
+                breadthFirstTraversal(root);
+
+                isComplete();
+            }
+
+        }
+
+        public void complete() {
+            System.out.println("Search complete");
+        }
+
+        public void preprocess() {
+            searchBFS(root);
+            System.out.println("Found: " + foundCount);
+        }
+
+        public boolean search(BNode x) {
+            return traverse(x);
+        }
+    }
+
+    private class BiSearchSolver
+        extends AbstractSearchSolver<BiTreeGraph>
+    {
+        private static final long serialVersionUID = -3846173601378894305L;
+        private BTree<BiTreeGraph> tree;
+
+        private BiSearchSolver(BiTreeGraph forest) {
+            this.tree = forest;
+        }
+
+        @Override
+        public void preprocess() {
+            System.out.println("Preprocessing tree:");
+            printTree(tree);
+        }
+
+        @Override
+        public void complete() {
+            System.out.println("Search complete");
+        }
+
+        @Override
+        public void search(BiNode x) {
+            System.out.println("searching " + x);
+            tree.findPathTo(x);
+        }
+    }
+
+    private static void getMinimalTree(BiTreeGraph graph) {
+        if (graph.getRoot() == null) {
+            return;
+        }
+
+        // breadth-first traversal of graph, starting at the root
+        BreadthFirstSearch search = new BreadthFirstSearch();
+        search.preprocess();
+        while (!search.isComplete()) {
+            search.complete();
+        }
+
+        // get minimal spanning tree
+        MinimalTree minimal = new MinimalTree();
+        if (graph.isBipartite()) {
+            minimal.construct(graph);
+        } else {
+            System.out.println("Warning: minimal spanning tree not feasible for this graph.");
+            System.out.println("Unable to get a minimal spanning tree.");
+            return;
+        }
+
+        // traverse in both directions and construct a spanning tree graph
+        BiTreeGraph forest = new BiTreeGraph();
+        for (BiTreeGraph node : minimal.getSortedSubtrees()) {
+            forest.addRoot(node);
+        }
+        forest.invert();
+
+        // construct a BiSearchSolver with the minimal spanning tree
+        new BiSearchSolver(forest);
+    }
+
+    public static void main(String[] args) {
+        // create a tree
+        BiTreeGraph graph = new BiTreeGraph(3);
+        // add nodes
+        graph.addRoot(null);
+        graph.addRoot(new BNode(1, null, null, null));
+        graph.addRoot(new BNode(2, null, null, null));
+        graph.addRoot(new BNode(3, null, null, null));
+        graph.addRoot(new BNode(4, null, null, null));
+        graph.addRoot(new BNode(5, null, null, null</div></body></html><!-- 2022-06-12 21:04:12 
