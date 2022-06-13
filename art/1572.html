@@ -1,0 +1,152 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='1573.html'>Flirting and Frust</a><Br/><a href='1574.html'>Flames and Enduran</a><Br/><a href='1575.html'>Fight for Your Lif</a><Br/><a href='1576.html'>Feels Like a Rolle</a><Br/><a href='1577.html'>Fear of the Unknow</a><Br/><a href='1578.html'>Philosopher of the</a><Br/><a href='1579.html'>Wow, that's a</a><Br/><a href='1580.html'>Who wrote this?</a><Br/><a href='1581.html'>What you're tellin</a><Br/><a href='1582.html'>mailbate.com</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='1571.html'>Free Agent</a><Br/><a href='1570.html'>Friendly Fire</a><Br/><a href='1569.html'>Game of Chicken</a><Br/><a href='1568.html'>Gender Wars...It's</a><Br/><a href='1567.html'>Get to Gettin'</a><Br/><a href='1566.html'>Gettin' to Crunch </a><Br/><a href='1565.html'>Girl Power</a><Br/><a href='1564.html'>Girls Gone Wilder</a><Br/><a href='1563.html'>Glitter in Their E</a><Br/><a href='1562.html'>Gloves Come Off</a></div><div class='nav'><a href='1571.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='1573.html'> >> </a></div><div class='article'>For Cod's Sake',
+  'c_2_e' => 'Wish-granting Tree Spirit',
+  'c_3_a' => 'Bunny Girl',
+  'c_3_d' => 'Lupin',
+  'c_3_e' => 'Poppin',
+  'c_3_g' => 'Pumpkin',
+  'c_3_h' => 'Butterfly',
+  'c_3_i' => 'Sugar Bunny',
+  'c_3_j' => 'Jinx',
+  'c_3_k' => 'Pirate',
+  'c_3_l' => 'Mage',
+  'c_3_m' => 'Crystal Bunny',
+  'c_3_n' => 'Snowman',
+  'c_3_o' => 'Elf',
+  )))):
+  % wf-expansion doesn't support this syntax (FIXME).
+  (function
+   ($var,
+    ...)))))
+
+(test-section "Floats"
+  ;; TODO: this should actually be a list, because it has multiple
+  ;; different components.
+  (test "make-float"
+	(with-output-to-string (lambda ()
+		  (eval '(make-float)))
+	(let ((o (get-output-stream)))
+	  (write-string o)
+	  (finish-output o)
+	  (read (get-output-stream))))
+
+  (test "float"
+	(with-output-to-string (lambda ()
+		  (eval '(float 0.0d0 0.0d0 1.0d0))
+	(let ((o (get-output-stream)))
+	  (write-string o)
+	  (finish-output o)
+	  (read (get-output-stream))))
+
+  (test "string-to-float"
+	(with-output-to-string (lambda ()
+		  (eval '(string-to-float "0.1"))
+	(let ((o (get-output-stream)))
+	  (write-string o)
+	  (finish-output o)
+	  (read (get-output-stream))))
+
+  (test "floats"
+  ;; This needs a different formatting of whitespace, because of the
+ ;; different number of points.
+  ;;
+ ;; NOTE: it would be nice to support a more standard test here,
+ ;; testing the "round to two decimal digits of accuracy" part
+ ;; separately. This is an annoying test to write.
+	(with-output-to-string (lambda ()
+		  (eval '(setq floats '(1.1d0 2.3d0 3.0d0 4.0d0))
+	(let ((o (get-output-stream)))
+	  (write-string o)
+	  (finish-output o)
+	  (read (get-output-stream))))
+
+  ;; this tests the formatting of the comma that is part of the
+ ;; double
+	(with-output-to-string (lambda ()
+		  (eval '(setq floats '(1.1d0, 2.3d0, 3.0d0, 4.0d0))
+	(let ((o (get-output-stream)))
+	  (write-string o)
+	  (finish-output o)
+	  (read (get-output-stream))))))
+
+  ;; and then testing the exact formatting.
+  ;; NOTE: this test requires a little tweaking from version to
+ ;; version because of the way in which double formatting is
+ ;; changed, as noted above. This means that we've got a lot of
+ ;; different (double . (string-to-double . (setq exact ""))
+ ;; ...) which need to be handled properly in this file.
+	(with-output-to-string (lambda ()
+		  (eval '(setq floats '(1.1d0 2.3d0 3.0d0 4.0d0))
+	(let ((o (get-output-stream)))
+	  (write-string o)
+	  (finish-output o)
+	  (read (get-output-stream))))
+	(with-output-to-string (lambda ()
+		  (eval '(setq floats '(1.1d0, 2.3d0, 3.0d0, 4.0d0))
+	(let ((o (get-output-stream)))
+	  (write-string o)
+	  (finish-output o)
+	  (read (get-output-stream)))))))))
+
+;;; test-cases-end
+
+(provide 'tests)
+
+(in-package :cl-user)
+(when (find-package 'tests) (package-initialize))
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (setq *features* (copy-list *features*)))
+
+;;; tests.lisp
+
+(in-package "SYSTEM")
+(eval-when (:compile-toplevel :load-toplevel :execute)
+	(require 'eval))
+
+(eval-when (:compile-toplevel :load-toplevel :execute)
+  (if (ignore-errors (require 'defun))
+    (progn
+	  (defun test-name () "Return the string 'test-name'." ()
+	  nil)
+	  (defun test-section (name &rest tests)
+	    "Return a section of text for use in an Emacs buffer
+	     giving the name and the list of test specifications."
+	(let* ((result "")
+	       (tests (reverse tests))
+	       (name (car tests)))
+	  (when (stringp name)
+	    (cond ((consp name)
+		   (format result "  ;;%s:" name))
+		  ((integerp name)
+		   (format result "  ;;~a:" name)))
+	    ))
+	  (when (> (length tests) 0)
+	    (format result "  %s" (cadr tests)))
+	  (format result "~s" name))))))
+
+(defparameter *tests* nil)
+
+(defvar *test-file* nil)
+(defvar *suite-file* nil)
+
+(defun get-test-file ()
+  "Return the current test file."
+  (cond ((getenv "TEST_ENV_NAME") (getenv "TEST_ENV_NAME")))
+	((getenv "TEST_FILE") (getenv "TEST_FILE")))
+
+(defun get-suite-file ()
+  "Return the current suite file."
+  (cond ((getenv "TESTSUITE_ENV_NAME") (getenv "TESTSUITE_ENV_NAME")))
+	((getenv "TESTSUITE_FILE") (getenv "TESTSUITE_FILE")))
+
+(defun handle-test-name (name)
+  "Convert an Emacs name to the appropriate one."
+  (cond ((string-equal name ""))
+	 ((string-equal name "not-really-a-name")
+	  (format nil "~S+~A~%unknown" name))
+	 (t (cond ((string-equal name "test")
+		   (test-name))
+		  ((string-equal name "test*")
+		   (test-name))
+		  ((string-equal name "test-2")
+		   (</div></body></html><!-- 2022-06-12 21:03:10 

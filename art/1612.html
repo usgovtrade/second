@@ -1,0 +1,56 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='1613.html'>aibanter.com</a><Br/><a href='1614.html'>aisnob.com</a><Br/><a href='1615.html'>aisnub.com</a><Br/><a href='1616.html'>Don't Bite the Han</a><Br/><a href='1617.html'>aiturd.com</a><Br/><a href='1618.html'>aitrocious.com</a><Br/><a href='1619.html'>Blinded by the</a><Br/><a href='1620.html'>Don't be Blinded b</a><Br/><a href='1621.html'>Do or Die</a><Br/><a href='1622.html'>Bad first-date ide</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='1611.html'>Don't Cry Over Spi</a><Br/><a href='1610.html'>Don't Say Anything</a><Br/><a href='1609.html'>Don't You Work for</a><Br/><a href='1608.html'>Double Agent</a><Br/><a href='1607.html'>Double Tribal, Dou</a><Br/><a href='1606.html'>Down and Dirty</a><Br/><a href='1605.html'>A nice fantasy wit</a><Br/><a href='1604.html'>Earthquakes and Sh</a><Br/><a href='1603.html'>Eating and Sleepin</a><Br/><a href='1602.html'>aidont.com</a></div><div class='nav'><a href='1611.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='1613.html'> >> </a></div><div class='article'>botdump.com/en/ip-address/192.168.1.2), it showed that it is using Windows Server 2008 R2 running IIS 7.5.  Can this be done?
+The reason I ask is that I plan to have an EC2 instance running Ubuntu Server 14.04 LTS that will be hosting a site and want to avoid setting up a 2nd web server instance to be "just in case" the existing web server fails for some reason.
+Thanks.
+
+A:
+
+So, I've been trying various solutions for the last couple days.  For me, this approach seems to work OK:
+
+Open the Amazon EC2 console at https://console.aws.amazon.com/.  
+Create a new Amazon Linux instance and select the latest AMI (for example, "ami-e86a6d4e").  Then create an EBS-backed volume with a size of at least 30GB, and attach it.  
+Create a new security group and allow port 80, 81, and 443 (for other traffic not mentioned here) in the inbound rules. 
+When the instance is created, attach your chosen EBS volume. 
+Install the software and configuration needed for the site as normal. 
+Use ssh or some other method to login, cd to /etc/httpd/conf.d, and edit httpd.conf so that it redirects to a file named "welcome" in the same directory.
+Restart apache, of course, and you're good to go!
+
+Note that I don't have any data on the site, so I haven't tested the above. I've done similar things for smaller sites on smaller servers for various reasons, but haven't yet hit the wall on scaling and don't want to stress myself (or a customer site) with one more server to figure out. So this is just based on trial-and-error from my own limited experience, but the above seems to work for me.
+
+A:
+
+As mentioned in the comments, Amazon Linux is one of the supported OSes for EC2.  As such, I'd encourage you to go ahead and use an Amazon Linux AMI.  The easiest way to set up an AMI based on a base EC2 instance is to create the instance, save the AMI ID in your account, and then use that AMI as your basis for the new instance.
+Alternatively, you could do the reverse and create your AMI from an existing instance in your account, then create a new instance based on your AMI and use the AMI's data (including user data, configuration, etc.) as your starting point.  It's entirely possible to have multiple AMIs based on the same instance, or to restore that instance from your AMI.
+
+A:
+
+I came across this article as I also had the need to have a website running on an instance, and wanted to run it on Amazon EC2. I didn't want to use an AMI because I don't know when Amazon will update it and thus change the IP address. I also didn't want to create another instance because I couldn't be 100% certain it would work right away as my current instance is quite new. 
+I have not tried running websites on Amazon EC2 before so I did a little bit of research. I found the following tutorial which solved my issue. I just followed it and now I have a very similar situation to my original question with one difference: I don't need to update an AMI because I can run my own server without using one (since there's nothing stopping me from doing so). So, it seems to work very well for my purposes.
+http://www.tutorialspoint.com/amazon-web-services/amazon-ec2-hosting-website.htm
+And the following links have more information on using EC2:
+http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/quick-start.html
+http://docs.aws.amazon.com/AmazonEC2/latest/UserGuide/ec2-instances-web-sites.html
+
+The only extra information I can think of would be to keep in mind that when you create an EC2 instance, you need to configure it to your own needs. It's similar to a virtual private server, except that all of your data is stored in the cloud rather than in your own instance. If you look at the other answers you'll find that a lot of them suggest how to install an existing AMI so that they can use an existing site. I think it might be simpler for you to just use a normal instance and configure it in the way you want (in my case, it would be to use Wordpress to host a blog).
+
+A:
+
+The AWS FAQ explicitly says that Amazon Linux is not supported in EC2.
+The AMI for RHEL and SLES do not have EIP support.
+On March 10, 2016, Amazon announced it would support EIP for Amazon Linux: https://aws.amazon.com/ec2/pricing/instance-types/
+So, if you are only using it for a single application, you can give it a try. If you just need to host a single website, you can use this EIP on the free micro instances, the most likely to be killed by Amazon since they are free.
+As soon as your application is running with a public DNS, someone will try to attack your server, and your website will go down. Your free credits will be used up even faster. So, for safety, I'd recommend using the free micro instances as a playground for testing a single website.
+
+Edit: 
+Actually the only part of the free micro instance that really matter for public websites are:
+
+Static IP ENI 
+Security Groups (it's best to assign it with "assignPublicIp" to be sure that you always have it).
+
+The security groups can be removed, when you no longer need it, and you can create as many as you need. Once the security group is gone, then you have to assign a new public ip to your instance.
+
+There is some kind of magic in the public DNS that is linked to your security groups. Once the security group is taken, the DNS stops working, even after a while.
+
+After reading your question again, it seems that you do not have a public IP (it's for the firewall part, and allows outgoing traffic). It's normal when it's in a micro instance.
+
+You can still use an elastic IP, and create a new security group for it. Once you created a new security group with the EIP and the port that you need (you cannot use port 80 if your instance only has a public IP), you can connect to it. The network part should be OK. I do not know how many IP a public IP can hold, but an elastic IP is one of them (but it should not be an issue, because you don't really use the IP).
+The only thing you need to do is to change your security group back to your default SG,</div></body></html><!-- 2022-06-12 21:03:14 
