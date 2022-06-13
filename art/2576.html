@@ -1,0 +1,52 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2577.html'>This could force t</a><Br/><a href='2578.html'>It isn’t immediate</a><Br/><a href='2579.html'>smoremail.com</a><Br/><a href='2580.html'>numchk.com</a><Br/><a href='2581.html'>Blindside Time</a><Br/><a href='2582.html'>Bring the Popcorn</a><Br/><a href='2583.html'>Rice Wars</a><Br/><a href='2584.html'>I realised the rea</a><Br/><a href='2585.html'>Desperate Measures</a><Br/><a href='2586.html'>During that time, </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2575.html'>Another argument a</a><Br/><a href='2574.html'>We were shocked an</a><Br/><a href='2573.html'>What it was like f</a><Br/><a href='2572.html'>Fractured fairy ta</a><Br/><a href='2571.html'>Horoscope and Astr</a><Br/><a href='2570.html'>Mad Treasure Hunt</a><Br/><a href='2569.html'>Flirting and Frust</a><Br/><a href='2568.html'>This Is Extortion</a><Br/><a href='2567.html'>IoT Mesh Yagi kBan</a><Br/><a href='2566.html'>Rice Wars</a></div><div class='nav'><a href='2575.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2577.html'> >> </a></div><div class='article'>While all of this may seem to be a good idea from a theoretical point of view, the fact is that it makes the process much more complex. The idea of keeping everything in the same database and then filtering this by the context of the request makes no sense in practice, as you may have multiple types of databases with different tables and data structures. In a properly architected app the data must come from the database in the structure required for a given task. 
+To give another example, imagine that you use both a master user table and a local user table which store only the identity of each user. Obviously you can have all your objects that must be shared across users share the local table structure (assuming that your users authenticate via OpenID or some other means). For the data that requires a more complex structure, or which will be changing frequently, you would store only in the master user table. In the end, you may have multiple systems with different data structures, which will be much more efficient than trying to make them all fit in one big database.
+So, even though it may seem that the idea is to have everything in one database, it is in fact a recipe for disaster. 
+Edit: I'm not saying that there are no real world projects where everything must fit in one database, but the fact is that most of them don't work well and in many cases are not used, or the database structure is an afterthought.
+
+A:
+
+I usually agree with what Marc H said, but when a client has a big codebase without any OOPs (object oriented programming), using a database with entity relationship can make life easier.
+Because in my case, I work in a large team, I believe a database can help me to maintain a more organized code. Also, we have separated databases, each connected to a local database, where the main database contains all the general information of each user (email, user id, password, ...) 
+I believe it will help me to organize my project and will make my work more efficient.
+
+A:
+
+It really depends on what kind of site you're developing. If you have a bunch of non-related data spread across multiple databases, a single RDBMS could make sense, but in most cases this is a bad idea.
+Say, for example, you were building a dating site where users could create their own profiles. Then you might have one table for their profile (including multiple optional fields), and a profile comments table (with columns for the user who created the profile and the commenter), as well as other tables to store various types of data (e.g. pictures, groups, messages, etc).
+You could have each piece of data in its own table in a completely separate database and use a single RDBMS to query them, but this would most likely be rather hard to maintain and you'd constantly be reimplementing parts of the application (e.g. you'd need to use 3 different RPC calls to fetch comments for a user).
+As a rough estimate, I'd say that if you're using more than 2 databases, you're most likely using the wrong database engine. I'd usually recommend one database per site-scope, and if that's not possible you're most likely using the wrong database engine.
+
+A:
+
+In general I would agree with Marc: a good database design is usually not at all bound to the kind of data it stores but much more to the structure of the app itself.
+Nevertheless, it's also often easier to use a "schema" if there is no real concept of a model.
+On the other hand, I don't think there is no situation where it's better to have the data related to an individual user in a separate database than in the same one as the other users' data.
+That depends a lot on the amount of users you have. It can help if your user table becomes too big. Also, if you have a lot of small users, a table for every single user might grow to be huge, whereas a user table with 10 times more records (since many users are active and have ten times more posts than a few really frequent users) and in the same database, you won't have problems.
+Another aspect that I think is important to keep in mind: as you said, the data will still need to be transferred, whether in one database or separated in various ones. That means that the database you'd like to separate is probably also a bottleneck and will have a high overhead. As long as you can, think about the overall structure of your system instead of the (very minor) performance increase you may get by using this kind of approach.
+
+A:
+
+I agree completely with the notion that every database query can have a different query plan; thus every database query plan will perform differently.  Additionally the schema of each database will affect the query plan and performance; the same query plan can perform much better on one schema than another; the same query plan can perform much better on one database or even better than another.  This means that if your system consists of one database where everything is stored, but it is necessary to split out to create separate databases for users, posts, comments, or what have you; then it is going to be very difficult to come up with a single database query plan.  The answer to "Why do you want to do this?" is a very good question.
+However, if you must separate this data out into a different database (based upon some criteria), I would suggest that you create separate databases for each logical grouping.  
+For instance:
+
+USER DATABASE : stores all user info - username, email, password, etc.
+USER_POSTS : store all user posts with details
+USER_COMMENTS : store all comments for each user post
+COMMENTS : store all comments in one place
+USER_PICS : store all user photos
+STORE_PRODUCTS : store all inventory data for the shopping app
+
+The benefits are :
+
+the queries of the apps will likely be quicker if you only pull from one table instead of two or more (if you have only one database, you have two tables on the same disk);
+you only query the info you want;
+you don't have to worry about "foreign keys" in the application;
+you can (and should) put indexes on these tables, as appropriate. 
+the tables will be smaller.
+
+So you get more control, and you may gain some performance, without risking the overall stability or robustness of the app.
+
+This might be one of those where the real answer is that "it depends."  So if you do something that you think is the right thing to do, and you have an awful lot of time to think and spend time testing to ensure that there are no down sides to doing it; then by all means do it.  But if you only have a couple of weeks to work, you won't necessarily get everything right. 
+
+</div></body></html><!-- 2022-06-12 21:04:44 

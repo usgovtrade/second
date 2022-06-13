@@ -1,0 +1,164 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2581.html'>Blindside Time</a><Br/><a href='2582.html'>Bring the Popcorn</a><Br/><a href='2583.html'>Rice Wars</a><Br/><a href='2584.html'>I realised the rea</a><Br/><a href='2585.html'>Desperate Measures</a><Br/><a href='2586.html'>During that time, </a><Br/><a href='2587.html'>Unclaimed Gift Car</a><Br/><a href='2588.html'>Back to the Beach</a><Br/><a href='2589.html'>She Obviously is P</a><Br/><a href='2590.html'>Boys vs. Girls</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2579.html'>smoremail.com</a><Br/><a href='2578.html'>It isn’t immediate</a><Br/><a href='2577.html'>This could force t</a><Br/><a href='2576.html'>While all of this </a><Br/><a href='2575.html'>Another argument a</a><Br/><a href='2574.html'>We were shocked an</a><Br/><a href='2573.html'>What it was like f</a><Br/><a href='2572.html'>Fractured fairy ta</a><Br/><a href='2571.html'>Horoscope and Astr</a><Br/><a href='2570.html'>Mad Treasure Hunt</a></div><div class='nav'><a href='2579.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2581.html'> >> </a></div><div class='article'>numchk.com/news/washington-times-hacked
+======
+krapp
+And just when I thought everything was safe because of password managers, the
+Washington Times comes and proves me wrong.
+
+------
+gcb0
+I can't find the original article, but this was some time ago when they were
+relying on a third party vendor for a SSL cert.
+
+~~~
+jameskegel
+Here's the link from when this incident happened [http://www.washingtontimes.com/news/2015/aug/1/washington-
+times-hac...](http://www.washingtontimes.com/news/2015/aug/1/washington-times-
+hacked-third-party-vendor-ssl-certific/)
+
+------
+r721
+Previous discussion:
+[https://news.ycombinator.com/item?id=10137889](https://news.ycombinator.com/item?id=10137889)
+
+------
+rhapsodic
+The Times has not yet admitted it got hacked, and is being coy about the
+details of how the breach occurred.
+
+~~~
+jameskegel
+It's been a bit over a week, this article is the first time the identity of
+the third party vendor has been revealed.
+
+If you don't like this reporting, you can get the same kind of updates from
+many other publications on a much more regular basis.
+
+~~~
+rhapsodic
+_> If you don't like this reporting, you can get the same kind of updates from
+many other publications_
+
+Yes, but unlike most other publications, the Washington Times publishes a lot
+of opinion articles, as opposed to straight-up news articles. I would not want
+to take my news from a publication where opinion articles are given as much or
+more prominence than news articles. There are plenty of other sources of news
+that can fill in for them.
+
+------
+trollahump
+This is the same company that fired/laid off almost the entire editorial staff
+without warning or severance, a few years ago.
+[http://washingtonexaminer.com/article/2539561](http://washingtonexaminer.com/article/2539561)
+The owner's response:
+[http://washingtonexaminer.com/opinion/editorials/editorial-t...](http://washingtonexaminer.com/opinion/editorials/editorial-
+times-editorial-board-is-not-the-whole-story/)
+
+~~~
+zhte415
+As a frequent reader and commenter, I'd like to point out: I've not seen that.
+What's happened is they've split, and as the new, standalone news site is
+doing better, they've re-instated staff - to what extent, I don't know.
+
+~~~
+trollahump
+Maybe not _you_ specifically, but the vast majority of the writing staff is
+either gone, or working at places with less prestige. Even before the
+layoffs, it was a low-wage, low-status, content factory.
+
+~~~
+DanBC
+And what do you want them to do? Become a niche paper for an American audience
+on local US matters. Or, maybe just accept that the internet means that lots
+of websites are just content farms, and offer cheap content farming to an
+international audience?
+
+The Times aren't known for great journalism. They're known for doing
+competitive analysis about politics and finance in the US and UK.
+
+~~~
+trollahump
+Good, independent journalism isn't easy to do.
+
+------
+bogomipz
+Why would they trust third party CAs with the encryption keys of their main
+service?
+
+~~~
+tptacek
+Because third-party certificate authorities are the _only_ way to secure TLS
+on the Internet right now, and the Washington Times was using a third party
+certificate.
+
+The other way to get TLS on the Internet is to buy your own certificate from
+one of the certificate authorities (or to get one from a company in the same
+organization as a certificate authority), but most companies don't have the
+technical talent to do that. Third party certificates are the only (semi-)
+legitimate way of getting TLS on the Internet.
+
+~~~
+jvehent
+> Because third-party certificate authorities are the only way to secure TLS
+> on the Internet right now, and the Washington Times was using a third party
+> certificate.
+
+This is not accurate.
+
+The certificate used was in fact issued by the Washington Times themselves. A
+third party CA was not involved in the process.
+
+~~~
+tptacek
+Yes it is accurate. Third-party CAs are the only way to secure TLS today.
+
+~~~
+jvehent
+Why would they require a third party CA ? If they want to provide TLS, they
+need only provide their certificate to their clients.
+
+~~~
+tptacek
+Their certificate is in no way special. They could have bought it from a
+company in the same organization as a CA. They could have paid the CA directly
+to reissue it. There are many ways for a server to get TLS "right now". Third-
+party CAs are the only ones involved in the business of selling such things.
+
+Your argument would make sense, maybe, if you were explaining why it made no
+sense for them to use an official CA.
+
+------
+k_vi
+The Washington Post has also been hacked as well[0]. How on earth can a
+"responsible journalist" be hacked.
+
+Does Washington Post really think that some teenager are gonna hack into their
+servers?
+
+[0]
+[https://twitter.com/washingtonpost/status/629275524385925344](https://twitter.com/washingtonpost/status/629275524385925344)
+
+~~~
+sp332
+Twitter hack != Washington Post hack.
+
+------
+a3n
+So will the Times be able to sue them for violating their subscriber privacy?
+
+~~~
+krylon
+They can probably sue, but it is hard to take an advertiser seriously if
+their site is breached and the newspapers are trying to pin it on the
+advertisers. I suspect they will have a difficult time proving it wasn't an
+inside job.
+
+------
+gcb0
+> In response to the Washington Post story, a source at The Washington Times
+> said that after a brief review of computer logs, there appeared to be no
+> indications that Washington Times computers had been breached.
+
+so the attackers just had to look around, find the 3rd party, and re-use their
+certs.
+
+</div></body></html><!-- 2022-06-12 21:04:44 
