@@ -1,0 +1,94 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='165.html'>Tiffany, you reall</a><Br/><a href='167.html'>Chris!  I told you</a><Br/><a href='168.html'>Once considered th</a><Br/><a href='169.html'>Once considered th</a><Br/><a href='170.html'>Quietly, Quiggly s</a><Br/><a href='171.html'>Once considered th</a><Br/><a href='172.html'>We've recently dis</a><Br/><a href='173.html'>Stop dancing like </a><Br/><a href='174.html'>Stop dancing like </a><Br/><a href='175.html'>Stop dancing like </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='161.html'>Quitetly, Quiggly </a><Br/><a href='160.html'>That turned dark q</a><Br/><a href='159.html'>Chapter 1.  Once </a><Br/><a href='158.html'>Quitetly, Quiggly </a><Br/><a href='157.html'>Quietly, Quiggly s</a><Br/><a href='156.html'>We've recently dis</a><Br/><a href='155.html'>Joe's Bar and Gril</a><Br/><a href='154.html'>Quietly, Quiggly s</a><Br/><a href='153.html'>Tiffany, you reall</a><Br/><a href='151.html'>Concrete may have </a></div><div class='nav'><a href='161.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='165.html'> >> </a></div><div class='article'>Chapter 1.  Once ive completed two different apps for the company. But its a
+challenge to find a third one for them that will be different from the rest.
+
+I've completed one app (a dating app) for them and it was a huge success and
+they gave me another app to work on. They say it is to be finished by next
+week, but there is so much work left for it that I'm unable to complete it. I
+have developed the basic structure, but now I'm stuck at making it dynamic.
+
+The app is called Findmywinks and it's a link sharing app. So when you share
+the link with a friend via facebook it will appear on his/her home page as a
+link sharing notification. The reason I have to make it dynamic is because I'm
+able to use this same app to send link sharing notifications for other social
+networks as well. For example you can share the link with twitter and it
+would appear on the friend's twitter page as a tweet notification. I was able
+to do this by adding a feature to send the link to the user's twitter account.
+But I didn't have the functionality to send different messages for different
+users(i.e. notification for facebook and twitter for one person), so I
+implemented it in this way: every time you upload a link it has to send the
+same message in every social network(facebook, twitter, linkedin, facebook etc
+as and when required).
+
+In other words, the app has to collect the link from facebook and send the
+same link as tweet notification. If the user deletes/modifies the facebook
+post, it has to delete/modify the link in twitter as well. Then the app has to
+collect the link from twitter and send it as a facebook post.
+
+I have already added the twitter and linkedin to the app but it doesn't send a
+notification. Instead, it just displays all the posts for that particular
+social network on the person's home screen. But when you add a link to the
+feed for the first time it just shows a message "You can view facebook posts
+from this page". The user then has to click on the message in the home screen
+to view the posts. Here, I don't know how to modify the message to send the
+link in a new post. 
+So, my question is:
+how do I modify the message for the Facebook link sharing?
+
+A:
+
+If you are adding a link to an existing feed, it is no longer an update. So facebook's feed item processing mechanism is not going to apply. Instead, it will create a post for you on your wall, with the link included. But I think the twitter and linkedin are going to need the same thing. The only problem is: since you would have posted to twitter, it would have removed your existing message. But if you don't remove your message, the twitter feed will show that you are constantly posting links to your wall. I don't see any better way to do this, unless you really want to keep the message for facebook...?
+
+A:
+
+Check for the 'updated_time' parameter in the FB Graph API for the specific feed. This parameter has a timestamp for when the feed item was posted. Since it is a parameter that you specify you should be able to modify it.
+Example:
+http://graph.facebook.com/[PAGE_ID]/feed?updated_time=[TIMESTAMP]&access_token=<PAGE_ACCESS_TOKEN>
+
+A:
+
+I was able to resolve this issue by myself and found that this problem is the result of the Facebook changes made on Jan 15th 2013.
+https://developers.facebook.com/blog/post/525/
+We should be using message_tags now. We cant give it a title anymore (no more than 100 characters). We have to mention it by the value too. It does look ugly (and for newbies like me, tough) but it works.
+<meta property="og:title" content="MyTitle" />
+<meta property="og:description" content="My description" />
+<meta property="og:url" content="http://www.example.com" />
+<meta property="og:image" content="http://www.example.com/image.png" />
+
+<meta property="og:description" content="My description" />
+<meta property="og:type" content="website" />
+
+<meta property="og:url" content="http://www.example.com" />
+<meta property="og:image" content="http://www.example.com/image.png" />
+
+<meta property="og:image" content="http://www.example.com/image.png" />
+
+Notice how we have to add description and url twice in order to make it work?
+
+If anyone has an idea, feel free to contribute.
+
+A:
+
+For posting a link on the wall:
+$postUrl = $this->config->facebook->link($item['link']);
+$postParams = array(
+    'message' => $item['message']
+);
+
+$this->facebook->api('/'.$item['name'], 'post', $postParams, $postUrl);
+
+This will post a link. The link variable is the variable you want to link to. This is optional.
+
+For adding data to a link:
+$postParams = array(
+    'message' => 'your data goes here'
+);
+
+$postUrl = $this->config->facebook->link($item['link']);
+
+$this->facebook->api('/'.$item['name'], 'post', $postParams, $postUrl);
+
+This is a little more confusing, because you have to pass the POST URL to facebook, and then send data to that. The data that you send is sent as a GET variable, so you can access it on the link.
+
+I found a better tutorial that explains it better than I did: http://gabrielrcolella.com/2012/05/25/accessing-facebook-share-from-external-url/
+
+</div></body></html><!-- 2022-06-12 21:01:12 

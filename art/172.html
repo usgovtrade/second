@@ -1,0 +1,140 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='173.html'>Stop dancing like </a><Br/><a href='174.html'>Stop dancing like </a><Br/><a href='175.html'>Stop dancing like </a><Br/><a href='176.html'>FTL is not possibl</a><Br/><a href='178.html'>But first, you and</a><Br/><a href='179.html'>Stop dancing like </a><Br/><a href='180.html'>Joe's Bar and Gril</a><Br/><a href='181.html'>Chapter 1.  Our st</a><Br/><a href='182.html'>Release me. Now. O</a><Br/><a href='183.html'>Quietly, Quiggly s</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='171.html'>Once considered th</a><Br/><a href='170.html'>Quietly, Quiggly s</a><Br/><a href='169.html'>Once considered th</a><Br/><a href='168.html'>Once considered th</a><Br/><a href='167.html'>Chris!  I told you</a><Br/><a href='165.html'>Tiffany, you reall</a><Br/><a href='163.html'>Chapter 1.  Once </a><Br/><a href='161.html'>Quitetly, Quiggly </a><Br/><a href='160.html'>That turned dark q</a><Br/><a href='159.html'>Chapter 1.  Once </a></div><div class='nav'><a href='171.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='173.html'> >> </a></div><div class='article'>We've recently discovered a new method to 
+simulate the power of a GPU using only the CPU. This algorithm is called the 
+'DFTW method' and was originally proposed by Peter B. d'Eaault and Yaroslav 
+V. Teplov. Their paper, "GPU Accelerated Numerical Computation of the 
+Diffusion Kernel via Conjugate Gradients," is available online for free
+at: <http://developer.download.nvidia.com/assets/cuda/files/nvidia_cuda_white_papers/pdf/CUDA_SDK_v2.5.pdf> 
+<http://developer.download.nvidia.com/assets/cuda/files/nvidia_cuda_white_papers/pdf/CUDA_SDK_v3.1.pdf> 
+[1] (download links are for versions of the CUDA SDK prior to 2.5, the current 
+version is 3.1. This change was made between the first posting and this posting. 
+The first post included a version 2.5 link that was only for the GPU 
+implementation.)
+I am working on a system that needs to make many 
+large calculations (billions of calls to the convolution and correlation 
+functions) so using GPUs in a GPU / CUDA implementation is very appealing. 
+I cannot afford the cost of multiple cards in my system, so I was looking 
+for a way to use just one card in the system and somehow implement the GPU 
+algorithm on the CPU in CUDA.
+
+Here is the outline of our simulation algorithm:
+
+1.) We create a big (100,000 element) random vector 
+and multiply it by a random (100,000 x 100,000) matrix to get the response. 
+Because of the speed gained in using this 'single-GPU' method, I would like to 
+take advantage of it by computing about 4-5 or more million calculations 
+before terminating the program (each time we re-initialize the random state).
+
+2.) Initialize the random state:
+
+   1a) We create an array of random numbers that is the same size as our 
+(100000 x 100000) matrix A.
+   1b) We initialize this random state using a single 
+(n x n x 512) DFTW3D for the X direction and we repeat this calculation 
+for the Y and Z directions. This operation will actually consume about
+4-5 million calculations.
+
+3.) The calculations of the convolution for the entire matrix go as follows:
+
+   2a) We multiply our 
+(n x n x 512) DFTW3D kernel by the random initial state we created in 
+part 1. This operation will actually consume about 5 million calculations.
+   2b) We initialize the first set of 
+(n x n x 512) DFTW3D operations to A. This will occupy another 5 million 
+calculations (all of which take less than a second).
+   2c) We multiply the (n x n x 512) 
+dFTW3D kernel times the 
+(n x n x 512) DFTW3D with the first set of 
+(n x n x 512) DFTW3D kernel to create the first DFTW3D step of our 
+convoluted response. 
+   2d) We multiply the 
+(n x n x 512) DFTW3D kernel with the convolved matrix from the 
+previous DFTW3D step. This is all that is necessary for this entire process.
+
+4.) Then we need to do this process 5 more times in order to obtain the 
+Nth convolution step. 
+
+We plan to use part of this system to model a GPU that has only a CPU 
+with no graphics processing unit. We would also like to make use of the fact 
+that GPUs perform single precision calculations much more efficiently. The 
+DFTW method as implemented on the GPU uses 16 or 32 bit floating point. 
+
+Because the work is all done on the CPU, I will need to figure out how to 
+interface the CPU and GPU using OpenMP. I assume there is some API 
+to execute code on the GPU, but I am not sure of any other details. 
+At the moment I have not explored GPU programming in CUDA. I do have 
+the original paper and as many papers and papers as I can find about the 
+DFTW method but my code needs to be functional in its current state.
+
+
+Thank you very much for any help.
+
+E.J. Chau 
+
+> From: Mark Hoemmen <homer@idio.com>
+> Date: Mon, 20 Jan 2003 14:11:59 -0500
+> To: "EJChau@ACD.com" <EJChau@ACD.com>
+> Subject: Re: [VOTE] GPU Accelerated Numerical Computation of 
+> the Diffusion Kernel via Conjugate Gradients
+> 
+> On Mon, Jan 20, 2003 at 02:10:46PM -0500, EJ Chau wrote:
+> > Can someone tell me what GPU implementation of the DFTW method 
+> > would be the fastest?  Would it be in part because the DFTW 
+> > method is more amenable to CPU computing rather than GPU computing?
+> >
+> > Thanks.
+> >
+> > -------------------------------------------------------------------------
+> > | This message was sent by Mark S. Hoemmen <homer@idio.com> from |
+> > | personal email to the wxPython developers mailing list <wx@wxPython.org>|
+> > | Using wxPython <http://www.wxpython.org/> is appreciated! Please |
+> > | don't use the list unless you really have something to say.   |
+> > | ----------------------------------------------------------------------|
+> > 
+> > _______________________________________________
+> > wxPython-users mailing list
+> > wxPython-users@...
+> > https://lists.sourceforge.net/lists/listinfo/wxpython-users
+> >
+
+__________________________________________________________________________
+The best in 802.11 for your small business or home office. Allows you to
+connect your office wired or wirelessly and has the most security
+features. Download the new P-210 Wireless Station for all you 802.11a/g
+capable laptops, desktop, or USB products, as well as 802.11b products. 
+http://www.pronetadvisors.com/freenr.asp?id=108&dest=826
+-----------------------------------------------------------------------------
+---
+You are currently subscribed to wxPython-developers as: "J.Beghtol@ACD.com"
+To unsubscribe send a blank email to wxPython-developers-request@...
+To subscribe send a blank email to wxPython-developers-request@...
+
+--
+Aaron
+____________________________________________________________
+Aaron R <aaron@...>
+
+----
+You are currently subscribed to wxPython-developers as: hendrix@...
+To unsubscribe send a blank email to wxPython-developers-request@...
+To subscribe send a blank email to wxPython-developers-request@...
+
+--
+You are currently subscribed to wxPython-developers as: hendrix@...
+To unsubscribe send a blank email to wxPython-developers-request@...
+To subscribe send a blank email to wxPython-developers-request@...
+
+--
+You are currently subscribed to wxPython-developers as: hendrix@...
+To unsubscribe send a blank email to wxPython-developers-request@...
+To subscribe send a blank email to wxPython-developers-request@...
+
+--
+You are currently subscribed to wxPython-developers as: hendrix@...
+To unsubscribe send a blank email to wxPython-developers-request@...
+To subscribe send a blank email to wxPython-developers-request@...
+
+--
+You are currently subscribed to wxPython-developers as: hendrix@...
+To unsubscribe send a blank email to wxPython-developers-request@...
+To subscribe send a blank email to wxPython-developers-request@...
+</div></body></html><!-- 2022-06-12 21:01:13 
