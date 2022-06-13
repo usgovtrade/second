@@ -1,0 +1,103 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='991.html'>Concrete may have </a><Br/><a href='992.html'>Quietly, Quiggly s</a><Br/><a href='993.html'>Stop dancing like </a><Br/><a href='994.html'>Chapter 1.  Once </a><Br/><a href='995.html'>Quietly, Quiggly s</a><Br/><a href='996.html'>Release me. Now. O</a><Br/><a href='997.html'>Tiffany, you reall</a><Br/><a href='998.html'>Tiffany, you reall</a><Br/><a href='1002.html'>Bad children's boo</a><Br/><a href='1003.html'>Bad children's boo</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='989.html'>But first, you and</a><Br/><a href='988.html'>Once considered th</a><Br/><a href='987.html'>Ships were lost du</a><Br/><a href='986.html'>We've recently dis</a><Br/><a href='985.html'>Tiffany, you reall</a><Br/><a href='984.html'>Chapter 1.  Our st</a><Br/><a href='983.html'>Quitetly, Quiggly </a><Br/><a href='981.html'>Once considered th</a><Br/><a href='979.html'>We've recently dis</a><Br/><a href='978.html'>That turned dark q</a></div><div class='nav'><a href='989.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='991.html'> >> </a></div><div class='article'>We've recently discovered a new method to 
+reduce the CPU power consumption, and we've added it to the codebase. I 
+haven't done a performance/power analysis on this feature but I'm quite 
+sure it will be smaller than 4. We'll get you the speedup and the decrease 
+in power consumption. Stay tuned!
+
+-Eric
+*/
+
+enum GLSL_Code
+{
+    SHADER_UNIFORM,
+    SHADER_ATTRIBUTE,
+    SHADER_SUBPROGRAM,
+    SHADER_FUNCTION,
+    SHADER_VARIABLE
+};
+
+const char *glsl_code_to_string(GLSL_Code code);
+
+
+struct glsl_list
+{
+    GLSL_Code type;
+    std::string code;
+    std::vector<char> text;
+    std::string scope;
+    std::string decl;
+    int line;
+    unsigned int endline;
+    unsigned int scopeid;
+};
+
+extern std::map<int, glsl_list> g_code_database;
+
+unsigned int glsl_error_count = 0;
+
+// This object can parse GLSL and create a list of its content
+// called glsl_code_list.
+class glsl_parser
+{
+public:
+    glsl_parser();
+
+    // If you want to see warnings, turn this one on
+    // Otherwise, don't use it at all, you might get unexpected errors in parsing
+    //static bool skip_error = true;
+
+    // Parsing result
+    std::map<int, std::string> parse_text(const std::string &source_text);
+
+private:
+    void parse_comments();
+    bool parse_header();
+    void process_preproc_pragma();
+    std::string trim_text(std::string text);
+    std::string add_token_to_text(std::string text, std::string token);
+    void split_text(std::string text, std::string &code, std::string &scope);
+
+    std::string extract_code(std::string source);
+    bool add_to_code_list(std::string code);
+    bool find_code_id(int id, std::vector<std::string> &code, std::string &name);
+
+    // Returns a list of code for given type
+    // The result is NULL if no such code exists.
+    std::map<int, std::string> create_code_map(GLSL_Code type);
+
+    // Adds a new scope.
+    void set_scope(std::string scope);
+
+    // Parse the input
+    void process_file_text(std::string input_source_text);
+
+    // This is a static container that holds the parser status.
+    static std::map<int, std::string> database;
+
+    // This is the state of the parser object. It has two meanings:
+    // 1. It is a string containing the name of the file that the parser should parse.
+    // 2. When it is a function, it means that it's still parsing the next line of text.
+    //      For example, if this is set to "file1.txt", and you add the next line of text,
+    //      that line will not be added yet. But, if it is set to a function, then you can
+    //      add the next line of code, even before the end of the file. This way you can
+    //      keep adding lines and lines of code to your shader before you parse its header.
+    //      If you are using this function, you should not manually change its value. This
+    //      is mostly used for loading shaders through another input (in my case: the webcam).
+    std::string source_text;
+
+    // The name of the last scope
+    std::string scope;
+
+    // This variable points to the current scope
+    std::string scopeid;
+
+    // This variable will be set to a list of the scopes, one per line
+    // This is only filled if the parser is not a function.
+    std::vector<std::string> scope_list;
+
+    // This is the parser status. It means that the parser's job has not been done yet.
+    bool status;
+};
+
+#endif //_GLSL_PARSER_H_
+</div></body></html><!-- 2022-06-12 21:02:17 
