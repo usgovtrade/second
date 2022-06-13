@@ -1,0 +1,199 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='1994.html'>Vote Early, Vote O</a><Br/><a href='1995.html'>Pro+ Categories</a><Br/><a href='1996.html'>Gun ownership stat</a><Br/><a href='1997.html'>Operation Thunder </a><Br/><a href='1998.html'>HIPPA PCI Complian</a><Br/><a href='1999.html'>aidriod.com</a><Br/><a href='2000.html'>NSFW, *Hub, linger</a><Br/><a href='2001.html'>My Million Dollar </a><Br/><a href='2002.html'>A Dolt: Script Clu</a><Br/><a href='2003.html'>The Underdogs</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='1992.html'>Trojan Horse</a><Br/><a href='1991.html'>Worst Case Scenari</a><Br/><a href='1990.html'>The Finish Line Is</a><Br/><a href='1989.html'>Betraydar</a><Br/><a href='1988.html'>Hitachi, Volvo, Jo</a><Br/><a href='1987.html'>Checking, Credit R</a><Br/><a href='1986.html'>This is Going to H</a><Br/><a href='1985.html'>Blood is Blood</a><Br/><a href='1984.html'>Blood is Blood</a><Br/><a href='1983.html'>Who's Who in the Z</a></div><div class='nav'><a href='1992.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='1994.html'> >> </a></div><div class='article'>Last Pushpin(object):
+  """Provides methods to allow for pushing and popping pin buttons from the desktop."""
+
+  ##############################################################################
+  # Override the PinTester class so that PinTester instances can be obtained
+  # from the system.
+  ##############################################################################
+
+  @staticmethod
+  def get_pin_tester():
+    return CuteFlowTests.PinTester.get_pin_tester()
+
+  @classmethod
+  def get_pin_tester(cls):
+    return CuteFlowTests.PinTester(cls.PinTesterPath)
+
+
+class CustomPinTester(PinTester):
+  """A custom class that allows for creating test pin buttons as required.
+
+    The PinTester is inherited from and wraps the CuteFlowPinButton, meaning
+    that you can push, click, hover and un-hover a pin button.
+    When the user clicks or hovers over a button, the appropriate action occurs.
+    If a user clicks on a pin button, the pin button will display a popup for
+    the user to enter some text. If the user is hovering over a pin button,
+    the button will not display the popup.
+
+    The pin buttons can also be enabled/disabled, and the user can disable all
+    the pin buttons via a menu command.
+    """
+
+  ##############################################################################
+  # The pin buttons are displayed in a JFrame.
+  # This is the root panel for all pin button displaying.
+  # Each pin button is named, has a corresponding pin id, and can be enabled/disabled.
+  # Each pin button can be clicked on and a menu will show up if a user hovers over it.
+  # 
+  # The menu on each pin button is responsible for enabling and disabling the pin button.
+  ##############################################################################
+
+  JFrame pinFrame = None
+  PinTesterButton pin1 = None
+  PinTesterButton pin2 = None
+  PinTesterButton pin3 = None
+  PinTesterButton pin4 = None
+  PinTesterButton pin5 = None
+ 
+  def __init__(self, *args, **kwargs):
+    """Initializer for the class."""
+    global pinFrame
+    if 'pinFrame' in kwargs:
+        self.pinFrame = kwargs.pop('pinFrame')
+
+    super(CustomPinTester, self).__init__(pinFrame=self.pinFrame, **kwargs)
+
+    # Pin 1 needs to be the pin1 pin for this to work.
+    pin1 = self.PinTesterButton()
+
+    # Define all the pin buttons here so that a custom name can be assigned
+    # to each pin button from the user interface.
+    pin2 = self.PinTesterButton(name="pin 2", id="6")
+    pin3 = self.PinTesterButton(name="pin 3", id="7")
+    pin4 = self.PinTesterButton(name="pin 4", id="8")
+    pin5 = self.PinTesterButton(name="pin 5", id="9")
+
+    # To disable the current pin button, remove the button from the array and then
+    # display the main menu which will in turn reset the pin.
+    # The main menu is displayed at pinFrame.x + 200
+    self.buttonToDisable = pin1
+    if len(self.buttonToDisable) > 0:
+      self.buttonToDisable.onClick.disconnect(None, None, "Unavailable")
+      self.buttonToDisable.disable()
+      pinFrame.remove(pin1)
+
+    # In the list of available pin buttons, add the buttons that are being used for
+    # specific actions. In this case, we have pin1 which is what the user is adding
+    # and pin5 which is where the users is editing data.
+    self.availableButtons = [pin1, pin3, pin5]
+
+    # Disable any button that has been unclicked.
+    # This is to ensure that the menu will be shown when the mouse hovers over a button.
+    self.buttonsToDisable = []
+
+    self.add(pin1)
+
+    # Hide the pin buttons when the mouse hovers over them so that the user can type a value.
+    pin1.setClicksDisabled(True)
+    pin2.setClicksDisabled(True)
+    pin3.setClicksDisabled(True)
+    pin4.setClicksDisabled(True)
+    pin5.setClicksDisabled(True)
+
+    # Display the menu when the user hovers over a button so that the pin is editable.
+    # On mouse click, the pin will be saved.
+    self.addPopupMenuListener(self.addPinMenuListener)
+
+    # Save and load the pin buttons at the given path.
+    self.saveToXml(self.pinFrame.x + 200)
+    #self.savedPinFrame = self.pinFrame
+    #self.loadFromXml(self.savedPinFrame.x + 200)
+    
+
+   def addPinMenuListener(self):
+     """
+     Add a listener to the pin buttons to display a popup menu when the mouse hovers over the pin.
+
+     :return: True if the menu was displayed successfully.
+     """
+     self.pin1.addPopupMenuListener(self.showPinEditorMenu)
+     self.pin2.addPopupMenuListener(self.showPinEditorMenu)
+     self.pin3.addPopupMenuListener(self.showPinEditorMenu)
+     self.pin4.addPopupMenuListener(self.showPinEditorMenu)
+     self.pin5.addPopupMenuListener(self.showPinEditorMenu)
+     
+     
+     if len(self.pin1) > 0:
+      self.pin1.setClicksDisabled(True)
+
+     if len(self.pin2) > 0:
+       self.pin2.setClicksDisabled(True)
+
+     if len(self.pin3) > 0:
+        self.pin3.setClicksDisabled(True)
+
+     if len(self.pin4) > 0:
+       self.pin4.setClicksDisabled(True)
+
+     if len(self.pin5) > 0:
+       self.pin5.setClicksDisabled(True)
+
+     return True
+
+   def showPinEditorMenu(self):
+     """
+     Displays a popup menu when the mouse hovers over the pin.
+
+     :return: False if the menu was not displayed successfully.
+     """
+     menu = wx.Menu()
+     menu.Append(101, "Reset Pin")
+     menu.Bind(wx.EVT_MENU, self.onPinReset)
+     menu.Append(102, "Clear Pin")
+     menu.Bind(wx.EVT_MENU, self.onPinClear)
+     menu.Append(103, "Apply Pin")
+     menu.Bind(wx.EVT_MENU, self.onPinApply)
+     menu.Append(104, "Cancel")
+     self.PinFrame.PopupMenu(menu)
+
+     return False
+
+   def onPinReset(self, event):
+     """
+     Reset the pin for the button.
+
+     :param event: A wx.CommandEvent.
+     """
+     self.resetPin()
+     self.PinFrame.Refresh()
+
+   def onPinClear(self, event):
+     """
+     Clears the pin for the button.
+
+     :param event: A wx.CommandEvent.
+     """
+     self.pin1.clear()
+     self.PinFrame.Refresh()
+
+   def onPinApply(self, event):
+     """
+     Saves the pin for the button.
+
+     :param event: A wx.CommandEvent.
+     """
+     self.savePinToFile()
+
+   def savePinToFile(self):
+     """
+     Saves the pin as a file, loads it into a string and assigns the pin to the pinButton
+     After this, the file can be opened with another program such as Excel to read the pin.
+
+     :return: True if the pin was saved successfully.
+     """
+     fileName = self.panel.getFilePath()
+     
+     if not os.path.exists(fileName):
+       fileName = ""
+
+     if self.pin1.getName() == 'pin 2':
+      self.pin1.setInfoText("A1-E2/D2-E3")
+      self.writeStringToFile(fileName + "(" + self.pin1.getName() + "):" + self.pin1.getInfoText() + "\n")
+     else:
+      self.writeStringToFile(fileName + ":" + self.pin1.getName() + ":" + self.pin1.getInfoText() + "\n")
+
+     return True
+
+   def writeStringToFile(self, textString):
+     """
+     Writ</div></body></html><!-- 2022-06-12 21:03:49 
