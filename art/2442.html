@@ -1,0 +1,51 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2443.html'>I knew that we wou</a><Br/><a href='2444.html'>I was a fan of her</a><Br/><a href='2445.html'>I realised the rea</a><Br/><a href='2446.html'>While the Cats are</a><Br/><a href='2447.html'>Summertime is mean</a><Br/><a href='2448.html'>aisniff.com</a><Br/><a href='2449.html'>Not the Only Actor</a><Br/><a href='2450.html'>It All Boils Down </a><Br/><a href='2451.html'>Wrinkle In the Pla</a><Br/><a href='2452.html'>My favorite, and e</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2441.html'>botnugget.com</a><Br/><a href='2440.html'>We went back down </a><Br/><a href='2439.html'>We spent our time </a><Br/><a href='2438.html'>as it’s recommende</a><Br/><a href='2437.html'>even though most o</a><Br/><a href='2436.html'>The Beauty in a Me</a><Br/><a href='2435.html'>Play or Go Home</a><Br/><a href='2434.html'>Do stupid thing, w</a><Br/><a href='2433.html'>Stupid People, Stu</a><Br/><a href='2432.html'>Internships, and I</a></div><div class='nav'><a href='2441.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2443.html'> >> </a></div><div class='article'>orderedtrash.com/blog/2008/03/25/creating-html-reports-using-the-w3schools-validator/
+
+A:
+
+The problem I think you are having, is that the CSS is not linked to the XHTML file.
+You have to make sure the CSS is linked to the XHTML file. A CSS link should look something like this
+link="C:/Documents and Settings/User_Name/Application Data/Apache Software Foundation/Tomcat 4.0/css/mycssfile.css"
+In this case "css" is the name of the folder, and "mycssfile.css" is the name of the CSS file.
+Also make sure the "Validate in Current Folder" option is not checked in the Options tab (it is located below the Code tab).
+If you are using Eclipse, you can just select your file in the Package Explorer, then right click on it and select "Properties", and in the Properties window select "Web" in the left sidebar and make sure Validate in Current Folder is unchecked.
+
+A:
+
+Yes, some validators will do just that... (and then also the opposite of that...)
+
+I would say your main problem is using a WYSIWYG editor instead of manually editing the document...
+Validating with notepad will always result in a green tick.
+
+A:
+
+As a complement to Matt's answer: for me, the validator was ok except for the warnings about form tags that came after the body tag.  The body tag is the first tag with "body" in its name.  I found a way to make it a fix by setting "allow source to override" in the validator options.  It is not perfect, but at least it is better than using something like notepad.
+
+Select HTML Validator -> options
+find the "allow source to override" option and set it to "YES"
+
+As you can see in the second image, form tags will always be placed in the head tag, and this is normal. And don't forget to remove the second line. 
+I found this tip on the w3c validator forums.
+
+Note: be careful that this will not work with validators not from W3C. 
+
+I have tried it with FireFox, but maybe it works with other browsers too.
+
+UPDATE:
+I was trying to make a code tag, but it doesn't work...
+But, if you get some of my code snippets from an external website, and copy and paste them in your WYSIWYG text editor, make sure you copy all the text, not only the code. Otherwise, you can't post the code on your site...
+
+UPDATE 2:
+AFAIK, the w3c validator will not remove the comments...
+
+UPDATE 3:
+I have just tried to paste a w3c validator link on my site. The text editor will remove the code tags. My test page:
+
+But the validator is ok:
+
+UPDATE 4:
+Even the CSS validator will not work. My example page:
+
+UPDATE 5:
+I am going to try with other programs that I think will copy the source as is (but I am not sure about this): Word, OpenOffice, Visual Studio, Adobe Dreamweaver... and if I have any other luck, I will edit my answer.
+
+</div></body></html><!-- 2022-06-12 21:04:31 
