@@ -1,0 +1,111 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='215.html'>Ships were lost du</a><Br/><a href='216.html'>Quietly, Quiggly s</a><Br/><a href='218.html'>Quietly, Quiggly s</a><Br/><a href='222.html'>Ships were lost du</a><Br/><a href='223.html'>That turned dark q</a><Br/><a href='224.html'>Stop dancing like </a><Br/><a href='225.html'>Joe's Bar and Gril</a><Br/><a href='226.html'>But first, you and</a><Br/><a href='227.html'>That turned dark q</a><Br/><a href='228.html'>FTL is not possibl</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='213.html'>That turned dark q</a><Br/><a href='212.html'>Release me. Now. O</a><Br/><a href='211.html'>Chapter 1.  Our st</a><Br/><a href='210.html'>Chapter 1.  Once </a><Br/><a href='209.html'>Chapter 1.  Our st</a><Br/><a href='208.html'>Chris!  I told you</a><Br/><a href='207.html'>Joe's Bar and Gril</a><Br/><a href='206.html'>That turned dark q</a><Br/><a href='205.html'>Concrete may have </a><Br/><a href='204.html'>Quietly, Quiggly s</a></div><div class='nav'><a href='213.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='215.html'> >> </a></div><div class='article'>Chapter 1.  Once 
+Let say : 
+I have the table : 
+ID  | type | quantity  
+1010 | type_1 | 90 
+1020 | type_1 | 90 
+1030 | type_1 | 90 
+1040 | type_2 | 5 
+1050 | type_2 | 5 
+1060 | type_2 | 5 
+1070 | type_2 | 5 
+1080 | type_2 | 5 
+1105 | type_2 | 5 
+1110 | type_3 | 15 
+
+and I want to obtain a query to return all the rows of my table that contain a row for each of these two types, and they count and multiply in quantity. 
+This is the query I have : 
+SELECT type,SUM(quantity) FROM 
+(SELECT type,quantity FROM "my_table" GROUP BY "type",quantity)
+GROUP BY type;
+
+This return : 
+id type_1 type_2 type_3  
+10 10      10     5 
+9  5       4      15 
+
+as expected.
+How could I write this query in the most efficient way.  
+
+A:
+
+This is how you can do it in MySQL:
+select 
+  t1.type,
+  sum(t2.quantity) total_quantity
+from table t1 
+left join table t2 on t2.type=t1.type
+group by t1.type
+
+In Oracle:
+select 
+  t1.type,
+  sum(t2.quantity) total_quantity
+from table t1, 
+  table t2
+where t1.type = t2.type
+group by t1.type
+
+Check here for more : https://stackoverflow.com/a/38354718/9821721
+
+A:
+
+This is basic MySQL, this could be done in the other databases as well.
+
+with tab as (select type, quantity from table)
+
+select type, 
+       sum(quantity) as quantity
+from tab
+group by type
+
+http://sqlfiddle.com/#!9/fe0ce/2
+The only limitation is that the number of distinct types can't be over 2
+  columns in the result.
+
+A:
+
+For Oracle:
+SELECT a.type,SUM(b.quantity)
+FROM
+(SELECT type AS type,quantity
+FROM "my_table") a,
+(SELECT type AS type,quantity
+FROM "my_table") b
+WHERE a.type = b.type
+GROUP BY type
+
+As pointed out in comments, you can also do this with joins, but I'm posting it as separate to make it easy to spot.
+
+A:
+
+Try this:
+SELECT a.type, 
+       SUM(a.quantity) TotalQuantity 
+FROM table a
+LEFT OUTER JOIN table b 
+    ON a.type = b.type
+GROUP BY a.type
+
+Result:
+TYPE TOTALQUANTITY
+type1   90
+type3   15
+
+Try this one, with the same result:
+SELECT b.type, 
+       SUM(b.quantity) TotalQuantity 
+FROM table a
+RIGHT OUTER JOIN table b 
+    ON a.type = b.type
+GROUP BY b.type
+
+Source
+
+MySQL Joins
+
+Explaination: LEFT OUTER JOIN and RIGHT OUTER JOIN. You can read more about it here
+
+Explanation of GROUP BY's functionality.
+
+</div></body></html><!-- 2022-06-12 21:01:16 
