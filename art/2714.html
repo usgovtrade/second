@@ -1,0 +1,80 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2715.html'>Eating and Sleepin</a><Br/><a href='2716.html'>aisnob.com</a><Br/><a href='2717.html'>Box Office Movies,</a><Br/><a href='2718.html'>Pick A Tribemate</a><Br/><a href='2719.html'>Something Cruel Is</a><Br/><a href='2720.html'>Thunder Storms & S</a><Br/><a href='2721.html'>You Call, We'll Ha</a><Br/><a href='2722.html'>Million Dollar Que</a><Br/><a href='2723.html'>Bag of Tricks</a><Br/><a href='2724.html'>My Mom Is Going to</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2713.html'>You Mangled My Net</a><Br/><a href='2712.html'>Collections and Me</a><Br/><a href='2711.html'>You Get What You G</a><Br/><a href='2710.html'>Question of Trust</a><Br/><a href='2709.html'>A nice fantasy wit</a><Br/><a href='2708.html'>aipein.com</a><Br/><a href='2707.html'>Truth Kamikaze</a><Br/><a href='2706.html'>Let's Get Rid of t</a><Br/><a href='2705.html'>It's Like the Perf</a><Br/><a href='2704.html'>artfib.com </a></div><div class='nav'><a href='2713.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2715.html'> >> </a></div><div class='article'>Sinister_Sith> hello, how do i get my external drive recognized by fstab? my mount command isn't being executed
+<lonewulf> Dr_willis:  I should be getting a new version of ubuntu and I am going to try out the new linux mint.
+<ziroday> Vlet: not so sure, can you pastebin your xorg.conf please
+<Dr_willis> lonewulf,  you are using ntfs-3g? you did do a check of that drive?
+<lonewulf> Yes I am running ntfs-3g
+<Dr_willis> theres been some issues with the ntfs-3g lately.. I had to fix the fstab - in my case it was an idiotic entry about the drive.
+<lonewulf> Yeah I am using the new hardy with ext4
+<lonewulf> What's your partition table like Dr_willis?
+<Dr_willis> and its still NOT automounting?
+<Vlet> ziroday: don't think there's anything in there that would be relevant
+<lonewulf> Sorry for the stupid questions I'm really new to this.
+<lonewulf> I have the partition in my fstab
+<brent113> lonewulf: do you have anything in your fstab regarding that drive?
+<lonewulf> brent113: Yes, yes I do.
+<Dr_willis> lonewulf,  its not a 'stupid' question..
+<lonewulf> Dr_willis: What's yours like?
+<unop__> lonewulf, what is the line in your fstab ?
+<brent113> Dr_willis: sorry, I didn't know you were speaking to him :)
+<Dr_willis> lonewulf,  i mount mine manually.. because its ext4
+<ziroday> Vlet: okay, pastebin the output of fglrxinfo
+<Dr_willis>  /dev/sdb1 /media/external ntfs-3g defaults,locale=en_US.UTF-8 0 0
+<lonewulf> Dr_willis: So your problem is your drive automounts?
+<Dr_willis> /dev/sdb1 /media/External ntfs-3g defaults,locale=en_US.UTF-8 0 0
+<Dr_willis> lonewulf,  on my box yes..
+<unop__> lonewulf, you need to use a UUID for that partition
+<erUSUL> lonewulf: Dr_willis has an error in his fstab it isnt "defaults" is "errors=remount-ro" instead
+<lonewulf> Dr_willis: I just got errors when I typed in "mount /dev/sdb1"
+<lonewulf> erUSUL: Dr_willis:  Will I have to fix the line in the fstab before I can mount?
+<ziroday> Vlet: also, pastebin ls -l /lib/modules/2.6.24-19-generic/volatile/
+<lonewulf> Dr_willis: In the guide that you told me to use to install ubuntu they told me to put /dev/sdb1 in my /etc/fstab
+<Dr_willis> lonewulf,  you proberly did not unmount your drive.. and so all sorts of permissions and error messages got generated.
+<lonewulf> Dr_willis: So I need to mount it now?
+<Vlet> ziroday: http://paste.ubuntu.com/45018/
+<unop__> lonewulf, don't paste output here
+<tmapj> does anybody know how to enable automatic mounting of USB devices without password authentication?
+<lonewulf> Dr_willis: I'm not sure how to do that.
+<erUSUL> lonewulf: Dr_willis  that's weird that is a problem for him but it works for me... /dev/sdb1 /media/sdab auto rw,user,noauto,exec,utf8 0 0
+<ziroday> Vlet: okay, thats fine, now type the following into the terminal: ls /usr/lib/fglrx
+<erUSUL> lonewulf: well put the two lines on a pastebin and we take a look
+<unop__> lonewulf,  sudo mount /dev/sdb1
+<erUSUL> lonewulf: !paste | lonewulf
+<erUSUL> lonewulf: !paste | lonewulf
+<erUSUL> !paste | lonewulf
+<lonewulf> !paste
+<ubottu> lonewulf: pastebin is a service to post multiple-lined texts so you don't flood the channel. The Ubuntu pastebin is at http://paste.ubuntu.com (make sure you give us the URL for your paste - see also the channel topic)
+<lonewulf> http://paste.ubuntu.com/45019/
+<lonewulf> That was pasted
+<Dr_willis> lonewulf,  you are making it too hard on yourself.. just copy/paste the mount command into terminal and it should work.. but if you havent unmounted the disk and messed with permissions/ownerships it will be mounted RO by default.
+<Vlet> ziroday: http://paste.ubuntu.com/45019/
+<lonewulf> Dr_willis: I have no idea what you are talking about
+<erUSUL> lonewulf: this is what i put in fstab " /dev/sdb1 /media/external ntfs defaults 0 0" works without issues
+<lonewulf> Dr_willis: But I will have to try that command out.
+<lonewulf> erUSUL: So do I
+<ziroday> Vlet: ooh, I know what the issue is, you are still running the old driver from hardy, you need to change the hardy into intrepid and change the driver to 8.02
+<erUSUL> lonewulf: make it "auto" also -->  /dev/sdb1 /media/external ntfs auto defaults 0 0
+<ziroday> Vlet: please do sudo depmod -a and try rebooting
+<lonewulf> Dr_willis: I'll unmount then try the mount command.
+<Dr_willis> lonewulf,  mount /media/external       is the command.
+<Vlet> ziroday: how would I do that?
+<erUSUL> lonewulf: did it work ?
+<lonewulf> erUSUL: It just returned a blank line
+<Dr_willis> lonewulf,  i told you not to paste stuff here. :)
+<unop__> Dr_willis, that does not make much sense to me
+<mikebeecham> unop__: http://paste.ubuntu.com/45023/
+<ziroday> Vlet: please pastebin the contents of /lib/modules/$(uname -r)/volatile/fglrx.ko
+<lonewulf> Dr_willis: Sorry and thank you for your help.
+<Dr_willis> lonewulf,  sudo mount /media/external
+<unop__> mikebeecham, yes, so why did you say "no such file" when you put something new?
+<erUSUL> lonewulf: well you have to "sudo umount /dev/sdb1" becouse fstab only mount the partitions if they are not mounted
+<erUSUL> lonewulf: umount them not mount them ;)
+<Dr_willis> ive seen a lot of people miss that little 'e' :)
+<mikebeecham> unop__:  I just realised that error....I was trying to look at something, and forgot to put the path in!  So I actually deleted everything else I had in there as a result of trying to fix the problem!
+<Vlet> ziroday: http://paste.ubuntu.com/45024/
+<Vlet> ziroday: do you want the full ls -l?
+<unop__> mikebeecham, cool, let's get back to the business at hand
+<Vlet> Dr_willis: what does `mount' say?
+<erUSUL> Dr_willis: lonewulf for that matter that /media/sdxx auto should be a 0 not an a, b, c... it's a major ubuntu bug :)
+<ziroday> Vlet: yep, sorry I meant ls -l /lib/modules/$(uname -r)/volatile/fglrx.ko
+<Vlet> ziroday: http://paste.ubuntu.com/45025/
+<ziroday> Vlet: hrm, now I'm really confused. Let me pastebin my</div></body></html><!-- 2022-06-12 21:04:56 

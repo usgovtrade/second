@@ -1,0 +1,139 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2653.html'>Don't you think</a><Br/><a href='2654.html'>Two for the Price </a><Br/><a href='2655.html'>Marquesan Vacation</a><Br/><a href='2656.html'>Purity Test result</a><Br/><a href='2657.html'>Ductile Disfunctio</a><Br/><a href='2658.html'>Honeymoon or Not?</a><Br/><a href='2659.html'>And I’m out at a p</a><Br/><a href='2660.html'>Who else thinks dr</a><Br/><a href='2661.html'>Look Closer: The F</a><Br/><a href='2662.html'>University of</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2651.html'>This game is just </a><Br/><a href='2650.html'>Hog Tied</a><Br/><a href='2649.html'>There are a lot of</a><Br/><a href='2648.html'>Smoking Out the Sn</a><Br/><a href='2647.html'>Vacation, Holiday,</a><Br/><a href='2646.html'>Burly Girls, Bowhe</a><Br/><a href='2645.html'>Personalized and C</a><Br/><a href='2644.html'>Back From The Outb</a><Br/><a href='2643.html'>Walking on Thin Ic</a><Br/><a href='2642.html'>We Are Family</a></div><div class='nav'><a href='2651.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2653.html'> >> </a></div><div class='article'>Amazon Redux). You get a link that only expires if you delete the app. You want to
+do the right thing with it and make sure that, if someone accidentally
+downloads your app, that the link expires before it is ever used by that
+someone. This is, after all, a security feature.
+
+When the package is reinstalled, you can either uninstall it if you want to
+prevent it from ever being reinstalled, or you can leave it there if you want
+to make it easy to reinstall. In order to do the right thing and have the
+right kind of links, you need to take care to uninstall all components of the
+previous version of the package (if any), before the new version is installed.
+The uninstall process will fail if a component of the previous version is
+still in place. This is very similar to the way that apt-get or yum allow you
+to update software or a package.
+
+By the way, this feature is independent of the link that gets created during
+installation. That’s why you can create the .click package locally, in your
+own directory, and then do something like curl -o <some other
+location>/test.tar.gz <my local location>/test.tar.gz and install it by
+unarchiving the tarball to that location.
+
+Conclusion
+
+I originally set out to write a blog post about how to
+distribute an Electron app, and I was going to cover the whole set of options.
+As I got a bit deeper into the problem, I realized that I had already covered a
+lot of what I would write about in a blog post about how to distribute
+Electron apps, so I skipped writing about things I had already written
+about. Hopefully it’s a much better experience for you!
+
+It’s pretty easy to install Electron via Homebrew, and even easier if you are on OS X. If you’re on Linux or Windows, please download the installer from the
+installer page. Be careful, though; I’ve seen people who install the wrong
+version. You may have trouble with Homebrew after doing that, so you may have
+to re-install everything from scratch.
+
+By the way, some packages may not work with your system if you are using
+an older version of Node or Electron. For example, the
+request library may not be supported. You will need to make sure you have
+all the correct versions of all of the dependencies installed and you can
+make sure they work by doing a npm test in the root directory. That will run
+only tests that use packages that are installed in your node_modules
+directory and it will fail if any tests fail. It will also fail if the
+correct versions of the packages don’t work. This will require an
+intermediate step where you build and install your apps in the install
+directory. That’s why I use a build step with a script that can be executed
+in your shell, and that requires the appropriate environment variables to be
+set so that it can find the right versions of all the packages that it needs.
+
+Of course, you can always run the installer and go from there. That’s what
+the people who are saying to go with NPM or
+Electron-builder are saying to do, because they don’t provide an
+installer. But you can do better.
+
+If you want to include a Python module (or multiple modules) that your
+application needs, then you need to use a mechanism that is aware of the
+build process. If you put the Python modules into node_modules, or some other folder in your project folder, then
+whatever program you’re using to install the application will install the
+package globally. And a bad thing may happen, if you haven’t set up the
+Python paths correctly, so that your Python modules can find them.
+
+In order to do the right thing, you need to put your Python modules into a
+directory called dist/ and not in the node_modules directory or any other
+directory. When you run npm install, the installation process goes into
+your dist/ folder and you can load the Python modules there. And when you
+are done with this process, you can add that folder to your Python
+path.
+
+This means that you have to configure your Electron project, such that when
+the package is installed in a node_modules/ subdirectory of your root
+folder, it is installed into your
+node_modules directory in dist/ as well. That’s the easiest way to do the
+right thing in a single command with one command. But if you need to do it in
+more than one way, you’re going to need to have some logic, in your scripts
+to go through multiple commands in order to find the right version of a module
+or modules. There are some tricks you can use to find the right location, so
+that your code works correctly.
+
+When you install your app and it requires libraries and these libraries have
+dependencies on other libraries, you should be able to run all of the commands
+on the project without manually specifying the location of
+the dependencies. Then, all of the dependencies will work for all versions,
+even for future versions of the app that may require different versions of
+those dependencies.
+
+Electron provides an API for that. That means that you don’t have to find the
+right version yourself, and you don’t have to worry about resolving any
+dependencies manually. You can be sure that all dependencies will work, even
+when your app’s location is in a different place, or the application’s user
+changes their Python or Node version. You can be sure that the app will work
+on the Python interpreter on the machine on which the app is installed, even
+if you haven’t yet tested the app. That’s all handled by the Electron API and
+the build tool that comes with it. That’s the point of that part of the API.
+The point of the second part is that you can get the details of your app’s
+Python or Node packages from the Node module exports object and that you can
+use it in your own scripts to import, load, and to get information about the
+packages you are using. This will help you organize your code.
+
+It’s a similar story for other kinds of dependencies, such as databases or
+some file system APIs that you may want to use. If you use a database, make
+sure you are using a package that does not have any system libraries.
+If it uses one, then make sure you use a package that supports multiple
+versions of the same kind of package. This will ensure that the app will work
+on a machine that has the latest version of Python. There are some tricks
+you can do to resolve dependencies, such as installing third-party packages
+to a specific location that you won’t be using for your app. You can do some
+of that by setting environment variables so that the script you are running
+automatically installs it where it will be used.
+
+Aside from these things, there are things that have to do with a lot of the
+other packages. For example, to know what libraries to use to serve files, to
+generate assets, to set up debugging and logging, and so on. The build tool
+includes some configuration for these things, and you can go through it to
+figure out how to do it for your app. That’s the whole point of the build tool.
+
+Now, there are some people who try to make it easier to write automated builds
+scripts that will do everything for you. I mentioned that I spent a while
+trying to make this work. There’s even an effort to make that work, but the
+progress isn’t good enough, as far as I can tell, for me to be able to use
+it. So, you’re on your own, if you want to use a package that only works
+if you put certain stuff into a configuration file. That doesn’t help me
+either, since I’m the kind of person who prefers to leave my packages up to
+the user, and not try to control every little detail about the way a person
+uses the package. I don’t want the details of how someone runs my package, as
+long as they do it. So, here are some reasons why your setup may fail:
+
+My application may depend on an older version of Node than you have. You may
+get the error “command not found” if you try to run my Node module. What you
+should do is check if your Node version supports what I’m using. See if you
+can find out where the Node modules of your app come from. Make sure you have
+enough memory to install the module, because if it doesn’t fit into your
+memory, you will need to clean it up later by running sudo npm cache clean
+or sudo npm cache verify. You can get the details of your memory and other
+resources with the following command:
+
+By default, npm caches modules, so that they only get downloaded once and can
+be used more than once in the same machine. This helps you make sure that
+modules don’t take a lot of space. After you install the app, the installation
+process goes through your package-lock.json file and tells the
+node_modules directory where all the modules are and creates the cache for
+you. So, if</div></body></html><!-- 2022-06-12 21:04:51 
