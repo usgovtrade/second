@@ -1,0 +1,168 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='847.html'>FTL is not possibl</a><Br/><a href='848.html'>Chapter 1.  Once </a><Br/><a href='849.html'>Joe's Bar and Gril</a><Br/><a href='850.html'>Once considered th</a><Br/><a href='851.html'>Chapter 1.  Once </a><Br/><a href='852.html'>Release me. Now. O</a><Br/><a href='853.html'>Chris!  I told you</a><Br/><a href='854.html'>Quietly, Quiggly s</a><Br/><a href='855.html'>Quitetly, Quiggly </a><Br/><a href='856.html'>Joe's Bar and Gril</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='845.html'>Quitetly, Quiggly </a><Br/><a href='844.html'>Chris!  I told you</a><Br/><a href='843.html'>Chapter 1.  Our st</a><Br/><a href='842.html'>Once considered th</a><Br/><a href='841.html'>Quietly, Quiggly s</a><Br/><a href='840.html'>But first, you and</a><Br/><a href='839.html'>Tiffany, you reall</a><Br/><a href='838.html'>Chris!  I told you</a><Br/><a href='837.html'>That turned dark q</a><Br/><a href='836.html'>Chapter 1.  Once </a></div><div class='nav'><a href='845.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='847.html'> >> </a></div><div class='article'>We've recently discovered a new method to 
+identify such groups and as we've completed our analysis in one example, 
+I'd like to share it with you.
+The problem:  The task is to identify a group of employees 
+with similar interests from a list of 20,000 employees.  The goal is to build 
+a program in which the user will enter a group name, and the program will 
+return a ranked list of the employees.
+First we created a list of tags that might define the 
+interests of the employees (as shown below)
+
+By comparing this list to the employee names we may infer that the interest 
+tags "Baseball", "Boating", "Fishing", and "Football" may not be popular 
+among the employees we are studying.  Perhaps they are an accurate list of 
+the employees' interests, but for the sake of our example, let's assume 
+that there are groups of employees who share interests.  
+If there were groups of employees who share interests, we can use the 
+pattern matching technique we reviewed in the previous article (Pattern 
+Matching) to create an initial list of potential "Interest-based Groups". 
+This involves using a "contains" and/or "not contains" condition (or 
+"prefix" and/or "not prefix"  in a typical database system) in our query.
+Query: 
+select distinct a.name
+from htable a
+where a.name not like '%Baseball%' 
+  and a.name not like '%Boating%'
+  and a.name not like '%Fishing%'
+  and a.name not like '%Football%'
+
+This approach takes a lot of time. Because we were not aware of the more 
+powerful string matching abilities of  DBMSs and we were not able to leverage 
+this valuable feature. We also made the same mistake as the SQL programmers 
+did. 
+Because we had a list of interests and the list of employee names, we 
+realized that there was a lot of similarities between the employee names. 
+In our original (naive) approach, we assumed that the names would be 
+unique; in this case they would be unique to the employees. We took advantage 
+of the assumption and we concluded that we could have a common pattern 
+(string) between the list of employee names and the list of interest tags, 
+and use that to extract groups of similar interests. If we use this 
+approach, we are going to save the processing time and will be able to get 
+results much more quickly.
+
+The problem:
+I've already told you the purpose of this example and at this point I have to 
+remind you that what we are going to do is based on a list of employee 
+names and a list of interests. As mentioned above, you may ask, where do 
+we get such lists?
+The solution:
+We have created an artificial list of employee names and of interests by 
+using a random number generator. The sample of interest tags are based on 
+the list of employee names. This means that these lists are artificially 
+created. In the real world however, all of the information you need is 
+already available, and we will show you how to construct the list of 
+employee names (which we will call the "employee-of-interest-list") and the 
+interest list (which we will call the "interest-list"). 
+
+By now you should be familiar with SQL, so you know that when you create 
+your database, the database will create a table called "SYNONYM" and 
+that is the table we are going to use to extract groups of interests. In 
+the interest-list the table will contain the name of the interest. 
+In the employee-of-interest-list the table will contain the name of the 
+employee. 
+
+The query: 
+select name 
+from SYNONYM 
+where exists 
+   ( select c.name 
+      from charTable c 
+     where (c.name like '%Baseball%'
+         or c.name like '%Boating%' 
+         or c.name like '%Fishing%' 
+         or c.name like '%Football%') 
+      and c.name not like '%EmployeeName%') 
+order by name 
+
+This query creates the opportunity to find groups of interest based on 
+an "Interest-based Group Pattern" of the name of the employees that 
+indicates that they have an interest in Baseball, Boating, Fishing and 
+Football.
+
+
+The "Interest-based Group Pattern" in our example is EmployeeName not like 
+'%EmployeeName%'. This means that if we match the employee name with the 
+pattern that we defined, and then extract all of the objects we are going 
+to receive a group of those employees whose names do not match that pattern 
+in the employee-of-interest-list.
+For each row in the employee-of-interest-list, we look at the pattern 
+and try to match it with the names in the interest-list and we look at the 
+resulting match as an interest-based group. The pattern is always 
+determined by our interest. In our example it is (employee name) not like 
+'%EmployeeName%', but this could also be something else. For example, if 
+we were looking for a group of employees whose names start with "Trey" 
+and end with "er". The pattern would be (employee name) like '%Treyer%' 
+and the matching process will have a different result. If you are interested, 
+I would like to show you how to do this as well, but we don't have time for 
+that in this article.
+
+The algorithm is the following:
+
+
+* If there is a match (pattern match) between the 
+employee-of-interest-list and the interest-list for a given 
+pattern, we assume that there exists a group with the same pattern. 
+
+* For each group in the interest-list, we create a group in the 
+employee-of-interest-list.
+
+* We sort the groups based on the name of the interest, and we write 
+a query for each group that will bring us the information for 
+all of the employees from the interest-list.
+
+* We rank the results according to the number of records. We write a query 
+for each group, and we place the employees with a higher number of records 
+in the higher rank, and we place them in the higher rank.
+
+Note that we can apply the same procedure for finding groups of interests 
+on employees with names that start with "C", "F", "H" or whatever it is that 
+you may have in your list. There is no limitation for the pattern we can use 
+for extracting interest-based groups. The reason why we have to create a 
+list of employee names (employee-of-interest-list) and an interest list 
+(interest-list) is that otherwise we could use some more advanced pattern 
+matching features. I will not cover these features, however, and I assume 
+that they are probably already available in your database.
+
+The procedure: 
+This procedure we are going to outline below takes the interest-based list 
+and the interest list, creates an employee-of-interest-list and applies 
+the pattern matching technique described above to extract interest-based 
+groups. The results are a ranked list of groups and we can then sort the 
+groups by the name of the employee to get the employee-of-interest-list. 
+
+The following example is the procedure we have developed for extracting 
+interest-based groups.
+
+
+The most important SQL procedures we will use are "select" to extract the 
+results of the interest-based groups, "rank" to rank the results of the 
+groups and "sort" to sort them.
+
+
+Create the database and the SYNONYM table. This will give us the 
+  
+data set for the interest-based groups. 
+We use "select" to extract interest-based groups. 
+We use "count" to extract the number of rows for each group.
+
+DECLARE empID int;
+
+SET empID=1;
+
+CREATE TABLE employee-of-interest-list 
+( empID int NOT NULL, 
+      name varchar(100) NOT NULL, 
+      name_of_interest varchar(100) NOT NULL);
+
+CREATE TABLE charTable
+( charID int NOT NULL, 
+     person varchar(100) NOT NULL, 
+     name varchar(100) NOT NULL );
+
+The following piece of code is part of the procedure to extract interest- 
+based groups. 
+ 
+Select the interest-based groups: 
+In this section we will first find all of the employee-of-interest-list 
+for each interest in the interest list. 
+We can extract the employee</div></body></html><!-- 2022-06-12 21:02:06 

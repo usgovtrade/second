@@ -1,0 +1,189 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='885.html'>Release me. Now. O</a><Br/><a href='886.html'>That turned dark q</a><Br/><a href='887.html'>Stop dancing like </a><Br/><a href='889.html'>We've recently dis</a><Br/><a href='890.html'>Stop dancing like </a><Br/><a href='891.html'>Chapter 1.  Our st</a><Br/><a href='892.html'>Quietly, Quiggly s</a><Br/><a href='894.html'>FTL is not possibl</a><Br/><a href='895.html'>That turned dark q</a><Br/><a href='896.html'>Chris!  I told you</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='883.html'>Quietly, Quiggly s</a><Br/><a href='882.html'>Ships were lost du</a><Br/><a href='881.html'>Release me. Now. O</a><Br/><a href='880.html'>Once considered th</a><Br/><a href='879.html'>Stop dancing like </a><Br/><a href='878.html'>Chapter 1.  Once </a><Br/><a href='876.html'>Chapter 1.  Our st</a><Br/><a href='875.html'>Concrete may have </a><Br/><a href='874.html'>Chapter 1.  Our st</a><Br/><a href='873.html'>Release me. Now. O</a></div><div class='nav'><a href='883.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='885.html'> >> </a></div><div class='article'>Chapter 1.  Once 
+I wanted to add a specific class to every div, but all the tutorials out there tell you to use classes inside style sheets.  I want to do it in a separate stylesheet.  
+I want to set it to:
+*  width: 100%
+*  height: auto
+*  margin-bottom: 20px
+
+I cannot use an id, because I do not want it to be unique.
+Is this possible?
+(I am not using Django, I am just using PHP and HTML.)
+The code I have now is:
+<div id="about" class="intro">
+   <p>This is the about page</p>
+</div>
+
+<style>
+.intro {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+#about {
+    height: auto;
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: #e8612b;
+}
+</style>
+
+I am not sure if I should put all the above in one .css or if it is better to keep it in one div. This does not work for me.
+
+A:
+
+You should use css to identify the element's type and id when you know it.
+So you can use:
+div.intro {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+#about {
+    height: auto;
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: #e8612b;
+}
+
+<div id="about" class="intro">
+   <p>This is the about page</p>
+</div>
+
+Or if you like, you can use classes.
+div.intro {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+}
+.about {
+    height: auto;
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: #e8612b;
+}
+
+<div id="about" class="intro about">
+   <p>This is the about page</p>
+</div>
+
+A:
+
+#about {
+    height: auto;
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: #e8612b;
+}
+
+This selector is working for the div element that has an id equal to about.
+If you want to target ALL the divs with the class about you can use the following selector:
+.about {
+    height: auto;
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: #e8612b;
+}
+
+A:
+
+if you want to target all of them
+#about {
+height: auto;
+width: 80%;
+margin-bottom: 20px;
+background-color: #e8612b;
+}
+
+if you want to target only one of them (in your case it will be the first)
+.intro {
+height: auto;
+width: 100%;
+margin-bottom: 20px;
+}
+
+if you want to target some of them (in your case it will be all)
+.intro, #about {
+height: auto;
+width: 100%;
+margin-bottom: 20px;
+}
+
+And if you want to target only one inside another:
+.intro .intro {
+height: auto;
+width: 100%;
+margin-bottom: 20px;
+}
+
+Hope that will be helpfull
+
+NOTE: 
+For the latter example I want to say that .intro is not a valid selector. You need to use .intro .intro if you want to apply a style for divs inside another div named intro (inside div named intro), but there are some ways to solve this.
+One of them is add this styles in the parent div of all the inner divs (so all the inner divs are inside the same wrapper), like that: 
+.wrapper .intro {
+height: auto;
+width: 100%;
+margin-bottom: 20px;
+}
+
+and then apply all your styles to wrapper like this:
+<div class="wrapper">
+   <div class="intro">
+     //some contents
+   </div>
+   //some other contents
+</div>
+
+I hope this will be helpfull
+
+EDIT:
+You can try this:
+.intro {
+    height: auto;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#about {
+    height: auto;
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: #e8612b;
+}
+
+<div id="about" class="intro">
+   <p>This is the about page</p>
+</div>
+
+If I'm not wrong the width: 100% will add a margin-left and margin-right to each div and will set the width to the sum of this values: the width of the content + margin-left and margin-right.
+
+I just find out that this behaviour is also causing that my text-align: center; text-align: center; does not work inside of the #about element even if my #about has the property text-align: center;
+
+If this is the behaviour you are looking for, this is the code that will remove it:
+.intro {
+    height: auto;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#about {
+    height: auto;
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: #e8612b;
+}
+
+.wrapper {
+    text-align: center;
+}
+
+<div class="wrapper">
+   <div id="about" class="intro">
+     //some contents
+   </div>
+   //some other contents
+</div>
+
+This way, text-align: center; will work inside of the #about div. However, I must say this is not the best way to do this, since it is possible that some user can put some css rule to override the text-align: center; behaviour
+
+</div></body></html><!-- 2022-06-12 21:02:09 
