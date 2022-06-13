@@ -1,0 +1,121 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='326.html'>FTL is not possibl</a><Br/><a href='327.html'>Chapter 1.  Our st</a><Br/><a href='328.html'>Chapter 1.  Our st</a><Br/><a href='329.html'>Concrete may have </a><Br/><a href='330.html'>Quietly, Quiggly s</a><Br/><a href='331.html'>That turned dark q</a><Br/><a href='333.html'>Once considered th</a><Br/><a href='334.html'>Release me. Now. O</a><Br/><a href='335.html'>We've recently dis</a><Br/><a href='336.html'>Release me. Now. O</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='324.html'>FTL is not possibl</a><Br/><a href='323.html'>Chapter 1.  Once </a><Br/><a href='322.html'>Quitetly, Quiggly </a><Br/><a href='321.html'>That turned dark q</a><Br/><a href='320.html'>Ships were lost du</a><Br/><a href='319.html'>That turned dark q</a><Br/><a href='318.html'>Quietly, Quiggly s</a><Br/><a href='317.html'>Concrete may have </a><Br/><a href='316.html'>We've recently dis</a><Br/><a href='315.html'>Chapter 1.  Our st</a></div><div class='nav'><a href='324.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='326.html'> >> </a></div><div class='article'>We've recently discovered a new method to 
+solve this problem.  It's a more general solution that should work for 
+almost any OLE DB provider.  We use this technique in SQLNCLI.  It also 
+applies to OLE DB Bulk Loader, an excellent tool that ships with SQL 
+Server 2000.
+
+There are only three steps to the solution:
+
+1.  Use "CursorType=adOpenDynamic" on your insert command.  This tells 
+OLE DB to put the rowset handle in the Command object.
+
+2.  Get a valid rowset from the Command object.
+
+3.  Make your insert with the rowset.
+
+For example, to solve the insert problem with Excel using dynamic 
+cursors, do the following:
+
+--Create test table and put data in it
+Create table ExcelTest
+(ID int identity, Data varchar(100))
+
+--Insert into ExcelTest using an insert command object
+Insert into ExcelTest
+   (ID, Data)
+select 1, 'This data goes to the first row in Excel'
+union all select 2, 'And this data goes to the second row'
+
+--Get the ID of the first row in Excel. Excel has added rowset handles
+--to the command object.
+declare @InsertID int
+set @InsertID= (Select Min(ID) from ExcelTest)
+
+--Open a dynamic cursor and get a recordset from the command.
+--The rowset is a real, live rowset, so we can use the "openrowset" command
+--as if it were any other rowset.
+
+declare @rowset_type as nvarchar(128)
+declare @open_mode as int
+declare @fetch_size as bigint
+
+set @open_mode= 2
+set @fetch_size = 1
+
+exec master.dbo.sp_OACreate
+  @objname=N'dbo.OpenRowset',
+  @object_id=@rowset_type OUTPUT,
+  @fetch_direction=@fetch_size,
+  @ownsobject=1,
+  @hastransaction=1
+
+declare @RC int
+exec @RC=@open_mode
+
+--Now we get the rowset handle in our command
+
+set @InsertID=@InsertID+@fetch_size
+
+--Finally, we can get an INSERT command that works with the rowset handle.
+
+select 'This next set will load the rows in the OLE DB rowset into SQL Server.'
+--If you didn't get the rowset handle and the next line fails, open a separate
+--command object, open a cursor, then call the 'next' function to get the ID
+--of the rowset handle.
+
+--We have the rowset handle now, so we can insert rows into our destination
+--table.
+
+ exec sp_executesql @Statement = N'Insert into Test
+   (ID, Data)
+   values (@ID, @Data)',
+   N'@ID int, @Data varchar(100)',
+   @ID=@InsertID, @Data='This data goes to the last row in Excel'
+
+--If all is well, the above insert statement is executed, and the row gets
+--inserted into the destination table.
+
+select *
+from Test
+order by ID
+
+--Clean up
+drop table ExcelTest
+drop table Test
+drop table #test
+
+Now, with this, you can insert rows into any destination table from
+OLE DB or OLE DB Bulk Loader. It works with all database vendors
+supported by SSIS.  
+
+This solution was implemented in SQL Server 2005 RTM. 
+We hope it helps to save you the headaches you've been having with
+inserting data into a destination table from an OLE DB or OLE DB Bulk 
+Loader source table.
+
+--Scott Barber (barber@mvp.edu)
+
+SQL Server Integration Services provides capabilities to 
+extend applications, solve business problems, and build business-focused applications
+using the full power of SQL Server as the core data source. 
+Incorporating advanced technologies like advanced business rules, OLE DB,  SQL Server Analysis Services and more, SSIS enables more efficient and effective software development teams. 
+For more information, visit http://www.microsoft.com/integration
+
+--The MVP Team at Microsoft
+--http://msdn.microsoft.com/library/default.asp?url=/library/en-us/mvp_support/sql_ssis_2005_release_notes.asp
+
+This post was published on http://www.sqlservercentral.com/SQLServer2005/Content/IntegrationServices/Articles/MVPColumn.asp. Please check there for updates and corrections.
+
+This post was written by MVP Sergio Tulentsev and is posted under the express permission of Microsoft and MVP Sergio Tulentsev.
+
+This is an excellent article!
+Thank you!
+
+I was trying to pass in arguments using OLE DB Sources which use an ADO Recordset.  The "use multiple ADO objects" part did not seem to make sense so I did not try it.  Is this a valid use case?  I can't seem to find a clear documentation on this part... maybe I'm using the wrong search term.
+
+A:
+
+There is a similar question on MSDN for multiple ADO connections:  Multiple Active ResultSets and ADO.NET.  This was probably written for Visual Studio 2005, but it should be valid for SQL Server 2005 also. 
+This MSDN page: How to: Open a DataReader Using a SQL Server Connection has a code example for multiple ADO recordsets. Also check out this question on MSDN SQL Server Connection Pooling and Multiple Active ResultSets 
+
+</div></body></html><!-- 2022-06-12 21:01:25 

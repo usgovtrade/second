@@ -1,0 +1,228 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='383.html'>Once considered th</a><Br/><a href='384.html'>Joe's Bar and Gril</a><Br/><a href='385.html'>That turned dark q</a><Br/><a href='386.html'>Release me. Now. O</a><Br/><a href='387.html'>That turned dark q</a><Br/><a href='388.html'>That turned dark q</a><Br/><a href='389.html'>Chapter 1.  Our st</a><Br/><a href='390.html'>Quietly, Quiggly s</a><Br/><a href='391.html'>Chapter 1.  Our st</a><Br/><a href='392.html'>Joe's Bar and Gril</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='381.html'>Ships were lost du</a><Br/><a href='377.html'>Once considered th</a><Br/><a href='376.html'>Stop dancing like </a><Br/><a href='375.html'>Quitetly, Quiggly </a><Br/><a href='374.html'>Stop dancing like </a><Br/><a href='372.html'>Chapter 1.  Once </a><Br/><a href='371.html'>Quitetly, Quiggly </a><Br/><a href='370.html'>FTL is not possibl</a><Br/><a href='369.html'>Chris!  I told you</a><Br/><a href='367.html'>But first, you and</a></div><div class='nav'><a href='381.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='383.html'> >> </a></div><div class='article'>We've recently discovered a new method to 
+build
+  new features in Perl 5 called "XSUBs" (Experimental Subroutines).
+This document details some of the benefits of XSUBs and details the 
+mechanics of
+  using them.
+
+=head1 Synopsis
+
+In a nutshell, the mechanism allows you to take a Perl subroutine,
+convert its signature, and then use it in a completely new signature.
+For example, suppose we had a subroutine
+
+    sub foo
+    {
+        ...
+    }
+
+we can take the subroutine and convert it into a Perl 5 XSUBs object with
+
+    my $xs = XSUBs::foo->new( ... );
+
+You can then call XSUBs to apply the subroutine to some arguments.
+XSUBs will automagically convert the args into the required "arg type"
+for your subroutine. The signature of a function is a really powerful
+feature in Perl 5. However, because the signatures are so flexible, you
+can easily end up with many small subroutines with few arg types in
+use. This can become messy very quickly. XSUBs takes all this extra
+information out of the equation.
+
+For a more in-depth discussion of what is going on, please read the
+XSUBs::Intro article. That should give a better
+overview of the system. This document details the implementation of
+the object and its arguments and provides some usage examples. It is
+not a how-to document, but should give you an idea of what the code
+looks like.
+
+=head2 Basic Use
+
+You should always use XSUBs via a class.
+
+    #!/usr/bin/perl -w
+    use XSUBs::Stuff;
+
+    my $thing = XSUBs::Thing->new(
+	arg1 => shift,
+	arg2 => shift,
+	arg3 => shift,
+    );
+
+To illustrate the usage, I'll define a simple class
+
+    package XSUBs::Stuff;
+
+    use XSUBs;
+
+    sub new {
+	my ($class, $args) = @_;
+
+	return bless {}, $class;
+    }
+
+    sub foo {
+	my $self = shift;
+
+	return ($self->arg1 + $self->arg2) / 2;
+    }
+
+    1;
+
+The method that gets called here, foo(), takes two arguments.
+We don't care about the actual argument types, we'll work them out when
+we call foo().
+
+    my $thing = XSUBs::Thing->new(
+	arg1 => 1,
+	arg2 => 3,
+    );
+
+    my $result = $thing->foo(2);
+
+    print "$result\n"; # prints 5
+
+This provides a very powerful method of building new subroutines
+without needing to write all that code yourself. (I'll assume you
+already have an XSUBs class here, that isn't part of the base Perl
+module set).
+
+If you call foo() on an XSUBs object, it will then use the method signature
+to construct the args. So we could have
+
+    my $thing = new XSUBs::Stuff(
+	arg1 => 1,
+	arg2 => 2,
+    );
+
+    $thing->foo(); # prints 5
+
+    my $thing = new XSUBs::Stuff(
+	arg1 => 3,
+	arg2 => 4,
+    );
+
+    $thing->foo(); # prints 7
+
+If you define an XSUBs object like the above, you can easily build new
+subroutines with one or two args, as you see in the examples above.
+However, in the real world, we often have more. The above examples
+have shown using two args, but you can have as many as you like. If
+you want to define an XSUBs object with three args, all you need to
+do is add an arg3 to the new() method.
+
+    # Create the XSUBs object with 3 arguments
+
+    my $thing = new XSUBs::Stuff(
+	arg1 => 1,
+	arg2 => 2,
+	arg3 => 3,
+    );
+
+Then call foo() with three args as above. It will construct the method
+signature automatically, calling our method definition as required.
+(The default args will be 'undef' in most cases, which is why the above
+examples didn't explicitly have 'undef' args.
+
+If you had provided
+
+    my $thing = new XSUBs::Stuff(
+	arg1 => 1,
+	arg2 => 2,
+	arg3 => undef,
+    );
+
+then XSUBs would simply ignore arg3 when constructing the subroutine.
+
+This is where XSUBs really shines. Instead of writing many
+different subroutines with different signatures, you can use
+XSUBs to create a generalized, higher level method.
+
+For example, suppose we wanted to take two numbers, subtract one of
+them, and then take the result and put it in the first arg.
+
+    #!/usr/bin/perl -w
+    use XSUBs::Stuff;
+
+    my $thing = new XSUBs::Stuff(
+	arg1 => shift,
+	arg2 => shift,
+    );
+
+    my $result = $thing->subtract(sub {
+	    return $_[0] - $_[1];
+	});
+
+    print "$result\n"; # prints 4
+
+We never needed to define a new subroutine in this example, we just had
+to call it in a different place. One could easily define all kinds of
+different subroutines with different signatures and just call them
+via XSUBs.
+
+You can also define subroutines to take arguments of varying types.
+For example, say we wanted to allow you to take some options to
+subtract with. We could define a constructor like so:
+
+    #!/usr/bin/perl -w
+    use XSUBs::Stuff;
+
+    my $options = {
+	option1 => {
+	    isa => 'Integer',
+	    value => 8,
+	    # etc.
+	},
+	option2 => {
+	    isa => 'ArrayRef',
+	    size => 6,
+	    # etc.
+	},
+	option3 => {
+	    isa => 'Numeric',
+	    value => 5.9,
+	    # etc.
+	},
+    };
+
+    my $thing = new XSUBs::Stuff(
+	arg1 => $options->{arg1},
+	arg2 => $options->{arg2},
+    );
+
+The XSUBs class takes the definition and creates the args accordingly.
+Since we defined the various options as references, the arg type is
+also given as a reference. Also note that the number of arguments
+matches the number of elements in the arrayref.
+
+So, once again, all you need to do is specify the args and the
+methods. The XSUBs class takes care of everything else for you.
+
+=head2 The Args
+
+XSUBs is really powerful when you consider that it knows the arguments
+from the return type.
+
+There are three important features of an argument. First, the class of
+the argument. Second, any type modifiers the method signature supports.
+And third, the var arg list, which represents an ordered array of
+arguments that can be passed to any method.
+
+All types are derived from the core Perl type system. So all arguments
+can be represented as strings or references. If the subroutine doesn't
+care about an argument, then the arg type will be 'undef'. In the
+example above, $self is a reference. The return type is an integer
+likewise.
+
+XSUBs allows you to specify arbitrary number of var args. You can specify
+as many as you like by passing a reference of arbitrary size to the
+args. The last arg is an arrayref, which specifies the number of args
+beyond the var args. The arg type is the final arg, which
+will either be the base type or a reference to the base type.
+
+So, a typical method definition is
+
+    sub bar (Int $x, $y, $z = undef, ArrayRef[1,2,3] $myArrayref) {
+	return "$x $y $z";
+    }
+
+This defines three arguments.</div></body></html><!-- 2022-06-12 21:01:29 

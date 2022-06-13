@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='377.html'>Once considered th</a><Br/><a href='381.html'>Ships were lost du</a><Br/><a href='382.html'>We've recently dis</a><Br/><a href='383.html'>Once considered th</a><Br/><a href='384.html'>Joe's Bar and Gril</a><Br/><a href='385.html'>That turned dark q</a><Br/><a href='386.html'>Release me. Now. O</a><Br/><a href='387.html'>That turned dark q</a><Br/><a href='388.html'>That turned dark q</a><Br/><a href='389.html'>Chapter 1.  Our st</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='375.html'>Quitetly, Quiggly </a><Br/><a href='374.html'>Stop dancing like </a><Br/><a href='372.html'>Chapter 1.  Once </a><Br/><a href='371.html'>Quitetly, Quiggly </a><Br/><a href='370.html'>FTL is not possibl</a><Br/><a href='369.html'>Chris!  I told you</a><Br/><a href='367.html'>But first, you and</a><Br/><a href='366.html'>FTL is not possibl</a><Br/><a href='365.html'>Chapter 1.  Once </a><Br/><a href='364.html'>FTL is not possibl</a></div><div class='nav'><a href='375.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='377.html'> >> </a></div><div class='article'>Stop dancing like that.  it looks like 
+you're performing some mating rituals of your own!
+--
+
+A:
+
+The first thing you should do is make sure you are in the root of your project.  Make sure you don't accidentally execute a script from an off-root location, especially if you are running your script via a cronjob or something similar.  Then you should cd into the project root:
+cd /path/to/project/root
+
+I cannot verify this to be true for all environments, but when I do something like 
+cd ~
+
+that changes to my home directory, which will be different if you are root or not.  So, I always have to cd - to return to the root project directory before attempting to cd to a sub directory in that directory.  The reason this is important is because if you are running from a script somewhere else that is not the project root, you may find yourself in a sub directory in your project root.  So, the first thing to try is to be sure the working directory is in the project root, if that doesn't work you can try the cd - 
+I also want to mention you could use something like this in your crontab to start the script. Just because it's in your crontab doesn't mean your cronjob runs as root. However if you are running a cronjob to start the script from an off root directory, it's pretty likely that it is a crontab user account that has little to no privileges (or privilege at all), and that the root/project root directory is not a default executable location, so you will need the full path. The following is good for both a cronjob and the crontab user running the script. It has to be executed from the project root. 
+cd /path/to/project/root
+./start_script.sh
+
+I don't know the directory you are cd'ing from, so I'll just use the path, /etc/path/to/project/root
+If you aren't running a crontab and you aren't in the project root, try the following. 
+cd /path/to/project/root
+../start_script.sh
+
+If you aren't in a working directory that is higher than the project root (e.g. /path/to/project is the project root, and /path/to/project/scripts is above that and you want to cd into /path/to/project/scripts), use 
+cd /path/to/project/root
+cd ../..
+cd /path/to/project/scripts
+
+I know this is what I use a lot. It seems simple enough to not need to specify the whole path all the time. I hope it helps. 
+Happy coding!
+
+A:
+
+You have to be in the project directory (or the parent directory).
+
+If you are in a sub directory,
+cd ..
+cd project_dir
+
+Else, you can use one level up
+cd project_dir/parent_dir
+
+A:
+
+What you have to do depends on whether you want the script to be relative to the directory your shell script is in, or you want the shell script to be relative to your working directory.  If you want the script to be relative to the directory your shell script is in, you can use either
+cd /path/to/project/root
+. start_script.sh
+
+or you can define your working directory in the shell script itself.
+If you want to make the script relative to your working directory, you can do something like this:
+cd /path/to/project
+cd ..
+cd /path/to/project/scripts
+/path/to/project/scripts/start_script.sh
+
+or this
+cd /path/to/project/root
+cd ..
+cd /path/to/project/scripts
+cd /path/to/project/scripts/start_script.sh
+
+Note that you have to cd up twice, not just once! That is because cd .. moves to the parent directory (so, the directory one level up) in the current working directory. Since the current working directory is /path/to/project/root, and we want to change to /path/to/project, we need to do cd ../.. to change to the parent directory of /path/to/project (i.e. /path/to/project/root).
+
+If you want the script to be relative to /path/to/project/root, you can do this:
+cd /path/to/project/root
+cd ../..
+cd /path/to/project/scripts
+/path/to/project/scripts/start_script.sh
+
+or this:
+cd /path/to/project/root
+cd ../..
+cd /path/to/project/scripts
+./start_script.sh
+
+(Notice, here, we don't need to cd up twice).
+
+Note that I assume you want to start the script in /path/to/project/root/scripts, rather than in your home directory. 
+If that's the case, the command would look like this:
+cd /path/to/project/root
+cd ..
+cd /path/to/project/scripts
+cd scripts
+scripts/start_script.sh
+
+or this:
+cd /path/to/project/root
+cd ..
+cd /path/to/project/scripts
+. start_script.sh
+
+or if you want the script to be relative to /path/to/project/root/scripts:
+cd /path/to/project/root
+cd ..
+cd /path/to/project/scripts
+./start_script.sh
+
+or this:
+cd /path/to/project/root
+cd ..
+cd /path/to/project/scripts
+. start_script.sh
+
+You also have some options about the start_script.sh script that would be helpful for someone who knows more about UNIX:
+
+The shebang line in the script (#!/bin/bash) should be changed to either #!/bin/bash or  #! /path/to/project/root/scripts/bash, depending on whether you want the script to be executable by anyone or just you. It should be the second, I think (to make it not executable by anyone else), but if the script is supposed to be executable by anyone, then you might want to change that, too.
+If your system supports UNIX groups, then you could do something like:
+chmod -r 777 /path/to/project/root/scripts/start_script.sh
+chgrp -R root /path/to/project/root/scripts/start_script.sh
+chmod -r g+s /path/to/project/root/scripts/start_script.sh
+
+which would grant you, as the owner of the script, access to all the group members of your group.
+
+</div></body></html><!-- 2022-06-12 21:01:29 
