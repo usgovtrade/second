@@ -1,0 +1,25 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2200.html'>Scene News: Warez,</a><Br/><a href='2201.html'>Tell a Good Lie, N</a><Br/><a href='2202.html'>I'm the Puppet Mas</a><Br/><a href='2203.html'>Going Down in Flam</a><Br/><a href='2204.html'>Trial By Fire</a><Br/><a href='2205.html'>The First 27 Days</a><Br/><a href='2206.html'>Y'all Making Me Cr</a><Br/><a href='2207.html'>I'd Never Do It To</a><Br/><a href='2208.html'>The Reunion</a><Br/><a href='2209.html'>The Beauty in a Me</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2198.html'>Swoop In For The K</a><Br/><a href='2197.html'>The Line Will Be D</a><Br/><a href='2196.html'>Starvation and Lun</a><Br/><a href='2195.html'>Ready to Bite the </a><Br/><a href='2194.html'>I'm Not As Dumb As</a><Br/><a href='2193.html'>People are leaving</a><Br/><a href='2192.html'>Double Agent</a><Br/><a href='2191.html'>The Poison Apple N</a><Br/><a href='2190.html'>You Guys Are Dumbe</a><Br/><a href='2189.html'>aidood.com</a></div><div class='nav'><a href='2198.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2200.html'> >> </a></div><div class='article'>AI and Neural-Net generated portraits in both qualitative and quantitative aspects.
+
+Conclusion
+==========
+
+By exploring a new data-driven method to generate facial composites, we proposed an end-to-end approach, i.e., PSPNet, to generate various identities in a sequential manner. To train a good generator to create high quality face images, we use the identity-conditional supervision, where the images of the same identity have a much higher correlation in comparison with those of the different identities. To handle the uncontrollable poses and illuminations, we learn the pose and illumination transformations, which will provide useful information for us to generate various kinds of facial images under a fixed pose and illumination condition. The proposed PSPNet has demonstrated its effectiveness in generating high quality facial images in a more flexible and controllable way, which can be used as one potential solution to solve the long-standing challenge for face anti-spoofing systems.
+
+[^1]: Codes will be available on <https://github.com/zeyon94/pspnet>.
+
+[^2]: Corresponding author
+
+[^3]: In the dataset, we cannot train our models using the training and validation set together, because this strategy might be unfair to the data distribution and overfit on a particular set. Therefore, to obtain a fair result, we train models separately, and then evaluate the models using the testing set.
+
+[^4]: [www.vislab.saitama-med.ac.jp/en/softwares/fsa-soft/fsimit/](www.vislab.saitama-med.ac.jp/en/softwares/fsa-soft/fsimit/)
+
+[^5]: [face2face.org](face2face.org)
+
+[^6]: We do not use VGGFACE to generate the eye images, because the eye images of the same identity are very similar and this may cause a bias in our model.
+
+[^7]: More results are available in the author’s demo website at [](http://www.zeyon94.com/pspnet).
+
+[^8]: We try to use the same dataset with the official VIT-CVD dataset but did not find a similar dataset.
+
+[^9]: Note that we do not use the identity-conditional supervision in training this model because it is not applicable here.
+</div></body></html><!-- 2022-06-12 21:04:07 

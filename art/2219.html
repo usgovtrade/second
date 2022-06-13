@@ -1,0 +1,137 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2220.html'>I Was Put on the P</a><Br/><a href='2221.html'>It’s a ‘Me’ Game, </a><Br/><a href='2222.html'>Young at Heart</a><Br/><a href='2223.html'>The Finish Line Is</a><Br/><a href='2224.html'>It All Depends on </a><Br/><a href='2225.html'>Only Time Will Tel</a><Br/><a href='2226.html'>Friends?</a><Br/><a href='2227.html'>Apocalyptic fictio</a><Br/><a href='2228.html'>This end justifies</a><Br/><a href='2229.html'>Internships, and I</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2218.html'>My Kisses Are Very</a><Br/><a href='2217.html'>aickle.com</a><Br/><a href='2216.html'>To Betray, or Not </a><Br/><a href='2215.html'>I Should Be Carrie</a><Br/><a href='2214.html'>This Is Extortion</a><Br/><a href='2213.html'>Whiners are Wiener</a><Br/><a href='2212.html'>New employees have</a><Br/><a href='2211.html'>We Found Our Zombi</a><Br/><a href='2210.html'>The Importance of </a><Br/><a href='2209.html'>The Beauty in a Me</a></div><div class='nav'><a href='2218.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2220.html'> >> </a></div><div class='article'>ailiar.com)
+ *
+ * Copyright (c) 2005-2020 Mahmoud Fayed <msfclipper@yahoo.com>
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+ * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+package org.htmlparser.util;
+
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.io.IOException;
+import java.nio.CharBuffer;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.Stack;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import org.htmlparser.util.StringSplitter;
+import org.htmlparser.util.TextUtils;
+
+/**
+ * A swing utility class for HTML parsing
+ * 
+ * @author Mahmoud Fayed
+ * @see http://sprunge.us/eOAO
+ */
+public class HtmlParser {
+
+	public static final int WIDTH = 500;
+
+	public static final String[][] NAMES = {{"abort", "accept", "accesskey", "action", "alt", "async", "autocomplete",
+			"autofocus", "autoplay", "autosave", "auxbutton", "beforeprint", "bgcolor", "charset", "checked",
+			"cite", "class", "clear", "code", "codebase", "codetype", "color", "cols", "colspan", "content",
+			"contenteditable", "contextmenu", "controls", "coords", "data", "datetime", "defaultChecked",
+			"defaultValue", "dir", "dirname", "disabled", "download", "draggable", "dynsrc", "enctype", "face",
+			"first", "form", "formaction", "formenctype", "formmethod", "formnovalidate", "formtarget",
+			"frame", "framespacing", "height", "hidden", "home", "href", "httpupstream", "id", "ieurlfix", "image",
+			"images", "input", "isindex", "ismap", "itemid", "itemprop", "itemref", "itemscope", "itemtype",
+			"keyparams", "kind", "label", "lang", "layer", "leftmargin", "link", "loop", "lowsrc", "malignmark",
+			"manifest", "marginwidth", "marginheight", "maxlength", "media", "method", "multiple", "name", "nohref",
+			"noresize", "noshade", "noscript", "nowrap", "object", "onabort", "onafterprint", "onbeforeprint",
+			"onbeforeunload", "onblur", "onchange", "onclick", "oncontextmenu", "ondblclick", "ondrag",
+			"ondragend", "ondragenter", "ondragleave", "ondragover", "ondragstart", "ondrop", "onerror",
+			"onfocus", "onhelp", "onkeydown", "onkeypress", "onkeyup", "onload", "onmousedown", "onmousemove",
+			"onmouseout", "onmouseover", "onmouseup", "onreset", "onselect", "onselectionchange",
+			"onselectionfocus", "onsubmit", "onsuspend", "onunload", "open", "optimum", "pattern", "ping",
+			"pluginspage", "prompt", "radiogroup", "readonly", "rel", "required", "rev", "rows", "rowspan",
+			"rules", "sabotage", "scope", "selected", "shape", "size", "type", "url", "value", "width", "wrap",
+			"xml:base", "xml:lang", "xmlns", "xmlns:svg", "xmlns:xlink", "xmlspace", "xsl:use-attribute-sets",
+			"xsl:with-param", "xsl:with-param-namespaces", "xsl:with-param-value", "xpath", "xpath1",
+			"yanchor", "yofocus", "zindex"};
+
+	private static final String[][] OPS = {{"get", "haschild", "hasparent", "hasnext", "hasprevious", "moveToBeginning",
+			"moveToEnd", "moveToNext", "moveToNextSibling", "moveToPrevious", "moveToPreviousSibling", "moveToTextEnd",
+			"moveToTextStart", "replace", "replaceAll", "replaceFrom", "replaceText"};
+
+	private static final String ELEMENT_SIGNATURE = "<element";
+	private static final String PROCESSING_SIGNATURE = "<element-processing";
+	private static final String EMPTY_ELEMENT_SIGNATURE = "<element>";
+	private static final String END_TAG_SIGNATURE = "</element>";
+	private static final String START_TAG_SIGNATURE = "<element>";
+
+	public static final String[] CLASS_NAMES = {null, "class", "align", "action", "id", "lang", "shape", "size", "type"};
+
+	private static final Pattern HTML_ATTRIBUTE = Pattern.compile("\\s*(?=<[a-z])[a-zA-Z]*");
+
+	/**
+	 * Listens on TableModelEvent.
+	 */
+	private static class Listener implements TableModelListener {
+
+		public void tableChanged(TableModelEvent e) {
+			final int column = e.getColumn();
+
+			if (column == 0) {
+				try {
+					htmlParserInput_addChar(column);
+				} catch (BadLocationException ex) {
+					// ignore the bad location exception
+					// it occurs because the first column is not an html element so we have to ignore it
+				}
+			} else if (column == 1) {
+				try {
+					htmlParserInput_addAttribute(column);
+				} catch (BadLocationException</div></body></html><!-- 2022-06-12 21:04:09 
