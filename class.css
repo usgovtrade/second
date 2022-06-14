@@ -1,27 +1,66 @@
+.logodiv{
+  width:35px;
+  position:fixed;
+  --margin-left:90%;
+  margin-left:5px;
+  margin-top:-5px;
+  background-color:;
+  top:10px;
+  padding:0;
+  z-index:-999;
+  --margin: auto;
+  border-radius:6px;
+  background-color:;
+}
+
+.logoimg:hover {
+  filter: invert(0.60);
+}
+
+.logoimg{
+ width:35px;
+  filter: invert(0.99);
+  
+}
+
 .stats{
   float:left;
   color:grey;
   padding-right:10px;
+  position:fixed;
+  padding-top:25px;
 }
 
 .list{
-  float:right;
+  --float:right;
   color:grey;
   padding-right:10px;
   padding-left:5px;
+  position:fixed;
+  margin-left:82%;
+  --background-color:blue;
+  white-space:nowrap;
 }
 
 .nav{
    color:grey;	
-   font-size:1.25em;
-	padding-top:5px;
+   font-size:1.35em;
+	padding-top:10px;
 	text-align:center;	
+  position:fixed;
+  top:-1px;
+  --margin-top:-10px;
+  padding-bottom:-10px;
+  margin-left: 55px;
+  --z-index:-1;
+  --background-color:green;
 }
 
 .topnav{
   float:right;
   display:inline-block;
   padding-right:10px;
+  position:fixed;
 }
 
 .article{
@@ -32,8 +71,6 @@
   border-radius:10px;
 }
 
-@media screen { .article { width: 100%; } } //desktops/laptops
-@media handheld { .article { width: 100%; } } //mobile devices from https://stackoverflow.com/questions/13979443/if-screen-resolution-is-less-than-x-append-css
 
 body {
   background-color: rgb(11, 11, 11);
@@ -50,6 +87,12 @@ div.article{
   font-size:1.10em;
   color:black;
   background-color:white;
+ margin: auto;
+  margin-top:10px;
+  width: 60%;
+  padding: 10px;
+  border-radius:10px;
+  
 }
 
 input{
@@ -69,4 +112,10 @@ a:visited { text-decoration: none; color:#CBC3E3; }
 a:hover { text-decoration: underline; background-color:lightblack;color:white;}
 a:active { text-decoration: none; }
 
-.activelink{	background-color:brown;}
+.activelink{	background-color:brown;} 
+
+
+@media screen { .article { width: 100%; } } //desktops/laptops
+@media handheld { .article { width: 100%; } } //mobile devices from https://stackoverflow.com/questions/13979443/if-screen-resolution-is-less-than-x-append-css
+
+
