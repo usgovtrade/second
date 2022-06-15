@@ -151,7 +151,7 @@ h1 {
     background-image: url("/img/elephant.svg");
     background-size: contain;
     background-repeat: no-repeat;
-    background-color:#96DDFF;
+    --background-color:#96DDFF;
 }
 
 /*table style from bootstrap*/
