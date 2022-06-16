@@ -61,9 +61,17 @@
 
       <div class="footer-logo"></div>
       <footer>
-        <p class="text-muted">Updated on June 14, 2022.
+	      <p class="text-muted">Updated on <span id='date'>June 14, 2022</date>.
           Inspired by <a href="https://numchk.com/">NumChk.com</a>. Free to use under the <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a> license.
         </p>
       </footer>
+<script>
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+today = mm + '/' + dd + '/' + yyyy;
+document.getElementById('date').innerHTML = today;
+</script>
   </body>
 </html>
