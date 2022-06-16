@@ -1,0 +1,75 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3046.html'>The Dragon Slayer</a><Br/><a href='3047.html'>Chaos Is My Friend</a><Br/><a href='3048.html'>I still like to go</a><Br/><a href='3049.html'>Capital investment</a><Br/><a href='3050.html'>Cut Off the Head o</a><Br/><a href='3051.html'>That's a bald-face</a><Br/><a href='3052.html'>Suck It Up and Sur</a><Br/><a href='3053.html'>Criminal Attorney,</a><Br/><a href='3054.html'>It's Funny When Pe</a><Br/><a href='3055.html'>This Game Respects</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3044.html'>Crack in the Allia</a><Br/><a href='3043.html'>Death of an Allian</a><Br/><a href='3042.html'>It's A Fickle, Fic</a><Br/><a href='3041.html'>Trade-war shortcut</a><Br/><a href='3040.html'>Surprise and...Sur</a><Br/><a href='3039.html'>Top 10 illegal ite</a><Br/><a href='3038.html'>Pick a Castaway...</a><Br/><a href='3037.html'>I'm Going for a Mi</a><Br/><a href='3036.html'>Don't be Blinded b</a><Br/><a href='3035.html'>The Devil You Do o</a></div><div class='nav'><a href='3044.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3046.html'> >> </a></div><div class='article'>aimmew.com/blog/2008/12/imap-and-s-mta-on-a-linux-host.html
+However, with this setup, it is quite cumbersome to update IMAP and SMTP parameters for the servers and clients.
+I would like to know, can this be automated? Can I somehow have a script that detects the servers, retrieves the parameters, and updates them automatically, without the need to manually intervene?
+
+A:
+
+There are a lot of options that you can use:
+
+scripting language that you can use in the cron of your server.
+make a bash script and execute it with cron.
+use a tool like puppet or cfengine to do this
+
+So that way, when you install a new server, you don't have to check each and every configuration manualy, it will be done by the scripts.
+
+A:
+
+Here's a command I found that does the trick:
+imapsync --update-parameters --server-type=IMAP
+
+Just run this and every parameter should be up to date.
+For all you want to know about this tool, look here: imapsync manpage
+
+A:
+
+What you have to do is either to set up a cron job that runs the appropriate script to update your imap configuration, or if you have shell access and are comfortable with the CLI, create an alias in your bashrc to perform the update. This is how I would do it:
+
+Open /etc/bashrc
+Open ~/.bashrc
+Add this line: alias updbld = "imapsync --update-parameters --server-type=IMAP"
+Save and close the two files.
+From now on, any time you open a new terminal window, you will have the alias ready to run.
+
+I used this same technique to enable me to perform the update of all my servers by using an alias.
+
+UPDATE:
+Based on the OP's comments, this is what I would do. Create two shell scripts in a folder on your home directory, e.g. $HOME/scripts.
+I would then, at least once, run both of them and check the file they output into.
+Then I would write a script that runs those scripts in a crontab, creating the appropriate aliases or shortcuts for this.
+
+This all relies on the fact that the output of each script is in the same folder the scripts live in, and each script outputs into a file with the same name.
+
+The two files, in their current folder are:
+
+up1.sh
+up2.sh
+
+Script 1:
+#!/bin/sh
+#up1.sh
+#updates the config of the IMAP server at imap1.test.com
+echo "Imap Server: imap1.test.com" >> $HOME/output1
+#rest of your code
+
+Script 2:
+#!/bin/sh
+#up2.sh
+#updates the config of the IMAP server at imap2.test.com
+echo "Imap Server: imap2.test.com" >> $HOME/output2
+#rest of your code
+
+Make sure that you don't use any other character than a hyphen or whitespace in your filenames, or your script won't execute properly (filenames in linux are case-sensitive).
+In my system, I have a crontab like this:
+01 * * * * /home/me/scripts/up1.sh
+02 * * * * /home/me/scripts/up2.sh
+
+The first run of up1.sh starts at a minute past midnight, and runs up to midnight. The second run of up2.sh starts at one minute past midnight, and runs up to midnight.
+I used those hours in the third line so I don't run the scripts during the day when I log in. The time can be anything as long as the sequence above is respected.
+As I said, you might need some of the information given here to determine how to do all this.
+
+For the case that you're logged in and can access all the machines, you could put your current working directory in your $PATH, e.g. if /home/me/ is the folder that the scripts live in, use /home/me/scripts/up1.sh as your command.
+
+I hope this answer helps you out.
+Please let me know if you have any questions.
+
+</div></body></html><!-- 2022-06-15 19:05:06 
