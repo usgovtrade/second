@@ -1,0 +1,179 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2794.html'>aidriod.com</a><Br/><a href='2795.html'>Suck It Up and Sur</a><Br/><a href='2796.html'>This bread ain't g</a><Br/><a href='2797.html'>One Thing Left To </a><Br/><a href='2798.html'>Phone tracking enr</a><Br/><a href='2799.html'>Luxury appearal an</a><Br/><a href='2800.html'>I’m just feelin’ m</a><Br/><a href='2801.html'>Election Erection </a><Br/><a href='2802.html'>Mutiny</a><Br/><a href='2803.html'>The Final Showdown</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2792.html'>Oh no, how did I m</a><Br/><a href='2791.html'>Your Job is Recon</a><Br/><a href='2790.html'>Water was found on</a><Br/><a href='2789.html'>Gotta Risk it For </a><Br/><a href='2788.html'>Proposition bet</a><Br/><a href='2787.html'>Game of Chicken</a><Br/><a href='2786.html'>The Truth Works We</a><Br/><a href='2785.html'>Perception is Not </a><Br/><a href='2784.html'>foxbum.com </a><Br/><a href='2783.html'>bothyp.com</a></div><div class='nav'><a href='2792.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2794.html'> >> </a></div><div class='article'>It is a bit odd that this is a new-ish feature of Swift, but when
+it works, it makes using strings in Swift extremely enjoyable.
+
+I'm pretty sure this is a performance-oriented language
+characterization that Swift will never actually get right.
+
+> \- Optional wrapping of nullable types
+
+This is one of the things I _really_ hope to never see: using Optionals to
+express things that are either true or false, but cannot legitimately be both
+at the same time.
+
+> So I feel like the core of Rust, in terms of what it allows you to express,
+> has changed very little since its inception
+
+I can't deny this. I really wish there was a language that could combine the
+efficiency of a low-level language like Rust with the expressiveness of a
+higher-level language like Python (where I could do "print name if name else 0"
+rather than having to put everything in an if-else cascade).
+
+One of the major lessons of my (limited) experience with Rust is that it feels
+_wrong_ to have to use a language like this to achieve the expressiveness and
+ease of development of a language like Python.
+
+~~~
+Animats
+_I 'm pretty sure this is a performance-oriented language characterization
+that Swift will never actually get right._
+
+Swift is designed for safety, not performance. That's the whole point of it.
+Performance comes with additional testing and debugging. It's not a high-level
+language. It's a low-level language with a slightly unusual control flow
+structure and syntax. It would have been more interesting if it had been
+written as something between C++ and Haskell, with less memory churn, but
+Swift is not that language. It's an embedded version of C.
+
+That's why the compiler emits so many temporary variables and uses so much
+stack space. It doesn't make up for inefficiencies elsewhere. It's a hard
+problem to optimize high-level languages for safety without killing the
+expressiveness.
+
+~~~
+dwaite
+> Swift is designed for safety, not performance.
+
+It has to be both: if you want a language that has high-level features, but
+has a runtime safe for mission critical systems, then you need something
+written in a low-level language and compiled down with a static verifier (or
+some equivalent) to verify safety. All of the hard problems of a compiler for
+a high level language come from the runtime - safety _first_ , efficiency
+later.
+
+Now it may be better at both (I haven't benchmarked either language). But
+unless you use one in a context where that does not matter (e.g., embedded),
+it should be _designed_ as though you do.
+
+------
+jernfrost
+This made me sad. I think Swift is pretty neat, but to me the one issue with
+Swift is that it is so difficult to deal with errors in Swift compared to
+things like Python.
+
+I've always found this annoying because Python is so much simpler to do error
+handling and to define new functions. Swift has a nice type system and elegant
+syntax, but it is one of the very few programming languages I can imagine
+people being scared of using it for this reason alone.
+
+~~~
+nkozyra
+What you're missing is Swift supports two approaches to error handling. Swift
+error handling is more like Java/C# where exceptions are only for serious
+unexpected conditions and otherwise you deal with errors in your own way.
+Swift provides error handling in the standard library using either do-
+notation and/or do-try-catch blocks. Swift also supports returning errors.
+
+I don't think either of these approaches are particularly better than another,
+they're just different, but I personally find the Swift approach more verbose.
+
+~~~
+jernfrost
+The C/C++ way of error handling is the least verbose way. If the caller of a
+function could reasonably expect the function to execute correctly, return a
+non-error value and then catch the error in a callback handler and do
+whatever.
+
+You can do that in Swift as well. You do not need to add error handling code
+on every level.
+
+It is less cumbersome than doing a ton of exception handling code or manual
+error handling in every function.
+
+Having used swift a bit, it has one major disadvantage over C/C++: it only
+supports exceptions, no way of returning a different kind of error.
+
+In my opinion its an essential feature in C/C++, but C#/Java got it right.
+They both support exceptions and returning errors from functions. Swift and
+C++ both want to do everything in their own way, but it can lead to
+unnecessary complication and is an extra barrier to entry for people new to
+the language.
+
+~~~
+nkozyra
+Yes, you can do that in Swift. And that's basically the way it has been done
+for a long time. Apple, for example, has a ton of these kinds of functions.
+
+Swift has exceptions. The problem is you cannot safely return from them.
+
+In theory you could return nil from one of these functions in Swift (and you
+can do that now with Objective-C) and in practice no one does this; they're
+more likely to return a new instance of whatever class you're calling.
+
+Swift doesn't support "pure" error handling, but it does support returning
+errors (and you can do that now in Objective-C), it just uses a more verbose
+style for it.
+
+~~~
+jernfrost
+And C++ still supports returning errors from functions. You just catch it with
+try/catch. So the argument is moot.
+
+You can't try to return nil with exceptions. You just get undefined behavior.
+
+~~~
+nkozyra
+Maybe you should read what I wrote more closely before commenting.
+
+~~~
+jernfrost
+Let me put this in another way. If you want to take user input, call into
+C++/C code etc. You can't return errors from that function. Thats because
+calling convention forbids that. Errors must be handled by the caller.
+
+In case you really need to do some error handling on the caller side in a C
+type of way you can define your own error type and the error handler function.
+But then you really have to code error handling, not just return from a
+function which is what happens with exceptions. You would need to use an
+external function in C++ to do this.
+
+Swift actually doesn't even allow you to return errors in functions. So even if
+you don't have use cases like input validation, I don't see how its worth it
+to start with.
+
+So yes Swift have a more verbose style for error handling, but you can't do
+that better in Swift in my opinion. What other way are you thinking of doing
+it?
+
+~~~
+chii
+> What other way are you thinking of doing it?
+
+in C/C++, you'd usually wrap up the potentially error inducing stuff in a
+wrapper function. so you do the actual check/return error, and then pass the
+result to the wrapper function. It means that you have to write an wrapper for
+every error inducing function, and each wrapper will contain the error
+handling logic, but that's the same for any other language, including c#.
+
+~~~
+jernfrost
+But you don't need that if you do as you describe. Just return error in the
+function which returns the function. That is a language independent approach.
+That is basically the same as you can do in Python with exceptions, except in
+Python you don't have to handle the error manually.
+
+But then again I don't really understand why it would be important to return
+errors in a language specific fashion in the first place. If you don't like
+that, then use exceptions.
+
+You seem to be advocating throwing more error prone code down to the caller.
+At which point the fact that Swift is safer to work with than many other
+languages become irrelevant in comparison. I find it hard to be sympathetic to
+that argument since you can just write that error prone code directly in
+Swift and be done with it, without having to take in additional error handling
+code.
+
+------
+rntz
+See also Swift 4's SE-0185, which is effectively a new keyword for explicitly
+disposing of and then returning a value from a function. "func ...
+retUnwrapped() -> Unwrapped</div></body></html><!-- 2022-06-15 19:04:40 

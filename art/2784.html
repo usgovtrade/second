@@ -1,0 +1,76 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2785.html'>Perception is Not </a><Br/><a href='2786.html'>The Truth Works We</a><Br/><a href='2787.html'>Game of Chicken</a><Br/><a href='2788.html'>Proposition bet</a><Br/><a href='2789.html'>Gotta Risk it For </a><Br/><a href='2790.html'>Water was found on</a><Br/><a href='2791.html'>Your Job is Recon</a><Br/><a href='2792.html'>Oh no, how did I m</a><Br/><a href='2793.html'>It is a bit odd th</a><Br/><a href='2794.html'>aidriod.com</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2783.html'>bothyp.com</a><Br/><a href='2782.html'>Dinner, Movie and </a><Br/><a href='2781.html'>Gettin' to Crunch </a><Br/><a href='2780.html'>Top 10 illegal ite</a><Br/><a href='2779.html'>Quick on the Draw</a><Br/><a href='2778.html'>Neanderthal Man</a><Br/><a href='2777.html'>The Generation Gap</a><Br/><a href='2776.html'>The Circle of Life</a><Br/><a href='2775.html'>Pick a Castaway...</a><Br/><a href='2774.html'>Boys vs. Girls</a></div><div class='nav'><a href='2783.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2785.html'> >> </a></div><div class='article'>foxbum.com 
+http://egroupware.martymacabre.com/
+
+(and there are other sites using it in conjunction with phpBB - i didn't want to list every one)
+I was going to use the PHPBB template system (tmpl) to generate the basic html but, well, i didn't want to have to do that.
+I had found a project named eZComponents which was basically a bunch of components that were very easy to use for creating html sites.  It's not in a production stage but it's still fairly usable and very cool.  Here's an example of how you would build your web page:
+use eZComponents;
+
+/* create web page from a template */
+$web_page = new ezweb_page;
+$web_page->setTitle('My First Web Page');
+$web_page->addCss('styles/style1.css');
+$web_page->setDescription(
+   'This is my first eZComponents example. It builds a basic html page.');
+
+/* Add a heading */
+$web_page->addHeading('Heading 1');
+
+/* Add some content */
+$web_page->addText('<h2>Heading 2</h2>');
+$web_page->addImage('images/image1.jpg', array('width'=>'300','height'=>'500'));
+$web_page->addComponent(new eztemplate_block('my_title'));
+
+/* Create your content like this (the order matters):
+ *  1) add a component to the page (add content)
+ *  2) add a section to the component (add a group, add subcomponents to it)
+ *  3) add another component to the page
+ * etc...
+ */
+$web_page->addComponent(new eztemplate_block('my_paragraph'));
+
+$web_page->addGroup(new eztemplate_block('my_sub_section'));
+
+$web_page->addComponent(new eztemplate_block('my_image'));
+
+$web_page->addComponent(new eztemplate_block('my_footer'));
+
+$web_page->render();
+
+I did a little extra work to make it look a little more like what I was looking for, but you get the idea. If anyone wants to take a look at the template system and the eZComponents components, take a look at this. You can get the latest version (including the template system and ezComponents) at the site above.
+You can find more information about the eZComponents project in this blog post. 
+
+A:
+
+Just came across PHP-e107 which does a better job (in my opinion) for adding a forum on top of phpbb, has a good admin interface and supports the latest PHPbb3 out of the box
+
+A:
+
+You could look at PHP-e107. This is a wrapper for the e107 project, but the core modules do work without e107. It does everything you need, but it does add a few extra layers (database, configuration, etc)
+For a non-phpbb implementation check out Zoneminder. It is free and open source, and is very well integrated with php (it even has templates!).
+
+A:
+
+http://www.ezcomponents.org/
+This is a free php5 toolkit used in this forum http://www.xhprof.com/.
+It provides a lot of functions for php projects, including, components such as:  
+
+Template Manager 
+Forum
+Blog
+
+It is very easy to use and customize.
+One thing to note: 
+It is very easy to use and customize.  You may prefer to use other things that are not included but if you are looking for a simple way to have phpbb with multiple blogs, forums, etc. and integrate with Mysql, this may be the thing for you.
+
+A:
+
+There are numerous such solutions for PHP, many of them available from a single install. Many are commercial, but many are free, and some of those free are more complete than others. I'm familiar with e107 which does just what you describe, including support for any number of forums that you wish. There's another one, eZ Platform, that I've seen before and it was also very nice but it did a lot more than that.
+I've looked into using PHPBB myself on a project once and although PHPBB is nice and mature and has a lot of features that can be adjusted using the administration interface, I found that it didn't scale very well and was pretty heavy in terms of system requirements, especially if you go beyond a couple of hundred posts.
+
+Regarding those "more than one post is not an option", that is a fairly common problem and there are numerous options, all with different pros and cons. The good thing about PHP is that you can combine as many libraries and components as you need and each one can serve the need of one person or many. You can't do that with the typical forum code I've seen in the wild, the component that handles posts needs to handle them all.
+
+If you really have a problem with having more than one post on a page, the way to solve that problem is probably to use a different implementation for the pages that need it. Since the posts are usually fairly large, they take up a fair amount of space and so you can load up the content with the page and then let the user click a link to view the post. In the case of images, it may not work to embed them into the page because of the nature of the file transfer protocol used by the internet.
+There are some ways to send the full post information from a form directly to the post database, but they are fairly limited and have a number of drawbacks. For example, in all cases I know of, unless you are using PHP 4 (which is long out of development for the most part and no longer supported by any serious server) or PHP 5 (again no longer supported by many servers and not available in most servers), you cannot interact with forms sent directly via POST with the use of Javascript and that makes handling forms on the server a little more difficult. Another example is that HTML 3.0 didn't have a way to make the form action attribute set to something other than the URL of the form's own page, so you really needed to either use frames (which are pretty old and ugly) or embed an image that was an iframe, and that was slow and had other drawbacks. Nowadays, you can send forms to other servers with Javascript or you can add attributes with Javascript in Firefox and IE, but if you do that with some browsers (which I think includes some of the popular servers) that can interfere with the action of the form so that when you go back to the previous page the form is set to the old action.
+
+</div></body></html><!-- 2022-06-15 19:04:39 
