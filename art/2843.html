@@ -1,0 +1,109 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2844.html'>Involuntary Drug T</a><Br/><a href='2845.html'>Honesty Would Be C</a><Br/><a href='2846.html'>The Beginning of t</a><Br/><a href='2847.html'>tegrabank.com</a><Br/><a href='2848.html'>The Biggest Fraud </a><Br/><a href='2849.html'>men got closer to </a><Br/><a href='2850.html'>Let's Make a Move</a><Br/><a href='2851.html'>Wikileaks 0day</a><Br/><a href='2852.html'>aimaty.com</a><Br/><a href='2853.html'>Shot Into Smithere</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2842.html'>Betrayals Are Goin</a><Br/><a href='2841.html'>botboa.com</a><Br/><a href='2840.html'>The Twist</a><Br/><a href='2839.html'>Ruling the Roost</a><Br/><a href='2838.html'>botingtonpost.com</a><Br/><a href='2837.html'>aillth.com</a><Br/><a href='2836.html'>as it’s recommende</a><Br/><a href='2835.html'>Tell a Good Lie, N</a><Br/><a href='2834.html'>Anger, Tears and C</a><Br/><a href='2833.html'>The Sole Surviving</a></div><div class='nav'><a href='2842.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2844.html'> >> </a></div><div class='article'>Fraudential Package en route Redirection". The packet has the following information:
+Destination:
+Destination: IP of the victim's machine (which is behind a NAT) and has some IPsec IKEv2 or ISAKMP Proxy enabled (that one's really easy).
+Destination: IP of the victim's machine (which is behind a NAT) and has some IPsec IKEv2 or ISAKMP Proxy enabled (that one's really easy).
+Destination: IP of the victim's machine (which is behind a NAT) and has some IPsec IKEv2 or ISAKMP Proxy enabled (that one's really easy).
+Source: IP of the victim's machine.
+Source: IP of the victim's machine.
+Source: IP of the victim's machine.
+Source: IP of the victim's machine.
+Source: IP of the victim's machine.
+Source: IP of the victim's machine.
+Source: IP of the victim's machine.
+Source: IP of the victim's machine.
+Source: IP of the victim's machine.
+
+I already have the IPs of those "routers", but I can't find out how to proceed. What I need is a program that can check if that IP is vulnerable to some redirection vulnerability and if it is, take control of the session for a certain time. I've been reading about NMAP for a while now, but it's really hard to find info about attacks to the victim machine when a redirect is involved.
+For instance, the above package would be valid if any of the two conditions below were true:
+
+The victim has an IPsec IKEv2 or ISAKMP Proxy enabled (that's really easy!)
+The victim is vulnerable to CVE-2014-6270 (The ISAKMP key reinstallation CVE)
+
+I am not trying to learn how to exploit those bugs/exploits, nor do I have a victim machine. I am just learning.
+
+A:
+
+The way to determine if a machine is vulnerable to a redirection vulnerability is to check it's own browser, to see if it is vulnerable. You can't really use the nmap to do it.
+That leaves you with using wget or something similar. Once you know that the victim's machine is vulnerable, it becomes easier. But as I mentioned you don't really need it.
+I will do a quick example here of what I mean. You can adjust for your needs later.
+#!/usr/bin/env python
+
+import subprocess
+
+def check_vuln_redir(machine):
+    url = "http://google.com"
+    cmd = ["wget", "-S", "--spider", url]
+    result = subprocess.run(cmd, stdout=subprocess.PIPE)
+    for line in result.stdout.split('\n'):
+        m = re.match(r"(?m)^<a href=.*?\">.*?\".*?</a>", line)
+        if m:
+            print(m.group(1))
+
+for host in ["127.0.0.1", "192.168.10.5", "192.168.10.6"]:
+    if check_vuln_redir(host):
+        print("Vulnerable")
+    else:
+        print("Safe")
+
+Note: There are a lot of different redirection vulnerabilities and they can be combined to do something more than just redirects. But that can be learned if you're dedicated to this. But I want to show you how to check if something is vulnerable and even I don't know what a good answer is. You can search the internet for any redirection vulnerability and you will find plenty of scripts that detect it and all the details you need to do it yourself.
+Now to see if a system is vulnerable:
+You can adjust check_vuln_redir() to use https://code.google.com/p/isakmp-redirector/ to check for any redirection vulnerability. All the redirects that we test are listed there. If you want to test it yourself you can use the same URL for wget in the script. If you want to know how to exploit the vulnerability, you should learn about it and you will find several sources out there.
+If you run the script on any computer, it will run in an endless loop of 'not vulnerable' or 'vulnerable'. If you are on a vulnerable computer, you will see the vulnerable line. If not, you will see nothing and it just runs forever.
+
+A:
+
+A simple, easy way to start is something like:
+wget -O /dev/null -q -O /dev/null --spider http://redirector.google.com
+
+I don't have google redirector's IP whitelisted on my firewall so I can't tell you the exact results for the script you posted.
+But here's an example response:
+====================================
+DNS resolution of 2.0.0.1 failed: NXDOMAIN
+Spider mode enabled. Check if remote file exists.
+====================================
+
+====================================
+DNS resolution of 62.149.64.14 failed: NXDOMAIN
+Spider mode enabled. Check if remote file exists.
+====================================
+
+====================================
+DNS resolution of 67.205.56.147 failed: NXDOMAIN
+Spider mode enabled. Check if remote file exists.
+====================================
+
+Which indicates the 2.0.0.1 was not a valid IP. The first IP I grabbed from Google results page was in fact valid:
+$ wget -O /dev/null -q -O /dev/null --spider http://www.google.com
+--2015-06-12 18:41:41--  http://www.google.com/
+Resolving www.google.com (www.google.com)... 173.194.69.139
+Connecting to www.google.com (www.google.com)|173.194.69.139|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+
+And the remote file exists and its a file. It's a 301 header back to the useragent's address!
+$ wget -O /dev/null -q -O /dev/null --spider http://google.com
+--2015-06-12 18:46:26-- http://google.com/
+Resolving google.com (google.com)... 172.217.17.142, 172.217.18.16, 172.217.18.143, ..., 172.217.17.126
+Connecting to google.com (google.com)|172.217.17.142|:80... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+...
+
+It's the same for that other CVE that will give you back the site that redirected you to the vulnerable webserver.
+$ wget -O /dev/null -q -O /dev/null --spider http://google.com
+--2015-06-12 18:45:56-- http://google.com/
+Resolving google.com (google.com)... 172.217.18.143, 172.217.18.16, 172.217.18.143, ..., 172.217.18.126
+Connecting to google.com (google.com)|172.217.18.143|:80... connected.
+HTTP request sent, awaiting response... 301 Moved Permanently
+...
+
+I'm not going to look for all the responses for a search though you can search for CVE 2014-6271 for Google's vulnerability response to Google and other sites to know if it will respond and when it did.
+You can look for other CVEs and see when the site that was vulnerable to it was hacked and that may give you a clue if it was done due to a redirection vulnerability.
+Example:
+$ wget -O /dev/null -q -O /dev/null --spider http://ssltest.globalsign.com/
+--2015-06-12 19:06:46-- http://ssltest.globalsign.com/
+Reusing existing connection to ssltest.globalsign.com:80.
+Resolving ssltest.globalsign.com (ssltest.globalsign.com)... 10.0.3.3
+Connecting to ssltest.globalsign.com (ssltest.globalsign.com)|10.0.3.3|:80... connected.
+HTTP request sent, awaiting response... 200 OK
+...
+
+The Google search</div></body></html><!-- 2022-06-15 19:04:45 

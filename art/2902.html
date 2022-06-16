@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2903.html'>It Is Not a High W</a><Br/><a href='2904.html'>Friendly Fire</a><Br/><a href='2905.html'>Personal Injury At</a><Br/><a href='2906.html'>It isn’t immediate</a><Br/><a href='2907.html'>It Comes Down to T</a><Br/><a href='2908.html'>Many of the apocal</a><Br/><a href='2909.html'>The Strongest Man </a><Br/><a href='2910.html'>4chan and 8chan ar</a><Br/><a href='2911.html'>This is Why You Pl</a><Br/><a href='2912.html'>Nacho Momma</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2901.html'>The Good Guys Shou</a><Br/><a href='2900.html'>Feels Like a Rolle</a><Br/><a href='2899.html'>I've Been Bamboozl</a><Br/><a href='2898.html'>Who's Zooming Whom</a><Br/><a href='2897.html'>Cult Like</a><Br/><a href='2896.html'>Remote surveillanc</a><Br/><a href='2895.html'>The Great White Sh</a><Br/><a href='2894.html'>I am thinking of y</a><Br/><a href='2893.html'>A Big Surprise... </a><Br/><a href='2892.html'>Ready to Play Like</a></div><div class='nav'><a href='2901.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2903.html'> >> </a></div><div class='article'>And what can I Say?!?!?!?!
+<ogra> i need to be there physically for that
+<ogra> so i cant come to UDS at all
+<plars> it's certainly an interesting conundrum
+<ogra> hmm, actually not a problem
+<mterry> slangasek, do you know the kernel config option that turns on kprobes?  I seem to not have that, but some of our kernel patches disable CONFIG_KPROBES=y on !ARM
+<slangasek> mterry: not off-hand; do you know why you need it turned on?
+<mterry> slangasek, the whole point of kprobes is for performance profiling, right?
+<slangasek> mterry: yes
+<slangasek> mterry: "performance profiling" :)
+<mterry> slangasek, OK.  :)  But yeah, I need kprobes turned on, even if we don't turn it on for other arches.  What I mean is, I want to know if this config option is somehow in our config set, or not set at all (and I'm missing it)
+<slangasek> if you want to use kprobes for performance profiling, you generally have to enable the kprobes kconfig option
+<mterry> slangasek, oh really?  That's fine then, then
+<mterry> I will do that
+<mterry> but there is a conditional in our kernel package so you can turn it off for architectures that don't support it
+<mterry> (it uses that config option)
+<slangasek> mterry: yes, please set up the kprobes config option regardless - it's only a performance optimization if you're actually going to use it :)
+<slangasek> otherwise it's pointless
+<mterry> slangasek, right, of course.  I will do so.  Thanks
+<slangasek> if you're not actually going to use it, having it turned off in the kernel package means you won't get the performance optimization
+<slangasek> but it should be present for boot time profiling
+<mterry> slangasek, OK, k
+<ogra> sigh, why cant i get my second NIC on my laptop to work on my second VM ... *sigh*
+<ev> cjwatson: I guess you didn't see I got bug #746275? :)
+<ubottu> Launchpad bug 746275 in ubiquity (Ubuntu Natty) "Can't access the web during install with ubiquity" [Medium,Incomplete] https://launchpad.net/bugs/746275
+<ev> do you have any thoughts on it?
+<ogra> slangasek, is the bootchart stuff supposed to work with the new kernel ?
+<ogra> slangasek, i have a system here that doesnt finish booting, it ends up at a black screen
+<ogra> slangasek, is there a special kernel needed to make that work ?
+<cjwatson> ev: could you attach /var/log/syslog and /var/log/installer/debug?
+<slangasek> ogra: it's working fine here, but there's no reason it shouldn't work with the oneiric kernels - please file a bug
+<ogra> slangasek, i'm fine with reporting the issue, i just wanted to know if its because i use lucid kernels on lucid :)
+<slangasek> ogra: it'll be kernel, sure
+<cjwatson> ogra: nope, I just updated it to latest upstream
+<cjwatson> (from 2.6.37)
+<ev> cjwatson: sure thing
+<ogra> ogra, lucid ? 
+<ogra> !
+<ogra> i'm running maverick
+<ogra> thats why i am in an IRC channel with lts in the name ;)
+<cjwatson> well, yes, I did say "lucid" earlier, but yes I mean the hardware
+<ogra> ah, ok
+<ogra> well, it also is possible that my nfs shares are to blame, i can see the luks prompt and all in my kern.log but i cant read the content
+<ogra> so there might be some issue there ...
+<cjwatson> /dev/pts is mounted?
+<ogra> it is
+<cjwatson> (that is indeed a kernel bug but the kernel can't do anything about it)
+<ogra> yeah, its a weird issue indeed 
+<ogra> bah
+<cjwatson> ah, bah, you have the old nfs mount code ...
+<ogra> right
+<cjwatson> ok, I'll fix that soon
+<ogra> in maverick
+<ogra> so i get the whole system in front of me i'll poke around and see what i can find
+<ogra> no hurry ... its just a bit annyoing that everythimg seems to get stuck
+<ogra> *everything
+<cjwatson> do you know what the kernel command line was?
+<ogra> no, though i see the luks stuff in there
+<ogra> i'll try to find something similar on a running system
+<ogra> hmm, i see the UUID twice, is that normal ? 
+<cjwatson> I doubt it
+<ogra> seems all fie systems use different values
+<cjwatson> could you put /var/log/installer/debug on paste.u.c or something?
+<ogra> gah, it doesnt show anything without the extra UUID being on there
+<cjwatson> what doesn't?
+<ogra> the prompt that asks to type something
+<cjwatson> it's supposed to be hidden but I can turn it off in the UI if you like
+<ogra> no, its just the prompt of the luks-encrypted partition
+<ogra> i mean that one
+<ogra> *the* one
+<ogra> ok, the content of the command line gets pasted from the kernel message
+<ogra> i still only see "begin: Running head for script /usr/share/finish-install/finish-install"
+<ogra> it never gets to "end: Back to main menu" and no errors occur (my test system is a headless server running a kvm guest though)
+<ogra> and i cant find any additional details in /var/log/installer/debug either
+<cjwatson> well, the problem here isn't the kernel
+<cjwatson> I'm seeing a similar thing here
+<cjwatson> it's in code called by the kernel before the initramfs runs
+<ogra> so is this a kernel regression or is there something deeper that can be fixed ? 
+<cjwatson> I don't know, that's why I'm asking you to log the debug messages
+<cjwatson> I just wanted to ensure we didn't have a real problem here
+<ogra> i cant access any logs apart from kern.log and dmesg
+<ogra> and thats the content of /var/log/kern.log
+<cjwatson> /var/log/boot is empty?
+<ogra> no, but /var/log/dmesg is what i pasted above
+<ogra> (and yes, empty, but thats expected)
+<cjwatson> well, that won't give you much ...
+<ogra> and no boot.log in /var/log/
+<cjwatson> what hardware is this?
+<ogra> my laptop
+<ogra> intel atom netbook
+<cjwatson> you were very quick to say "no boot.log"
+<ogra> its running maverick
+<cjwatson> I mean is it an imx51 or something similar?
+<ogra> yup
+<ogra> not running armel but i dont think thats special here
+<ogra> imx51 that is
+<cjwatson> ok
+<cjwatson> what I'm trying to tell you is that /var/log/boot on an imx51 is empty because I didn't have time to implement that in the default kernel build
+<ogra> understood
+<cjwatson> did the initramfs ever run?
+<ogra> i have an initramfs on the system if that makes a difference
+<ogra> yes
+<cjwatson> yeah, you have to press enter in order for it to actually try anything
+<cjwatson> I mean, that's how it's supposed to work
+<ogra> ah, ok
+<cjwatson> this looks to me like something to file against plymouth
+<ogra> well, i would guess there is more stuff that doesnt work if there is no luks
+<ogra> or do you have that on lucid too ? 
+<cjwatson> I have it on lucid
+<cjwatson> what you're seeing is due to it not being there
+<ogra> ok
+<ogra> well, its a maverick build on maverick i think
+<ogra> at least it didnt have any maverick stuff added in config
+<ogra> ok, i have to leave for a bit now ... but filing a bug if the kernel logs reveal anything and i'll also look at the initramfs setup, just to make sure i dont overlook anything
+<ogra> s/kernel logs/kernel logs for me/
+<ogra> *if they</div></body></html><!-- 2022-06-15 19:04:51 
