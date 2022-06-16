@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://usgov.trade/sitemap.txt
