@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2981.html'>Death of an Allian</a><Br/><a href='2982.html'>When he stood up a</a><Br/><a href='2983.html'>smoremail.com</a><Br/><a href='2984.html'>Another argument a</a><Br/><a href='2985.html'>Feels Like a Rolle</a><Br/><a href='2986.html'>The Dead Can Still</a><Br/><a href='2987.html'>The Devils We Know</a><Br/><a href='2988.html'>Work From Home, Ho</a><Br/><a href='2989.html'>Let's Get Rid of t</a><Br/><a href='2990.html'>The Circle of Life</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2979.html'>Surveys, questiona</a><Br/><a href='2978.html'>The Great Lie</a><Br/><a href='2977.html'>He's a Snake, But </a><Br/><a href='2976.html'>Udder Revenge</a><Br/><a href='2975.html'>I Trust You But I </a><Br/><a href='2974.html'>Greatest of the Gr</a><Br/><a href='2973.html'>We Found Our Zombi</a><Br/><a href='2972.html'>You Better Be Wear</a><Br/><a href='2971.html'>Why Aren't You Swi</a><Br/><a href='2970.html'>Ductile Disfunctio</a></div><div class='nav'><a href='2979.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2981.html'> >> </a></div><div class='article'>Risk it for the bisket, k?
+<jussi> so just do a sudo update-grub and thatll fix grub
+<BluesKaj> ok thanks guys , much appreciated :)
+<jussi> (or a normal sudo update-grub)
+<ikonia> BluesKaj: don't see why your still seeing it
+<ikonia> BluesKaj: maybe worth a look at that grub file and check what it's actually looking at
+<ikonia> are you using a non-default kernel (eg: non-standard kernel) or an initrd that's messed
+<ikonia> maybe worth a look at the grub files for an interesting error
+<ikonia> BluesKaj: I've put you on the ignore list, as your not helping or listening to advice
+<ikonia> BluesKaj: so best not to try to chat with you any more
+<BluesKaj> ikonia, I'm not using any kernel not listed in the grub menu , unless you mean "linux-generic-pae"
+<ikonia> BluesKaj: I mean anything non-standard that you have listed in the grub.cfg
+<BluesKaj> no such file , grub.cfg
+<BluesKaj> oh yeah wait
+<BluesKaj>  grub.d
+<jussi> BluesKaj: also, please keep in mind that as this channel is generally used by many people, if there is something that you need help with, just ask a question,  we usually respond with useful information for a while, but not necessarily a fix. As ikonia said earlier, sometimes things need a bit of time.
+<BluesKaj> jussi, yeah , that's why I was asking for more detail on other users suggestions/comments , like which pci cards are better supported , rather than a one sentence answer
+<jussi> BluesKaj: it is sometimes difficult to give an answer, as some info isnt available - I find a lot of that is because people come here asking for a particular solution and arent giving enough information. 
+<BluesKaj> jussi, it's difficult for me to see why grub is not seeing windows at all, if it's in the pation list of grub2 
+<jussi> BluesKaj: it may not be, but at the moment, you are unable to see the file or whatever. So I could just be completely wrong. 
+<jussi> but thats something you need to check
+<BluesKaj> ok I'll check it out , maybe there's some new pci card that is better supported 
+<BluesKaj> jussi,^
+<jussi> BluesKaj: good luck :)
+<jussi> have fun!
+<BluesKaj> and thx jussi , think I'm getting closer to some kind of resolution 
+<BluesKaj> yeah, and if you don't know the answer, just let it be :)
+<jussi> BluesKaj: I _always_ let it be :)
+<BluesKaj> ok , this is what I got in my grub.d   http://pastebin.com/wJ8NQ2U5
+<BluesKaj> jussi, ^
+<jussi> BluesKaj: sorry, never seen a grub.d before - maybe someone else has some more ideas...
+<BluesKaj> ok thanks anyway, I'll give up on it for now 
+<ikonia> I'd be tempted to go through that process manually with a text editor
+<ikonia> see if there are any key words the windows partition is associated with
+<ikonia> or look for any additional windows config in the grub config itself.
+<ikonia> worth looking at it
+<BluesKaj> yeah, I think I'll give that a try as well , ikonia 
+<ikonia> the grub 2 config is complex, and I can't remember off the top of my head, what options are used on what partition
+<BluesKaj> ok ikonia ,thanks for the suggestion
+<ikonia> however the manual grub config can be really powerful if you use it, or can be an exercise in stupidity if you are not careful
+<ikonia> BluesKaj: just look at the grub files and see if there is a file for the windows partition, or if there is any associated info in the config files that could explain the problem
+<BluesKaj> right , i'll check it out , ikonia :)
+<ikonia> you know what I mean, just read it and see if there is anything associated in there
+<ikonia> not something that "should" be in the boot loader but maybe something that you've done that's made it think it's windows
+<ikonia> I know some odd partitioning scenarios can cause problems
+<ikonia> but that's nothing you've said in your problem so I'm just throwing stuff at it
+<BluesKaj> ikonia, I don't understand the linux-image-2.6.32-33-generic reference , the only installed kernels are 2.6.32.27.29 and 32.28.12.21
+<ikonia> BluesKaj: as I said, I have no idea if they are even supported by the later versions of grub, hence I suggested it could just be that ubuntu has put that config there, but maybe has also put config about windows that grub 2 has no idea about and can't apply
+<ikonia> BluesKaj: if you can't see the file why not just back up that whole file and put the windows one back ?
+<ikonia> BluesKaj: what does it actually do to the boot process though to have the line - do you think ?
+<ikonia> it's not like windows has "changed" so if you don't want the message - you wouldn't be making a big deal out of removing it, would you
+<BluesKaj> ikonia, I have no idea , it's a mystery for sure , and I've never had grub do that on any other linux os 
+<ikonia> what are the chances it will make any differnce if you remove it ?
+<ikonia> if it works if you don't remove it, what's the point of changing it to see if removing it fixes it
+<ikonia> as that is the point I was trying to make earlier with the config, you changed the config, I think in name of learning but actually doing nothing, now the change has broken it, you want to find out why, you've changed the config, what other info did you change around ?
+<ikonia> what other things in your config has windows not told you ?
+<ikonia> could be a simple as "you have an additional entry in your windows config, lets just remove it"
+<ikonia> (or was that your question)
+<BluesKaj> ikonia, do you think I should remove it ..? I mean the windows entry is just for the boot loader prompt ...grub2 doesn't show a menu ...I think it has to do with the fact I have 2 drives ...windows is on the secondary drive and linux on the primary 
+<ikonia> I don't know, I didn't even think of a primary/secondary drive configuration as a possible factor
+<BluesKaj> I'm not really sure what that entry even does ...I think it just lets me choose which drive to boot, otherwise I could choose which device to boot with the key combo in my bios ... but it's kind of a guess
+<BluesKaj> that's why I wanted to know what the message was that bootloaders generates by default for windows
+<ikonia> I just find it hard to believe that grub is just printing out the menu.lst entry for windows
+<BluesKaj> ikonia, maybe I'm overlooking a very obvious thing , but as I said, this is a new situation for me so i'm trying to piece it all together :)
+<ikonia> is there any chance you can see the contents of your "grub.cfg" file for windows ?
+<BluesKaj> don't think so ikonia , as I say, the menu still works , it's just annoying 
+<ikonia> or if you manually re-make grub.cfg can you put the entry for windows back in there
+<ikonia> I'm just trying to find the "how" your menu is getting the "unknown file type" message
+<ikonia> ahhh
+<ikonia> is there a %h in the menu entries ?
+<BluesKaj> not really ..
+<ikonia> if not, %n in the menu entries ?
+<ikonia> looks like there is
+<ikonia> so %n in the windows partition ?
+<ikonia> that would explain why you are seeing the error 
+<ikonia> I'm just trying to work out why the windows entry says "unknown file type"
+<ikonia> so %n in the windows partition has been added to some config file, but not in menu.lst
+<BluesKaj> ikonia, yeah %n, I just noticed that and have no idea why...I think it's in the chainloader (iirc) file
+<BluesKaj> b</div></body></html><!-- 2022-06-15 19:04:59 

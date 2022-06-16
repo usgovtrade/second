@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='2965.html'>Appearances are De</a><Br/><a href='2966.html'>on their next atta</a><Br/><a href='2967.html'>No Longer Just a G</a><Br/><a href='2968.html'>Hemorrhoid Permane</a><Br/><a href='2969.html'>Sport Cars, On and</a><Br/><a href='2970.html'>Ductile Disfunctio</a><Br/><a href='2971.html'>Why Aren't You Swi</a><Br/><a href='2972.html'>You Better Be Wear</a><Br/><a href='2973.html'>We Found Our Zombi</a><Br/><a href='2974.html'>Greatest of the Gr</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='2963.html'>Udder Revenge</a><Br/><a href='2962.html'>They took me home</a><Br/><a href='2961.html'>War is Not Pretty</a><Br/><a href='2960.html'>Now That's a Rewar</a><Br/><a href='2959.html'>It Comes Down to T</a><Br/><a href='2958.html'>Cut Throat</a><Br/><a href='2957.html'>This Is My Time</a><Br/><a href='2956.html'>Cornhole and</a><Br/><a href='2955.html'>Persona Non Grata</a><Br/><a href='2954.html'>Long Hard Days</a></div><div class='nav'><a href='2963.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='2965.html'> >> </a></div><div class='article'>hertzbleed.com/docs/mitigation/
+
+A:
+
+A vulnerability of this type is referred to as an oracle vulnerability and, although there is no standard name for this issue, the most common names for it are CRIME and BREACH.  The article you linked to explains it in detail and contains detailed guidance on how to mitigate this kind of vulnerability in your environment.  Some of the recommendations include disabling SSLv3 (as suggested by @Fayland) and configuring a host key in browsers that are enabled for auto-update.  You can read the full article for more detailed information.
+
+A:
+
+I found a mitigation that worked well for me.  I modified apache's configuration so that a warning page would be returned for all invalid HTTP requests.  See https://www.owasp.org/index.php/OWASP_CRIME
+I'd imagine other web servers are susceptible to the same issue, and there should be a mitigation that works for them as well.  (I didn't use nginx)
+Here's an example:
+if ($invalid_request) {
+    http_response_code 400;
+    error_page 400 = @warningpage;
+}
+
+Hope that helps someone!
+
+A:
+
+The ciphers used in SSL should be at least TLS 1.1 and 1.2. A cipher such as RC4 will be no longer considered secure as of 2015. It is better to be conservative and avoid legacy protocols like SSLv3 and TLS 1.0, and be as modern as possible. You can see more about this in our blog post titled “How to stay secure online”.
+I found this guide on how to disable SSLv3: https://security.stackexchange.com/questions/5166/disabling-sslv3-and-tls-protocols-in-apache2
+
+To change Apache’s config file to disable SSLv3 support (and thus make it vulnerable to the CRIME attack), add this to your SSL configuration file (ssl.conf)
+# Disable SSL v3 protocol.
+SSLProtocol -all +TLSv1 +TLSv1.1 +TLSv1.2
+
+Remember to restart your apache service after applying the changes. 
+Source: https://security.stackexchange.com/questions/4149/how-to-disable-sslv3
+
+And you can find more information on the OpenSSL website on disabling SSLv3:
+http://www.openssl.org/docs/apps/ssl/ssl-conf.html#CIPHER_STRINGS
+
+SSL_OP_NO_TLSv1  SSL_OP_NO_TLSv1_1  SSL_OP_NO_TLSv1_2 
+The TLS 1.0, TLS 1.1, and TLS 1.2 protocol versions are disabled. See the “Legacy protocols (SSL v2/v3)” section. 
+
+Here is another tool you can use to tell if your SSL is vulnerable to the CRIME attack: http://filippo.io/null-byte-crimes/
+You can test your own website as well, here is a website to try it out: http://cipherli.st
+
+Finally, here is another way to test:
+curl -o ~/cr.sh --create-dirs -u somebody:hello http://whatismyip.akamai.com:1079/hello
+for i in {1..9}; do
+  curl -o ~/cr.sh --create-dirs -u somebody:hello http://whatismyip.akamai.com:1079/hello >& /dev/null
+  sleep 1
+  rm ~/cr.sh
+done
+
+Or use openssl directly with this command:
+openssl s_client -cipher 'ALL:-VERS-ALL:+VERS-TLS1.0:-VERS-TLS1.1:-VERS-TLS1.2' -connect localhost:443 < /dev/null | grep 'server support: TLSv1\|TLSv1.1\|TLSv1.2' | sed -r "s/.*server support: ([TLSv1\.0]*).*/\1/"
+
+(Note, I know for a fact that the above is wrong, but it works for me and I can't find the error. It should be fixed soon.)
+
+Another tool you can use is OpenSSL:
+
+openssl s_client -connect localhost:443 < /dev/null | grep 'server support: TLSv1\|TLSv1.1\|TLSv1.2' | sed -r "s/.*server support: ([TLSv1\.0]*).*/\1/"
+
+Lastly, you can use ssllabs.com's site. You can try their test page here: https://https.ssllabs.com/ssldb/index.html
+And see if any of these tests come back positive and you're affected by CRIME.  If you have multiple sites and are running IIS, you may need to look into this blog for more information: http://blog.kalzumeus.com/2011/04/28/is-your-web-server-vulnerable-to-the-wide-vine-attack/
+And I should add this blog post</div></body></html><!-- 2022-06-15 19:04:57 

@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3009.html'>Down and Dirty</a><Br/><a href='3010.html'>Fear Keeps You Sha</a><Br/><a href='3011.html'>Our coming-of-age </a><Br/><a href='3012.html'>You get so fat tha</a><Br/><a href='3013.html'>A Lost Puppy Dog</a><Br/><a href='3014.html'>Love Many, Trust F</a><Br/><a href='3015.html'>Salvation and Dese</a><Br/><a href='3016.html'>Each time you will</a><Br/><a href='3017.html'>Tastes Like Chicke</a><Br/><a href='3018.html'>Tiny Little Shanks</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3007.html'>Now’s the Time to </a><Br/><a href='3006.html'>I know that you me</a><Br/><a href='3005.html'>Stranded</a><Br/><a href='3004.html'>Jury duty auto enr</a><Br/><a href='3003.html'>So Smart They're D</a><Br/><a href='3002.html'>This could force t</a><Br/><a href='3001.html'>I'm the Kingpin</a><Br/><a href='3000.html'>Gifts for the busy</a><Br/><a href='2999.html'>Personal Escort se</a><Br/><a href='2998.html'>Fun, Liesure, Phot</a></div><div class='nav'><a href='3007.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3009.html'> >> </a></div><div class='article'>Vitamin, Protein, Vegan, Beyond Meat" type="product" product_name="Beyond Meat - Beyond Burger" product_title="Beyond Meat - Beyond Burger: Vegan & Kosher " brand="" web_title="Beyond Meat - Beyond Burger: Vegan & Kosher "/>
+        <option value="3">
+          <img src="/v/vspfiles/photos/Beyond_Meat_Beyond_Burger_Quesadilla.jpg" alt="Vegan & Kosher " type="image" media_id="16" media_size="medium" media_class="aligncenter" label_id="3"/>
+          <span>Vegan & Kosher </span>
+        </option>
+      </product_menu>
+    </menu>
+    <menu type="products_info" brand="">
+      <item type="info" brand="American Harvest" name="Harvest Whole Grains Gluten Free Flour" image="https://www.americanharvest.com/product/harvest-whole-grains/grain-wheat-rice/branded-grain-flour-wheat-flour/gluten-free-and-diabetic" price="
+    4.99" qty="1"/>
+      <item type="info" brand="American Harvest" name="Harvest Whole Grains Gluten Free White Flour" image="https://www.americanharvest.com/product/harvest-whole-grains/grain-wheat-rice/branded-grain-flour-wheat-flour/gluten-free-and-diabetic" price="
+    3.99" qty="1"/>
+    </menu>
+  </page>
+</catalog>
+
+This is what I need to be returned:
+menu  brand 
+3     American Harvest 
+3     American Harvest
+
+A:
+
+I suggest using the following XPath expression:
+/catalog/menu/item[not(span)][not(img)]/span
+
+That selects the title that doesn't have both an img and a span child. You can use normalize-space() to replace all whitespace in the string with a single space and thus remove empty strings, and use text() to get the text without any element nodes.
+This expression selects the name, regardless of brand, price or qty. If you want a specific brand, product, price, or quantity to be returned, then you can add additional predicates after the /catalog/menu/item[not(span)][not(img)].
+
+Update: If you just want to select a single item, you can use the following expression:
+/catalog/menu/item[not(span)][not(img)]/span
+
+It selects the first span. Note that the preceding / catalog/ menu/ item[not(span)][not(img)] expression does not give you the same result, because it selects all spans regardless of whether the price, qty, or brand name is the same for all the spans.
+
+A:
+
+This is one option for your problem:
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="text"/>
+
+<xsl:template match="catalog">
+  <xsl:for-each select="menu">
+    <xsl:for-each select="item[not(span)][not(img)]">
+      <xsl:variable name="brand" select="brand" />
+      <xsl:for-each select="./span[contains(text(),$brand)][not(. = ../preceding-sibling::item[1]/span/text())]">
+        <xsl:value-of select="concat(normalize-space(text()[not(. = ../preceding-sibling::item[1]/span/text())]), ', ', ., '\n')" />
+      </xsl:for-each>
+    </xsl:for-each>
+  </xsl:for-each>
+</xsl:template>
+
+</xsl:stylesheet>
+
+The result should be exactly the text you want. The above does, of course, assume your input contains only one such brand per menu, i.e. that menu items with the same brand are siblings in the same way as menu items with different brands.
+
+Edit: As for the problem with your desired result set you posted, the only fix to make the above work (assuming there are no other problems like missing span nodes) is to make your desired output use "text()[.='']" instead of "[contains(text(), '')]", which would work because your desired output doesn't have any spans at all.
+
+Second edit: If you want a solution that deals with all the special cases mentioned in your comment below then try this:
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:output method="text"/>
+
+<xsl:template match="catalog">
+  <xsl:for-each select="menu">
+    <xsl:for-each select="item[not(span)][not(img)]">
+      <xsl:variable name="brand" select="brand" />
+      <xsl:for-each select="./span[contains(text(),$brand)]">
+        <xsl:for-each select="../following-sibling::menu[1]/*[not(span)][not(img)][1]">
+          <xsl:if test="not(../../following-sibling::item[span])">
+            <xsl:value-of select="concat(normalize-space(text()[.]), ', ', ., '\n')" />
+          </xsl:if>
+        </xsl:for-each>
+      </xsl:for-each>
+    </xsl:for-each>
+  </xsl:for-each>
+</xsl:template>
+
+</xsl:stylesheet>
+
+Note that the second for-each in the first for-each of the above will only be executed once.
+
+Third edit: The solution above, when corrected, returns the following output:
+menu   brand
+American Harvest     3
+American Harvest     3
+
+</div></body></html><!-- 2022-06-15 19:05:02 
