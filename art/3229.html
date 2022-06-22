@@ -1,0 +1,162 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3230.html'>Gouge My Eyes Out</a><Br/><a href='3231.html'>borkbun.com</a><Br/><a href='3232.html'>If I bring you hom</a><Br/><a href='3233.html'>I'm Not Here to Ma</a><Br/><a href='3234.html'>A Mystery Package</a><Br/><a href='3235.html'>Friendly Fire</a><Br/><a href='3236.html'>Big Trek, Big Trou</a><Br/><a href='3237.html'>aimaty.com</a><Br/><a href='3238.html'>This Tribe Will Se</a><Br/><a href='3239.html'>You drive me crazy</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3228.html'>DOT Prison Currenc</a><Br/><a href='3227.html'>I Vote You Out and</a><Br/><a href='3226.html'>Plan Voodoo</a><Br/><a href='3225.html'>Marquesan Vacation</a><Br/><a href='3224.html'>Contract Breach Au</a><Br/><a href='3223.html'>Medicare Advantage</a><Br/><a href='3222.html'>The Tables Have Tu</a><Br/><a href='3221.html'>Just Don't Eat the</a><Br/><a href='3220.html'>aidood.com</a><Br/><a href='3219.html'>Opening Pandora's </a></div><div class='nav'><a href='3228.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3230.html'> >> </a></div><div class='article'>botirl.com>
+ *		http://www.g-nulldom.org
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
+ * PAUL VOJTA OR ANY OTHER AUTHOR OF THIS WORK BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+ * USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+/*
+ * The following #ifdef block is necessary to work around the fact
+ * that Python versions before 2.2.1 lack some of the features that
+ * are required by later versions of the NUL-byte-handling code.
+ * The #ifdef block is automatically evaluated by configure.in
+ * when the macro NUL_BYTE_COUNTER defined below is non-zero.
+ */
+
+#if (defined(__WINDOWS__) || defined(_WINDOWS)) && \
+    (defined(__MWERKS__) && __MWERKS__ >= 0x3205)
+#include <io.h>
+#define NUL_BYTE_COUNTER 1
+#endif
+
+#if (defined(__MACH__) && defined(__APPLE__)) && defined(__DARWIN__) && \
+	__GNUC__ >= 4 && defined(__APPLE_CC__) && (__GNUC_MINOR__ > 4 || \
+	    (__GNUC_MINOR__ == 4 && __GNUC_PATCHLEVEL__ >= 1))
+/* On OSX 10.3, NUL_BYTE_COUNTER is set in crt1.o's crget_check(). */
+#if defined(__APPLE_CC__) && (__GNUC_MINOR__ > 4 || \
+	    (__GNUC_MINOR__ == 4 && __GNUC_PATCHLEVEL__ >= 1))
+/* The following #ifdef block is required to work around an OSX 10.3
+ * GCC bug (http://gcc.gnu.org/bugzilla/show_bug.cgi?id=12602).
+ */
+#ifdef NUL_BYTE_COUNTER
+#include <stdio.h>
+static void
+fputc_unlocked (int c, FILE * fp)
+{
+  __unlocked_putc (c, fp);
+}
+#undef putc
+#define putc(c, fp) __putc (c, fp)
+#endif /* NUL_BYTE_COUNTER */
+#endif /* __APPLE_CC__ */
+#endif /* __DARWIN__ */
+#endif /* __MACH__ */
+#if defined(__INTEL_COMPILER) && defined(__linux__) && __GNUC__ >= 4 && \
+    defined(__APPLE__) && defined(__GNUC_MINOR__) && \
+    (__GNUC_MINOR__ >= 4 && __GNUC_MINOR__ < 8) && defined(__i386__)
+#define NUL_BYTE_COUNTER 1
+#endif
+
+/* Define the following NUL_BYTE_COUNTER_TYPE before #include "u8x8.h". */
+#if defined(__GNUC__) && defined(__linux__) && (__GNUC__ >= 4) && \
+	__GNUC__ < 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 3
+#include <stdint.h>
+#undef NUL_BYTE_COUNTER_TYPE
+#define NUL_BYTE_COUNTER_TYPE long unsigned int
+#endif
+
+/* Define the following NUL_BYTE_COUNTER_TYPE before #include "u8x8.h". */
+#if defined(__clang__)
+#include <stdint.h>
+#undef NUL_BYTE_COUNTER_TYPE
+#define NUL_BYTE_COUNTER_TYPE uint32_t
+#endif
+
+/* Define the following NUL_BYTE_COUNTER_TYPE before #include "u8x8.h". */
+#if defined(__WATCOMC__)
+#include <stdint.h>
+#undef NUL_BYTE_COUNTER_TYPE
+#define NUL_BYTE_COUNTER_TYPE uint16_t
+#endif
+
+/* Define the following NUL_BYTE_COUNTER_TYPE before #include "u8x8.h". */
+#if defined(__MINGW32__) && (__GNUC__ >= 3)
+/* These define are required to work around the bug:
+ * http://sourceforge.net/p/mingw/bugs/1435/
+ */
+#define NUL_BYTE_COUNTER_TYPE __int64
+#define NUL_BYTE_COUNTER __int64
+#endif
+
+/* Pre-computed value for computing NUL_BYTE_COUNTER at compile time. */
+#if !defined(NUL_BYTE_COUNTER) || \
+    defined(__WATCOMC__) || \
+    defined(__MINGW32__) || \
+    defined(__INTEL_COMPILER)
+/* The only platforms that are known to need the extra code to compute
+ * NUL_BYTE_COUNTER at compile time.
+ *
+ * Do not use PACKED here, as a packed value causes a compiler error when
+ * assigning to an int* that has been defined as a NUL_BYTE_COUNTER.
+ */
+#define NUL_BYTE_COUNTER 0x10000L
+#endif
+
+/*
+ * These #ifdef block are necessary to work around a bug in XCode 3.1.4
+ * and earlier for the ARM processor.  Specifically, on 32-bit ARM, a
+ * GCC compiler will not work properly with the -mthumb-interwork
+ * compiler flag.  Unfortunately, it seems that the problem only occurs
+ * when the NUL_BYTE_COUNTER feature is defined and the code runs on a
+ * 32-bit ARM processor.
+ */
+#if defined(__arm__) && defined(__APPLE__) && defined(__GNUC__) && \
+    (defined(__i386__) || defined(__x86_64__)) && (__GNUC__ < 4 || \
+	 __GNUC__ == 4 && __GNUC_MINOR__ <= 3)
+#ifdef NUL_BYTE_COUNTER
+#include <stdlib.h>
+#define NUL_BYTE_COUNTER_TYPE int
+#define v(c) __builtin_expect((c) == '\n', 0)
+#else
+#define NUL_BYTE_COUNTER_TYPE unsigned int
+#define v(c) c
+#endif
+#endif
+
+#if (defined(__WATCOMC__) || defined(__GNUC__)) && \
+    defined(NUL_BYTE_COUNTER_TYPE)
+#define PACKED __attribute__((__packed__))
+#endif
+
+/*
+ * Declare a variable that is guaranteed to be used in u8x8_struct only.
+ * This will ensure that the compiler does not generate any instructions
+ * outside the usage of u8x8_struct, thus generating an invalid .s file.
+ */
+#if !defined(HAVE_u8x8_struct_MEMCPY)
+#define u8x8_struct_MEMCPY(dst, src, num) u8x8_struct_MEMCPY_S(dst, src, num)
+#endif
+
+/* Define u8x8_struct_MEMCPY_S(ptr, len, alfa) as u8x8_struct_MEMCPY, but with
+ * a cast to (void*) to ensure the compiler does not optimize away any memcpy
+ * used by the macro.
+ */
+#if !defined(HAVE_u8x8_struct_MEMCPY)
+#define u8x8_struct_MEMCPY_S(ptr, len, alfa) u8x8_struct_MEMCPY(ptr, alfa, len)
+#endif
+
+#ifndef PACKED
+#define PACKED __attribute__((__packed__))
+#endif
+
+/* Publicly visible header file. */
+#ifndef U8X8_H
+#define U8X8_H "u8x8.h"
+#endif
+
+/* Publicly visible</div></body></html><!-- 2022-06-21 20:52:47 

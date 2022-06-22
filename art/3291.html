@@ -1,0 +1,74 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3292.html'>The Penultimate St</a><Br/><a href='3293.html'>aitrocious.com</a><Br/><a href='3294.html'>Bad bedtime storie</a><Br/><a href='3295.html'>It's Called a Russ</a><Br/><a href='3296.html'>What do you want f</a><Br/><a href='3297.html'>The Tables Have Tu</a><Br/><a href='3298.html'>APB is out for</a><Br/><a href='3299.html'>I’m gonna take my </a><Br/><a href='3300.html'>This end justifies</a><Br/><a href='3301.html'>Sleeping with the </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3290.html'>Travel Agent Fare </a><Br/><a href='3289.html'>ainrun.com</a><Br/><a href='3288.html'>Engrish as a secon</a><Br/><a href='3287.html'>I Will Not Give Up</a><Br/><a href='3286.html'>The Most Deserving</a><Br/><a href='3285.html'>The First Fifteen </a><Br/><a href='3284.html'>Trapped</a><Br/><a href='3283.html'>Go for the Gusto</a><Br/><a href='3282.html'>Not Going Down Wit</a><Br/><a href='3281.html'>Wages continue to </a></div><div class='nav'><a href='3290.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3292.html'> >> </a></div><div class='article'>You drive me crazy, I just can’t sleep. 
+But I am really happy I found this site, and I can’t stop writing, I’m full of ideas.
+Thank you, very much.
+
+A:
+
+I'll bite, I have a solution to your problem.  
+Let us solve the first part of your problem first.  The string $a is simply the string that exists between ' and " in your string.  And the last part is easy.  If you simply do $v = explode(",",$a); your solution to part one will be provided for you.  See code example below for what I mean.  
+$str = "Hi, this is my first attempt at python, 
+(my own coding skills are limited, no professional programming experience) and 
+this is a test message to ensure that this website works, 
+   it works.";
+$v = explode(",",$str);
+foreach ($v as $i => $value) {
+    $final = $value;
+    $test = substr($value, 0,4);
+    if ($test != $final) {
+        echo "You don't like that!";
+    } else {
+        echo "You like that!";
+    }
+}
+
+The above code should do exactly what you want. 
+You can find the PHP documentation on substr() here
+
+A:
+
+The problem is that " Hi, this is my first attempt at python," and "and " are not included in the word which you intend to delete, so 
+preg_match('/^\w+(?=[\s"])$/', $str); 
+
+Doesn't delete the rest of the sentence. 
+
+A:
+
+There are two solutions: 
+
+delete everything between ( and ")
+deleting the word " my first"
+$str = preg_replace('/.*(\(.*?\)).*$/', '', $str);
+
+delete only the first two sentence
+$str = preg_replace('/(\s{2}\S*\s+[a-zA-Z\s]{2,}).*$/', '', $str);
+
+\s - space
+\s+ -  1 or more whitespace
+\S* - not a whitespace
+
+This one deletes only a certain number of spaces and then stops checking.
+http://php.net/manual/en/regexp.reference.repetition.php#example-24
+
+Test case here: https://regex101.com/r/fH6kH1/1
+
+However, I would solve the problem this way:
+PHP example:
+$str = 'Hi, this is my first attempt at python, (my own coding skills are limited, no professional programming experience) and this is a test message to ensure that this website works, it works.';
+$str = preg_replace('~[^\S\n]+~', '', $str);
+echo nl2br($str);
+
+Console output: 
+Hi, this is a test message to ensure that this website works, it works.
+
+So you simply remove everything that's not a word or a whitespace.
+
+However, if you want to remove everything between quotes: 
+<?php
+$str = 'Hi, this is my first attempt at python, (my own coding skills are limited, no professional programming experience) and this is a test message to ensure that this website works, it works.';
+$str = preg_replace('/"[^"\s]+"[^"\s]+.*$/', '', $str);
+echo nl2br($str);
+
+Console output: 
+Hi, this is a test message to ensure that this website works, it works.
+
+</div></body></html><!-- 2022-06-21 20:52:55 

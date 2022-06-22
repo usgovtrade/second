@@ -1,0 +1,227 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3242.html'>It Was Like Christ</a><Br/><a href='3243.html'>It's My Night</a><Br/><a href='3244.html'>He Has Demons</a><Br/><a href='3245.html'>Make Some Magic Ha</a><Br/><a href='3246.html'>aingot.com</a><Br/><a href='3247.html'>It's Do or Die</a><Br/><a href='3248.html'>What Goes Around, </a><Br/><a href='3249.html'>Big Bad Wolf</a><Br/><a href='3250.html'>aincog.com</a><Br/><a href='3251.html'>Price for Immunity</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3240.html'>unlawful terminati</a><Br/><a href='3239.html'>You drive me crazy</a><Br/><a href='3238.html'>This Tribe Will Se</a><Br/><a href='3237.html'>aimaty.com</a><Br/><a href='3236.html'>Big Trek, Big Trou</a><Br/><a href='3235.html'>Friendly Fire</a><Br/><a href='3234.html'>A Mystery Package</a><Br/><a href='3233.html'>I'm Not Here to Ma</a><Br/><a href='3232.html'>If I bring you hom</a><Br/><a href='3231.html'>borkbun.com</a></div><div class='nav'><a href='3240.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3242.html'> >> </a></div><div class='article'>botirl.com/2012/11/18/a-tale-of-an-overlooked-
+pro...](http://www.johansnielsen.dk/index.php/2010/12/28/a-tale-of-an-
+overlooked-pro-tip/)
+
+I've noticed this behavior with other programmers as well. I find that
+sometimes if the code is long enough, I forget exactly what it was supposed
+to do, because I have to think about it so hard to make sure it doesn't break
+the entire program. When that happens, it can make it very hard to remember
+what it was meant to do, and what to fix when it breaks.
+
+~~~
+Tyr42
+A common way to deal with that is a macro. We had a bug like that, and just
+before my holiday, we had this bit of code.
+
+#define LOOKUP(p) {\
+  if (p == 0)
+    return -1;\
+  else if (p->data > 1) {\
+    if (p->parent == 0) \
+      return 0;\
+    else if (p->parent->parent == 0)
+      return 0;\
+    return -1;
+  } else if (p->data < 1) {\
+    if (p->parent == 0) \
+      return 0;\
+    else if (p->parent->parent == 0) \
+      return 0;\
+    return 1; \
+  } else {\
+    if (p->parent->child[p->data] == 0) \
+      return -1;\
+    else if (p->parent->child[p->data] != p) \
+      return -1;\
+    else if (p->data < 2) \
+      return -1;\
+    else \
+      return p->parent->child[p->data];\
+  }\
+  }
+
+It's a function that takes a tree structure and returns the value of a node,
+but without any memory or state. I can't remember the logic we came up with to
+make it work. It's still in use today, and is just two lines long.
+
+------
+arielpts
+Aren't there really many situations when one is supposed to not have
+functionality in code to make it run faster?
+
+I remember some of the stuff I saw in the early nineties in some of my courses
+which was about programming in non blocking i/o, interrupt handling, task
+switching, ...
+
+------
+gjm11
+"The thing is, it's possible to optimize anything without optimization
+knowledge."
+
+Yes, indeed. But that hardly constitutes "a principle worth spending time
+learning", or even "a real problem".
+
+------
+maeon3
+If your language of choice can't handle the task at hand with the current
+set_of_instructions then you should do one of the following:
+
+1\. Add a new opcode 2\. Add an instruction set for the problem at hand 3\. Use
+a completely different language (C,Perl,VimL,Csh)
+
+There should be a better way to write a program that speeds up running time.
+All compilers need to support "if x" statements. Sometimes they can turn a 2
+bit condition into two 1 bit conditionals. These are super cheap and can save
+you a million or so cycles.
+
+------
+praptak
+This is a good article, if you are looking for faster implementation of
+something, but I am not sure if it is good for writing your own programming
+language.
+
+I was also thinking about this last year, in particular, while reviewing some
+newly-introduced features in Python 3.3, which allow one to add annotations
+into Python source code for optimisation purposes. Here is a short demo of
+this feature:
+
+    
+    
+        import dis
+        import time
+    
+        @timeit  # timeit is a decorator added by functools.py
+        def f(x):
+            return 1/x if x else None  # the None part is optional
+        f(1e15)
+    
+
+This will print:
+
+    
+    
+        <timeit.Timer object at 0x0280E660>
+    
+
+Note the time taken:
+
+    
+    
+        >>> f(1e15)
+        7.169901162408e-06
+    
+
+If you are just looking for faster code, you should be looking into other
+solutions, and not some fancy-sounding thingy which is going to be hard to
+use.
+
+------
+scythe
+The best programming language for the compiler is the language you know well.
+I know that C programmers would prefer a C compiler. But is a C compiler also
+the best choice for a team that writes in Python? What about a team that is
+well-versed in C and Java?
+
+If I'm designing a programming language, I'm considering not only how it will
+run on the current CPUs of the market, but also how it will run on other
+platforms, and possibly not just in the near future but possibly even further
+in the future. A language can be designed so that it will run fast for any
+problem set, or it can be designed so that it is capable of optimization.
+Furthermore, a language can be designed so that its compiler will always be
+able to do optimizations on the fly without the programmer needing to modify
+the source code at all (for example, a language that does constant folding
+might be designed so that you can say this:
+
+    
+    
+        A* a = new A(100);
+    
+        a->baz() = new Baz();
+        a->baz()->baz()->baz();
+    
+
+And the compiler will replace the A* a, the baz() method call, and the baz()
+method call at the end with "new Baz()" and never notice anything amiss. This
+is the whole reason I wanted to do this project: automatic optimization and
+elimination of unnecessary bookkeeping. A language that does this will require
+the programmer to think much more carefully about exactly what he wants his
+program to do, but will allow him to program more quickly. If a lot of people
+write code in a language like this, they will all share their optimizations
+and we will have a better language in the future.
+
+So with these thoughts in mind, how should we do this? I think we need to be
+a little more lenient with the language syntax to enable automatic
+optimization and to allow common idioms. The classic example is that you have
+to explicitly name every local variable if you want the compiler to do
+register allocation for you, but people don't always write to local variables
+in the obvious places. In a language like Ruby, people tend to write loops as
+
+    
+    
+        (0..n).each { |i| do_something(i) }
+    
+
+And since no local variable is declared, the compiler has no way of knowing
+that every iteration of the loop can run on its own stack, so the loop will
+be run in a stack frame for every iteration. If you want it to be stack-
+allocated like this, you have to explicitly say so:
+
+    
+    
+        (0..n).each { |i| do_something(i) } { |i| break i }
+    
+
+Now when the loop is not stack-allocated, the compiler can optimize it better.
+The same happens with many other languages, but Python is more rigid about
+variable naming. In some languages you can declare a local variable on the
+spot by using a wildcard:
+
+    
+    
+        List<String>* arr = new List<String>();
+    
+
+In Python, you have to declare the variable:
+
+    
+    
+        arr = [string]
+    
+
+This is a little painful if you want to pass the variable to a function as an
+argument or pass it around. I think the best approach is to use the "C-*" form
+which allows you to define a variable at an arbitrary place in the namespace
+using these notations:
+
+    
+    
+        arr = [] (for, while, do...while)
+    
+
+A C-* name must start with one of a sequence of special characters, so this
+means you could do something like
+
+    
+    
+        >>> for i in range(10):
+        ...   arr.foo = i
+    
+
+You could also say
+
+    
+    
+        for i in range(10):
+            obj = {}
+            obj.foo = i
+            arr.bar = obj
+    
+
+This would not normally cause a name conflict with arr, because this sort of
+variable has no name at all. You could have thousands of definitions like
+this, and they wouldn't clobber each other, but it would be safe to have
+multiple definitions for the same name if you explicitly assigned the name to
+it. I would expect Python's bytecode compiler to be able to eliminate as many
+of these non-conflicting variables as it can.
+
+So that's the C-* form. You can define</div></body></html><!-- 2022-06-21 20:52:49 
