@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3524.html'>True Lies</a><Br/><a href='3525.html'>The Day of Reckoni</a><Br/><a href='3526.html'>Who wrote this?</a><Br/><a href='3527.html'>With Great Power C</a><Br/><a href='3528.html'>Install the app fo</a><Br/><a href='3529.html'>Never Say Die</a><Br/><a href='3530.html'>Million Dollar Nig</a><Br/><a href='3531.html'>Knights of the Rou</a><Br/><a href='3532.html'>AIEddie.com</a><Br/><a href='3533.html'>Going for the Osca</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3522.html'>One Armed Dude and</a><Br/><a href='3521.html'>Now the Battle Rea</a><Br/><a href='3520.html'>Right outside of t</a><Br/><a href='3519.html'>I'm a Wild Banshee</a><Br/><a href='3518.html'>I remember first g</a><Br/><a href='3517.html'>ID Enhancement and</a><Br/><a href='3516.html'>Shocking! Simply S</a><Br/><a href='3515.html'>I’m looking right </a><Br/><a href='3514.html'>Sustainability, Of</a><Br/><a href='3513.html'>AIEddie.com</a></div><div class='nav'><a href='3522.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3524.html'> >> </a></div><div class='article'>Assumptions and notations
+=========================
+
+In this section, we list and interpret all assumptions used to prove our main results in Theorem \[Main Thm\].
+
+We now introduce the model of diffusion under the following stochastic differential equation $$\label{Eq:Main diffusion}
+\left\{\begin{array}{ll}
+dr_t = \Big[\gamma_1 (r_t - q_t)+ \gamma_2\sigma_1(r_t-q_t)W_t^{\mathbb{P},\mathbb{Q}_1}\Big]dt + \sigma_2 (r_t - q_t) dW_t^{\mathbb{P},\mathbb{Q}_2}, \\
+d q_t = b(q_t)dt, 
+\end{array}\right.$$ where $\sigma_1, \sigma_2$ are positive constants, $\gamma_1, \gamma_2$ are positive constant such that $\gamma_1<2\gamma_2$. $W_t^{\mathbb{P},\mathbb{Q}_1}$ and $W_t^{\mathbb{P},\mathbb{Q}_2}$ are Brownian motions under $\mathbb{P}$ and $\mathbb{Q}_1$, respectively. We recall that $\mathbb{P}$ and $\mathbb{Q}_1$ are equivalent. This means that we consider the diffusion $(q_t, r_t)$ which is under $\mathbb{P}$ the weak solution of (\[Eq:Main diffusion\]) (see Remark \[Rmk:Conditions equivalence between P and Q1\]). The drift and diffusion coefficients $b$ and $\sigma$ are of the class $\mathcal{C}^{1}$ on $I$, and $\sigma$ is of class $\mathcal{C}^{3}$. Furthermore, $\sigma$ is strictly positive on $I$. The generator of the diffusion is given by $$\mathcal{A}u = \sigma^{-2}\Delta u  + \frac{1}{2}\sigma^{-1}\sigma'Du, \quad \hbox{ on } I.$$ and the domain of $\mathcal{A}$ is $\mathcal{D}(A) = \{u\in H^2(I):\mathcal{B}u\in L^2(I)\}$ where $$\mathcal{B}u = \frac{\sigma'u}{\sigma}-\frac{\sigma''\sigma^{-1}u}{\sigma^2}.$$ We also set $A = -\mathcal{B}$ on $L^2(I)$ with domain $D(A) = \mathcal{D}(A)$. We say that $f \in \mathcal{H}_2$ if $f$ is twice continuously differentiable with respect to time and twice continuously differentiable with respect to the state variable. In addition, $$\langle f,u\rangle_t = \int_{I} f(s)u(s) ds.$$ The set of admissible control processes is $\mathcal{U}:=\{u:\Omega\times [0,T]\rightarrow \mathbb{R}\}_{t\in [0,T]}$ such that $u$ is a control adapted to the natural filtration $\mathbb{F}$ and $$u\in\mathcal{U}\;\mbox{if and only if}\; u(\cdot)\in L^2(\Omega\times [0,T];R^m)\;\mbox{with}\; \mathbb{E}[\int_{0}^{T}|u_s|^2ds]<+\infty.$$ Note that in our paper, the control $u$ acts on both Brownian motions $W_t^{\mathbb{P},\mathbb{Q}_1}$ and $W_t^{\mathbb{P},\mathbb{Q}_2}$. For a given control process $u$ and corresponding trajectory $(q_t,r_t)$, the cost functional is defined by $$\label{Eq:Objective functional}
+J(u):=\frac{1}{2}\mathbb{E}\Big[\int_{0}^{T}\Big(\Big|\frac{dq_s}{ds}\Big|^2 + |r_s|^2\Big)ds +
+\Big| q_T-\xi\Big|^2 \Big].$$ The corresponding value function of (\[Eq:Main stochastic control problem\]) is defined by $$V(q) = \inf_{u\in\mathcal{U}} J(u).$$ We also set $A_1 := -\mathcal{B}$ with domain $D(A_1)$ defined on $\mathcal{H}_2$, where $\mathcal{B}$ is defined as above. Let $B$ be the linear bounded operator given by $$Bf = -\gamma_1 f + \gamma_2 f' ,$$ with domain $D(B)=\mathcal{H}_3$ where $$\mathcal{H}_3 = \{f\in\mathcal{H}_2\; :\; f(q)=f'(q)=0\; \forall\; q=q_1,q_2\}.$$ For this operator, the second condition of Theorem \[Main Thm\] holds. Now we define the linear operator $A$ on $\mathcal{H}_3$ by $$\begin{aligned}
+\label{Eq:A}
+\mathcal{A}f &=&\sigma^{-2}\Delta f + \frac{1}{2}\sigma^{-1}\sigma'f' +
+b(q)f' \\
+&=&\mathcal{A}_1f + b(q)f', \quad \forall f\in D(A).\end{aligned}$$ The condition (\[Eq:Main\]) holds for the two operators $A$ and $B$ if we have $$\label{Eq:Conditions on B and A}
+\begin{cases}
+\gamma_1\leq \alpha \beta,\\
+\gamma_2\alpha^2\leq \gamma_1,\\
+\gamma_2\leq \alpha \beta,\\
+\gamma_2\alpha\geq 2\gamma_1,\\
+\sigma \beta^2 \alpha > \sqrt{\alpha \beta}.
+\end{cases}$$ Under these assumptions, Theorem \[Main Thm\] guarantees that $V$ is the unique solution of the following p.d.e. $$\label{Eq:V PIDE}
+\left\{\begin{array}{ll}
+\partial_t V(q,t) + \mathcal{A} V(q,t) =0, \;&\; t\in [0,T]\\
+V(q,T) = \xi(q).
+\end{array}\right.$$ Similarly, we can define $$\begin{aligned}
+\mathcal{H}_1 &=& \{f\in \mathcal{H}_2\; : \;f(q)=f'(q)=0\; \forall\;q=q_1, q_2, \;\; f(q_3)=0\},\\
+\mathcal{H}_2 &=& \{f\in \mathcal{H}_1\; : \; f(q) >0\; \forall\; q\in I\}.\end{aligned}$$
+
+Now, we introduce the following assumptions on $b, \sigma$ and $\xi$:
+
+**H1:**
+
+:   $\sigma,b\in \mathcal{C}^{3}(I)$ and $b(q)>0$.
+
+**H2:**
+
+:   $(\gamma_1\vee\gamma_2) (\alpha\vee\sigma^{-2})\leq \frac{1}{2}\gamma_1$, $(\gamma_1\vee\gamma_2)^2(\alpha^2\vee\sigma^{-2})\leq \frac{1}{2}\gamma_1$.
+
+**H3:**
+
+:   $\gamma_2\alpha\geq \gamma_1$.
+
+**H4:**
+
+:   $c^2<\frac{1}{4\sigma^4}\frac{4\gamma_1\gamma_2}{\alpha^3}(\gamma_1\vee\gamma_2)^2$.
+
+We now recall the definition of the set $\tilde{\mathcal{M}}_A$ and some useful lemmas (for proofs, see the appendix of [@Agram2009]).
+
+For given $t>0$, $\theta>0$, let $\mathcal{G}_{t,\theta}$ denote the family of stopping times such that $$\mathcal{G}_{t,\theta}:=\{\tau\;:\;
+\mathbb{E}[e^{\frac{1}{2}\int_{t}^{\tau}A_1h(s)ds}|\mathcal{F}_{t}]
+\leq
+e^{\frac{1}{2}\theta\int_{t}^{\tau}h(s)ds},\forall\; h\in D(A_1)\}.$$
+
+\[D\] Let $t>0$ and $\theta>0$ be fixed. $\mathcal{G}_{t,\theta}$ is a nonempty, closed and convex subset of the Borel sigma field $\mathcal{B}([0,+\infty))$ under the sup norm $\|\cdot\|_{\infty}$. In addition, for each $h\in \mathcal{H}_3$, we have $$e^{\frac{1}{2}\int_{t}^{\tau}Ah} \leq e^{\frac{1}{2}\theta \int_{t}^{\tau}h},
+\quad \forall \tau \in \mathcal{G}_{t,\theta}.$$
+
+Next, we define the function $H_2(q)$ given by</div></body></html><!-- 2022-06-21 20:53:26 

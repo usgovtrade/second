@@ -1,0 +1,83 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3558.html'>Never before seen </a><Br/><a href='3559.html'>To Quit or Not to </a><Br/><a href='3560.html'>Go Out With a Bang</a><Br/><a href='3561.html'>Variable annuity l</a><Br/><a href='3562.html'>Secret and Lies an</a><Br/><a href='3563.html'>So one thing that </a><Br/><a href='3564.html'>Ethically Sourced </a><Br/><a href='3565.html'>Everything Is Pers</a><Br/><a href='3566.html'>The Sole Survivor</a><Br/><a href='3567.html'>Being the girl tha</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3556.html'>Baseball's greates</a><Br/><a href='3555.html'>botingtonpost.com</a><Br/><a href='3554.html'>This Is the Man Te</a><Br/><a href='3553.html'>Times were tough, </a><Br/><a href='3552.html'>Dumpster fire inte</a><Br/><a href='3551.html'>Playing with the D</a><Br/><a href='3550.html'>There's Gonna Be B</a><Br/><a href='3549.html'>Always Be Moving</a><Br/><a href='3548.html'>aislum.com</a><Br/><a href='3547.html'>Earthquakes and Sh</a></div><div class='nav'><a href='3556.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3558.html'> >> </a></div><div class='article'>I have been asked to create a simple function which takes a string, for example:
+
+"teststring"
+
+and returns the value 0, as per below:
+
+let output = "teststring" > 0; // true
+
+function stringCheck(stringToCheck) {
+  return false;
+}
+
+console.log(stringCheck(output));
+
+As you can see, this code will not produce a false value so the function should always return false. However, it always logs as true which is surprising. I expected it to always return false. 
+What is the reason behind this? I assume it's to do with the >0, but I can't understand why it doesn't return false.
+
+A:
+
+This has to do with what operators do. Logical operators like >, != etc return true or false, the operands don't change. So even if stringToCheck would be false the function would return false.
+
+You could rewrite it like this to always get false:
+
+const stringCheck = (stringToCheck) => !stringToCheck;
+console.log(stringCheck('teststring')); //false
+console.log(stringCheck('teststring2')); //false
+
+More about logical operators in Javascript: https://developer.mozilla.org/en-US/docs/Glossary/Logical_operators#JavaScript
+
+A:
+
+Since the code output is a string, you need to convert it to a boolean. You can use a regular expression like ^\s*$ to do this, like this:
+
+let output = "teststring"
+const match = output.match(/^\s*$/);
+console.log(match);
+
+function stringCheck(stringToCheck) {
+ return false;
+}
+
+console.log(stringCheck(output));
+
+The regular expression says to look for a string of spaces (no line breaks) until it finds the end of the string (at least one space), then convert that into a boolean, which will evaluate to false.
+
+A:
+
+In Javascript, you have to be careful when working with strings and logic. Since strings are objects, the following will evaluate to true:
+"0" > 0; // true
+
+One way around this, as others have mentioned, is to cast it as a number using parseInt:
+
+let output = "teststring"
+console.log(parseInt("0") > 0); // true
+
+function stringCheck(stringToCheck) {
+ return false;
+}
+
+console.log(stringCheck(output));
+
+However, if you really need to work with strings, and you're just concerned with booleans, you can still do this by using RegExp:
+
+let output = "teststring"
+console.log(/teststring/i.test(output)); // true
+console.log(/teststring/.test(output)); // false
+
+This will return a boolean value, the string can be any value, it's just a condition that must be true. So, if output = "False", it will return true.
+
+This does answer your original question, however I wanted to point out some other mistakes in the example:
+"teststring" > 0; // true
+
+"teststring2" > 0; // true
+
+The first one will evaluate to true since the strings are not equal. Just keep that in mind.
+And also, the logic of the string compare is wrong. > should be used to compare strings for a case-insensitive search. It doesn't evaluate booleans.
+
+let output = "teststring"
+console.log(output > "teststring2"); // false
+
+And you should really read this, it's a great explanation of strings in javascript.
+
+</div></body></html><!-- 2022-06-21 20:53:30 

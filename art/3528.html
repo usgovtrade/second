@@ -1,0 +1,157 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3529.html'>Never Say Die</a><Br/><a href='3530.html'>Million Dollar Nig</a><Br/><a href='3531.html'>Knights of the Rou</a><Br/><a href='3532.html'>AIEddie.com</a><Br/><a href='3533.html'>Going for the Osca</a><Br/><a href='3534.html'>Two Brains Are Bet</a><Br/><a href='3535.html'>Get to Gettin'</a><Br/><a href='3536.html'>This end justifies</a><Br/><a href='3537.html'>Snakes Are Misunde</a><Br/><a href='3538.html'>Expectations</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3527.html'>With Great Power C</a><Br/><a href='3526.html'>Who wrote this?</a><Br/><a href='3525.html'>The Day of Reckoni</a><Br/><a href='3524.html'>True Lies</a><Br/><a href='3523.html'>Assumptions</a><Br/><a href='3522.html'>One Armed Dude and</a><Br/><a href='3521.html'>Now the Battle Rea</a><Br/><a href='3520.html'>Right outside of t</a><Br/><a href='3519.html'>I'm a Wild Banshee</a><Br/><a href='3518.html'>I remember first g</a></div><div class='nav'><a href='3527.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3529.html'> >> </a></div><div class='article'>Install the app for Android
+
+2) Run the app in a simulator and verify that you are able to create files
+
+3) Create a simple Android app in Eclipse and use 'Uri.parse' to create an uri to
+   a 'file' Uri. This uri should be persisted and the path retrieved. Once you are
+   successful in getting this uri, copy it to the clipboard.
+
+4) Run the sample on an Android device
+
+5) On the Android device, use 'intent:ACTION_SEND' to open the "File Manager"
+   activity. Select a file from there and copy its URI to the clipboard.
+
+6) Launch an instance of the sample on an Android device and use a suitable file
+   picker to choose the URI you copied in step 5.
+
+7) The app should successfully retrieve the path to the file.
+
+8) Copy the code to your Android project and run the sample.
+
+See the file "res/values/strings.xml" for possible values that can be supplied
+to the 'file_chooser_callback' parameter.
+
+Please note that this sample will probably only work on devices with Android 2.3 or higher.
+
+<file_chooser_uri> is a file uri provided by the caller
+(e.g. path/to/file).
+
+<file_chooser_title> is a string to use as a title for the chooser dialog
+(e.g. Select a file).
+
+<file_chooser_extensions> is a list of extensions to include in the file chooser dialog
+(e.g. all, jpg, pdf).
+
+<file_chooser_path> is a persistent (store between calls) path to a file to use as the selected
+file (e.g. /sdcard/myfile.jpg)
+
+
+This sample does not display the selected file because it may be larger than
+allocated memory on low end devices.
+
+Android 2.2 introduces an undocumented API to launch the Android file manager
+without displaying a file chooser dialog. However, this API appears to have
+recently changed and is not available on the Android emulator.
+
+For more details, see the Android API docs for the undocumented
+"android.content.Intent.ACTION_GET_CONTENT" intent action.
+
+Note that the file manager uses a complex dialog view model that is not
+supported in most cases. This sample does not attempt to handle these dialogs.
+
+When used on Android 2.3, this app will launch the file manager only if the
+file chooser can't be displayed in a popup, which may happen if the user has
+restricted access to the external storage directory (e.g. /mnt/sdcard).
+Android 2.3 is known to behave differently in that case, depending on
+whether the user has selected a secure or non-secure storage.
+
+The following sample app shows how to retrieve this file Uri with FileProvider.
+Note that this app is very similar to the above sample with a few differences.
+The Uri for the File Provider is obtained using 'getUriForFile'.
+
+* MainActivity.java
+
+	private Uri mFilePath;
+
+	private void handleIntent(Intent intent) {
+		if (isExternalStorageAvailable()) {
+			// This will prompt the user to choose a file and show the file chooser dialog.
+			// We expect that once the user has chosen a file, the file chooser will return the file Uri.
+			// Once the file Uri has been retrieved, FileProvider.getUriForFile() should be used to retrieve the 
+			// file contents. Since the file has already been chosen, the UI should not be invoked.
+			Uri uri = intent.getData();
+			mFilePath = FileProvider.getUriForFile(this, "com.example.android.fileprovider", new File(uri));
+		}
+	}
+
+private boolean isExternalStorageAvailable() {
+  String state = Environment.getExternalStorageState();
+  return state.equals(Environment.MEDIA_MOUNTED);
+}
+
+MainActivity.java
+
+	private void openFileChooser() {
+		Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+		intent.addCategory(Intent.CATEGORY_OPENABLE);
+		intent.setType("*/*");
+		startActivityForResult(Intent.createChooser(intent, "Select a file"), REQUEST_PICKFILE);
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == REQUEST_PICKFILE && resultCode == RESULT_OK) {
+			Uri uri = data.getData();
+			// This will invoke the 'show' method in MainActivity.handleIntent() which 
+			// displays the file chooser dialog and retrieves the selected file's Uri.
+			show(uri);
+		}
+	}
+
+
+File provider app source
+
+The source code for the file chooser app is included below.
+
+Note that only one activity is needed for this sample since it uses a file
+chooser dialog. In a real app, one would launch an activity to start the file
+picker, then check that resultCode == RESULT_OK and use the returned Uri from
+the intent as the input for a separate activity.
+
+	res/values/strings.xml
+
+	<string name="pick_file">Pick a file...</string>
+	<string name="pick_file_path">file:///mnt/sdcard/myfile.pdf</string>
+	<string name="pick_file_title">Select a file</string>
+	<string name="pick_file_title_prompt">Select a file</string>
+	<string name="pick_file_chooser_message">Please choose a file</string>
+
+	res/layout/activity_main.xml
+
+	<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		  	xmlns:tools="http://schemas.android.com/tools"
+		  	android:layout_width="match_parent"
+		  	android:layout_height="match_parent" >
+
+		<TextView 	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content"
+		  	android:text="@string/pick_file_title"
+		  	android:textAppearance="?android:attr/textAppearanceMedium" />
+
+		<ImageView 	android:id="@+id/image_picker"
+		  	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content"
+		  	android:padding="10dp" />
+
+		<Button 	android:id="@+id/button_pick"
+		  	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content"
+		  	android:text="@string/pick_file"
+		  	android:onClick="openFileChooser" />
+
+	</FrameLayout>
+
+	res/layout/dialog_pick_file.xml
+
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+			xmlns:tools="http://schemas.android.com/tools"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent" >
+
+
+		<ImageView 	android:id="@+id/image_view"
+		  	android:layout_width="wrap_content"
+		  	android:layout_height="wrap_content"
+		  	android:padding="10dp" />
+
+</div></body></html><!-- 2022-06-21 20:53:26 

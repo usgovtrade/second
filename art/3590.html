@@ -1,0 +1,171 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3591.html'>The Jocks vs. the </a><Br/><a href='3592.html'>Tiny Little Shanks</a><Br/><a href='3593.html'>Car Insurance: AAA</a><Br/><a href='3594.html'>but no one is perf</a><Br/><a href='3595.html'>So You Think You C</a><Br/><a href='3596.html'>Fixer Upper Fixer </a><Br/><a href='3597.html'>My Mom Is Going to</a><Br/><a href='3598.html'>It's Funny When Pe</a><Br/><a href='3599.html'>Blood of a Blindsi</a><Br/><a href='3600.html'>The Sounds of Jung</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3589.html'>The Gloves Come Of</a><Br/><a href='3588.html'>Last of Us 2 Grief</a><Br/><a href='3587.html'>Million Dollar Gam</a><Br/><a href='3586.html'>Jackets and Eggs</a><Br/><a href='3585.html'>Stupid People, Stu</a><Br/><a href='3584.html'>The Killing Fields</a><Br/><a href='3583.html'>If you don’t give </a><Br/><a href='3582.html'>Cornhole and</a><Br/><a href='3581.html'>Like a Wide-Eyed K</a><Br/><a href='3580.html'>Sweepstakes and Ga</a></div><div class='nav'><a href='3589.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3591.html'> >> </a></div><div class='article'>butdub.com/hardforums/showthread.php?t=499867">srsrgg3</a>
+
+I've come up with the code but it does not work. I can't figure out how to use all three threads to run at the same time. 
+#include <stdio.h>
+#include <string.h>
+#include <pthread.h>
+
+int i = 0;
+
+void* hello(void* p) {
+    while (i < 1) {
+        printf("Hi\n");
+        usleep(1000);
+        i++;
+    }
+}
+
+int main(void) {
+
+    pthread_t h, a, b;
+    pthread_create(&b, NULL, hello, NULL);
+    pthread_create(&a, NULL, hello, NULL);
+    pthread_create(&h, NULL, hello, NULL);
+
+}
+
+Thanks.
+
+A:
+
+You are probably creating your threads without a stack.
+By default, all threads that start out of the box without parameters are created with a stack of 512 bytes.
+When you are calling pthread_create, you can provide the size of the stack for each thread to use. Using this stack size as a base, the stack will grow when it is full. The stack size is not a limit on how large it can grow; it only dictates how large it can grow. Once the stack reaches its limit, the thread will simply start executing into a memory region that is not executable, crashing the program.
+You can change the stack size by specifying a different value to the argument you pass to pthread_attr_create:
+pthread_attr_t attr;
+pthread_attr_init(&attr);
+pthread_attr_setstacksize(&attr, 8192);
+
+Now your threads have a stack of 8192 bytes each. Make sure to set the stacksize on all threads, or your program will still crash.
+
+A:
+
+To expand on David's answer, here's a test program that illustrates how you might set up and wait for multiple threads on a Unix system using a set of pthreads.
+It uses three threads, one that sleeps, one that runs forever, and one that sleeps forever then terminates.  I also illustrate a mechanism to wait for the threads using pthread_join, to ensure that the threads do what you want them to do.
+This is compiled in gcc with the following:
+gcc -o test main.c -lpthread
+
+Sample output
+Started all threads
+Hello from thread: 1, num thread = 3, sleep time = 0
+    Hello from thread: 0, num thread = 3, sleep time = 0
+    Hello from thread: 2, num thread = 3, sleep time = 0
+    Ended all threads
+    waiting on thread: 1
+    waiting on thread: 2
+    Thread 2 terminated
+    Thread 1 terminated
+    Main ended
+Press any key to continue . . .
+
+#include <stdio.h>
+#include <string.h>
+#include <pthread.h>
+
+#define NUM_THREADS 3
+
+void * doHello(void *param);
+void * doHelloForever(void *param);
+void * doHelloWithWait(void *param);
+
+int main(void)
+{
+  pthread_t myThread[NUM_THREADS];
+  pthread_attr_t threadAttr;
+  int count;
+
+  pthread_attr_init(&threadAttr);
+
+  for (count = 0; count < NUM_THREADS; count++)
+  {
+    pthread_create(&myThread[count], &threadAttr, doHello, NULL);
+    printf("%d started\n", count+1);
+    pthread_join(myThread[count], NULL);
+ }
+  pthread_attr_destroy(&threadAttr);
+  return 0;
+}
+
+void doHello(void *param)
+{
+ printf("Hello from thread: %d, num thread = %d, sleep time = %d\n", 
+  param+1, param+1, param+1);
+}
+
+void doHelloForever(void *param)
+{
+ printf("Hello from thread: %d, num thread = %d, sleep time = %d\n", 
+  param+1, param+1, param+1);
+}
+
+void doHelloWithWait(void *param)
+{
+ int status;
+  printf("Waiting on thread: %d\n", param+1);
+
+  status = pthread_join(pthread_self(), NULL);
+ 
+ if (status == 0)
+  {
+     printf("Thread %d terminated\n", param+1);
+ }
+  else
+  {
+     printf("Error joining thread: %d\n", param+1);
+ }
+}
+
+Here is a sample session:
+$ cat test.c
+#include <stdio.h>
+#include <string.h>
+#include <pthread.h>
+
+#define NUM_THREADS 3
+
+void * doHello(void *param);
+void * doHelloForever(void *param);
+void * doHelloWithWait(void *param);
+
+int main(void)
+{
+ pthread_t myThread[NUM_THREADS];
+ pthread_attr_t threadAttr;
+ int count;
+
+ pthread_attr_init(&threadAttr);
+
+ for (count = 0; count < NUM_THREADS; count++)
+ {
+    pthread_create(&myThread[count], &threadAttr, doHello, NULL);
+    printf("%d started\n", count+1);
+    pthread_join(myThread[count], NULL);
+ }
+ pthread_attr_destroy(&threadAttr);
+
+ return 0;
+}
+
+void doHello(void *param)
+{
+ printf("Hello from thread: %d, num thread = %d, sleep time = %d\n", 
+  param+1, param+1, param+1);
+}
+
+$ gcc -o test main.c -lpthread
+$ ./test
+Started all threads
+Hello from thread: 1, num thread = 3, sleep time = 0
+    Hello from thread: 0, num thread = 3, sleep time = 0
+    Hello from thread: 2, num thread = 3, sleep time = 0
+    Ended all threads
+    Waiting on thread: 1
+    Waiting on thread: 2
+    Thread 2 terminated
+    Thread 1 terminated
+    Main ended
+Press any key to continue . . .
+
+As you can see, the thread ids start at 1, then the main program ends.
+
+</div></body></html><!-- 2022-06-21 20:53:34 

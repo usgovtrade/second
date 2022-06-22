@@ -1,0 +1,54 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3576.html'>Biblical Praportio</a><Br/><a href='3577.html'>Reddit Memes</a><Br/><a href='3578.html'>I'm Not Here to Ma</a><Br/><a href='3579.html'>Quest for Food</a><Br/><a href='3580.html'>Sweepstakes and Ga</a><Br/><a href='3581.html'>Like a Wide-Eyed K</a><Br/><a href='3582.html'>Cornhole and</a><Br/><a href='3583.html'>If you don’t give </a><Br/><a href='3584.html'>The Killing Fields</a><Br/><a href='3585.html'>Stupid People, Stu</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3574.html'>Havoc to Wreak</a><Br/><a href='3573.html'>An Emerging Plan</a><Br/><a href='3572.html'>airaze.com</a><Br/><a href='3571.html'>Rare-Earth Mineria</a><Br/><a href='3570.html'>Fixer Upper Fixer </a><Br/><a href='3569.html'>I See The Million </a><Br/><a href='3568.html'>Winner Winner, Chi</a><Br/><a href='3567.html'>Being the girl tha</a><Br/><a href='3566.html'>The Sole Survivor</a><Br/><a href='3565.html'>Everything Is Pers</a></div><div class='nav'><a href='3574.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3576.html'> >> </a></div><div class='article'>botator.com/v3/lara" . . .
+https://librato.com/librato-agent/v1/events?eventId=a_9fe3b6f2fec4de58bf6d3bd3faefbcc2
+I tried in Node.js, node -v is v8.10.0, and I tried https://www.npmjs.com/package/hawk and tried using https://www.npmjs.com/package/hawk-js but that only supported Node 6.2.0
+Is there any alternative library for this or is there any way I could run it in Node?
+
+A:
+
+The Librato-Agent library is supported on Node.js v4+. You can either upgrade to a newer node version, or you can install the previous library by running npm install hawk/hawk-js@0.15.0. I just checked on a fresh install of my app and this worked for me.
+
+A:
+
+This issue is solved by installing hawk 1.5.7. 
+curl https://raw.githubusercontent.com/hueniverse/hawk/master/lib/node.js -o node.js
+cp node.js /usr/bin/node
+curl https://raw.githubusercontent.com/hueniverse/hawk/master/lib/index.js -o index.js
+node -e "console.log(require('./index').HawkVersion)"
+cd ~/node_modules
+git clone https://github.com/hueniverse/hawk.git
+cd ~/hawk
+git checkout v1.5.7
+cd ~/node_modules/hawk
+npm install
+node -e "console.log(require('./lib/index').HawkVersion)"
+
+That will work because of newer versions of Hawk on GitHub have had issues. I found this solution after trying out a variety of alternatives including the hawk-client-lib. 
+
+A:
+
+I figured it out!
+https://github.com/hueniverse/hawk/issues/24
+npm install hawk-js@0.12.3
+it works perfectly
+
+Hawk v0.12.3 works with node v6.9 and higher.
+
+Note: 
+A newer version of Node may have updated libraries already available on its own.
+
+Reference: https://librato.com/v3/lara/api/0.0.6/
+
+Thanks.
+
+If you want the command to be called with the help of another package, you will need to use commandLine instead:
+var hawk = require('hawk-client-lib')('http://librato.com/v3/lara/api/0.0.6/');
+hawk.post({username:'foo@bar.com',password:'supersec123', event:'api_event'})
+
+If you just want to execute it from node you can just use runCommand from https://www.npmjs.com/package/hawk-client-lib and call it with:
+hawk.runCommand(commandLine, {
+    username:'foo@bar.com',password:'supersec123', event:'api_event'});
+
+The docs say you can provide more options but I didn't have luck with it. https://www.npmjs.com/package/hawk-client-lib#method-runCommand
+I'm using hawk 1.5.3 as of this moment.
+
+</div></body></html><!-- 2022-06-21 20:53:32 
