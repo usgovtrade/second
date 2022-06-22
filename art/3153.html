@@ -1,0 +1,108 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3154.html'>Vibe of the Tribe</a><Br/><a href='3155.html'>That'll learn 'em</a><Br/><a href='3156.html'>aitrocious.com</a><Br/><a href='3157.html'>The Puppet Master</a><Br/><a href='3158.html'>Capital investment</a><Br/><a href='3159.html'>cookingwithai.com</a><Br/><a href='3160.html'>Never enough time </a><Br/><a href='3161.html'>Friends?</a><Br/><a href='3162.html'>A Slippery Little </a><Br/><a href='3163.html'>botsnoop.com</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3152.html'>While the Cats are</a><Br/><a href='3151.html'>Want to See the El</a><Br/><a href='3150.html'>Like diamond rings</a><Br/><a href='3149.html'>The Great Divide</a><Br/><a href='3148.html'>Our coming-of-age </a><Br/><a href='3147.html'>And that’s how the</a><Br/><a href='3146.html'>Dead Man Walking</a><Br/><a href='3145.html'>boturd.com</a><Br/><a href='3144.html'>Perception is Not </a><Br/><a href='3143.html'>The Instigator</a></div><div class='nav'><a href='3152.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3154.html'> >> </a></div><div class='article'>Exclude all CAPTCHA Forms
+<form action="[URL]">
+<input type="submit" value="Go" />
+</form>
+
+A:
+
+<noscript> ... </noscript> should work, because they are never submitted to the server.
+To be safe though, you should check that cookies are enabled:
+<noscript>
+   <input type="submit" value="Go" />
+</noscript>
+
+if (document.cookie.indexOf('enabled') < 0) { 
+   alert('You must enable cookies to use this site.'); 
+}
+
+If you need to submit the form:
+<noscript>
+  <form action="[URL]" method="post">
+    <input type="submit" value="Go" />
+  </form>
+</noscript>
+
+If you have jQuery in the document:
+<noscript>
+  <form action="[URL]" method="post">
+    <input type="submit" value="Go" />
+  </form>
+</noscript>
+
+<script>
+  $(function() {
+    $('form').submit();
+  });
+</script>
+
+A:
+
+I know this question is a year old, but I've found a much easier way to do this that still checks if the user is using cookies.  I don't think a bunch of form submissions will impact your server-side performance too much.
+$(function(){
+    if ($.browser.msie) {
+        $("form#id").submit();
+    } else {
+        $("form#id").click();
+    }
+});
+
+A:
+
+I'd say your code will not be much more "complex" than a plain HTML, so go for the latter.
+Some points to keep in mind:
+
+Since the form will submit in any case, you may want to have the input hidden (to avoid submitting the form by accident, or by mistake).
+
+You may want to make sure that the form data will be sent. If you want to send plain URLs (like http://example.com/some_page.aspx), you might want to set the enctype to multipart/form-data.
+
+There is a way to access the "isBrowser" (IE) function in JavaScript; if you want to check whether the browser is Internet Explorer. In your case, it would look like this:
+if (!isBrowser())
+{
+  // do something else
+}
+
+If you want to check for IE, see also this question.
+
+A:
+
+I have no idea about the efficiency of the code, but here's how you can do this in JavaScript:
+<form action="http://someurl/form.html">
+   <input type="submit" />
+</form>
+
+<script type="text/javascript">
+    // if the user has cookies disabled
+    if (document.cookie.indexOf('enabled') < 0) {
+        // then enable them
+        document.write('<form action="http://someurl/form.html"><input type="submit" />')
+    }
+
+    // if the user doesn't have cookies enabled
+    else {
+        // allow them to do the form, but at this point the user may have
+        // made changes to the forms content before it was "enabled",
+        // so you should "enable" the form again
+        document.write('<form action="http://someurl/form.html"><input type="submit" disabled>')
+    }
+</script>
+
+So there is not much more work required. However, if you are doing this anyway, you can at least check whether the user has cookies enabled in plain JavaScript:
+// This is just for testing, for use in development
+<script type="text/javascript">
+
+    if (document.cookie.indexOf('enabled') < 0) {
+        // then you know the user has cookies disabled
+    }
+
+    else {
+        // we know the user has cookies enabled
+    }
+</script>
+
+EDIT
+Updated code to check for browser type instead of client type, as pointed out by @Adrian.
+
+EDIT 2
+I have made a few more changes to make sure the form will not submit before the user makes a selection from the select dropdowns or selects values from the input fields. I've also replaced document.write() with plain html because I don't need it to be rendered with JavaScript.
+
+</div></body></html><!-- 2022-06-21 20:52:38 

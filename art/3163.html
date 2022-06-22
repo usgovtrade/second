@@ -1,0 +1,120 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3164.html'>The Best and Worst</a><Br/><a href='3165.html'>Reinventing How Th</a><Br/><a href='3166.html'>On this day, in </a><Br/><a href='3167.html'>Tonight, We Make O</a><Br/><a href='3168.html'>As a bonus:</a><Br/><a href='3169.html'>The Most Deserving</a><Br/><a href='3170.html'>Known first for</a><Br/><a href='3171.html'>Zipping Over the C</a><Br/><a href='3172.html'>You Guys Are Dumbe</a><Br/><a href='3173.html'>This Tribe Will Se</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3162.html'>A Slippery Little </a><Br/><a href='3161.html'>Friends?</a><Br/><a href='3160.html'>Never enough time </a><Br/><a href='3159.html'>cookingwithai.com</a><Br/><a href='3158.html'>Capital investment</a><Br/><a href='3157.html'>The Puppet Master</a><Br/><a href='3156.html'>aitrocious.com</a><Br/><a href='3155.html'>That'll learn 'em</a><Br/><a href='3154.html'>Vibe of the Tribe</a><Br/><a href='3153.html'>Exclude all CAPTCH</a></div><div class='nav'><a href='3162.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3164.html'> >> </a></div><div class='article'>botsnoop.com';
+?>
+--EXPECTF--
+The redirect request has been successfully created.
+Redirect URL: http://example.com/%00-test%00-%00/%00.html
+Location: http://example.com/%00-test%00-%00/%00.html
+Request Headers:
+
+------BEFORE------
+GET /?z=foo HTTP/1.0
+Host: example.com
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1b2pre) Gecko/20090511 SeaMonkey/2.0b2pre
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Authorization: NTLM xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Query String Parameters:
+
+------AFTER------
+GET /?z=foo HTTP/1.0
+Host: example.com
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1b2pre) Gecko/20090511 SeaMonkey/2.0b2pre
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Authorization: NTLM xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+--GET /?z=foo--
+The redirect request has been successfully created.
+Redirect URL: http://example.com/%00-test%00-%00/%00.html
+Redirect Data:
+
+Array
+(
+    [0] => http://example.com/%00-test%00-%00/%00.html
+)
+Location: http://example.com/%00-test%00-%00/%00.html
+Request Headers:
+
+------BEFORE------
+GET /?z=foo HTTP/1.0
+Host: example.com
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1b2pre) Gecko/20090511 SeaMonkey/2.0b2pre
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Authorization: NTLM xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+--GET /?z=foo--
+The redirect request has been successfully created.
+Redirect URL: http://example.com/%00-test%00-%00/%00.html
+Redirect Data:
+
+Array
+(
+    [0] => http://example.com/%00-test%00-%00/%00.html
+)
+
+The redirect request has been successfully created.
+Redirect URL: http://example.com/%00-test%00-%00/%00.html
+Location: http://example.com/%00-test%00-%00/%00.html
+Request Headers:
+
+------AFTER------
+GET /?z=foo HTTP/1.0
+Host: example.com
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1b2pre) Gecko/20090511 SeaMonkey/2.0b2pre
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Authorization: NTLM xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+--GET /?z=foo--
+The redirect request has been successfully created.
+Redirect URL: http://example.com/%00-test%00-%00/%00.html
+Redirect Data:
+
+Array
+(
+    [0] => http://example.com/%00-test%00-%00/%00.html
+)
+
+--GET /?z=foo--
+The redirect request has been successfully created.
+Redirect URL: http://example.com/%00-test%00-%00/%00.html
+Location: http://example.com/%00-test%00-%00/%00.html
+Request Headers:
+
+------AFTER------
+GET /?z=foo HTTP/1.0
+Host: example.com
+User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1b2pre) Gecko/20090511 SeaMonkey/2.0b2pre
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Authorization: NTLM xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+--GET /?z=foo--
+The redirect request has been successfully created.
+Redirect URL: http://example.com/%00-test%00-%00/%00.html
+Redirect Data:
+
+Array
+(
+    [0] => http://example</div></body></html><!-- 2022-06-21 20:52:39 

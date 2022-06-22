@@ -1,0 +1,169 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3132.html'>You get so fat tha</a><Br/><a href='3133.html'>OTC, Prescription,</a><Br/><a href='3134.html'>Whiners are Wiener</a><Br/><a href='3135.html'>Vote Early, Vote O</a><Br/><a href='3136.html'>wireztap.com</a><Br/><a href='3137.html'>botpoo.com</a><Br/><a href='3138.html'>My Million Dollar </a><Br/><a href='3139.html'>UFC, MMA, BJJ, Kar</a><Br/><a href='3140.html'>Million Dollar Dec</a><Br/><a href='3141.html'>Glitter in Their E</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3130.html'>he hopes others do</a><Br/><a href='3129.html'>Personal Injury At</a><Br/><a href='3128.html'>Now considered a s</a><Br/><a href='3127.html'>The Brave May Not </a><Br/><a href='3126.html'>Baseball's greates</a><Br/><a href='3125.html'>Bunking with the D</a><Br/><a href='3124.html'>You're Going to Wa</a><Br/><a href='3123.html'>The actual interes</a><Br/><a href='3122.html'>Amazon Redux</a><Br/><a href='3121.html'>Too Little, Too La</a></div><div class='nav'><a href='3130.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3132.html'> >> </a></div><div class='article'>Most of the time the result of the first call is 0, meaning that you have an empty array.
+In this case, however, your function will end early. That's because the second condition doesn't make sense, and will never return true:
+if(data.results.length > 0) {
+    // No need to perform the same checks as before here
+}
+
+So, you end up doing something like this:
+var data = {results: []};
+$.get("ajax/data.php", function (data) {
+
+    if (data.results.length == 0) {
+
+        $(data.results).each(function (index, value) {
+
+            // ... code here
+
+        });
+
+    }
+
+    // Other code here
+
+});
+
+This doesn't make sense at all. You cannot use the data structure in your first conditional, because the response from the server might be empty. You'd have to test the first condition anyway, since otherwise the loop would loop indefinitely:
+$.get("ajax/data.php", function (data) {
+
+    if (data.results.length > 0) {
+
+        $(data.results).each(function (index, value) {
+
+            // ... code here
+
+        });
+
+    }
+
+});
+
+In any case, I'd also advise you to be extremely cautious in what you're doing. JSONP is a notoriously bad way to fetch data, and should only be used if there are absolutely no alternatives available. You should cache your data in a storage outside the script, and parse it on demand instead.
+
+A:
+
+In your $.get callback you are making a request to get data and in the callback you are making an entirely new request to get more data. So how do you expect $.get() to know when to call $.get()?
+The better thing to do would be to do all your querying on the same page. So if you were going to fetch 'a' then wait for it, why aren't you querying that data from a 'data' array? Then just set the data array to the response from the first request. If there is no data set up then just call $.get() and give it an empty callback function.
+function getData(data) {
+    if(data.results) {
+        return data.results;
+    }
+    $.get("ajax/data.php", function (data) {
+        if (data.results.length == 0) {
+            return;
+        }
+        data.results = data.results.concat(getData(data));
+        return data;
+    });
+}
+
+I haven't test that code so let me know if it doesn't work and I can fix it.
+
+A:
+
+Have you considered using the jQuery DataTables plug-in for jQuery?
+Here is a link to the DataTables documentation with all the included options:
+http://datatables.net/
+
+Allows ajax to be used to retrieve data from the server, and populate the table on the page. 
+Provides advanced datatypes like datatypes, and arrays as values.
+Supports sorting, pagination, and other features.
+Includes sorting, paging, searching, and multi-column features.
+
+EDIT:
+
+My main concern is to keep the order of values intact.
+
+What about creating the table on the fly?
+EDIT:
+Ok, I have taken a look at your JS Fiddle.
+You need to set DataTable parameters before initializing it:
+    $('select#department').change(function() {
+
+        if ($(this).val() == 'Select Department') {
+            alert('no selection');
+            return;
+        }
+
+        $("table").dataTable( {
+            "bServerSide": true,
+            "sAjaxSource": 'ajax/departments.php',
+            "bPaginate": false,
+            "sPaginationType": "full_numbers"
+        });
+    });
+
+Then in your PHP file you will need to create the data.
+At the bottom of the PHP file, just before the last ?> you should have a section that looks like this:
+    $results = mysql_query("SELECT * FROM departments WHERE DepartmentID = $DepartmentID") or die(mysql_error());
+
+    $table = array();
+
+    while($row = mysql_fetch_array($results)){
+
+        $table[] = $row;
+
+    }
+
+    $table = json_encode($table);
+
+    echo $table;
+
+The function json_encode will give you proper formatted JSON.
+
+EDIT:
+With the new added content, to show all departments and hide departments that have no department entries (forgot to add these in my first edit), try this:
+$(function() {
+
+    var ajaxParams = {
+            type: "POST",
+            url: "ajax/departments.php",
+            dataType: "json",
+            success: function(result) {
+
+                var datatable;
+                var data = $.parseJSON(result);
+                var $thead = $('#example tbody').first().find('tr:first');
+
+                if (result.length === 0) {
+
+                    $('#example tbody').html('<tr><td colspan="8"><div class="no-data">No data</div></td></tr>');
+
+                    return;
+
+                } else {
+
+                    $('#example').DataTable( {
+                        "bServerSide": true,
+                        "sAjaxSource": "ajax/departments.php",
+                        "bPaginate": false,
+                        "sPaginationType": "full_numbers",
+                        "aoColumns": [
+                            { "mDataProp": "DepartmentID" },
+                            { "mDataProp": "DepartmentDescription" },
+                            { "mDataProp": "DepartmentShortName" },
+                            { "mDataProp": "DeparmentNumber" },
+                            { "mDataProp": "DepartmentType" },
+                            { "mDataProp": "DepartmentCategory" }
+
+                        ]
+                    });
+                }
+
+            },
+            error: function() {
+
+                console.log("ERROR: An error occured while attempting to retrieve the departments data.");
+            }
+    };
+
+    $('#select-department').change(function() {
+        $("#example").dataTable().fnDestroy();
+        $("#example").empty().fnDraw(false);
+        $("#example").dataTable(ajaxParams).fnDraw();
+    });
+
+});
+
+If this isn't working try to remove the bServerSide from the $.fn.DataTable definition.
+
+</div></body></html><!-- 2022-06-21 20:52:35 
