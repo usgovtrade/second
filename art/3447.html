@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3448.html'>Livin' On the Edge</a><Br/><a href='3449.html'>Slip Through Your </a><Br/><a href='3450.html'>Never before seen </a><Br/><a href='3451.html'>I promise that you</a><Br/><a href='3452.html'>Bad first-date ide</a><Br/><a href='3453.html'>There's Gonna Be B</a><Br/><a href='3454.html'>Still Throwin' Pun</a><Br/><a href='3455.html'>I could fall aslee</a><Br/><a href='3456.html'>Not Going to Roll </a><Br/><a href='3457.html'>Million Dollar Dec</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3446.html'>War is Not Pretty</a><Br/><a href='3445.html'>The Big Adventure</a><Br/><a href='3444.html'>Mad Treasure Hunt</a><Br/><a href='3443.html'>On this day, in </a><Br/><a href='3442.html'>Stir the Pot!</a><Br/><a href='3441.html'>Gouge My Eyes Out</a><Br/><a href='3440.html'>Go for the Gusto</a><Br/><a href='3439.html'>Sometimes, I want </a><Br/><a href='3438.html'>Ransomware, Crypto</a><Br/><a href='3437.html'>Mama, Look at Me N</a></div><div class='nav'><a href='3446.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3448.html'> >> </a></div><div class='article'>I have been asked to create a script which does the following:
+1) it gets all the rows which have a status equal to a given status code (for this one i used the code 3)
+2) it searches in the result set and collects all the row entries that contain a specific code (for this one i used the code "test") 
+3) it then deletes the entire row (or rows) in the table that have this specific code (for this one i used the code "test") 
+4) it sorts the table according to the column that is in alphabetical order.
+So what i am supposed to do is create a script that gets all the rows which contain the text "test" and then it deletes all the rows that contain that specific text and then finally it sorts the result set by the status column in alphabetical order.
+This is my first time using sql so it would be nice if i can get any help that can guide me to do this.
+
+A:
+
+I assume that you already know how to connect to the database, what the structure of the table is and how to query it.
+This can be done by this SQL query:
+DELETE FROM table WHERE status = 3 AND code IN (SELECT code FROM table WHERE code = 'test')
+
+I also assume that you have made sure that the status can only contain 3, and that the code column is the primary key. If not, you need to change it.
+EDIT: to sort after the deletion, try this:
+DELETE FROM table WHERE status = 3 AND code IN (SELECT code FROM table WHERE code = 'test') ORDER BY status DESC
+
+Just for fun, a fiddle with a small test case
+
+A:
+
+If I understand your question correct, then you need to write this query
+DELETE FROM MyTable WHERE status = 3 AND code IN (SELECT code FROM MyTable WHERE code = 'test')
+
+Now your table would be updated.
+Try this
+DELETE FROM MyTable WHERE status = 3 AND code IN (SELECT code FROM MyTable WHERE code = 'test') ORDER BY status DESC
+
+It should return your list of rows now.
+
+A:
+
+Here's the SQL Code that worked for me:
+Delete from MyTable where status = 3 AND code IN (SELECT code FROM MyTable where code = 'test')
+
+Note that I just used SQLyog, and all I did was execute the code without changes. No need to specify that you want to delete it or anything else. This solved the problem
+
+Hope this helps someone else
+
+A:
+
+The delete statement would look something like this
+DELETE FROM table WHERE status = 3 AND code = 'test'
+
+I think you have your syntax for a select statement wrong. I think you want something like this:
+DELETE FROM table WHERE status = 3 AND code IN (SELECT code FROM table WHERE code = 'test')
+
+But if you're using an ORACLE database, you're code would probably look more like this:
+DELETE FROM table WHERE status = 3 AND status IN (SELECT status FROM table WHERE code = 'test')
+
+or (assuming your status is numeric)
+DELETE FROM table WHERE status = 3 AND status BETWEEN 3 and 3.99
+
+or something similar.
+
+Also, you don't need to put a semicolon at the end of every query you run, as all valid SQL queries end with a semicolon. (There are some languages, like Python, which require you to put a semicolon at the end of every statement)
+
+</div></body></html><!-- 2022-06-21 20:53:16 

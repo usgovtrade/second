@@ -1,0 +1,106 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3485.html'>He worked at the s</a><Br/><a href='3486.html'>It Smells Like Suc</a><Br/><a href='3487.html'>I'm wondering why</a><Br/><a href='3488.html'>Recruiting, Placem</a><Br/><a href='3489.html'>Sumo at Sea</a><Br/><a href='3490.html'>Holding on for Dea</a><Br/><a href='3491.html'>An example of lewd</a><Br/><a href='3492.html'>It’s Been Real and</a><Br/><a href='3493.html'>I’ve never seen a </a><Br/><a href='3494.html'>Let's Make a Deal</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3483.html'>We went back down </a><Br/><a href='3482.html'>My tongue makes no</a><Br/><a href='3481.html'>Want to See the El</a><Br/><a href='3480.html'>You’re stuck in my</a><Br/><a href='3479.html'>Prenuptial Escape </a><Br/><a href='3478.html'>Our company was na</a><Br/><a href='3477.html'>Now That's a Rewar</a><Br/><a href='3476.html'>This is Why You Pl</a><Br/><a href='3475.html'>This brings back m</a><Br/><a href='3474.html'>We Did it Guys</a></div><div class='nav'><a href='3483.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3485.html'> >> </a></div><div class='article'>aisnob.com/html/a-better-more-efficient-way-to-define-classes/
+https://www.simonofun.com/article/a-better-more-efficient-way-to-define-classes
+
+As a quick fix you could simply assign the element to a temporary variable when it's needed for the selector, which doesn't get the element loaded into memory, just used temporarily for the document lookup. 
+$('img.class').addClass('something'); //bad
+var img = $('img.class');
+img.addClass('something'); //good
+
+$('img.class').removeClass('something'); //bad
+var img = $('img.class');
+img.removeClass('something'); //good
+
+//etc
+
+A:
+
+$("img.something").removeClass("something") works fine. Tested on jQuery v1.4.1
+
+$('img.something').removeClass("something")
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+<img src="http://placehold.it/350x150">
+<br />
+<br />
+<img src="http://placehold.it/350x150">
+<br />
+<br />
+<img src="http://placehold.it/350x150">
+<br />
+<br />
+<img src="http://placehold.it/350x150">
+<br />
+<br />
+<img src="http://placehold.it/350x150">
+
+The key is, your elements don't have the class yet. So jQuery doesn't apply the class to them.
+Also, just in case, use $('img.something').removeClass('something') for consistency.
+
+A:
+
+This question has nothing to do with "load order", so I'll ignore the rest of the answers, which do not address the question. The core of this question is "why does the jQuery selector find all images and not just ones which have already been given a class in this script"? 
+In other words: How can the selector return elements that do not yet exist, since this is what the question is really about.
+The reason for this is because the selector will attempt to manipulate the items in the document, not merely enumerate the collection of objects matching the selector. So jQuery will use the selector to search through the objects in the document and then perform the requested manipulation on each one. If the selector matches no objects in the document, the matching method will throw an error. This is why the code doesn't work. 
+The documentation for .find() says this (bold emphasis mine):
+
+For each element in the current set of matched elements, get the next
+  sibling of each element in the set of matched elements, if any, and
+  then for each sibling, get the next sibling of the sibling, if any,
+  and so on, until there are no more siblings to get.
+
+This can be demonstrated very simply in the console:
+$("div").find(); // this will not error. the selector matches nothing.
+
+console.log($.type($())); // TypeError: $ is not a function
+
+console.log($()); // undefined, however jQuery is not undefined.
+
+$("div").find(); // error. the selector matched nothing. the object is not in the document, so the callback function does not have a matching item. 
+$("div").find("div"); // now we have divs in our collection. this is because the selector matched at least one element in the document. 
+$("div div").find("div"); // no longer an error. now that we have a match, jQuery will continue to enumerate through the elements in the collection
+$("div").find("div div"); // yet more errors. 
+$("div").find("div div div"); // and then last error. again, because we have a match, not because we ran out of elements.
+
+This can be more clearly demonstrated when we use .not().
+// works fine
+$("div").find("div div").not("div");
+// works fine too
+$("div").find("div.someclass");
+// works fine too
+$("div").find("img[alt=bar]");
+// error
+$("div").find("img[alt=bar] img");
+// works fine though
+$("div").find("div div");
+
+So, to conclude, jQuery will try to filter the selected items from the document into a single set of results for manipulation, but jQuery will not get a selection if there are no matches. That is why the selector returns all matches in the document in the first place, and that is why the error is thrown when there are no elements matching the selector in the document. This is one way to get around it, and the other way, already demonstrated, is to filter out the elements which match the selector already before you try to manipulate them. 
+This, of course, makes no difference for the case where there are no matches on the page. 
+
+For completeness, here is a working example that illustrates the answer:
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div id="container">
+<h1>Find</h1>
+<ul>
+    <li><img src="image.jpg" alt="this image is not important" class="something" /></li>
+    <li><img src="image.jpg" alt="this image is not important" class="something" /></li>
+    <li><img src="image.jpg" alt="this image is not important" class="something" /></li>
+</ul>
+
+<h1>Not</h1>
+<ul>
+    <li><img src="image.jpg" alt="this image is not important" class="something" /></li>
+    <li><img src="image.jpg" alt="this image is not important" class="something" /></li>
+    <li><img src="image.jpg" alt="this image is not important" class="something" /></li>
+</ul>
+
+<h1>Not Here Either</h1>
+<ul>
+    <li><img src="image.jpg" alt="this image is not important" class="something" /></li>
+    <li><img src="image.jpg" alt="this image is not important" class="something" /></li>
+    <li><img src="image.jpg" alt="this image is not important" class="something" /></</div></body></html><!-- 2022-06-21 20:53:20 
