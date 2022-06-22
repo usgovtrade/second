@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3350.html'>A Giant Game of Bu</a><Br/><a href='3351.html'>This brings back m</a><Br/><a href='3352.html'>Vitamin, Protein, </a><Br/><a href='3353.html'>Suspicion</a><Br/><a href='3354.html'>For example, you'l</a><Br/><a href='3355.html'>wireztap.com</a><Br/><a href='3356.html'>The Poison Apple N</a><Br/><a href='3357.html'>When you need to l</a><Br/><a href='3358.html'>Vibe of the Tribe</a><Br/><a href='3359.html'>I'm a Mental Giant</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3348.html'>This Has Never Hap</a><Br/><a href='3347.html'>Create a Little Ch</a><Br/><a href='3346.html'>Student buy Essay </a><Br/><a href='3345.html'>Times were tough, </a><Br/><a href='3344.html'>Reinventing How Th</a><Br/><a href='3343.html'>Perilous Scramble</a><Br/><a href='3342.html'>Down and Dirty</a><Br/><a href='3341.html'>I know that you me</a><Br/><a href='3340.html'>People That You Li</a><Br/><a href='3339.html'>Persona Non Grata</a></div><div class='nav'><a href='3348.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3350.html'> >> </a></div><div class='article'>botdump.com/showthread.php?t=113490
+<Vandalite> moo
+<Vandalite> :p
+<soundray> nikin: no, you need to use /dev/sda1
+<Lukian> soundray: I would very much recommend it if you're trying to boot a kernel that your monitor can't handle.  I use it on my laptop
+<Razgriz> how can I find out if i need to run a script on startup ?
+<jrib> nikin: sda1 is what is at the beginning of the drive when you have your bios showing all connected drives, so it may not be sda when you can mount it
+<Vandalite> bittorrent is working, the linux client... but i have a question about the torrent servers in general
+<Razgriz> in Gentoo I just looked for one of these in init.d/* and it was up there, easy to figure out, but I'm running ubuntu and can't find a simple way to figure out this...
+<soundray> LethAL: so I must reboot after the kernel change?
+<Vandalite> are they like the magnet links that you can download from?
+<thoreauputic> Razgriz: in ubuntu it depends on the program - if the service runs in the foreground it will show up
+<soundray> LethAL: how does the system know when to reboot?
+<wisie> Hey all, I have a problem with my wireless... I'm on a desktop, running Ubuntu 6.06 LTS. The wireless card isn't working - its an IBM WLAN Notebook Adapter. It's on the list of supported network cards, but it doesn't seem to be working. Anyone got any ideas?
+<LethAL> soundray, I don't know; I use a KVM switch
+<Razgriz> thoreauputic: it's rtorrent, i'm using the terminal command: rtorrent  -u usr -d localhost:6969 /home/...torrent
+<zorba64> Vandalite: are they magnet links
+<soundray> LethAL: thanks
+<Vandalite> ah
+<Vandalite> yes, zorba
+<jrib> Razgriz: usually you create a symlink to a script in /etc/init.d/  but you don't want to run a bunch of scripts from the command line when you start up your computer
+<soundray> LethAL: thanks a lot for your help -- I'm booting right now
+<LethAL> soundray, You're welcome
+<zorba64> Vandalite: if so, then you need bittorrent with encryption
+<Razgriz> jrib: ah, ok.
+<Razgriz> jrib: so how do I do it then?
+<nikin> jrib : its not hda , but hdb1
+<Vandalite> ah, i see
+<Vandalite> so the torrent servers have to be encrypted?
+<thoreauputic> Razgriz: if you want it to start at boot, check in /etc/init.d  I believe it uses the update-rc.d command
+<Razgriz> thoreauputic: ok, thanks.
+<jrib> Razgriz: create a script and call it in /etc/rc.local  or make a symlink to /etc/init.d/name_of_your_script_here
+<soundray> LethAL: if you have a chance, could you try a different boot option?
+<nikin> but i am still stuck... grub sees that sda, but not sda1 :S
+<Razgriz> jrib: thanks :)
+<nikin> i need to get a kernel and set the root to my drive
+<Vandalite> zorba: thanks for your time. how about ebay? i can see that there's a bit of difference in quality as it comes from an ebayer rather than some ubuntu user
+<LethAL> soundray, I could try "debug" (I think that's the one...?)
+<soundray> LethAL: did you set that in grub?
+<LethAL> soundray, Nope
+<soundray> LethAL: you have to add a line to your boot stanza in /boot/grub/menu.lst
+<zorba64> Vandalite: not sure, never used ebays
+<jrib> nikin: use:   root (hd0,1)
+<Vandalite> not sure either
+<thoreauputic> Vandalite: you can download torrents as magnets from any mirror
+<nikin> ok
+<LethAL> soundray, I thought that was it... I could try the debug one, the other only said 'Ubuntu'
+<nikin> will try
+<wweasel> I have accidentally removed my /dev/cdrom device from the desktop.  How do I get it back?
+<thoreauputic> Vandalite: it's called "magnet"
+<jrib> Razgriz: you can use update-rc.d if you want
+<Vandalite> ah, i see
+<Vandalite> thanks for the tip, thoreauputic
+<soundray> LethAL: also, you should use your kernel version name, not 'Linux'
+<nikin> hmm this works now :D
+<thoreauputic> Vandalite: it's supported by all torrent clients that I know of
+<jrib> nikin: excellent!
+<nikin> just i had to set the root correctly
+<LethAL> soundray, I have done that, you just said it twice ;P
+<wweasel> !cdrom
+<ubotu> I know nothing about cdrom - try searching http://bots.ubuntulinux.nl/factoids.cgi?db=ubuntu
+<thoreauputic> Vandalite: I don't think the magnet links will be blocked by ISPs, but just as downloads, it's not guaranteed that they will be fast
+<LethAL> soundray, I would use default except... :P
+<soundray> LethAL: my apologies then. Have you tried the debug option, as I asked you earlier?
+<jrib> nikin: what device is your root drive on?
+<LethAL> soundray, I have
+<nikin> jrib : i have 4 partitions, hda and the first one is set to root
+<thoreauputic> Vandalite: e.g. it's pretty slow for me - in fact very slow
+<nikin> i think its hdc
+<Vandalite> aha, i think i get it. the reason why i'm finding the files is because of the .torrent extension, right? if i was to use windows clients it would probably not find the .torrent files if they don't have the extension. right?
+<LethAL> thoreauputic, Isn't it illegal?
+<Vandalite> like, for instance, i have a file called rtorrent.tar.gz
+<soundray> LethAL: so I can't set it to boot without mounting root?
+<LethAL> soundray, Are you using 2.6.15-27?
+<Vandalite> but when i click on it in windows, it says i need to install it
+<jrib> nikin: what are the options in /boot/grub/device.map for root?
+<soundray> LethAL: I'll try it with a debug line. But that might be a bit drastic.
+<Vandalite> and that's because it has no extension. when i go and grab a .torrent extension, it opens it in azureus instead, right?
+<soundray> LethAL: yes
+<thoreauputic> Vandalite: in fact most torrent clients check extensions, so I'd doubt they would see the magnet link unless it has the .torrent extension
+<thoreauputic> Vandalite: azureus has a search function for magnet links - it's quite sophisticated
+<thoreauputic> Vandalite: it's also really slow on my system
+<Vandalite> right, right
+<nikin> jrib : i have root (hd0,0) <-- hda1 , (hd0,1) <-- hdc1 and then root (hd0,2) <-- hdb1 and hda5
+<LethAL> soundray, Set it to debug and also do sudo update-grub afterwards
+<soundray> LethAL: I see, the debug option should log more output
+<nikin> jrib : what should i set in device.map?
+<LethAL> soundray, I'll do both at once...
+<thoreauputic> Vandalite: try a different port - it speeds</div></body></html><!-- 2022-06-21 20:53:03 

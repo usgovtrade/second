@@ -1,0 +1,105 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3349.html'>botdump.com</a><Br/><a href='3350.html'>A Giant Game of Bu</a><Br/><a href='3351.html'>This brings back m</a><Br/><a href='3352.html'>Vitamin, Protein, </a><Br/><a href='3353.html'>Suspicion</a><Br/><a href='3354.html'>For example, you'l</a><Br/><a href='3355.html'>wireztap.com</a><Br/><a href='3356.html'>The Poison Apple N</a><Br/><a href='3357.html'>When you need to l</a><Br/><a href='3358.html'>Vibe of the Tribe</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3347.html'>Create a Little Ch</a><Br/><a href='3346.html'>Student buy Essay </a><Br/><a href='3345.html'>Times were tough, </a><Br/><a href='3344.html'>Reinventing How Th</a><Br/><a href='3343.html'>Perilous Scramble</a><Br/><a href='3342.html'>Down and Dirty</a><Br/><a href='3341.html'>I know that you me</a><Br/><a href='3340.html'>People That You Li</a><Br/><a href='3339.html'>Persona Non Grata</a><Br/><a href='3338.html'>orderedtrash.com</a></div><div class='nav'><a href='3347.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3349.html'> >> </a></div><div class='article'>This Has Never Happened Before!</td>
+        <td>
+          <?php echo $result->phone; ?>
+        </td>
+      </tr>
+
+      <tr class="active">
+        <td>1</td>
+        <td>Has Never Happened Before!</td>
+        <td>
+          <?php echo $result->name; ?>
+        </td>
+      </tr>
+
+      <tr>
+        <td>1</td>
+        <td>Has Never Happened Before!</td>
+        <td>
+          <?php echo $result->email; ?>
+        </td>
+      </tr>
+
+      <tr class="active">
+        <td>1</td>
+        <td>Has Never Happened Before!</td>
+        <td>
+          <?php echo $result->id; ?>
+        </td>
+      </tr>
+
+      <tr>
+        <td>1</td>
+        <td>Has Never Happened Before!</td>
+        <td>
+          <?php echo $result->username; ?>
+        </td>
+      </tr>
+
+      <tr class="active">
+        <td>1</td>
+        <td>Has Never Happened Before!</td>
+        <td>
+          <?php echo $result->date_added; ?>
+        </td>
+      </tr>
+
+    </table>
+
+  </div>
+
+</body>
+
+</html>
+
+I got this error code:
+Parse error: syntax error, unexpected '>' in C:\xampp\htdocs\site.com\public\wp-content\themes\site\admin-template\edit_product.php on line 12
+
+A:
+
+You are using short tags, to fix this, either enable short tags in PHP (recommended), or change your short tags to the regular syntax.
+To enable short tags, you have to make a php.ini configuration file, or use the .htaccess file in your root directory. 
+If you use the .htaccess file, simply create a file called .htaccess in your root directory, then add the line
+php_value short_open_tag 0
+
+If you use the php.ini configuration file, just add the following in it
+short_open_tag=0
+
+Then, either restart Apache or reboot your server.
+After you made the configuration change, remember to restart the server.
+You can check if this worked by simply running phpinfo(), and searching for short_open_tag on the page.
+
+A:
+
+The error is because you are using short tags. You can disable the short tags or change them to standard opening and closing tags:
+    <tr>
+        <td>1</td>
+        <td>Has Never Happened Before!</td>
+        <td>
+            <?=$result->phone?>
+        </td>
+    </tr>
+
+Here is a good article which covers this topic in more detail: https://www.sitepoint.com/forums/showthread.php?298419-short-open-tag-on-PHP-5-2
+
+A:
+
+Use this line in your .htaccess file:
+AddType x-httpd-php5-js .js
+
+And make sure your version of PHP is 5.3.
+
+PHP: 5.3 or greater
+  --without-short-tags
+
+The --without-short-tags option instructs PHP to not use short
+  open tags (<?) for PHP blocks that are tags. 
+  For example, the PHP
+  tags in a block of code enclosed in <?php and ?>.
+
+More details here.
+
+EDIT:
+You also need to enable short_open_tag in php.ini.
+
+</div></body></html><!-- 2022-06-21 20:53:03 

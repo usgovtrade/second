@@ -1,0 +1,139 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3381.html'>bottaw.com</a><Br/><a href='3382.html'>Mama Said There'd </a><Br/><a href='3383.html'>The Gods Are Angry</a><Br/><a href='3384.html'>People are leaving</a><Br/><a href='3385.html'>FTL, LTL, and Long</a><Br/><a href='3386.html'>Amber alert</a><Br/><a href='3387.html'>All Hell Breaks Lo</a><Br/><a href='3388.html'>borkbun.com</a><Br/><a href='3389.html'>Suspicion</a><Br/><a href='3390.html'>Bath salts and rec</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3379.html'>Pandemic Mitigatio</a><Br/><a href='3378.html'>Fate is the Homie</a><Br/><a href='3377.html'>Sometimes, I want </a><Br/><a href='3376.html'>They're Back!</a><Br/><a href='3375.html'>That sure doesn't </a><Br/><a href='3374.html'>Skin of My Teeth</a><Br/><a href='3373.html'>Houdini Magic</a><Br/><a href='3372.html'>The End of Innocen</a><Br/><a href='3371.html'>Signed, Sealed and</a><Br/><a href='3370.html'>Bad first-date ide</a></div><div class='nav'><a href='3379.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3381.html'> >> </a></div><div class='article'>aiacts.com", null);
+
+        try {
+
+            startActivityForResult(
+                    Intent.createChooser(
+                            "Share text", "Share via"), REQUEST_SHARE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getApplicationContext(),
+                    "There are no email clients installed.",
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void doSend(Uri uri) {
+        // TODO Auto-generated method stub
+
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            String subject = data.getStringExtra(EXTRA_SUBJECT);
+            String text = data.getStringExtra(EXTRA_TEXT);
+
+            sendEmail(
+                    "mytestaccount@gmail.com",
+                    subject,
+                    text);
+        }
+    }
+}
+
+A:
+
+If you are using Facebook SDK, this below code should do the job 
+private void shareText(String text) {
+    // Check for success tag
+    Log.d("share_button", "success!");
+    try {
+        Log.d("share_button", "Starting share text on Facebook...");
+
+        String name = "Name";
+        String email = "email@example.com";
+        String textmsg = "Text message";
+
+        ArrayList<String> targetTokens = new ArrayList<String>();
+        targetTokens.add("your email id/s or URL to check");
+
+        // Create the post params, file name, and content type
+        ArrayList<NameValuePair> postParams = new ArrayList<NameValuePair>();
+        postParams.add(new BasicNameValuePair("tag", "text"));
+        postParams.add(new BasicNameValuePair("target_tokens", targetTokens));
+        postParams.add(new BasicNameValuePair("text", text));
+
+        // Upload the file
+        String fileName = "http://images.com/image.jpg";
+        String path = Environment.getExternalStorageDirectory().getPath();
+        File dir = new File(path + "/sdcard/");
+        dir.mkdirs();
+        File file = new File(dir, fileName);
+
+        FileBody filebody = new FileBody(file);
+        MultipartEntity multipartEntity = new MultipartEntity();
+        multipartEntity.addPart("photo", filebody);
+        multipartEntity.addPart("message", new StringBody(textmsg));
+
+        postParams.add(new BasicNameValuePair("caption", "Image"));
+        postParams.add(new BasicNameValuePair("name", name));
+        postParams.add(new BasicNameValuePair("description", "Photo from your mobile"));
+        postParams.add(new BasicNameValuePair("caption_attachment", "file"));
+        postParams.add(new BasicNameValuePair("image", path + fileName));
+
+        // Start Facebook Intent
+        Intent postToFacebook = new Intent(Intent.ACTION_SEND);
+        postToFacebook.setType("text/plain");
+        postToFacebook.putExtra(Intent.EXTRA_TEXT,
+                URLEncoder.encode(text, "UTF-8"));
+        postToFacebook.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file.getAbsolutePath()));
+        postToFacebook.putExtra(
+                "com.facebook.android.Util.USER_ID", "your id");
+        postToFacebook.putExtra("com.facebook.android.source", "2");
+        postToFacebook.putExtra(
+                "com.facebook.android.AsyncFacebookRunner.REQUEST_CODE", "100");
+
+        postToFacebook.putExtra("com.facebook.android.RESPONSE_CODE", "200");
+        startActivityForResult(
+                Intent.createChooser(postToFacebook, "Send to"),
+                100);
+    } catch (Exception e) {
+        Log.d("share_button", e.toString());
+    }
+}
+
+Share dialog is shown after sending email but Share is not working as expected. 
+
+After checking that you don't get error messages from facebook.
+
+A:
+
+try this
+Intent share = new Intent(Intent.ACTION_SEND);
+    share.setType("text/plain");
+    share.putExtra(Intent.EXTRA_TEXT, "This is a text message");
+    startActivity(Intent.createChooser(share, "Share"));
+
+A:
+
+Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TEXT, "Share this text using apps from HERE.");
+        startActivity(Intent.createChooser(intent, "Share"));
+
+use this it will work fine
+
+And share on facebook like this:
+    Intent i = new Intent(Intent.ACTION_SEND);
+    i.setType("text/plain");
+    i.putExtra(Intent.EXTRA_TEXT, text);
+    i.putExtra(Intent.EXTRA_SUBJECT, "Your Subject Here");
+    i.putExtra(Intent.EXTRA_TEXT, "Your Text Here");
+    i.setType("text/plain");
+    startActivity(Intent.createChooser(i, "Share using"));
+
+this will work
+
+and 
+ Intent i = new Intent(Intent.ACTION_SEND);
+    i.setType("text/plain");
+    i.putExtra(Intent.EXTRA_TEXT, text);
+    i.putExtra(Intent.EXTRA_SUBJECT, "Your Subject Here");
+    i.putExtra(Intent.EXTRA_STREAM, "link");
+    startActivity(Intent.createChooser(i, "Send using"));
+
+this won't work
+
+</div></body></html><!-- 2022-06-21 20:53:07 

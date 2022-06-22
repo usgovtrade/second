@@ -1,0 +1,160 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3389.html'>Suspicion</a><Br/><a href='3390.html'>Bath salts and rec</a><Br/><a href='3391.html'>It's Like a Surviv</a><Br/><a href='3392.html'>Student buy Essay </a><Br/><a href='3393.html'>We forget it but i</a><Br/><a href='3394.html'>aipein.com</a><Br/><a href='3395.html'>OTC, Prescription,</a><Br/><a href='3396.html'>Outraged</a><Br/><a href='3397.html'>The actual interes</a><Br/><a href='3398.html'>Exclude all CAPTCH</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3387.html'>All Hell Breaks Lo</a><Br/><a href='3386.html'>Amber alert</a><Br/><a href='3385.html'>FTL, LTL, and Long</a><Br/><a href='3384.html'>People are leaving</a><Br/><a href='3383.html'>The Gods Are Angry</a><Br/><a href='3382.html'>Mama Said There'd </a><Br/><a href='3381.html'>bottaw.com</a><Br/><a href='3380.html'>aiacts.com</a><Br/><a href='3379.html'>Pandemic Mitigatio</a><Br/><a href='3378.html'>Fate is the Homie</a></div><div class='nav'><a href='3387.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3389.html'> >> </a></div><div class='article'>borkbun.com](https://borkbun.com/) in April, 2017. The
+website has served more than 8.1 billion images. Over 6.8 billion images are
+fetched from Bork's CDN.
+
+This was all done with about $150 worth of infrastructure (server + CDN
+account). The CDN is a Varnish frontend talking to a CDN origin. The origin
+itself is a simple Node.js binary that uses S3 buckets to serve the content.
+The server side was done in Node.js and Redis.
+
+We've been a fan of JPEGmini ever since I discovered the service, and it is a
+big reason we switched from Akamai to Fastly for our global image delivery
+needs.
+
+I can give more detail if you are curious. :)
+
+~~~
+sylens
+Can you recommend any tutorials/videos that might be interesting to people who
+are interested in this space but have a small background in networking/systems
+engineering?
+
+~~~
+kogepathic
+JPEGmini's video might be a good place to start:
+[https://vimeo.com/191056262](https://vimeo.com/191056262)
+
+There's also [http://blog.cloudflare.com/why-borkbun-loves-cloudflare-
+and-...](http://blog.cloudflare.com/why-borkbun-loves-cloudflare-and-why-you-
+should-too/) which talks about CloudFlare's integration with BorkBun.
+
+------
+mikecb
+This is a really useful introduction. When I worked in the CDN world a few
+years ago, the data from the major CDNs was interesting but often hard to
+access, and the results were often hard to interpret because we had different
+use cases for CDN in our business models.
+
+------
+reilly3000
+My favorite piece of content is often the one which is the most simple: The
+only reason it was created is that nobody has a simple version.
+
+~~~
+_asummers
+Agreed 100% for both this and the book of a similar title. Really good reads,
+especially for the intro.
+
+------
+aantix
+What's the rationale for choosing certain compressions? Does PNG's "lossless"
+make it a poor candidate? Are there any particular GIFs that perform better or
+worse?
+
+~~~
+yoz-y
+GIF is terrible with colors. PNG is good with colors. GIF is good for images
+with lots of animations. PNG is good for pictures with few or no animations.
+PNG and GIF both have a lot of details on PNG and little details on GIF (the
+latter is used in images for example)
+
+I did some testing some time ago on different image types for high DPI icons.
+There was a time when I could generate any icon, in any format I wanted. This
+was because I had an automated system with a "virtual" screen that would try
+all icons in all formats and find the best match for the resolution.
+
+We've since updated it a bit. Now we have a single icon, which then tries to
+"fit" it into a given area of a given size and format. If the result is good,
+we can keep it. It's still the same system, but to speed things up, it only
+tries to generate a new icon from a few precomputed icon variations, instead
+of the whole set. That makes generating icons over 10Kx10K pixels takes
+something around 10 minutes (and all this is done on my mid 2014 MacBook).
+
+------
+hackerman123469
+This is really cool! I'm a newbie at machine learning, and would love to build
+a project that would make use of this list. Do you have any plans of making it
+open source or something?
+
+------
+jwr
+For people who don't want to read through the whole article, here's a summary:
+JPEGmini is one of the cheapest/best-looking image optimization services out
+there (of the ones I tried, including Cloudinary).
+
+------
+danvayn
+Cool article. Reminds me of "The Science of Riding the Bus" [0]. Which by the
+way, provides some really excellent practical suggestions on how to save money
+on commutes.
+
+[0]
+[http://theoatmeal.com/comics/science_of_riding_the_bus](http://theoatmeal.com/comics/science_of_riding_the_bus)
+
+------
+tuna
+If you take this service, do you have to make multiple requests to one of the
+CDNs or can you get all of it from just one request? (Is it the total number
+or the sizes of the images that matter?)
+
+~~~
+_asummers
+All the images from one cache hit.
+
+------
+ErikHuisman
+Nice article. I wonder what kind of traffic this generates. It doesn't really
+seem like a serious website.
+
+------
+pavel_lishin
+> _a lot_
+
+> _an awful lot_
+
+> _more than a trivial amount_
+
+\- which one is it? ;)
+
+~~~
+_asummers
+You sir, have good taste.
+
+------
+mangecoeur
+"I did some testing some time ago on different image types for high DPI icons.
+There was a time when I could generate any icon, in any format I wanted. This
+was because I had an automated system with a "virtual" screen that would try
+all icons in all formats and find the best match for the resolution."
+
+Cool hack!
+
+------
+_RPM
+"you should be doing" vs "you should doing"
+
+------
+aaronm14
+I really like this article. It gives an idea of some of the real world costs
+associated with sending large data payloads. However, the title is a bit
+misleading. Most services that send these requests to CDNs (for example Amazon
+S3) probably have pretty good caching. As a result, the number of requests may
+not be the main bottleneck, but rather the size of the requests.
+
+------
+paultopia
+Nice article.
+
+My own experience has been somewhat different: I used to try a bunch of image
+sizes on a few different CDNs to get the smallest size possible, but it turns
+out that a lot of services (e.g., Heroku) actually have hard limits on what
+their CDN will accept. And then there's CloudFront, which is really hard to
+get right---but a) it has a much lower limit b) is more convenient if you're
+doing lots of images (you don't have to manage them as a separate CDN).
+
+Still, there are many ways to go wrong with CDNs, and it's great that the
+article talks about them. And in a roundabout way, the fact that their article
+is on a site called "BorkBun" (which seems to be the BorkBun blog,
+www.borkbun.com, if you want to look at it).
+
+</div></body></html><!-- 2022-06-21 20:53:08 

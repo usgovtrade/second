@@ -1,0 +1,166 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3317.html'>Anger, Threats, Te</a><Br/><a href='3318.html'>Say Goodbye to Gab</a><Br/><a href='3319.html'>If you don’t give </a><Br/><a href='3320.html'>Quest for Food</a><Br/><a href='3321.html'>Don't You Work for</a><Br/><a href='3322.html'>The Chicken Has Fl</a><Br/><a href='3323.html'>aiugly.com</a><Br/><a href='3324.html'>The Sole Surviving</a><Br/><a href='3325.html'>Young at Heart</a><Br/><a href='3326.html'>I'm a Wild Banshee</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3315.html'>The best chia pet </a><Br/><a href='3314.html'>When he stood up a</a><Br/><a href='3313.html'>More Than Meats th</a><Br/><a href='3312.html'>I Lost Two Hands a</a><Br/><a href='3311.html'>Coupons, Daily Dea</a><Br/><a href='3310.html'>JoJo then</a><Br/><a href='3309.html'>But how did it hap</a><Br/><a href='3308.html'>The Chicken Has Fl</a><Br/><a href='3307.html'>Two Tribes, One Ca</a><Br/><a href='3306.html'>Wipe Out!</a></div><div class='nav'><a href='3315.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3317.html'> >> </a></div><div class='article'>smushai.com) by way of
+a web-browser. You can also write your own code to read in and process the JSON
+output in a program.
+
+~~~
+alangpierce
+Interesting! I think this also opens up the possibility to write your own "web
+crawler" (at least with a reasonable regex-based language) and run it on the
+cloud! A lot of my current projects make use of large, well-structured JSON
+files for data, and it would be convenient to be able to make a custom crawler
+to handle that instead of doing the extraction from scratch by hand.
+
+------
+wanda
+The book seems to suggest running this over all directories/files in the
+current repo.
+
+Can anyone explain how to do this for non-git repos?
+
+    
+    
+      $ cd /some/remote/dir
+      $ find . -name "*.js" -exec dosomthing.sh \;
+    
+
+I suppose you could specify the root folder directly instead of using cd?
+
+------
+Sreyanth1
+There is a similar one available here :
+[https://github.com/bcatc/jsmin.c](https://github.com/bcatc/jsmin.c)
+
+------
+wodenokoto
+What is the purpose of this? Why not just a node script? I don’t understand
+why I need to learn a shell script to parse something that is easily parseable
+by a javascript engine.
+
+~~~
+dave_sullivan
+It's been a while since I've worked on this, but you don't want to write a
+javascript execution engine in your programming language. The reason it's not
+javascript is that it needs to process thousands of files in a second, while
+a javascript engine usually deals with only one or two files a second. You'll
+also need to precompile the scripts and include them in the executable, so
+that it can be distributed. All of which is much easier in a scripting
+language like python, bash, etc.
+
+~~~
+wodenokoto
+That seems like a very odd thing to do, considering javascript can actually
+parse code on the fly and it has first class functions and variables and so on
+[1]. If you are making a shell script to do this, why don't you just put the
+script in javascript and then use a JS interpreter in the same script?
+
+As a matter of fact, I'm pretty sure I've done this before. This is probably
+why: How to minify your javascript with node.js, less and gulp?
+
+[1]
+[http://www.w3.org/TR/2011/WD-lex-20110602/#lexical_grammar_...](http://www.w3.org/TR/2011/WD-
+lex-20110602/#lexical_grammar_rules)
+
+~~~
+lukeschlather
+What are you going to use to parse the code on the fly? It's easy enough to
+write a recursive descent parser in LISP, Java, Python, C, Bash, or a number of
+other languages. What makes you think you should be rewriting in JavaScript?
+
+~~~
+wodenokoto
+> What are you going to use to parse the code on the fly?
+
+Because it needs to run on the server, where you have all the software
+installed and nobody can access it but you.
+
+> It's easy enough to write a recursive descent parser in LISP, Java, Python,
+> C, Bash, or a number of other languages. What makes you think you should be
+> rewriting in JavaScript?
+
+I don't understand the answer to this one. If you have a way to parse
+scripting language s in language X then why would you not use that language to
+parse scripting languages in the first place?
+
+~~~
+lukeschlather
+> I don't understand the answer to this one. If you have a way to parse
+> scripting language s in language X then why would you not use that language
+> to parse scripting languages in the first place?
+
+There's also a huge library of code you can use, that would have to be
+rewritten. I'm saying, why bother with writing an entire server-side program
+to accomplish something which could be accomplished by writing a single LISP
+function?
+
+~~~
+wodenokoto
+I was asking the original question and I understand there are benefits to
+writing a dedicated parser for javascript that can compile as many files as
+possible at a time.
+
+Just for fun, I tried writing a python script that parses javascript like so:
+[http://dpaste.com/0V4O3C5.txt](http://dpaste.com/0V4O3C5.txt) and it's easy to
+write and it works
+
+------
+davelnewton
+A script is almost always going to be faster than the tools you're using for
+parsing.
+
+I'm not going to read through the source because it's basically "I used node
+to read files and run all of them through this thing". Why bother?
+
+Look, I get that I'll be reading code, but is there some deeper reason that I
+have to do this via node?
+
+~~~
+lukeschlather
+It's not exactly about reading code, it's about the fact that there's an
+existing JavaScript parser, that can run code, that can take code from the
+browser and use it to do transformations on large scale data.
+
+If you have some program that can run JavaScript on the server and then just
+reads in files as needed to read each script, then why not just write your
+own program instead?
+
+~~~
+davelnewton
+> If you have some program that can run JavaScript on the server and then just
+> reads in files as needed to read each script, then why not just write your
+> own program instead?
+
+Because I can't really get the job done with JS. There are no good libraries
+(node works, but I don't need it).
+
+~~~
+lukeschlather
+I was answering the question about why there isn't a faster and more elegant
+solution that leverages existing libraries, but here's a few that should be
+pretty fast to read & execute:
+[http://www.bcatc.org/jsmin.html](http://www.bcatc.org/jsmin.html)
+
+------
+lukethedub
+Cool project, I'll be checking this out later. It reminds me of python-
+virtualenv.js I wrote a while ago for minifying Python code:
+[https://gist.github.com/lukethedub/6f45a6eb3ebb0c795d00](https://gist.github.com/lukethedub/6f45a6eb3ebb0c795d00)
+
+I think it's similar to this project, but written in pure JS and uses JSON to
+interface with the input file.
+
+~~~
+k__
+I wrote a simple js-vm for my C++/GPG stuff.
+
+[https://github.com/k-sax/js-vm/blob/master/js-
+vm.js](https://github.com/k-sax/js-vm/blob/master/js-vm.js)
+
+------
+lukaszg
+Nice project! My pet project is exactly the same, but in Python:
+[https://github.com/lukaszgadzior/node-
+grep/](https://github.com/lukaszgadzior/node-grep/)
+
+~~~
+dave_sullivan
+Yeah, I know lukaszgadzior is a good guy and all that, but it's a</div></body></html><!-- 2022-06-21 20:52:58 
