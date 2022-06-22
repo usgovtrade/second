@@ -1,0 +1,170 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3811.html'>The Amazon Heats U</a><Br/><a href='3812.html'>we’ve gotten valua</a><Br/><a href='3813.html'>There's Always a T</a><Br/><a href='3814.html'>The Ultimate Shock</a><Br/><a href='3815.html'>Dinner, Movie and </a><Br/><a href='3816.html'>When you want to l</a><Br/><a href='3817.html'>They Came at Us Wi</a><Br/><a href='3818.html'>You've Got That Pu</a><Br/><a href='3819.html'>smushai.com</a><Br/><a href='3820.html'>I’ll do anything t</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3809.html'>Not Sure Where I S</a><Br/><a href='3808.html'>botrash.com</a><Br/><a href='3807.html'>Glitter in Their E</a><Br/><a href='3806.html'>The Amazon Heats U</a><Br/><a href='3805.html'>as it’s recommende</a><Br/><a href='3804.html'>The Sole Survivor</a><Br/><a href='3803.html'>botpoke.com</a><Br/><a href='3802.html'>Kind Of Like Cream</a><Br/><a href='3801.html'>Personal Fluid and</a><Br/><a href='3800.html'>It’s Been Real and</a></div><div class='nav'><a href='3809.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3811.html'> >> </a></div><div class='article'>orderedtrash.com/blog/2015/05/22/how-web-crawlers-work/
+
+======
+bifrost
+The TL;DR version, "I don't know". This guy writes some bad quality code and
+no comments! WTF!?
+
+~~~
+x1798DE
+I didn't read the article, but just for reference's sake, this doesn't
+translate to "I don't know" in Spanish. You literally can't translate this
+into Spanish. It's just nonsensical.
+
+~~~
+gkya
+The author writes "no, I do not" though.
+
+------
+sp332
+As a more technical take on this subject,
+[http://www.webmonkey.com/2010/05/how_google_work_part_3_the_...](http://www.webmonkey.com/2010/05/how_google_work_part_3_the_crawl)
+says "The crawler can make decisions based on what the page sends back in the
+HTTP response, including page content type, length of the page, redirects
+(HTTP code 303), and so on."
+
+And another article explains how this is a really important security feature
+for modern browsers, making sure that a malicious or buggy browser doesn't get
+to control the web.
+[https://thenextweb.com/dd/2011/10/06/why-you-should-
+care-4-m...](https://thenextweb.com/dd/2011/10/06/why-you-should-
+care-4-million-google-search-users-use-firefox/)
+
+~~~
+a3n
+Google is a spider, not a browser.
+
+~~~
+yen223
+Google indexes pages, just like a browser does.
+
+~~~
+a3n
+And a spider collects info from a browser?
+
+------
+josh2600
+I don't know much about search engines but it seems like this article is
+comparing apples and oranges, or maybe even lemons and cherries. I'm not sure
+how Google would know that it's not in the link list without making that a
+property of the link. After all, your index and your link list aren't synced,
+right? That's the whole point of a search engine is to index, not just copy a
+text file of a website.
+
+My theory is that Google bots crawl from page to page looking for new links
+and that it's possible a bots crawling from page A to page C (which is not on
+the link list) will discover page B which is on the link list (B <-> A). Then,
+because A is on the link list, the link from B to A shows up in the list.
+
+This works, right?
+
+~~~
+smudgymcscmudge
+The article does state that Google can learn when the links it indexes change.
+I do agree with you though, it’s not a clear explanation how it works, but
+that’s what I got out of it. It also didn’t explicitly say that all links from
+links list to page are crawled, just that a certain proportion are.
+
+~~~
+tasuki
+Yes, Google can detect when a link changes (either because it notices that the
+domain has moved or because a third-party site has posted a link to that page
+and linked it back to itself). There's lots of places on the web where that
+happens. But this article only shows how Google _can_ do that. It's not clear
+how it actually _does_ this.
+
+------
+bifrost
+Its not really that hard, its really just a case of 'how often is this page
+changed'. Its pretty easy to do with regular expressions.
+
+The article didn't talk about if they're links, if they're links or embedded
+links, what order they're crawled in etc etc
+
+But its also likely to get you de-indexed from Google for crawling your own
+pages so its not really an exhaustive article either.
+
+------
+jondubois
+Would Google not need to learn how to parse HTML? In other words, you would
+need to make an exhaustive search of the web before Google can determine what
+links are important. Otherwise it could potentially crawl your page and then
+stop because it has reached a point where it needs more knowledge -
+"information not yet in its database".
+
+~~~
+cma
+This is about GoogleBot, not Google index or google search. GoogleBot knows
+how to parse HTML, even if the site doesn't send its full HTML to users.
+
+------
+gcb0
+because links are in your page in every HTML instance.
+
+    
+    
+      <!-- this is a link -->
+      <a href="http://www.google.com/" id="goo">goo</a>
+    
+
+but this is not:
+
+    
+    
+      <!-- this is not a link -->
+      <p id="goo">
+    
+
+You could be crawling all the web, and still be missing the links.
+
+~~~
+blotter_paper
+[http://robert.ocallahan.org/2009/07/getting-started-with-
+the...](http://robert.ocallahan.org/2009/07/getting-started-with-the-robots-
+exclusion-standard/)
+
+------
+dandare
+I do not understand the question "how often is this page changed". Can anyone
+explain in plain words?
+
+~~~
+jakeogh
+I'm going to guess that the "how often" varies greatly between sites and the
+page was written for human consumption. It's hard to ask a bot "Do you need
+this again in X time?" You have to ask it in a context. Maybe you can say the
+page has N changes between Y and Z, but not really.
+
+------
+smcleod
+I'm guessing this is referring to Googlebot rather than Google search - I've
+never seen that information made available or used by the search engine
+itself.
+
+~~~
+smcleod
+It appears that this is the case [https://developers.google.com/search/docs/data-
+crawling/sched...](https://developers.google.com/search/docs/data-
+crawling/scheduling)
+
+I don't think this is Google's primary way of crawling web sites though, its
+just a part of a bot used for keeping search results updated. For example
+YouTube crawls channels which is likely how this site works too. I imagine it
+would be useful for the search engine as it would mean you only needed to check
+what content of yours has changed as opposed to having to keep entire copies
+of the site in the crawler.
+
+That said I'm not a Google engineer so I'm not really qualified to say for
+sure.
+
+~~~
+sli
+The robots.txt directive [https://github.com/hootsuite/webflow-
+ui/blob/master/docs/runn...](https://github.com/hootsuite/webflow-
+ui/blob/master/docs/running_docker/README.md#robots-txt-directive) is a
+useful way of telling your server that you want Googlebot to never be able to
+index the page. Whether this is relevant to you depends on what you have on
+your site (which we're not told) and what you want to achieve by letting Google
+Index your site in the first place (which we're not told either).
+
+</div></body></html><!-- 2022-06-21 20:54:03 

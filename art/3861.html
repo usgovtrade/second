@@ -1,0 +1,158 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3862.html'>Running the Show</a><Br/><a href='3863.html'>Got My Swag Back</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3860.html'>The purpose of pra</a><Br/><a href='3859.html'>Jumping Ship</a><Br/><a href='3858.html'>Install the app fo</a><Br/><a href='3857.html'>The Buddy System</a><Br/><a href='3856.html'>Livin' On the Edge</a><Br/><a href='3855.html'>Last of Us 2 Grief</a><Br/><a href='3854.html'>aincel.com</a><Br/><a href='3853.html'>Battle Royale</a><Br/><a href='3852.html'>I Need a Dance Par</a><Br/><a href='3851.html'>Hemorrhoid Permane</a></div><div class='nav'><a href='3860.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3862.html'> >> </a></div><div class='article'>Thy Name is Duplicity", "In The End"]
+  }
+}
+
+{
+  _id: "2",
+  question: "Who Are You?",
+  answers: ["Joker", "The Flash", "Bane", "Batman"],
+  correctAnswer: "Bane"
+}
+
+{
+  _id: "3",
+  question: "Whom Do You Fear?",
+  answers: ["Spiderman", "Wolverine", "Hulk", "Batman"],
+  correctAnswer: "Wolverine"
+}
+
+A:
+
+This was answered on reddit. I will try to explain here as well.
+The example above does not work because the for..of statement will create and initialize 4 Arrays when the database contains 1. You have to initialize the Arrays yourself. It will look something like this:
+{
+  "_id": "1",
+  "question": "What Are You?",
+  "answers": ["Joker", "Two-Face", "Poison Ivy", "The Riddler"],
+  "correctAnswer": "The Riddler"
+}
+
+var questionA = new Array();
+questionA.push(doc.get('question'));
+
+var answerA = new Array();
+answerA.push(doc.get('answers'));
+
+var correctAnswer = new Array();
+correctAnswer.push(doc.get('correctAnswer'));
+
+You need to do this for each different question in your database.
+Also I would suggest looking into Firebase's security rules for data validation in your database.
+
+A:
+
+As I already said in my comment, you'll get the last response in your for-of because in Javascript this:
+var foo = ["a", "b", "c"]
+
+is the same as:
+foo = ["c"]
+
+As it is documented here:
+
+The array elements are returned in the order in which they first appear in the array (the order is not guaranteed to be the same across different engines or versions of ECMAScript)
+
+If you want to get the "right" answer (I know, it's not the real word) then you need to get the correct answer from doc.get(...), not from doc itself.
+
+EDIT: Answering to the edited question:
+function addAnswer(doc) {
+    var answer = doc.get("answer");
+    var qid = doc.get("_id");
+    if (answer == correctAnswer) {
+        // A correct answer was given. Set the correct answer
+        console.log("setting", answer, qid);
+        correctAnswer[qid] = answer;
+        // set it on the query object so it can be retrieved using doc.get("...")
+        doc.set({
+            [qid]: correctAnswer
+        });
+    }
+}
+
+A:
+
+In Firebase you can make use of $push to create new objects within an array.
+This feature is documented in the Quickstart on the Firebase website.
+When you specify a key in the path parameter of the $push function, a document reference is returned.
+Here is the relevant code:
+var userRef = new Firebase("https://docs-examples.firebaseio.com/web/saving-data/users/");
+userRef.child("users").child("adam").child("newsfeed").push({
+   userId: "0",
+   postId: "0",
+   post: "First Post",
+   likes: 0
+});
+
+So, in your case, you would do something like this:
+var john = {
+   _id: "1",
+   question: "What Are You?",
+   answers: ["Joker", "Two-Face", "Poison Ivy", "The Riddler"],
+   correctAnswer: "The Riddler"
+};
+
+db.collection("questions").add(john);
+
+var quesuser = new Array();
+quesuser[1] = new Object();
+
+quesuser[1].question = john._id;
+quesuser[1].answers = john.answers;
+quesuser[1].correctAnswer = john.correctAnswer;
+
+db.collection("questions").child("2").set(quesuser);
+
+So in this way, you don't need to add all values to an object and push it to your array (which is redundant as you could just add them directly to the array).
+
+On a side note, it would be easier to follow what you are doing in your question if you wrote the above in PHP.
+
+However, let me try to answer your question.
+With this structure:
+{
+  "questions": {
+    "1": {
+      "answer": "3",
+      "correctAnswer": "X",
+      "question": "What colour are you?",
+      "questions": {
+        "3": {
+          "answer": "red",
+          "correctAnswer": "blue",
+          "question": "what colour am i?",
+          "questions": {
+            "5": {
+              "answer": "yellow",
+              "correctAnswer": "red",
+              "question": "what colour am I?"
+            },
+            "6": {
+              "answer": "blue",
+              "correctAnswer": "red",
+              "question": "What colour are you?"
+            },
+            "7": {
+              "answer": "black",
+              "correctAnswer": "blue",
+              "question": "What colour are you?"
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+Your database will look like this (if you click on "Show Data" in the console on the screenshot below):
+
+What you are looking for is this:
+firebase.auth().getUser().then(function(user) {
+   return user.getDownloadURL();
+}).then(function(url) {
+   console.log("User Url: " + url);
+   db.collection("users").doc(url).get().then(function(doc) {
+       db.collection("questions").doc(doc.data().id).get().then(function(question) {
+           var questionList = [];
+
+           question.forEach(function(answer) {
+               var question = [];
+
+               question[answer].answers.forEach(function(correctAnswer)</div></body></html><!-- 2022-06-21 20:54:10 

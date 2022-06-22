@@ -1,0 +1,58 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3859.html'>Jumping Ship</a><Br/><a href='3860.html'>The purpose of pra</a><Br/><a href='3861.html'>Thy Name is Duplic</a><Br/><a href='3862.html'>Running the Show</a><Br/><a href='3863.html'>Got My Swag Back</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3857.html'>The Buddy System</a><Br/><a href='3856.html'>Livin' On the Edge</a><Br/><a href='3855.html'>Last of Us 2 Grief</a><Br/><a href='3854.html'>aincel.com</a><Br/><a href='3853.html'>Battle Royale</a><Br/><a href='3852.html'>I Need a Dance Par</a><Br/><a href='3851.html'>Hemorrhoid Permane</a><Br/><a href='3850.html'>It is a bit odd th</a><Br/><a href='3849.html'>Better wake up bec</a><Br/><a href='3848.html'>The Merge</a></div><div class='nav'><a href='3857.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3859.html'> >> </a></div><div class='article'>Install the app for iPhone/iPad and then run in the Xcode environment. The simulator opens with the app. The app starts up in the simulator, shows the app icon, but the menu items and back button are gray. When I click on them, they show a "Loading" message and then show up. If I close the simulator by hand, I can repeat the same scenario in another simulator, but then it stops working again.
+My setup:
+
+Mac OSX v10.8.2
+Xcode v5.0.2
+MonoDevelop v2.8.6
+iPhone SDK v4.3 (I don't think this is the reason, as I've tested the code without an iPhone connected)
+
+What I've tried:
+I thought maybe it was a problem with the MonoDevelop or MonoTouch add-on for Visual Studio, so I've tried reinstalling the Visual Studio IDE - the problem remains the same. 
+The above steps also apply to installing Mono for Android, although this time I had MonoDevelop open with a previously working Android project.
+I can reproduce this behaviour on two different physical iMacs.
+EDIT
+I have also discovered that the simulator won't let me install the app from the beginning if I have the Simulator already open - it simply reopens the app at the place I was at in the already opened simulator (the simulator has not been exited, or rather not properly).
+
+A:
+
+The solution I found here: http://monotouch.net/Guide/Working_with_devices/
+This is to get rid of the old simulator. Simply delete the entire project folder in your user directory for XCode (~/Library/Developer/Xcode/DerivedData/), which will remove all files related to the simulator. Restarting the simulator should restore a new and clean simulator.
+
+A:
+
+I faced the same problem today.  I found that I could start the simulator, wait for it to appear with the progress circle, and then quit the simulator, then Xcode would have a clean slate to start a new iPhone simulator with no previous apps.  Sometimes it was only partially helpful to this, so quitting and restarting Xcode, but I did manage to get it to load in the same way you describe by quitting and re-running the simulator by itself.
+Unfortunately, I don't know why that solution worked for me, but when I tried it, that's what happened.
+
+A:
+
+In case you are still facing the issue (as in 2017/06/22), you may try what I did.
+
+Go to the folder (Macintosh HD/Users/[user]/Library/Application Support/iPhone Simulator) and remove the old data (older than 2 or 3 weeks).
+This will force XCode to create a new simulator.
+(optional) Launch XCode, choose your project, hit Run.
+Now, the simulator should work correctly.
+
+The only problem that I faced was that "old" .simdata files were still lying around... they could have been from a previous version of XCode. I don't think that they are relevant, though.
+
+This was done on macOS 10.11.4 with Xcode 7.3.1.
+
+The issue might have been caused by upgrading my XCode version.
+
+Edit:
+As stated in the comments, the actual problem was that the App is iOS 8, and thus the iOS 9 simulator will be used for the first time. From XCode 9.1 onwards, the iOS 8 simulator will be taken if there is no iOS 9 one available.
+This explains the initial "gray" state.
+
+To remedy this, I needed to manually launch the simulator (i.e. don't use XCode's simulator list).
+
+It appears that the simulator cache was corrupted in my case, so XCode could not update the simulator - which then crashed.
+
+The app is written in MonoTouch.
+
+(I had to use MonoDevelop)
+
+This is all I had:
+
+XCode 6.3.1
+MonoDevelop 3.0.5
+
+</div></body></html><!-- 2022-06-21 20:54:09 
