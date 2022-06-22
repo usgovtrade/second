@@ -1,0 +1,187 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3759.html'>You Can't Hide on </a><Br/><a href='3760.html'>Family Values</a><Br/><a href='3761.html'>was practicing a j</a><Br/><a href='3762.html'>botypo.com</a><Br/><a href='3763.html'>Non-Profit, Religi</a><Br/><a href='3764.html'>Never Say Die</a><Br/><a href='3765.html'>The Winds Twist</a><Br/><a href='3766.html'>You Own My Vote</a><Br/><a href='3767.html'>Cut Off the Head o</a><Br/><a href='3768.html'>Gender Bender</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3757.html'>The Devils We Know</a><Br/><a href='3756.html'>CV /Resume bulk su</a><Br/><a href='3755.html'>Parting Is Such Sw</a><Br/><a href='3754.html'>Do stupid thing, w</a><Br/><a href='3753.html'>Life Pro Tips</a><Br/><a href='3752.html'>just one final com</a><Br/><a href='3751.html'>airked.com</a><Br/><a href='3750.html'>This beautiful aud</a><Br/><a href='3749.html'>The First Exile</a><Br/><a href='3748.html'>Are You Feeling Lu</a></div><div class='nav'><a href='3757.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3759.html'> >> </a></div><div class='article'>Awkwardly enough, the reason you think this is not possible is because you
+have no understanding of what is possible when it comes to software engineering
+and security.
+
+Security experts have known about the ability of this functionality for years.
+And have in fact been discussing, as a vulnerability, the fact that attackers
+can use the access token as part of a username to get system access that way.
+This is exactly why access tokens are so weak and why we tell users that they
+are. The fact that this functionality exists and that the OAuth documentation
+states that it should be used as part of the password flow means that in a
+fairly common auth situation, you've got a bad system.
+
+Your example: "I'm logged in as Alice and now I want to sign up as Bob (no,
+really)." The correct response from the system is that Bob is no longer logged
+in. I'm guessing the reason you want to do this is because Alice hasn't been
+online for a long time. That's okay, but when Alice next logs in, you'll have
+to log in as Alice and then add Bob to the system. A better system is one that
+not only doesn't give you a false sense of security, but one that actually
+makes security easier for users.
+
+------
+jellicle
+Oh, it's not secure if you leave off the _& , which you always do. That is not
+allowed! What you have done is make a token that is an email address. That is
+like giving the web site your password, every time you visit the web site.
+
+What else can it be?
+
+    
+    
+      1. A single use token? You should know, because you always remove the &, so you can't use it multiple times.
+      2. An access token? You can't do anything with this access token!
+      3. A token? This is a token.
+      4. I give up.
+    
+
+You can't do anything with any of those. This is a "single use" token.
+
+~~~
+jzwinck
+I have seen two different login tokens represented as email addresses. The
+first was an MD5 hash of a username plus a salt. The second was a base64
+encoded sha256 hash of the email address.
+
+The latter was the first one I saw, and I asked what happened when someone's
+email address changed. This confused a lot of people, I recall, because they
+had the impression that a password was being transformed into an email
+address. I asked them to check their web mail a few times, and all of them had
+the same hash for that email address for years.
+
+The first one I saw is just as bad. People do not change their email address.
+They might change their name or a number of other bits of data, but this is
+almost never true for an email address.
+
+~~~
+dclara
+The email address is a public information, which can be changed anytime.
+
+So a MD5 hash is only a small change of the email address. I doubt any good
+developer will use MD5 hash, which should not be used any more.
+
+The email address is a unique identifier, which is a combination of the name,
+gender, gender and so forth. If it has changed once, it can be changed again,
+which cannot guarantee that the user did not change its username.
+
+------
+edwinnathaniel
+I use the same email to receive newsletters from many sites so I am thinking
+of sharing the same email. I know that I'll get flagged by spam filters because
+I have many spam-related issues. But I need this feature for _some_ sites that
+aren't email-related (in particular Github does this for many things so I need
+to subscribe for more services).
+
+I know I can setup more email for each site, but still it doesn't work well if
+I have a dozen of services that I want to use regularly (like Github,
+CloudFoundry, PivotalTracker, Twitter, Foursquare, etc)
+
+~~~
+zapnap
+I recently setup my own email account to replace the Gmail account I use with
+GMail. It was quite easy to do and the gmail app on my iPhone automatically
+setup access to the same address.
+
+------
+zalew
+> _A different username is necessary to login, if an application expects users
+> to use the same email address multiple times._
+
+> _For example, we might create a new GitHub account under the name of first_
+> _name, last_ name. This could look like firstname-lastname@company.com_
+> (username). The password associated with the account would be unique to that
+> user, but the username would be the same. If we wanted to let our users log
+> into GitHub without sharing their passwords with GitHub, we could require
+> users to register with GitHub first using the email address firstname-
+> lastname@company.com._
+
+this is exactly what I do, except 'firstname-lastname' is a local domain and I
+don't let anyone leave if it's not a google account
+
+------
+pokoleo
+A few points:
+
+* You state that you use email addresses to identify your users, but they are not unique:
+    
+    
+        "Users are able to change their usernames and e-mail addresses, so usernames cannot be used to uniquely identify users of a site. Usernames can only provide some approximation of user identity." <https://tools.ietf.org/html/rfc6265#section-5.1>
+    
+
+* "Since usernames can change, when generating a random number, they are also included in the ID token. This allows developers to perform a “back channel authentication” by checking if the number they are sending matches the number they got back from the end user." (my emphasis) <https://tools.ietf.org/html/rfc6455#section-2.2>
+    
+    
+
+From the above, it seems like the only reasonable user id scheme is a username
++ email address.
+
+* The email address in your scheme is exposed to the end user for anyone who can intercept the email (like on an open wifi network, on a public computer). [http://www.phildev.net/email-attacks-2/](http://www.phildev.net/email-attacks-2/)
+    
+
+There's much more to it than meets the eye; this is a great summary of the
+fundamental problems.
+
+~~~
+jzwinck
+You do realize that there is no email header on an HTTP GET request, right?
+
+~~~
+pokoleo
+I was referring to the email address in the "public key" (which is available on
+some systems).
+
+> There's much more to it than meets the eye
+
+This is under the assumption that you're making a good faith effort to write a
+proper application. There are better options than the current method, so your
+assertion can't be true in practice.
+
+------
+joelthelion
+You have to add some kind of challenge to distinguish a login request from a
+registration request. You can't just rely on the fact that there's a valid
+email.
+
+Also, don't use email address as unique identifiers. It's almost guaranteed
+that you'll have at least one duplicate.
+
+------
+wrs
+I've seen this same kind of stuff all over the internet, and I always point
+out...
+
+(1) the "username" value is an e-mail address that's known to the server; the
+password that the user enters is never sent over the wire. (2) the URL's hash
+function uses only the username, not the email address, as part of the hash
+code.
+
+Are you seeing something I'm not?
+
+------
+wiradikusuma
+"Let's give people the opportunity to make a password that's not in a
+dictionary."
+
+<http://cr.yp.to/passwords.html>
+
+~~~
+norswap
+How about _not_ recommending users to make a password that's not in a
+dictionary ?
+
+~~~
+saraid216
+The recommendation to use one that's not in a dictionary is to reduce your
+risk of your password being guessed by brute force, and let's face it: that's
+usually the thing that comes up in the headlines about cracked passwords.
+
+------
+gatmne
+At this point in time, there are no good alternatives to using email
+addresses.
+
+~~~
+pokoleo
+email addresses are a poor mechanism for generating random strings that are
+not in the public domain.
+
+a much better solution is to use hashes generated by a secure CS</div></body></html><!-- 2022-06-21 20:53:56 

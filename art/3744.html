@@ -1,0 +1,94 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3745.html'>I Don't Like Havin</a><Br/><a href='3746.html'>Play to Win</a><Br/><a href='3747.html'>It's My Night</a><Br/><a href='3748.html'>Are You Feeling Lu</a><Br/><a href='3749.html'>The First Exile</a><Br/><a href='3750.html'>This beautiful aud</a><Br/><a href='3751.html'>airked.com</a><Br/><a href='3752.html'>just one final com</a><Br/><a href='3753.html'>Life Pro Tips</a><Br/><a href='3754.html'>Do stupid thing, w</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3743.html'>One of Us is Going</a><Br/><a href='3742.html'>Bath salts and rec</a><Br/><a href='3741.html'>Witches Coven</a><Br/><a href='3740.html'>That was intense. </a><Br/><a href='3739.html'>Involuntary Drug T</a><Br/><a href='3738.html'>Eruption of Volcan</a><Br/><a href='3737.html'>she had heard nois</a><Br/><a href='3736.html'>I'm Gonna Fix Her!</a><Br/><a href='3735.html'>One-Man Wrecking B</a><Br/><a href='3734.html'>Are You Feeling Lu</a></div><div class='nav'><a href='3743.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3745.html'> >> </a></div><div class='article'>AI and Neural-Net generated portraits with the average distance (AD) as our evaluation metric.
+
+In a nutshell, the AD metric compares the distance of the generated image to its ground truth, in terms of the mean squared error (MSE). The objective is to minimize this error; if the generated image is closer to its ground truth, the mean squared error between them will be lower and, consequently, the AD value will also be lower. However, this measure does not consider other factors such as brightness, sharpness, or local/global structure. The result is shown in Figure \[fig:compare\_ad\] where the proposed approach achieves a better result and presents the smallest error.
+
+![Evolution of the average distance (AD) for each subject when training the model. Our approach achieves the lowest error in the training and validation sets.[]{data-label="fig:compare_ad"}](compare_ad_barplot.png){width="49.00000%"}
+
+We show the result for subjects 01 and 02 when comparing with all of the previous approaches in Figure \[fig:compare\_portraits\]. Again, we find a clear improvement in the visual quality of our generated images when compared with the three current approaches. Also, the sharpness and the local/global structure in the image are captured properly.
+
+![Comparison of current Deep GAN based approaches and the proposed approach.[]{data-label="fig:compare_portraits"}](compare_portraits_barplot.png){width="49.00000%"}
+
+We further apply our algorithm to the entire dataset. By looking at Table \[table:all\], we observe an improvement on almost all metrics (distance and FID). The improvement is more significant when we apply the same algorithm that we developed to the entire data set. The overall AD is $8.94$, which is an improvement over BAGAN-GAI by almost $3\%$. The FID of Deep GAN, when trained with a lower learning rate and longer learning time, improves the previous results from $1.38$ to $1.24$. Additionally, the SSIM is improved from $0.9549$ to $0.9636$. These values, when applied to the whole dataset, we see an improvement of $1.23\%$ for the distance and $1.43\%$ for FID. The SSIM goes from $0.9656$ to $0.9680$. Figure \[fig:portraits\_entire\] shows some examples of these generated portraits.
+
+The above results present an improvement in the performance of current Deep GAN approaches when the user-specified images are included. Even though Deep GAN has a higher complexity (and a slower training time), these results confirm the success of this model for creating good images that resemble portraits.
+
+Additionally, our experiment also proves that the user-specified images are not needed to achieve a good image generation, but they do increase the quality of the generated images. Moreover, the user-specified images improve the generalization of the generated portraits for different users (in our case, the portraits are created for the individual data of a subject). If we don’t include these images in the GAN training process, the quality of the generated image might not be the same for all the users, which could lead to less consistent results.
+
+The model proposed in this paper has two main characteristics that led to success: (1) an approach based on learning the global style and (2) the proposal of a new loss function based on the combination of distance (used by GAN-GAI) and perceptual loss (used by Deep GAN). A comparison between these two approaches can be found in Table \[table:all\_global\]. The global style loss is added directly to the training set, without the need of providing any additional information to the model; therefore, its goal is only to provide extra information about the generated image. In addition, the perceptual loss has to be applied to the generated image in order to encourage the generation of a good image. However, for a consistent solution, GAN-GAI needs a higher learning rate and a longer learning time than the Deep GAN approach. This suggests that the perceptual loss is more important than the global style loss. However, if we include both in the training, the model has the best results in terms of AD and FID, obtaining a better model with better generalization for different subjects.
+
+![We compare our approach with BAGAN-GAI (top row), GAN-GAI (middle row), and Deep GAN (bottom row). Our approach obtains smaller error distance in terms of AD.[]{data-label="fig:compare_ad"}](compare_ad_plot.png){width="49.00000%"}
+
+[ |c|c|c| ]{} Dataset & Metric &
+
+  ---------
+   0.5 / 1.1
+     \
+
+  : Average distance (AD), inception score (IS) and FID for each approach when they are applied to the entire dataset.[]{data-label="table:all_global"}
+
+&
+
+  -------------------
+     0.827 / 1.968
+   (1.24% / 2.79%)\
+  -------------------
+
+  : Average distance (AD), inception score (IS) and FID for each approach when they are applied to the entire dataset.[]{data-label="table:all_global"}
+
+\
+&\
+
+  ----------
+   Original
+   dataset
+  ----------
+
+  : Average distance (AD), inception score (IS) and FID for each approach when they are applied to the entire dataset.[]{data-label="table:all_global"}
+
+& AD & 5.28 / 5.85\
+&\
+
+  -----------
+     GAN-GAI
+   [@gan_portraits]
+  -----------
+
+  : Average distance (AD), inception score (IS) and FID for each approach when they are applied to the entire dataset.[]{data-label="table:all_global"}
+
+& AD & 5.43 / 5.89\
+&\
+
+  -------------
+     Deep GAN
+   [@deep_portraits]
+  -------------
+
+  : Average distance (AD), inception score (IS) and FID for each approach when they are applied to the entire dataset.[]{data-label="table:all_global"}
+
+& AD & 5.57 / 5.95\
+&\
+FID & 1.38
+
+& AD & 7.00 / 8.95\
+&\
+FID & 1.39
+
+& AD & 7.35 / 9.06\
+&\
+FID & 1.24
+
+\[table:all\]
+
+     Algorithm      Training                                           Testing
+  ---------------- ---------- ----------- ----------- ----------- ----------- ----------- ----------- ----------- ----------- ----------- ----------- ----------- ----------- ----------- ----------- ----------- ----------- -----------
+                                                                      AD         IS          FID         AD         IS          FID         AD         IS          FID         AD         IS          FID         AD         IS          FID
+      Deep GAN      Training                                            1.48       1.92        2.78       2.48       2.66        4.52       3.61       3.89        4.99       7.20       6.39        6.81       7.37       6.63        6.79       6.82
+                  10 epochs            $\checkmark$                                      [**5.39**]{}                                                      5.41       [**4.60**]{}       5.36                                          
+                  20 epochs            $\checkmark$               5.39       5.41                                  5.39       4.59                              5.48       5.54                                                            
+                  30 epochs            $\checkmark$               5.40       5.43                                                             5.53       5.58                                                                             
+                  40 epochs            $\checkmark$               5.37       5.39                                                                           5.60       5.62                                                            
+   GAN-GAI (BAGAN)  Training                                       2.07 (2.79)   1.81 (2.39)   3.56 (4.44)   2.82       3.28        6.24       4.27       5.39        6.55       9.52       8.24        8.74       9.45       7.54        8.26       7.96
+                  10 epochs            $\checkmark$               5.37       5.42        5.47 (3.99)                        5.43       4.61       5.55        5.80       7.35       6.63        7.07       7.44       6.82        6.92       7.16
+                  20 epochs            $\checkmark$               5.36       5.41        5.44 (4.04)                        5.39       4.61       5.55        5.72       7.25       6.59        6.98       7.39       6.71        6.95       7.13
+                  30 epochs            $\checkmark$               5.37       5.42        5.41 (3.98)                        5.39       4.60       5.56        5.81       7.28       6.58        6.99       7.39       6.71        6.98       7.20
+                  40 epochs            $\checkmark$               5.36       5.41        5.37 (4.01)                        5</div></body></html><!-- 2022-06-21 20:53:54 

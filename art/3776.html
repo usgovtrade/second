@@ -1,0 +1,114 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3777.html'>Personal Fluid and</a><Br/><a href='3778.html'>Cut Throat</a><Br/><a href='3779.html'>We spent our time </a><Br/><a href='3780.html'>Nude Beach Satelli</a><Br/><a href='3781.html'>aimped.com</a><Br/><a href='3782.html'>This isn’t who I a</a><Br/><a href='3783.html'>There's Always a T</a><Br/><a href='3784.html'>botpoo.com</a><Br/><a href='3785.html'>Contract Breach Au</a><Br/><a href='3786.html'>aislum.com</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3775.html'>Expectations</a><Br/><a href='3774.html'>Stir the Pot!</a><Br/><a href='3773.html'>Family Values</a><Br/><a href='3772.html'>botasourus.com</a><Br/><a href='3771.html'>This tool was crea</a><Br/><a href='3770.html'>We Made It to the </a><Br/><a href='3769.html'>Call the Whambulen</a><Br/><a href='3768.html'>Gender Bender</a><Br/><a href='3767.html'>Cut Off the Head o</a><Br/><a href='3766.html'>You Own My Vote</a></div><div class='nav'><a href='3775.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3777.html'> >> </a></div><div class='article'>botdual.com
+Sofia.bo.pro
+Randyjansonspage.com
+Hermenard.info
+
+However, in my example data there are actually three "Lorna".  I am having trouble matching up two of them correctly, as this is where my problem is:
+$ grep "Lorna": data.txt | awk '{print $1}' | awk 'BEGIN {FS=""} {print $1}' | awk '{print $NF}'
+Lorna
+Lorna
+Lorna
+Lorna
+Lorna
+Lorna
+
+The last line is correct in the data, but then it adds one to each of the following lines, and I don't know why it does this.
+So my question is, how do I fix this issue and still maintain the format of my data?  As I said, the original data file is 100k+ lines long, so I am trying to minimize the amount of edits I have to make. 
+Thanks!
+
+A:
+
+awk is really not the right tool for that job.
+It appears you are trying to strip off the last word from the first column and also strip off the last word from the last field. 
+awk '{print substr($1,0,length($1)-1)substr($NF,length($NF)-1)}' 
+
+The -1 removes the trailing " " (space).
+
+If there are spaces in your data, then this will be better:
+awk '{print $1,$NF}'
+
+A:
+
+You can also use awk:
+awk -F: '{print $1,$NF}' <data.txt >data2.txt
+
+A:
+
+You can fix this problem by changing the seperator of the second line of awk to a new line.
+Using the default space as separator will put all of the fields in one line, even if there are more than one on a line.
+awk 'BEGIN {FS=":"} {print $1,$NF}' file
+Lorna\nLorna
+
+I changed your code to this and it works, now the last field is printed correctly.
+awk 'BEGIN {FS=":"} {print $1,$NF}' data.txt
+Lorna
+Lorna
+Lorna
+Lorna
+Lorna
+Lorna
+
+You can see how to fix the new problem I introduced here.
+
+I was able to work out why this works.
+First, you are using the colon (:) as your separator. Since you want the first column you use the print command. There is a newline after the first column and before the last. To get rid of that, put a newline before the command that prints the last column.
+awk 'BEGIN {FS=":"} {print $1}' data.txt
+
+The default separator for awk is a space. The default separator gets used if no one is set. So if there is one on one line, it still prints one on all the other lines. You can get around this by adding a new line to the command that prints the first column:
+awk 'BEGIN {FS=":"} {print $1}' data.txt
+awk 'BEGIN {FS=":"} {print $1}' data.txt <newline>
+
+If you want to only use one field for your output, you can use a semicolon instead of the colon, because you want everything after the first semicolon on the line. 
+awk 'BEGIN {FS=";"} {print $1}' data.txt
+awk 'BEGIN {FS=";"} {print $1}' data.txt <newline>
+
+EDIT:
+When you create new lines you can add newlines with either a backslash \ or by putting a newline on it's own.
+$ seq 20 > a.txt
+$ cat a.txt
+1
+2
+3
+4
+5
+
+You can use a comma ( ,) to create a new line with the newline left out. You can tell it to create a new line using the backslash in combination with the newline. By default this means that anything between two newlines is just printed.
+awk 'BEGIN {FS=";"} {print $1}' data.txt <newline>
+awk 'BEGIN {FS=";"} {print $1}' data.txt \ <newline>
+awk 'BEGIN {FS=";"} {print $1}' data.txt \
+<newline>
+awk 'BEGIN {FS=";"} {print $1}' data.txt \\ <newline>
+
+awk does not print the newline. By default it uses a newline between fields and a \ is used to denote an input or output seperator. If there are no \ (or $) it will print the newline.
+This leaves us with three versions. I added this test so that we can demonstrate it
+This prints out 4,5,6 as we are not printing the newline.
+awk 'BEGIN {FS=";"} {print $1}' data.txt \
+<newline>
+awk 'BEGIN {FS=";"} {print $1}' data.txt \\ \
+<newline>
+awk 'BEGIN {FS=";"} {print $1}' data.txt \\ \
+<newline>
+awk 'BEGIN {FS=";"} {print $1}' data.txt \\\\ \
+<newline>
+
+Now we are going to look at it from a different point of view. Each command makes sense. First we use one of the \ commands to change how awk treats a newline. It replaces a newline with the seperator you used. So your first command is like this:
+awk 'BEGIN {FS=";"} {print $1 \ ; print $1}' data.txt \
+<newline>
+
+The next command does the same thing as the first command. The \ seperates the two commands.
+awk 'BEGIN {FS=";"} {print $1 ; print $1}' data.txt \
+<newline>
+
+The next command is like the previous command, but without the \. This prints out the seperator.
+awk 'BEGIN {FS=";"} {print $1}' data.txt \
+<newline>
+
+The next command uses the \\ seperator and it is like the previous command, except there are two of them. The seperator on one side is the default and there is a seperator on the other side of the print command.
+awk 'BEGIN {FS=";"} {print $1\\}' data.txt \
+<newline>
+
+The last command uses the \\\\ seperator. There is a seperator before the command and after the command.
+awk 'BEGIN {FS=";"} {print $1\\\\}' data.txt \
+<newline>
+
+That was a lot of explaining for nothing, but at least I hope this helps you understand the difference. Now if you use \ seperator for this task I recommend using double quotes to help you out</div></body></html><!-- 2022-06-21 20:53:59 

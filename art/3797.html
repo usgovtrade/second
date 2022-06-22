@@ -1,0 +1,105 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3798.html'>It's Psychological</a><Br/><a href='3799.html'>The Buddy System</a><Br/><a href='3800.html'>It’s Been Real and</a><Br/><a href='3801.html'>Personal Fluid and</a><Br/><a href='3802.html'>Kind Of Like Cream</a><Br/><a href='3803.html'>botpoke.com</a><Br/><a href='3804.html'>The Sole Survivor</a><Br/><a href='3805.html'>as it’s recommende</a><Br/><a href='3806.html'>The Amazon Heats U</a><Br/><a href='3807.html'>Glitter in Their E</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3796.html'>I Will Not Give Up</a><Br/><a href='3795.html'>It's Gonna Be Chao</a><Br/><a href='3794.html'>Play to Win</a><Br/><a href='3793.html'>Blackmail or Betra</a><Br/><a href='3792.html'>botasourus.com</a><Br/><a href='3791.html'>It's Gonna Be Chao</a><Br/><a href='3790.html'>Not Sure Where I S</a><Br/><a href='3789.html'>If It Smells Like </a><Br/><a href='3788.html'>More Than Meats th</a><Br/><a href='3787.html'>Pay-Day and Same-D</a></div><div class='nav'><a href='3796.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3798.html'> >> </a></div><div class='article'>The Merge-Based Strategy with Matching
+--------------------------------------
+
+The Merge-based strategy uses the same Merge mechanism as the mergeable strategy does, however it only creates new items if they are needed (i.e. a new node is visited with no previously merged item that matches it). In this case, the created item will be removed from the list and therefore never become an orphan again. The Merge-based strategy is implemented as follows:
+
+    public void Merge(int m)
+    {
+        int d=m+1;
+        while(m>0 && list[m].parent!=null)
+        {
+            //Create item
+            if (m>1)  //A new node was visited
+            {
+                list[m].parent=null;
+                Item item = new Item(d);
+                list[m].item = item;
+                list[m].color = d;
+                item.color = d;
+            }
+            else //The m is the root node and no new item is needed. Remove it
+            {
+                list[m].parent=null;
+                Node temp = list[m];
+                list[m] = null;
+                list[m] = temp;
+                if (m>1) //The root node has no child
+                    return;
+            }
+            list[m].color=d;
+            m--;
+        }
+        return;
+    }
+
+The Merge-based strategy uses an algorithm (Algorithm \[alg-merging\]) based on the classic tree-sorting method [@knuth1998art] to avoid the problems of the mergeable strategy (i.e. orphaned nodes). It works as follows:
+
+    int i = 0; //index for list items
+    int n = n-1; //number of items
+    int l = 0; //index for list nodes
+    while(i<n)
+    {
+        if (i<n-1 && items[i].right > items[i+1].right)
+        {
+            int p = items[i+1];
+            items[i+1] = items[i];
+            items[i] = p;
+            n--;
+            i++;
+        }
+        else if (i<n-1 && items[i].left > items[i+1].left)
+        {
+            int p = items[i+1];
+            items[i+1] = items[i];
+            items[i] = p;
+            n--;
+            i++;
+        }
+        else if (i<n-1 && items[i].left == items[i+1].left) //The i+1 item has the same left child, so insert it before the item at i
+        {
+            int p = items[i];
+            items[i] = items[i+1];
+            items[i+1] = p;
+            n--;
+            i++;
+        }
+        else //Create a new node and copy the i+1 item into it
+        {
+            int p = new Node(items[i+1].color, items[i].color);
+            items[i+1] = p;
+            n--;
+            i++;
+        }
+        l++;
+    }
+    for (int x=l; x<n; x++) //fix up the index array
+    {
+        list[x].index = l-1; //insert all nodes into the new index array
+        for(i=x; i<=l; i++)
+            list[x].parent = list[i].index;
+        list[l].index = x;
+    }
+
+![An example of the Merge-based strategy. The left hand image shows the items and tree when a new node with item 7 is added, while the right hand image shows how the items and tree look when a new item is added with value 5.[]{data-label="fig-merge-strategy"}](Figures/Merge-based)
+
+The Merge-based strategy’s working example (Figure \[fig-merge-strategy\]) shows that it ensures that all items have a parent and index, no matter what happens.
+
+The use of the Merge-based strategy removes the need to merge any item with another, therefore simplifying the structure of the algorithm. It also removes the need for the nodes to keep a parent. This also means that they can store a reference to the other node instead (i.e. they don’t need a separate pointer variable), and can just use the color field to represent their parent (i.e. by storing -1).
+
+The problem with this new algorithm is that if we look at the example from Figure \[fig-merge-strategy\] it is easy to see that we have introduced a problem. When a new item is added it changes the color of the right nodes that were adjacent to the right child of the new node. Because of this, the nodes before the inserted item are now incorrect. In this case, their parent will now be incorrect because we are using the parent field to store the index of the node that was previously adjacent to their right child. Therefore, if we are going to create a node based on the previous version, we need to keep track of the number of changed items. This means that we have to record all the values in the color field in order to properly change the colors when inserting or deleting nodes (i.e. we cannot assume that we only change one value in one step).
+
+The result of this is that the algorithm will be fairly expensive to use if we use a very high number of items (e.g. millions of items with a dynamic structure). However, we could potentially use an alternative algorithm where the number of changes is not saved and instead we could re-write the index of the nodes after the update, but this is still an extra overhead.
+
+Another problem with the algorithm is that it could still return nodes with an incorrect parent pointer if an item is added in the right position (i.e. for a new node and a previous node that share the same parent). This will happen if the update is done in-place. This could also occur if an item is added in a different position but before a particular node.
+
+However, the new algorithm is still more efficient if we consider a situation in which an item is inserted immediately after another item. This means that we can take advantage of our previous experience and try to insert nodes in the right place before inserting an item and as long as the right nodes are checked and updated before the item itself is inserted, the algorithm will still work correctly. This is the reason why the Merge-based strategy can create items from scratch when needed without needing to merge items.
+
+The key point here is that we need to ensure that the nodes that are inserted are in the correct order, before adding any items to ensure that we do not need to insert items before their right neighbors or change items and incorrectly change their colors. This means that we need to ensure that we do not do any updates in the wrong order.
+
+In this situation, we still want to use the same Merge strategy but we need to insert nodes at the correct time and then update their parents when they need to be inserted, but because they are in the correct order there is no need to merge them. This is because after they are inserted, they do not have any right neighbors to consider. However, it is not clear if the Merge-based strategy would be very efficient for high numbers of items. One reason is that the time complexity of this approach is likely to be higher than the simpler mergeable strategy, and the Merge-based strategy also has no benefit in terms of storage space. This means that it would only be useful when the items are very close to each other in terms of the numbers that are stored.
+
+The Merge-based strategy seems very complicated and there is some overhead in checking that an item can be inserted in the right place. However, we are only using a few lines of code for each addition of an item, so this is unlikely to impact the overall program.
+
+In fact, we may be able to get some other benefits from this algorithm. We can potentially use a Merge-based algorithm to construct a new index (i.e. a new Merge-based strategy) based on the previous one. This will create an index that does not need to keep track of which items have been deleted and will allow us to use less memory (i.e. we do not need to re-build an index for every change of a single item). This means that we could use one strategy to read in the items (i.e. just to create a copy of the new array or the existing file) and then use a new strategy to handle any changes to the items (i.e. to remove and add new items).
+
+However, it is important to note that we should only do this if the items are deleted and added separately. If we delete all the items in one step, then we will have to construct the index and then update the items. This is very inefficient. The reason for this is that we may need to delete the items from the right neighbors before we can delete the item itself. Therefore, if we use this in our new index, this will destroy our previous index (i.e.</div></body></html><!-- 2022-06-21 20:54:01 
