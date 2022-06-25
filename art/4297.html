@@ -1,0 +1,133 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4298.html'>{
+  "action": {
+  </a><Br/><a href='4299.html'>Ford announced thi</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4296.html'>On Wednesday, the </a><Br/><a href='4295.html'>In this series, I </a><Br/><a href='4294.html'>Dental fluorosis a</a><Br/><a href='4293.html'>Preliminary crysta</a><Br/><a href='4292.html'>Miguel Roca
+
+Migue</a><Br/><a href='4291.html'>package com.alibab</a><Br/><a href='4290.html'>Toward improved ma</a><Br/><a href='4289.html'>1. Field of the In</a><Br/><a href='4288.html'>Bengaluru (Karnata</a><Br/><a href='4287.html'>In the latest entr</a></div><div class='nav'><a href='4296.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4298.html'> >> </a></div><div class='article'>Q:
+
+how to remove lines from the textbox using the vb.net code behind
+
+I have a textbox, when the user clicks the delete button, a label should pop-up to ask user if he wants to delete. The textbox should be cleared after click on "delete" button.
+I have to use Visual Basic .Net code behind to perform these tasks. 
+This is what I wrote so far: 
+<table style="width:100%">
+<tr>
+    <td>
+        <asp:Label ID="label_Text" runat="server" Text="Type in your name" style="font-size:11pt;font-weight:bold;"></asp:Label>
+    </td>
+</tr>
+<tr>
+    <td>
+        <asp:TextBox ID="textbox_Name" runat="server"></asp:TextBox>
+    </td>
+</tr>
+<tr>
+    <td>
+        <asp:Button ID="button_Name" runat="server" Text="Add Name" onclick="button_Name_Click" />
+    </td>
+    <td>
+        <asp:Label ID="label_Name" runat="server" Text="Name " style="font-size:11pt;font-weight:bold;"></asp:Label>
+    </td>
+</tr>
+</table>
+
+I added this part of code at the button_Name_Click:
+label_Text.Text = "Please Enter Something to Save!"
+'***********************************
+if dialogResult = DialogResult.Yes Then
+      'code
+end if
+'***********************************
+
+I would like to ask how can I accomplish this task. Thank you very much!
+
+A:
+
+You can remove the text from the textbox using a regular expression for the delete key on the keyboard like this:
+Dim regex As New Regex("\b") 'matches 'backspace'
+Dim currentText As String = textbox_Name.Text
+Dim newText As String = currentText.Replace(regex, "") 'if there is a match
+textbox_Name.Text = newText
+
+You may have to also clear the textbox if there is some text in the textbox when you click delete. If you have just added new text and you want to clear it you would do this:
+Dim currentText As String = textbox_Name.Text
+Dim newText As String = currentText & "") 'if there is a match
+textbox_Name.Text = newText
+
+To clear it to a blank string use a regular expression to match any number of spaces:
+Dim regex As New Regex(" ")
+textbox_Name.Text = regex.Replace(textbox_Name.Text, "")
+
+That should work. The regular expression above will replace all spaces in the text with an empty string, and the other method replaces any number of spaces with just a blank string. That way you should get what you want.
+
+A:
+
+If you use a modal form (a form that contains only your two buttons and your text box) and the form is opened by a hyperlink then you can use the DialogResult property of the hyperlink and the Form.ShowDialog() method, to determine if the user pressed the 'Yes' button or not.
+You can get the value of the text box by using textBox.Text (assuming it's name).
+You will need to add a reference to the assembly that contains System.Windows.Forms (and possibly the System.Web assembly also), from the menu click Add Reference (in the Add or Remove References option) and search for "Windows Forms" and select it (you should find the reference there).
+I didn't test it so I can't be 100% sure it's working, but this is what I would have done:
+'Create a new instance of Form2'
+Dim dlg As New Form2
+'Open the form'
+dlg.ShowDialog()
+'Close the dialog if the user pressed the "Delete" button'
+If dlg.DialogResult.ToString() = "Delete" Then 
+    'Do the work'
+    dlg.ClearText()
+End If
+
+And Form2 should look like this (change the form caption to the one you want, and add your textbox and btnDelete):
+Imports System.IO
+
+Public Class Form2
+
+    Private myText As String
+
+    Public Sub New()
+        InitializeComponent()
+    End Sub
+
+    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+        'OK button clicked, just close the form'
+        Me.Close()
+    End Sub
+
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+        'Cancel button clicked, close the form'
+        Me.Close()
+    End Sub
+
+    Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
+        'Show the textbox on the dialog'
+        Me.Text = myText
+        If myText <> "" Then
+            'If there is some text in the textbox show the message box'
+            MessageBox.Show("Do you want to delete this item?", Me.Text, MessageBoxButtons.OKCancel)
+            'If OK is pressed and the delete button was pressed then clear the textbox'
+            If MessageBox.Show("Are you sure you want to delete this item?", My.Text, MessageBoxButtons.OKCancel, MessageBoxIcon.Hand) = MessageBoxResult.OK Then
+                Me.Text = ""
+            End If
+        Else
+            'If no text is in the textbox the user clicked cancel'
+            Me.Text = ""
+            'The user clicked the Cancel button'
+            MessageBox.Show("You did not specify any text to delete", MessageBoxButtons.OKCancel)
+        End If
+    End Sub
+
+    Private Sub ClearTextBox()
+        'This method removes the text that was in the textbox'
+        Me.Text = ""
+    End Sub
+
+    Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
+        Me.ClearTextBox()
+        'Close the dialog'
+        Me.Close()
+    End Sub
+End Class
+
+If you need to pass more than one parameter you should add a parameter for each.
+
+Another option, if you don't need a dialog, would be to use something like a DataGrid or a ListView, then you can use the SelectedIndexChanged event to do whatever you need to do (clear the text, change the text, whatever you need), but this is probably more difficult to do.
+
+</div></body></html><!-- 2022-06-25 09:55:50 

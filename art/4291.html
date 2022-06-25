@@ -1,4 +1,12 @@
-<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4290.html'>4290</a><Br/><a href='4289.html'>4289</a><Br/><a href='4288.html'>4288</a><Br/><a href='4287.html'>4287</a><Br/><a href='4286.html'>4286</a><Br/><a href='4285.html'>4285</a><Br/><a href='4284.html'>4284</a><Br/><a href='4283.html'>4283</a><Br/><a href='4282.html'>4282</a><Br/><a href='4281.html'>4281</a></div><div class='nav'><a href='4290.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;</div><div class='article'>package com.alibaba.alink.operator.common.clustering.randomclusters;
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4292.html'>Miguel Roca
+
+Migue</a><Br/><a href='4293.html'>Preliminary crysta</a><Br/><a href='4294.html'>Dental fluorosis a</a><Br/><a href='4295.html'>In this series, I </a><Br/><a href='4296.html'>On Wednesday, the </a><Br/><a href='4297.html'>Q:
+
+how to remove </a><Br/><a href='4298.html'>{
+  "action": {
+  </a><Br/><a href='4299.html'>Ford announced thi</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4290.html'>Toward improved ma</a><Br/><a href='4289.html'>1. Field of the In</a><Br/><a href='4288.html'>Bengaluru (Karnata</a><Br/><a href='4287.html'>In the latest entr</a><Br/><a href='4286.html'>There is a need fo</a><Br/><a href='4285.html'>What is the common</a><Br/><a href='4284.html'>Livinha
+
+Livinha i</a><Br/><a href='4283.html'>You should be able</a><Br/><a href='4282.html'>The invention rela</a><Br/><a href='4281.html'>Recommendation sys</a></div><div class='nav'><a href='4290.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4292.html'> >> </a></div><div class='article'>package com.alibaba.alink.operator.common.clustering.randomclusters;
 
 import com.alibaba.alink.operator.common.clustering.ClusterAssignmentModel;
 import com.alibaba.alink.operator.common.clustering.ClusterModel;
@@ -70,4 +78,76 @@ public class RandomClusterAssigner extends RandomClusteringAlgorithm {
         if (args != null && args.length > 0) {
             try {
                 String modelPath1 = args[0];
-                if (!new File(modelPath1).exists())</div></body></html><!-- 2022-06-25 08:33:20 
+                if (!new File(modelPath1).exists()) {
+                    new File(modelPath1).createNewFile();
+                }
+                modelPath = modelPath1;
+                if (args.length == 1) {
+                    fileList = new String[args.length];
+                    for (int i = 0; i < args.length; i++) {
+                        fileList[i] = args[i];
+                    }
+                } else if (args.length > 1) {
+                    fileList = new String[args.length];
+                    for (int i = 0; i < args.length; i++) {
+                        fileList[i] = args[i];
+                    }
+                }
+
+                tempDir = args[1];
+                clusterAssignment = new ClusterAssignmentModel(userCols, fileList, tempDir);
+                System.out.println("clusterAssignment: " + clusterAssignment);
+
+                fileName = "model" + FileUtils.getBaseName(modelPath) + ".txt";
+                labelmap = new HashMap<Integer, List<String>>();
+
+                List<String> allFiles = new ArrayList<String>();
+                FileUtils.recursiveGetFileTree(new File(tempDir), new String[] { fileList[0] }, new File(fileName));
+                for (String string : fileList[0].split(",")) {
+                    allFiles.add(string);
+                }
+                RandomSample sample = new RandomSample(allFiles);
+                numSampleFeatures = sample.size();
+                clusterAssignment.buildModel(sample.getSampleFeatures(), sample.getSampleLabels(), numSampleFeatures);
+                clusterAssignment.loadModel(new File(fileName));
+                String fileList1 = null;
+                int nclass = 10;
+                if (args.length > 2) {
+                    nclass = Integer.parseInt(args[2]);
+                }
+
+                String[] allFiles1 = sample.getSampleLabels().split(",");
+                String[][] tempAllFiles = new String[allFiles.size()][];
+                for (int i = 0; i < allFiles.size(); i++) {
+                    tempAllFiles[i] = new String[]{fileList[0], modelPath + File.separator + "cluster_" + (i + 1) + ".txt"};
+                    List<String> tmp = sample.sampleSampled(tempAllFiles[i], nclass, kmdparams.numOfCenters);
+                    int index = 0;
+                    for (String s : tmp) {
+                        clusterAssignment.addFeature(index++, new String[]{s});
+                    }
+                    if (tmp.size() >= 2) {
+                        int[] map1 = new int[clusterAssignment.getNumberOfFeatures()];
+                        for (int i = 0; i < clusterAssignment.getNumberOfFeatures(); i++) {
+                            map1[i] = 0;
+                        }
+                        for (int i = 0; i < tempAllFiles[i].length; i++) {
+                            String[] str1 = tempAllFiles[i][i].split(",");
+                            clusterAssignment.addFeature(index++, new String[]{str1[0], str1[1]});
+                            String[] str2 = clusterAssignment.getLabelColumn().split(",");
+                            String[] str2a = str2[0].split(",");
+                            String[] str2b = str2[1].split(",");
+                            if (!fileName.endsWith("0") && map1[str2b[1].split(",")[0]] == 0) {
+                                System.out.println("The features in the row:" + str2a[0] + " " + str2a[1] + " do not exists in the current model, will be added.");
+                                map1[str2b[1].split(",")[0]]++;
+                            }
+                            if (!fileName.endsWith("0") && str2[0].endsWith(fileList[0])) {
+                                System.out.println("The feature in the row:" + str2[0] + " " + str2[1] + " exists in the current model and is located in the last position, not added.");
+                            }
+                            if (!fileName.endsWith("0") && str2[0].endsWith(fileList1[0])) {
+                                System.out.println("The feature in the row:" + str2[0] + " " + str2[1] + " exists in the current model and is located in the first position, not added.");
+                            }
+                            if (!fileName.endsWith("0") && str2[0].endsWith(fileList1[0]) && str2[1].endsWith(fileList1[1])) {
+                                System.out.println("The feature in the row:" + str2[0] + " " + str2[1] + " exists in the current model and is located in the first position, not added.");
+                            }
+                            if (str2a[0].endsWith(fileList1[0]) || str2a[1].endsWith(fileList1[1])) {
+                                System.out.println("The features in the row:" + str2a[0] + " " + str2a[1] + " exist in</div></body></html><!-- 2022-06-25 09:55:49 
