@@ -1,0 +1,211 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3981.html'>He was very tired,</a><Br/><a href='3982.html'>airked.com</a><Br/><a href='3983.html'>It Will Be My Reve</a><Br/><a href='3984.html'>an invitation to g</a><Br/><a href='3985.html'>We were shocked an</a><Br/><a href='3986.html'>The Buddy System o</a><Br/><a href='3987.html'>The Buddy System o</a><Br/><a href='3988.html'>butdub.com</a><Br/><a href='3989.html'>What it was like f</a><Br/><a href='3990.html'>We'll Make You Pay</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3979.html'>The Chain</a><Br/><a href='3978.html'>Piercings, Tattoos</a><Br/><a href='3977.html'>What it was like f</a><Br/><a href='3976.html'>airaze.com</a><Br/><a href='3975.html'>Good and Guilty</a><Br/><a href='3974.html'>I'm Gonna Fix Her!</a><Br/><a href='3973.html'>Water was found on</a><Br/><a href='3972.html'>The Strategist or </a><Br/><a href='3971.html'>Pick A Tribemate</a><Br/><a href='3970.html'>The Strategist or </a></div><div class='nav'><a href='3979.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3981.html'> >> </a></div><div class='article'>hertzbleed.com>
+
+	* nse.c (findnext): Fix type handling.
+
+	* nse.c (findnext): Escape backslash in filename.
+
+	* nse.c (findnext): Use fgetln.
+
+	* nse.c (gfindnext): Free filename if not opened.
+
+	* nse.c (gnnext): Free filename if not opened.
+
+	* nse.c (gnext): Fix bogus case in nes_errno.
+
+	* nse.c (gnfirst): Free filename if not opened.
+
+	* nse.c (gnfirst): Fix bogus case in nes_errno.
+
+	* nse.c (gfirst): Fix case of non-existent file.
+
+	* nse.c (gfirst): Change to fgetln.
+
+	* nse.c (findfirst): Change to fgetln.
+
+	* nse.c (gnext): Rename to gnnext.
+
+	* nse.c (gnext): Avoid use of fgetln.
+
+	* nse.c (gnext): Free filename if not opened.
+
+	* nse.c (gnext): Fix bogus case in nes_errno.
+
+	* nse.c (findfirst): Change to fgetln.
+
+	* nse.c (findfirst): Free filename if not opened.
+
+	* nse.c (findfirst): Fix bogus case in nes_errno.
+
+	* nse.c (findfirst): Free filename if not opened.
+
+	* nse.c (findnext): Fix bogus case in nes_errno.
+
+	* nse.c (gnext): Avoid use of fgetln.
+
+	* nse.c (gnext): Rename to findnext.
+
+	* nse.c (gnext): Free filename if not opened.
+
+	* nse.c (gnext): Fix bogus case in nes_errno.
+
+	* nse.c (findnext): Change to fgetln.
+
+	* nse.c (findnext): Avoid use of fgetln.
+
+	* nse.c (findnext): Rename to gnnext.
+
+	* nse.c (findnext): Free filename if not opened.
+
+	* nse.c (findnext): Fix bogus case in nes_errno.
+
+2009-08-01  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (create_hard_link): Close directory before doing anything else.
+
+	* nse.c (gnfirst): Update error handling.
+
+	* nse.c (create_hard_link): Add some error handling.
+
+	* nse.c (gnfirst): Skip over entries for which we have no
+	read access.
+
+	* nse.c (gfirst): Likewise.
+
+2009-06-01  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (gnext): Skip over entries for which we have no read access.
+
+	* nse.c (gfirst): Likewise.
+
+	* nse.c (gnfirst): Skip over entries for which we have no read access.
+
+	* nse.c (gnext): Likewise.
+
+2009-03-24  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (close_file): Free fname buffer if not opened.
+
+	* nse.c (close_file): Free filename buffer if not opened.
+
+	* nse.c (findnext): Fix error handling.
+
+	* nse.c (findnext): Use fgetln.
+
+2009-03-21  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (findfirst): Fix error handling.
+
+	* nse.c (findfirst): Use fgetln.
+
+2009-03-15  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (parse_arg): Take arg_errstr argument.
+
+	* nse.c (parse_arg): Print arg_errstr.
+
+	* nse.c (gnext): New function.
+
+	* nse.c (gnfirst): Fix error handling.
+
+	* nse.c (gnfirst): New function.
+
+	* nse.c (gfirst): Fix error handling.
+
+2009-02-24  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (nse_errno): Return bogus values.
+
+2009-02-19  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (nse_errno): Print reason in a nicer way.
+	(nse_errno): Don't try to modify error string if it's already valid.
+
+2009-02-15  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (gfirst): Fix error handling.
+
+2009-02-08  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (nse_errno): Use getopt_long when dealing with filenames.
+
+2009-01-21  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (findfirst): Use standard setuid wrapper.
+
+	* nse.c (nse_errno): Print reason in a nicer way.
+
+2008-12-18  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (findnext): Free filename if not opened.
+
+	* nse.c (findnext): Use fgetln.
+
+	* nse.c (findfirst): Use standard setuid wrapper.
+
+	* nse.c (gfirst): Likewise.
+
+2008-12-17  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (nse_errno): Print reason in a nicer way.
+
+	* nse.c (nse_errno): Print reason in a nicer way.
+
+	* nse.c (nse_errno): Print reason in a nicer way.
+
+	* nse.c (nse_errno): Print reason in a nicer way.
+
+	* nse.c (parse_arg): Fix typo.
+
+	* nse.c (parse_arg): Fix error handling.
+
+	* nse.c (findnext): Fix error handling.
+
+	* nse.c (findnext): Check for directories too.
+
+	* nse.c (findfirst): Likewise.
+
+	* nse.c (gfirst): Likewise.
+
+	* nse.c (gnext): Likewise.
+
+2008-10-11  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (gfirst): Change back to glob semantics for findfirst.
+
+2008-10-03  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (findfirst): Change back to glob semantics for findfirst.
+
+	* nse.c (findfirst): Don't use glob in findfirst.
+
+	* nse.c (gnext): Likewise.
+
+2008-09-30  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (findfirst): Use standard setuid wrapper.
+
+	* nse.c (findfirst): Add missing ';'.
+
+	* nse.c (findfirst): Add missing ';'.
+
+	* nse.c (findfirst): Correct error handling.
+
+	* nse.c (gfirst): Likewise.
+
+	* nse.c (gnext): Likewise.
+
+	* nse.c (gfirst): Fix error handling.
+
+2008-08-24  Alexandre Julliard  <alexandre.julliard@st.com>
+
+	* nse.c (findfirst): Change back to glob semantics for findfirst.
+
+	* nse.c (findfirst): Use standard setuid wrapper.
+
+	* nse.c (findfirst): Add missing ';'.
+
+	* nse.c (findfirst): Add missing ';'.
+
+	* nse.c (findfirst): Fix error handling.
+
+2008-07-20  Alexand</div></body></html><!-- 2022-06-25 08:18:50 
