@@ -1,0 +1,120 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4279.html'>4279</a><Br/><a href='4280.html'>4280</a><Br/><a href='4281.html'>4281</a><Br/><a href='4282.html'>4282</a><Br/><a href='4283.html'>4283</a><Br/><a href='4284.html'>4284</a><Br/><a href='4285.html'>4285</a><Br/><a href='4286.html'>4286</a><Br/><a href='4287.html'>4287</a><Br/><a href='4288.html'>4288</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4277.html'>4277</a><Br/><a href='4276.html'>4276</a><Br/><a href='4275.html'>4275</a><Br/><a href='4274.html'>4274</a><Br/><a href='4273.html'>4273</a><Br/><a href='4272.html'>4272</a><Br/><a href='4271.html'>4271</a><Br/><a href='4270.html'>4270</a><Br/><a href='4269.html'>4269</a><Br/><a href='4268.html'>4268</a></div><div class='nav'><a href='4277.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4279.html'> >> </a></div><div class='article'>Q:
+
+How does the Raspberry Pi store its files?
+
+When I do
+sudo apt-get purge firefox
+
+it asks me to save it and quit or run as a different user. When I select quit, it says
+Are you sure? [y/N]
+
+I don't see any files to be saved there. So where does it store firefox in RAM? 
+I don't see any folder named firefox, chrome etc.
+I tried 
+cd /usr/bin/firefox/
+
+to view its source code, but 
+cd /usr/bin/firefox/firefox-bin 
+
+gives
+bash: cd: /usr/bin/firefox/firefox-bin: Not a directory
+
+Please someone clarify the situation?
+
+A:
+
+The default Ubuntu (and Debian) system-wide installation of Firefox will be in /usr/lib/firefox, whereas your own personal install will be at ~/.mozilla/firefox/blah.default. Most users keep there personal install of Firefox in their home directory, so that it would not impact other Firefox users (if there were Firefox users) on the system.
+Regarding your comment
+
+I think I have to kill firefox? (killall firefox)
+
+It depends, if the process is currently running it would need to be killed.
+You can kill any process by process name, or ID, by using
+
+pkill firefox
+pkill firefox
+killall firefox
+killall firefox
+
+The last example would only work if it was running on a shell that supports aliases.
+Example: If you have the firefox browser installed and running then
+ps -aux | grep -i firefox
+will show the PID of the firefox process. In the example above I used ps -aux for the first column and grep -i firefox for the second. Thus the last command would kill the firefox process based on its PID, if you were not sure which PID to kill, you could use ps -aux | grep -i firefox | awk '{print $2}' | head -n 1 or ps -aux | grep -i firefox | cut -d ' ' -f2 for example.
+
+The default ubuntu system-wide firefox installation
+To locate the firefox executable you can use the locate command
+locate firefox
+
+which shows
+/usr/lib/firefox-trunk
+/usr/lib/firefox
+/usr/lib/firefox-addons/plugins
+/usr/lib/firefox-addons/webconsole
+/usr/lib/firefox-addons/distribution
+/usr/lib/firefox-addons/distribution/distribution.ini
+/usr/lib/firefox-addons/distribution/distribution1.ini
+/usr/lib/firefox-addons/distribution/distribution2.ini
+/usr/lib/firefox-addons/distribution/distribution.properties
+/usr/lib/firefox-addons/distribution/distribution1.properties
+/usr/lib/firefox-addons/distribution/distribution2.properties
+/usr/lib/firefox-addons/distribution/distribution_version
+/usr/lib/firefox-addons/distribution/distribution1.version
+/usr/lib/firefox-addons/distribution/distribution2.version
+/usr/lib/firefox-addons/distribution/distribution_time
+/usr/lib/firefox-addons/distribution/distribution1.time
+/usr/lib/firefox-addons/distribution/distribution2.time
+/usr/lib/firefox-addons/distribution/distribution.jar
+/usr/lib/firefox-addons/distribution/distribution1.jar
+/usr/lib/firefox-addons/distribution/distribution2.jar
+/usr/lib/firefox-addons/distribution/install.rdf
+/usr/lib/firefox-addons/distribution/distribution.rdf
+/usr/lib/firefox-addons/distribution/firefox.png
+/usr/lib/firefox-addons/distribution/firefox_24.png
+/usr/lib/firefox-addons/distribution/firefox_small.png
+/usr/lib/firefox-addons/distribution/install.properties
+/usr/lib/firefox-addons/distribution/locale.en-US.properties
+/usr/lib/firefox-addons/distribution/locale.en-US.qm
+/usr/lib/firefox-addons/distribution/locale.es-ES.properties
+/usr/lib/firefox-addons/distribution/locale.es-ES.qm
+/usr/lib/firefox-addons/distribution/locale.fr.properties
+/usr/lib/firefox-addons/distribution/locale.fr.qm
+/usr/lib/firefox-addons/distribution/locale.it.properties
+/usr/lib/firefox-addons/distribution/locale.it.qm
+/usr/lib/firefox-addons/distribution/locale.ja-JP.properties
+/usr/lib/firefox-addons/distribution/locale.ja-JP.qm
+/usr/lib/firefox-addons/distribution/locale.pl.properties
+/usr/lib/firefox-addons/distribution/locale.pl.qm
+/usr/lib/firefox-addons/distribution/locale.pt-BR.properties
+/usr/lib/firefox-addons/distribution/locale.pt-BR.qm
+/usr/lib/firefox-addons/distribution/locale.ru.properties
+/usr/lib/firefox-addons/distribution/locale.ru.qm
+/usr/lib/firefox-addons/distribution/locale.zh-CN.properties
+/usr/lib/firefox-addons/distribution/locale.zh-CN.qm
+/usr/lib/firefox-addons/distribution/package.properties
+/usr/lib/firefox-addons/distribution/patch-environment.jar
+/usr/lib/firefox-addons/distribution/patch-firefox.jar
+/usr/lib/firefox-addons/distribution/rdf.localized
+/usr/lib/firefox-addons/distribution/skin1.jar
+/usr/lib/firefox-addons/distribution/skin.jar
+/usr/lib/firefox-addons/extension
+/usr/lib/firefox-addons/extension/chrome
+/usr/lib/firefox-addons/extension/icons
+/usr/lib/firefox-addons/extension/icons/16.png
+/usr/lib/firefox-addons/extension/icons/32.png
+/usr/lib/firefox-addons/extension/icons/48.png
+/usr/lib/firefox-addons/extension/icons/128.png
+/usr/lib/firefox-addons/extension/icons/48@2x.png
+/usr/lib/firefox-addons/extension/icons/16@2x.png
+/usr/lib/firefox-addons/extension/icons/32@2x.png
+/usr/lib/firefox-addons/extension/icons/128@2x.png
+/usr/lib/firefox-addons/extension/install.rdf
+/usr/lib/firefox-addons/extension/skin1.jpg
+/usr/lib/firefox-addons/extension/skins
+/usr/lib/firefox-addons/install.rdf
+/usr/lib/firefox-addons/langpacks
+/usr/lib/firefox-addons/langpacks/ar.moz-firefox-locale-ar.jar
+/usr/lib/firefox-addons/langpacks/ca.moz-firefox-locale-ca.jar
+/usr/lib/firefox-addons/langpacks/cs.moz-firefox-locale-cs.jar
+/usr/lib/firefox-addons/langpacks/da.moz-firefox-locale-da.jar
+/usr/lib/firefox-addons/langpacks/de.moz-firefox-locale-de.jar
+/usr/lib/firefox-addons/langpacks/el.moz-firefox-locale-el.</div></body></html><!-- 2022-06-25 08:33:19 

@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4189.html'>4189</a><Br/><a href='4190.html'>4190</a><Br/><a href='4191.html'>4191</a><Br/><a href='4192.html'>4192</a><Br/><a href='4193.html'>4193</a><Br/><a href='4194.html'>4194</a><Br/><a href='4195.html'>4195</a><Br/><a href='4196.html'>4196</a><Br/><a href='4197.html'>4197</a><Br/><a href='4198.html'>4198</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4187.html'>4187</a><Br/><a href='4186.html'>4186</a><Br/><a href='4185.html'>4185</a><Br/><a href='4184.html'>4184</a><Br/><a href='4183.html'>4183</a><Br/><a href='4182.html'>4182</a><Br/><a href='4181.html'>4181</a><Br/><a href='4180.html'>4180</a><Br/><a href='4179.html'>4179</a><Br/><a href='4178.html'>4178</a></div><div class='nav'><a href='4187.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4189.html'> >> </a></div><div class='article'>Q:
+
+JSTL: Setting value of a  tag within a table in a table
+
+I have a list that has an attribute name="person" so its a set of persons (or persons data) that will be shown as a list in a table.  There is one more field in the table that I want to populate with the names of each person on each row.  This is in the same table but underneath the first person's name.  The problem is the table is created dynamically, so I have no clue how to fill out the textArea.  Here is the code:
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
+<table>
+<c:forEach var="p" items="${persons}">
+    <tr>
+        <td class="persName" style="color:red;"><fmt:message key="person.name"/></td>
+        <td><c:out value="${p.name}" /></td>
+        <td><c:out value="${p.age}" /></td>
+    </tr>
+</c:forEach>
+</table>
+
+A:
+
+You could use EL in the td that you want to add value to. Something like this: 
+<td>
+  <c:out value="${fn:length(persons)}" />
+</td>
+
+And if you want to append/prepend a text after the text that is in that particular column. 
+<td>
+   <c:out value="${fn:substringBefore(p.name, 'your string')}" />
+   <c:out value="${fn:substringAfter(p.name, 'your string')}" />
+   <c:out value="${fn:substringBefore(p.name, 'your string')}" />
+</td>
+
+If you don't have access to all the fields in the list you can always get the string index to get your value from the collection.
+<td>
+   ${persons[item].name}
+</td>
+
+Hope this helps you to achieve what you want.
+regards,
+Samir
+
+A:
+
+I don't believe it's possible to do this by directly rendering the elements.  You'll need to render a JSP tag to put the row-specific value into the cell.
+<table>
+  <tbody>
+    <c:forEach items="${persons}" var="person">
+      <c:if test="${person == foo}">
+        <tr>
+          <td><fmt:message key="person.name"/></td>
+          <td><c:out value="${person.name}" /></td>
+          <td><c:out value="${person.age}" /></td>
+          <c:set var="foo" value="${person}" />
+        </tr>
+      </c:if>
+    </c:forEach>
+  </tbody>
+</table>
+
+But you could also just render another table inside the loop.
+<table>
+    <tbody>
+      <c:forEach items="${persons}" var="person">
+        <tr>
+          <td><fmt:message key="person.name"/></td>
+          <td><c:out value="${person.name}" /></td>
+          <td><c:out value="${person.age}" /></td>
+        </tr>
+      </c:forEach>
+    </tbody>
+</table>
+
+<c:if test="${fn:length(persons) == 1}">
+    <table>
+        <tbody>
+            <c:forEach items="${persons}" var="person">
+                <tr>
+                    <td><fmt:message key="person.name"/></td>
+                    <c:out value="${person.name}" />
+                    <td><c:out value="${person.age}" /></td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+</c:if>
+
+If this isn't a possibility for you, it sounds like a perfect use case for a JSF <ui:repeat>.
+<ui:repeat var="person" value="#{bean.persons}" >
+    ...
+
+    <ui:repeat var="person" value="#{bean.persons}" >
+        ...
+    </ui:repeat>
+
+    ...
+</ui:repeat>
+
+Or you can use a standard JSP <c:forEach> and simply render all the rows as links.
+<table>
+  <tbody>
+    <c:forEach var="person" items="#{bean.persons}">
+      <tr>
+        <td><fmt:message key="person.name"/></td>
+        <td><c:out value="${person.name}" /></td>
+        <td><c:out value="${person.age}" /></td>
+      </tr>
+    </c:forEach>
+  </tbody>
+</table>
+
+</div></body></html><!-- 2022-06-25 08:33:07 

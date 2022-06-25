@@ -1,0 +1,126 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4278.html'>4278</a><Br/><a href='4279.html'>4279</a><Br/><a href='4280.html'>4280</a><Br/><a href='4281.html'>4281</a><Br/><a href='4282.html'>4282</a><Br/><a href='4283.html'>4283</a><Br/><a href='4284.html'>4284</a><Br/><a href='4285.html'>4285</a><Br/><a href='4286.html'>4286</a><Br/><a href='4287.html'>4287</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4276.html'>4276</a><Br/><a href='4275.html'>4275</a><Br/><a href='4274.html'>4274</a><Br/><a href='4273.html'>4273</a><Br/><a href='4272.html'>4272</a><Br/><a href='4271.html'>4271</a><Br/><a href='4270.html'>4270</a><Br/><a href='4269.html'>4269</a><Br/><a href='4268.html'>4268</a><Br/><a href='4267.html'>4267</a></div><div class='nav'><a href='4276.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4278.html'> >> </a></div><div class='article'>Q:
+
+How can I make my divs to expand with the content with a pure css?
+
+This is my first post in stackoverflow, I just started to code, and today my first project was creating a webpage with some HTML and CSS.
+I wanted to make my divs to expand their size, based on the content in the right column. I have managed to do it with jquery and javascript, but I wanted to see if there is any other way to do it by pure CSS.
+I tried every style I've found on the web but the things I found didn't work or they made the boxes grow and make a new line.
+I know that my css code is terrible and that I could have done better, if you could help me with that I would appreciate that too. I was too interested in that subject to read the W3c guide, maybe I just didn't read well.
+And one last thing. This project is going to be finished with a CMS with a wordpress page builder, so the solution must be integrated to that environment.
+Thanks in advance for your attention. I really aprecciate it.
+Here is my code. I have made comments so you can understand what I am trying to do.
+
+/*Here i define my main div*/
+#main-div{
+ width: 100%;
+ display: inline-block;
+ min-height: 500px;
+ margin-left: 5px;
+ margin-right: 5px;
+ overflow: hidden;
+ border: 1px solid grey;
+}
+
+/*Here i define the right column*/
+#right-div{
+ background-color: blue;
+ height: auto;
+ width: auto;
+ overflow: auto;
+}
+
+/*Here is the CSS that makes that the div don't go under the red square. It works because this div goes after the red square*/
+.test{
+ height: 50px;
+ width: 50px;
+ background-color: red;
+}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="my-styles.css">
+  </head>
+  <body>
+    <div id="main-div">
+      <div id="right-div">
+        <!-- Here is the container of the text I want to expand. It has width and min-width. I have added height:auto to avoid a fix height -->
+        <div class="test" style="height: auto; width: auto">Text<br>Text<br>Text<br>Text</div>
+      </div>
+    </div>
+  </body>
+</html>
+
+A:
+
+You're just missing position:relative on the parent.
+(Note: You should be using .classname as a class selector instead of an id selector.)
+Updated jsFiddle
+<div class="test" style="height: auto; width: auto; position: relative;">Text<br>Text<br>Text<br>Text</div>
+
+I should also note that I removed your inline styling of height:500px, as you're using display:inline-block; and have also set height:auto to avoid a fix height.
+
+A:
+
+The issue is with your display:inline-block; property. Since the DIVs are of the same size, they align left-right. The inline block will only allow 1 of the DIVs to be at the next line, since they both have a minimum width.
+Use display:flex and flex-direction:column to allow the DIVs to align left-right instead of top-bottom.
+EXAMPLE HERE: https://jsfiddle.net/qyw5r5L6/
+
+/*Add this to your CSS code*/
+.col{
+  display:flex;
+  flex-direction:column;
+  border: 1px solid grey;
+  align-items: center;
+}
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="my-styles.css">
+  </head>
+  <body>
+    <div class="col">
+      <div class="test" style="height: auto; width: auto; position: relative;">Text<br>Text<br>Text<br>Text</div>
+    </div>
+  </body>
+</html>
+
+I tried out with a simple 2 divs inside a flex container. By setting the properties on the container, I was able to create space between the two divs. (The border you had on the columns was messing up your code)
+EXAMPLE HERE: https://jsfiddle.net/0vwsk3bq/
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="my-styles.css">
+  </head>
+  <body>
+    <div class="test" style="height: auto; width: auto; position: relative;">Text<br>Text<br>Text<br>Text</div>
+    <div class="test" style="height: auto; width: auto; position: relative;">Text<br>Text<br>Text<br>Text</div>
+  </body>
+</html>
+
+A:
+
+You don't need min-height and auto. You can adjust the height of the flexbox's parent as to the size of the container's content. I've also simplified your html a bit.
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+}
+.row {
+    min-width: 500px;
+}
+.test {
+    border: 1px solid grey;
+    width: 50%;
+    padding: 20px;
+    background-color: blue;
+}
+<div class="flex-container">
+    <div class="row">
+        <div class="test">Text</div>
+        <div class="test">Text</div>
+        <div class="test">Text</div>
+    </div>
+</div>
+
+</div></body></html><!-- 2022-06-25 08:33:19 

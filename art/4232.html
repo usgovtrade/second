@@ -1,0 +1,149 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4233.html'>4233</a><Br/><a href='4234.html'>4234</a><Br/><a href='4235.html'>4235</a><Br/><a href='4236.html'>4236</a><Br/><a href='4237.html'>4237</a><Br/><a href='4238.html'>4238</a><Br/><a href='4239.html'>4239</a><Br/><a href='4240.html'>4240</a><Br/><a href='4241.html'>4241</a><Br/><a href='4242.html'>4242</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4231.html'>4231</a><Br/><a href='4230.html'>4230</a><Br/><a href='4229.html'>4229</a><Br/><a href='4228.html'>4228</a><Br/><a href='4227.html'>4227</a><Br/><a href='4226.html'>4226</a><Br/><a href='4225.html'>4225</a><Br/><a href='4224.html'>4224</a><Br/><a href='4223.html'>4223</a><Br/><a href='4222.html'>4222</a></div><div class='nav'><a href='4231.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4233.html'> >> </a></div><div class='article'><?php
+
+namespace Kunstmaan\ArticleBundle\Tests\DependencyInjection\Compiler;
+
+use Kunstmaan\ArticleBundle\DependencyInjection\Compiler\DoctrineLazyArrayLoaderPass;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+
+/**
+ * Tests the DoctrineLazyArrayLoaderPass class.
+ */
+class DoctrineLazyArrayLoaderPassTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @var DoctrineLazyArrayLoaderPass
+     */
+    private $pass;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $container;
+
+    /**
+     * @var string
+     */
+    private $containerConfig = '';
+
+    public function setUp()
+    {
+        $this->container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->containerConfig = <<<'JSON'
+{
+  "%security.load_providers%": [
+    {% for provider in form_providers %}
+      "Doctrine\\Bundle\\DoctrineBundle\\DependencyInjection\\Security\\{{ provider }}"{% if not loop.last %} , {% endif %}{% endfor %}
+  ],
+  "%security.property_access.load_property%": [
+    {% for property in form_properties %}
+      "Doctrine\\Bundle\\DoctrineBundle\\DependencyInjection\\Security\\{{ property }}"{% if not loop.last %} , {% endif %}{% endfor %}
+  ],
+}
+JSON;
+
+        $pass = new PassConfig(array(), array(), $this->containerConfig);
+        $this->pass = new DoctrineLazyArrayLoaderPass($this->container, $pass);
+    }
+
+    public function testProcess()
+    {
+        $this->container->expects($this->once())
+            ->method('get')
+            ->with('security.providers')
+            ->will($this->returnValue(array('provider1', 'provider2', 'provider3')));
+
+        $this->container->expects($this->once())
+            ->method('get')
+            ->with('security.property_access.load_property')
+            ->will($this->returnValue(array('property1', 'property2', 'property3')));
+
+        $doctrineLazyArrayLoaderPass = new DoctrineLazyArrayLoaderPass($this->container);
+        $this->assertSame('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineLazyArrayLoaderPass', get_class($doctrineLazyArrayLoaderPass));
+        $this->assertSame($this->containerConfig, $doctrineLazyArrayLoaderPass->getContainerConfig());
+        $this->assertSame(array(), $doctrineLazyArrayLoaderPass->getLazyServices());
+        $this->assertSame(array(), $doctrineLazyArrayLoaderPass->getLazyConfigs());
+        $this->assertSame(array('provider1', 'provider2', 'provider3'), $doctrineLazyArrayLoaderPass->getServicesToLazyLoad());
+        $this->assertSame(array('property1', 'property2', 'property3'), $doctrineLazyArrayLoaderPass->getConfigsToLazyLoad());
+
+        $doctrineLazyArrayLoaderPass = new DoctrineLazyArrayLoaderPass($this->container);
+        $this->assertSame($this->containerConfig, $doctrineLazyArrayLoaderPass->getContainerConfig());
+        $this->assertSame(array('provider1', 'provider2', 'provider3'), $doctrineLazyArrayLoaderPass->getLazyServices());
+        $this->assertSame(array('property1', 'property2', 'property3'), $doctrineLazyArrayLoaderPass->getLazyConfigs());
+
+        $pass = new DoctrineLazyArrayLoaderPass($this->container, $pass);
+        $this->assertSame($this->containerConfig, $pass->getContainerConfig());
+        $this->assertSame(array('provider1', 'provider2', 'provider3'), $pass->getLazyServices());
+        $this->assertSame(array('property1', 'property2', 'property3'), $pass->getLazyConfigs());
+    }
+
+    public function testProcessWithInvalidArray()
+    {
+        $this->container->expects($this->once())
+            ->method('get')
+            ->with('security.providers')
+            ->will($this->returnValue(array('provider1')));
+
+        $this->container->expects($this->once())
+            ->method('get')
+            ->with('security.property_access.load_property')
+            ->will($this->returnValue(array('property1')));
+
+        $doctrineLazyArrayLoaderPass = new DoctrineLazyArrayLoaderPass($this->container);
+        $this->pass = new DoctrineLazyArrayLoaderPass($this->container, $this->containerConfig);
+        $this->assertSame('Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineLazyArrayLoaderPass', get_class($doctrineLazyArrayLoaderPass));
+        $this->assertSame($this->containerConfig, $doctrineLazyArrayLoaderPass->getContainerConfig());
+        $this->assertSame(array(), $doctrineLazyArrayLoaderPass->getLazyServices());
+        $this->assertSame(array(), $doctrineLazyArrayLoaderPass->getLazyConfigs());
+
+        $doctrineLazyArrayLoaderPass = new DoctrineLazyArrayLoaderPass($this->container);
+        $this->pass = new DoctrineLazyArrayLoaderPass($this->container, $this->containerConfig);
+        $this->assertSame($this->containerConfig, $doctrineLazyArrayLoaderPass->getContainerConfig());
+        $this->assertSame(array(), $doctrineLazyArrayLoaderPass->getLazyServices());
+        $this->assertSame(array(), $doctrineLazyArrayLoaderPass->getLazyConfigs());
+    }
+
+    public function testProcessDoctrineLazyLoaderException()
+    {
+        $this->container->expects($this->once())
+            ->method('get')
+            ->with('security.providers')
+            ->will($this->returnValue(array('provider1', 'provider2', 'provider3')));
+
+        $this->container->expects($this->once())
+            ->method('get')
+            ->with('security.property_access.load_property')
+            ->will($this->returnValue(array('property1', 'property2', 'property3')));
+
+        $doctrineLazyArrayLoaderPass = new DoctrineLazyArrayLoaderPass($this->container);
+        $this->assertSame(new InvalidArgumentException('[ERROR]  The following services are lazy: Doctrine\\Bundle\\DoctrineBundle\\DependencyInjection\\Security\\DoctrineLazyLoader. "Doctrine\\Bundle\\DoctrineBundle\\DependencyInjection\\Security\\DoctrineLazyLoader" is not an existing service. Maybe you forgot to add a service that has the same "id" attribute ?'), $doctrineLazyArrayLoaderPass);
+        $this->assertSame($this->containerConfig, $doctrineLazyArrayLoaderPass->getContainerConfig());
+        $this->assertSame(array(), $doctrineLazyArrayLoaderPass->getLazyServices());
+        $this->assertSame(array(), $doctrineLazyArrayLoaderPass->getLazyConfigs());
+    }
+
+    public function testProcessServices()
+    {
+        $this->container->expects($this->once())
+            ->method('has')
+            ->with($this->identicalTo('security.providers'))
+            ->will($this->returnValue(true));
+        $this->container->expects($this->once())
+            ->method('get')
+            ->with('security.providers')
+            ->will($this->returnValue(array('provider1', 'provider2', 'provider3')));
+
+        $this->container->expects($this->once())
+            ->method('has')
+            ->with($this->identicalTo('security.property_access.load_property'))
+            ->will($this->returnValue(true));
+        $this->container->expects($this->once())
+            ->method('get')
+            ->with('security.property_access.load_property')
+            ->will($this->returnValue(array('property1', 'property2', 'property3')));
+
+        $doctrineLazyArrayLoaderPass = new DoctrineLazyArrayLoaderPass</div></body></html><!-- 2022-06-25 08:33:13 

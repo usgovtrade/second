@@ -1,0 +1,109 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4224.html'>4224</a><Br/><a href='4225.html'>4225</a><Br/><a href='4226.html'>4226</a><Br/><a href='4227.html'>4227</a><Br/><a href='4228.html'>4228</a><Br/><a href='4229.html'>4229</a><Br/><a href='4230.html'>4230</a><Br/><a href='4231.html'>4231</a><Br/><a href='4232.html'>4232</a><Br/><a href='4233.html'>4233</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4222.html'>4222</a><Br/><a href='4221.html'>4221</a><Br/><a href='4220.html'>4220</a><Br/><a href='4219.html'>4219</a><Br/><a href='4218.html'>4218</a><Br/><a href='4217.html'>4217</a><Br/><a href='4216.html'>4216</a><Br/><a href='4215.html'>4215</a><Br/><a href='4214.html'>4214</a><Br/><a href='4213.html'>4213</a></div><div class='nav'><a href='4222.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4224.html'> >> </a></div><div class='article'>Q:
+
+How do I check which form is currently used in Qt?
+
+How can I check which form is active at the moment in my Qt project?
+This should be like checking if a method is active but when using forms.
+If I'm trying this in a class where I can't have any QObject or QForm as a member I can't have the signal/slot way or Qt Designer in my current project.
+
+A:
+
+You need to make a slot in your form class, which stores the main window's object in a class variable:
+private:
+    QWidget* mainWindow;
+public:
+    MainWindow::MainWindow() {
+        this->setWindowTitle(QString("form"));
+    }
+
+    // You need to connect this to a function you want to execute when
+    // the object of the form is destroyed, because the form will be
+    // destroyed if you close it (and the destructor will be called)
+    virtual ~MainWindow() {
+        QWidget::connect(this, SIGNAL(closed()), this, SLOT(close_application()));
+    }
+
+    // Create a slot that the main window should call before closing
+    // It will destroy the form in that case, because the window
+    // object will not be used anymore
+    virtual void close_application(){
+        delete this;
+    }
+
+The function close_application() is in the form class, which means that you can access the window object if you move it in there (in that case you should delete this).
+However, you don't need this approach if you connect your form class to the main window object, like described in the official documentation:
+
+The default construction of QMainWindow includes the creation of a
+  menubar with a windowTitle property set to “Untitled”. The properties
+  windowTitle and parent can also be specified in the constructor:
+
+     MainWindow *mainWindow = new MainWindow;
+     mainWindow->setWindowTitle("Hello, world");
+     mainWindow->setParent(this); // set the parent widget
+
+ If you specify only a windowTitle, the QMainWindow constructor creates
+ a temporary QMainWindow instance to be used as the main window.
+ If you want to keep a reference to that temporary instance, you can do it
+ by assigning the result of the default constructor to a global variable:
+
+     QMainWindow *mainWindow = new QMainWindow(this);
+ 
+and later access the window object through a member variable of your main class:
+
+     MainWindow mainWindow;
+ 
+ If you don't specify a parent widget, the QMainWindow constructor will not
+  create a parent-child relationship between the window and the QApplication.
+  The first time an event loop is run for your application (for example, on
+  the first top-level widget's windowCloseRequested() signal), the widget 
+  may be destroyed because its parent was destroyed in a different thread. This
+  problem occurs only when the main window object is destroyed because
+  the window is the only non-top-level widget in the application.
+ 
+ If the application never has more than one top-level widget, use a
+  parent-child relationship between the QApplication and the QMainWindow instance.
+ For example:
+ 
+     QApplication a(argc, argv);
+     QMainWindow mainWindow;
+     QWidget *widget = new QWidget(parent);
+
+ If you do not use a parent-child relationship, all widgets, including the main window,
+ 
+ are destroyed whenever the object that called the last event loop is destroyed. If
+ 
+ an exception is raised while executing the last event loop and no widgets'
+ destructors are called, the application is terminated.
+
+There might also be a simpler solution.
+
+A:
+
+This will get you started for when you use QObject and have a window:
+QLabel *mainWindow = qobject_cast<QLabel *>(qApp->activeWindow());
+
+A:
+
+Qt has a nice slot called applicationActivated() (http://qt-project.org/doc/qt-4.8/qapplication.html#applicationActivated) which gets emitted when the user switches between windows in your application, and returns the QWidget pointer that was activated. It also lets you get the filePath of the last launched file/application, so you can tell if the user has launched a file instead of a program.
+Hope this helps
+
+A:
+
+What I needed in my project was to know which form of a QMainWindow was the active one, so for it I did:
+//This goes on your main class 
+QMainWindow *window=QApplication::activeWindow();
+
+and after that you have the pointer to the current form, so you can call any methods of the window.
+If anyone else needs it I'll be glad to help
+
+A:
+
+In case you have only one form, you can use Qt::application. This widget is created at least once and is deleted when the last instance of this widget exists. It contains also the active widget and some other useful information.
+There is an example in the reference documentation, section 'Advanced Topics'.
+
+In practice, I have not used QApplication::activeWindow() and I think that this is not right at all.
+
+If you are using a QTabWidget and you want to know which tab is currently active, you have to connect the activated() signal of your QTabWidget, to the slot activated() in your MainWindow class, and not call activeWindow().
+I would say: Don't go near to the activeWindow(), there is almost never a case when you need it, it is very dangerous to rely on this.
+
+</div></body></html><!-- 2022-06-25 08:33:12 

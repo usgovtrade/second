@@ -1,0 +1,150 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4272.html'>4272</a><Br/><a href='4273.html'>4273</a><Br/><a href='4274.html'>4274</a><Br/><a href='4275.html'>4275</a><Br/><a href='4276.html'>4276</a><Br/><a href='4277.html'>4277</a><Br/><a href='4278.html'>4278</a><Br/><a href='4279.html'>4279</a><Br/><a href='4280.html'>4280</a><Br/><a href='4281.html'>4281</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4270.html'>4270</a><Br/><a href='4269.html'>4269</a><Br/><a href='4268.html'>4268</a><Br/><a href='4267.html'>4267</a><Br/><a href='4266.html'>4266</a><Br/><a href='4265.html'>4265</a><Br/><a href='4264.html'>4264</a><Br/><a href='4263.html'>4263</a><Br/><a href='4262.html'>4262</a><Br/><a href='4261.html'>4261</a></div><div class='nav'><a href='4270.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4272.html'> >> </a></div><div class='article'>{
+  "name": "react-test-renderer",
+  "description": "Custom React renderer for use in unit testing.",
+  "version": "1.14.7",
+  "author": "Jon Cooper <jon@fivetanly.com>",
+  "license": "MIT",
+  "repository": "facebook/react",
+  "bugs": {
+    "url": "https://github.com/facebook/react/issues"
+  },
+  "homepage": "https://github.com/facebook/react",
+  "keywords": [
+    "react",
+    "test",
+    "renderer"
+  ],
+  "main": "react.development.js",
+  "files": [
+    "*.js",
+    "lib",
+    "template",
+    "cli.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "lint": "eslint .",
+    "prepack": "npm run clean",
+    "build": "npm run clean && rollup -c",
+    "watch": "npm run clean && rollup -c -w",
+    "postpack": "npm run lint",
+    "test": "node ./node_modules/react-scripts/bin/react-test"
+  },
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "jsdom": "^10.6.0",
+    "react": "^16.5.0",
+    "react-addons-shallow-compare": "^15.6.2",
+    "react-dom": "^16.5.0",
+    "react-scripts": "^1.1.4"
+  },
+  "peerDependencies": {
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
+   },
+  "eslintConfig": {
+    "extends": "react-app"
+   },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^21.0.3",
+    "babel-plugin-module-resolver": "^3.0.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.1.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^4.19.1",
+    "eslint-plugin-react": "^7.7.0",
+    "jest": "^21.0.1",
+    "react-test-renderer": "^16.2.0",
+    "rollup": "^0.51.1",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-replace": "^1.1.0"
+   },
+  "jest": {
+    "setupTestFrameworkScriptFile": "react-app-polyfill/jsdom"
+   }
+ }
+}
+
+A:
+
+The problem you are having is that you are trying to use this on a react method which doesn't exist when you are working with ES6 import and export syntax. This will be fixed in React 16.6.0 (which should be released some time next month).
+An example of your problem would be this:
+export default class MyClass extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: 'John'
+    };
+  }
+
+  render() {
+    return (
+      <div>Name is {this.state.name}</div>
+    );
+  }
+}
+
+Now, if you look at the render method you will see the name property inside the jsx braces. This means that you are setting the property name from a js object which would look like {name: 'John'} on your state object.
+To fix this you can move your jsx block into the render method:
+render() {
+    return (
+      <>
+        <div>Name is {this.state.name}</div>
+      </>
+    );
+  }
+}
+
+When you fix that you will see that you now are no longer allowed to use the this keyword on your render method, because in ES6 this is not possible.
+Check the official docs on exporting React components from ES6: https://reactjs.org/docs/esm.html#exported-components
+You can also use Babel's babel-plugin-transform-class-properties plugin to automate this and other nice things for you.
+
+A:
+
+Just for the sake of completeness: ES6 export / import syntax allows you to use the full power of "this" inside the component.
+As per this ES6: How to use Babel Preset? post, you can use @babel/preset-stage-3, add the transform-class-properties plugin: 
+$ npm install babel-plugin-transform-class-properties --save-dev
+
+and use the es2015 preset to set up the preset stage 3.
+"babel": {
+  "plugins": [
+    "@babel/preset-stage-3",
+    "transform-class-properties"
+  ]
+}
+
+...and voila, class properties work! 
+(I tested this in both React v16.6.0 and 15.6.1)
+
+A:
+
+You need to install transform-class-properties plugin and add it as a transform in babel:
+"babel": {
+    "plugins": ["transform-class-properties"]
+}
+
+Then use this syntax:
+class Example extends React.Component {
+    foo(){
+        return "bar";
+    }
+    render() {
+        return <div>{this.foo()}</div>
+    }
+}
+
+For those using @babel/preset-react and @babel/preset-env it is very important to run the following line:
+babelConfig: {
+    presets: ['@babel/preset-react', '@babel/preset-env'],
+},
+
+This will trigger the transform-class-properties to be executed when import statement is executed.
+
+</div></body></html><!-- 2022-06-25 08:33:18 

@@ -1,0 +1,99 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4243.html'>4243</a><Br/><a href='4244.html'>4244</a><Br/><a href='4245.html'>4245</a><Br/><a href='4246.html'>4246</a><Br/><a href='4247.html'>4247</a><Br/><a href='4248.html'>4248</a><Br/><a href='4249.html'>4249</a><Br/><a href='4250.html'>4250</a><Br/><a href='4251.html'>4251</a><Br/><a href='4252.html'>4252</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4241.html'>4241</a><Br/><a href='4240.html'>4240</a><Br/><a href='4239.html'>4239</a><Br/><a href='4238.html'>4238</a><Br/><a href='4237.html'>4237</a><Br/><a href='4236.html'>4236</a><Br/><a href='4235.html'>4235</a><Br/><a href='4234.html'>4234</a><Br/><a href='4233.html'>4233</a><Br/><a href='4232.html'>4232</a></div><div class='nav'><a href='4241.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4243.html'> >> </a></div><div class='article'>Q:
+
+How to read nested lists without splitting the elements?
+
+I need to remove a certain element from a nested list, say [[1],[2]] -> [[2]].
+It is possible to do it with the split() method, but it will return [[1], [2], []], and not [2]. 
+Is there a more elegant way to do that?  
+I tried with reduce(), but didn't find a way to combine it with a nested comprehension...
+a = [1,2,3,4]
+b = [[1],[2],[3],[4]]
+a.map(i => reduce(lambda x,y: y+x, b)
+print(a)  #[[1,2,3,4],[2,3,4]]
+
+And I'm trying with comprehension, but I don't understand how to create a list from the other list.
+def solution(l):
+    l = l
+    def f(): 
+        return [i for i in l]
+    return [f()]
+print(solution([1,2,3,4]))  # [1,2,3,4]
+print(solution([[1],[2]])     # [[1], [2]]
+
+Thanks for your help!
+
+A:
+
+It's not entirely clear what you mean here (because of your last example). In terms of what you wrote, you seem to want to sum all but the first element, so:
+[sum(l[1:]) if len(l) > 1 else l for l in [[1],[2],[]]]
+
+Output:
+[[1], [2]]
+
+Is this what you are looking for?
+
+A:
+
+How about this:
+def remove_first(l):
+    if len(l) == 1:
+        return l[0]
+    else:
+        return sum(l[1:])
+
+remove_first([1,2,3,4])  # yields 2
+remove_first([[1],[2]])  # yields [2]
+
+As for your approach, there are a couple of errors with your sample code. The biggest one is the confusion of lambda and def - as currently written, both cases will give you a generator function as the result (which won't be what you want to use as a result to be passed around).
+The other is that you use map, which doesn't accept a callback as an argument. The lambda can be converted into a list for that use case - but it doesn't make sense here since you are simply summing all the elements.
+An approach similar to yours would be:
+def solution(l):
+    b = [sum(x) if len(x) > 1 else x for x in l]
+    return b
+
+You don't have to do the sum in the list comprehension, since we are going to return the whole thing.
+A simpler approach would be:
+def solution(l):
+    if len(l) <= 1:
+        return l
+    return sum(l[:1]) + solution(l[1:])
+
+Here, instead of using sum we just add the value of the first item to itself plus the result of calling solution on the rest of the list. This is simpler and shorter than what you had, and will still work even if you do something weird like change the base case to len(l) <= 2 or something similarly weird.
+
+A:
+
+How about this?
+def solution(l):
+    if len(l) == 1:
+        return l
+    else:
+        return l[0] + solution(l[1:])
+
+solution([1, 2, 3, 4]) # 1
+solution([[1], [2]])    # [2]
+
+I used an else clause since sum works better with lists that have one element.
+And there is a faster way that doesn't require len:
+def solution(l):
+    return l[-1:] + solution(l[:-1])
+
+You can sum the returned list to get your desired result without the len test:
+>>> solution([[1], [2], [3], [4]])
+2
+
+or if you want to use an extra condition:
+>>> solution([[1], [2], [3], [4]]) > 3
+False
+
+It might be possible to improve upon that solution but I'm not sure about it. The key idea is that you don't need to check the length first but instead use -1: which can be used as a default argument.
+
+Also note that you can wrap remove_first in a generator like so:
+def solution(l):
+    return sum(remove_first(l)) if len(l) > 1 else l
+
+solution([[1], [2], [3], [4]]) # 1
+solution([1, 2, 3, 4])            # [2]
+
+This is not as intuitive (since remove_first takes its input by reference) but it works.
+
+</div></body></html><!-- 2022-06-25 08:33:14 

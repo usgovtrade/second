@@ -1,0 +1,192 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4202.html'>4202</a><Br/><a href='4203.html'>4203</a><Br/><a href='4204.html'>4204</a><Br/><a href='4205.html'>4205</a><Br/><a href='4206.html'>4206</a><Br/><a href='4207.html'>4207</a><Br/><a href='4208.html'>4208</a><Br/><a href='4209.html'>4209</a><Br/><a href='4210.html'>4210</a><Br/><a href='4211.html'>4211</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4200.html'>4200</a><Br/><a href='4199.html'>4199</a><Br/><a href='4198.html'>4198</a><Br/><a href='4197.html'>4197</a><Br/><a href='4196.html'>4196</a><Br/><a href='4195.html'>4195</a><Br/><a href='4194.html'>4194</a><Br/><a href='4193.html'>4193</a><Br/><a href='4192.html'>4192</a><Br/><a href='4191.html'>4191</a></div><div class='nav'><a href='4200.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4202.html'> >> </a></div><div class='article'>Q:
+
+What's the reason behind "not a statement" error?
+
+When I run following code, an error message of "not a statement" comes up in the compiler. Why? I was trying to print something to the console.
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+public class SimpleGame 
+{
+
+    static JButton quit = new JButton("QUIT");
+
+    public static void main (String[] args) 
+    {
+        JButton start = new JButton("START");
+        JButton quit = new JButton("QUIT");
+        JButton test = new JButton("");
+        JTextField name = new JTextField(10);
+
+        int x, y, width, height;
+        String myName = name.getText();
+
+        int pw = JOptionPane.showConfirmDialog(null, start);
+        if (pw == JOptionPane.CANCEL_OPTION) {
+            System.out.println("QUIT COMMAND");
+        } else {
+            if(p1 == 1) {
+                System.out.println("STARTING...");
+                while (start.isEnabled() == true) {
+                    x = start.getX();
+                    y = start.getY();
+                    width = start.getWidth();
+                    height = start.getHeight();
+                    quit.setBounds(x,y,width,height);
+                    quit.setLocation(x, y);
+                    start.setEnabled(false);
+                }
+            }
+        }
+    }
+}
+
+A:
+
+This method has an issue:
+int p1 = JOptionPane.showConfirmDialog(null, start);
+
+The method name ends in an underscore, meaning it's a private method of a private inner class inside of your main class (the one you're extending).
+A dialog window is a top-level window, meaning it's created outside of any other top-level window (unless it's passed to showDialogBox) and must be the top-most window on the thread.
+So, make this:
+int p1 = JOptionPane.showConfirmDialog(null, this, "My Window Title", JOptionPane.YES_NO_OPTION);
+
+And see if you get the same error.
+You can read more on JOptionPane here.
+
+A:
+
+Here is a quote from a book "Java Programming for the absolute beginner by Michael B. Lutz".
+
+Remember when you access a method, the method will always belong to an inner class.
+  So any method that you create should start with the prefix “_”.
+  Here’s an example.
+  If you want to display a message box to the user to ask if the user is ready to quit the program, here is the code you’d need to use to show the dialog.
+
+import java.awt.Button;
+import java.awt.FlowLayout;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class ExitBox {
+   private static void createAndShowGUI() {
+      JButton showMessageButton = new JButton("Show Message");
+      JButton exitMessageButton = new JButton("Exit");
+
+      JButton okButton = new JButton("Ok");
+      JButton cancelButton = new JButton("Cancel");
+
+      JLabel message = new JLabel("Do you really want to quit?",
+                                   SwingConstants.CENTER);
+
+      JDialog dialog = new JDialog(new FlowLayout(), "Are you ready to quit?");
+      dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+      showMessageButton.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+            int result = JOptionPane.showConfirmDialog(
+                  dialog, message, "Confirm", JOptionPane.OK_CANCEL_OPTION);
+            if (result == JOptionPane.OK_OPTION) {
+               System.exit(0);
+            }
+         }
+      });
+
+      exitMessageButton.addActionListener(new ActionListener() {
+         public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+         }
+      });
+
+      JPanel buttons = new JPanel();
+      buttons.add(exitMessageButton);
+      buttons.add(showMessageButton);
+      dialog.add(buttons, BorderLayout.SOUTH);
+
+      JPanel messageLabel = new JPanel();
+      messageLabel.add(message);
+
+      dialog.add(messageLabel, BorderLayout.CENTER);
+
+      dialog.setVisible(true);
+   }
+
+   public static void main(String[] args) {
+      javax.swing.SwingUtilities.invokeLater(new Runnable() {
+         public void run() {
+            createAndShowGUI();
+         }
+      });
+   }
+}
+
+Remember, if you want to add a new method to a class, you'll have to update the existing constructors to pass in an instance of the class you want to modify.  So for the new method that is declared private in the same class will be in the constructors. 
+
+A:
+
+Your code contains a main class that you don't compile or run because you try to make the main class start another class.  The main class does not run at all.
+I notice that you attempt to make your own button - one that is not a JButton.
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+public class SimpleGame 
+{
+
+    static JButton quit = new JButton("QUIT");
+    public static void main (String[] args) 
+    {
+        JButton start = new JButton("START");
+        JButton quit = new JButton("QUIT");
+        JButton test = new JButton("");
+        JTextField name = new JTextField(10);
+
+        int x, y, width, height;
+        String myName = name.getText();
+
+        int pw = JOptionPane.showConfirmDialog(null, start);
+        if (pw == JOptionPane.CANCEL_OPTION) {
+            System.out.println("QUIT COMMAND");
+        } else {
+            if(p1 == 1) {
+                System.out.println("STARTING...");
+                while (start.isEnabled() == true) {
+                    x = start.getX();
+                    y = start.getY();
+                    width = start.getWidth();
+                    height = start.getHeight();
+                    quit.setBounds(x,y,width,height);
+                    quit.setLocation(x, y);
+                    start.setEnabled(false);
+                }
+            }
+        }
+    }
+}
+
+You need to change the code above as follows:
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+public class SimpleGame 
+{
+
+    static JButton quit = new JButton("QUIT");
+    static JButton start = new JButton("START");
+    static JButton test = new JButton("");
+    public static void main (String[] args) 
+    {
+        //JButton start = new JButton("START");
+        JButton quit = new JButton("QUIT");
+        JButton test = new JButton("");
+        JTextField name = new JTextField(10);
+
+        int x, y, width, height;
+        String myName = name.getText();
+
+        int pw = JOptionPane.showConfirmDialog(null, start);
+        if (pw == JOptionPane.CANCEL_OPTION) {
+            System.out.println("QUIT COMMAND");
+        } else {
+            if(p1 == 1) {
+                System.out.println("STARTING...");
+                while (start</div></body></html><!-- 2022-06-25 08:33:09 

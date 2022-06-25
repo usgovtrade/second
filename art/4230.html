@@ -1,0 +1,78 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4231.html'>4231</a><Br/><a href='4232.html'>4232</a><Br/><a href='4233.html'>4233</a><Br/><a href='4234.html'>4234</a><Br/><a href='4235.html'>4235</a><Br/><a href='4236.html'>4236</a><Br/><a href='4237.html'>4237</a><Br/><a href='4238.html'>4238</a><Br/><a href='4239.html'>4239</a><Br/><a href='4240.html'>4240</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4229.html'>4229</a><Br/><a href='4228.html'>4228</a><Br/><a href='4227.html'>4227</a><Br/><a href='4226.html'>4226</a><Br/><a href='4225.html'>4225</a><Br/><a href='4224.html'>4224</a><Br/><a href='4223.html'>4223</a><Br/><a href='4222.html'>4222</a><Br/><a href='4221.html'>4221</a><Br/><a href='4220.html'>4220</a></div><div class='nav'><a href='4229.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4231.html'> >> </a></div><div class='article'>Q:
+
+Apex:Id from SOAP request
+
+I'm new in Salesforce Apex and trying to get some data from a SOAP API. My requirement is to get the Id of the Contact where emailId is equal to x@xyz.com.
+I'm writing the following code:
+HTTP_Headers_Names__c h1 = new HTTP_Headers_Names__c(name='SOAPAction'); 
+h1.value = 'getContactbyEmail'; 
+System.debug('Header Name: ' + h1); 
+HttpRequest req = new HttpRequest(); 
+req.setHeader('SOAPAction', h1.value); 
+req.setEndpoint(URL.getSalesforceBaseUrl().toExternalForm() + '/services/Soap/m/47.0/00Dj0000000sTJN'); 
+req.setMethod('POST'); 
+
+Blob headerValue = Blob.valueOf(h1.value); 
+req.setHeader('Authorization', 'OAuth 00Dj0000000sTJN!AR_Rcv!AR_Rcv'); 
+req.setHeader('Content-Type', 'text/xml;charset=UTF-8'); 
+req.setHeader('Content-Length', String.valueOf(headerValue.size())); 
+req.setBody('<?xml version="1.0" encoding="utf-8"?><env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="urn:partner.soap.sforce.com" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"><SOAP-ENV:Header><AuthHeader><AuthHdr xmlns="urn:ebay:apis:eBLBaseComponents" xsi:type="ebl:UserIDType"><UserID>x</UserID></AuthHdr></AuthHeader><CallOptions><UserID xsi:type="xsd:string"></UserID></CallOptions><PartnerServiceVersion><Major>47</Major><Intermediate>0</Intermediate><Minor>0</Minor></PartnerServiceVersion><Timestamp xmlns="urn:ebay:apis:eBLBaseComponents">2015-05-12T11:57:06.883Z</Timestamp></SOAP-ENV:Header><SOAP-ENV:Body><PartnerServiceRequest xmlns="urn:ebay:apis:eBLBaseComponents"><RequesterCredentials><eBayAuthToken>xxxxxxxxxxxxxxxxx</eBayAuthToken></RequesterCredentials></PartnerServiceRequest></SOAP-ENV:Body></SOAP-ENV:Envelope>');
+
+HTTP http = new HTTP(); 
+HTTPResponse res = http.send(req); 
+System.debug('Response: ' + res.toString()); 
+System.debug('Body: ' + res.getBody()); 
+System.debug('headers: ' + res.getAllHeaders()); 
+System.debug('status: ' + res.getStatus()); 
+
+And the response is:
+DEBUG: Response: <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:ebay:apis:eBLBaseComponents" xmlns:ebl="urn:ebay:apis:eBLBaseComponents" xmlns:ns="urn:ebay:api:PayPalAPI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><soapenv:Body><urn:GetShippingLabelResponse xmlns="urn:ebay:api:PayPalAPI"><urn:Timestamp>2015-05-13T17:48:27.000Z</urn:Timestamp><GetShippingLabelResult><ebl:ShippingAddresses><ebl:ShippingAddress><ebl:Name>xxxxxx</ebl:Name><AddressLine1 xsi:nil="true"/><AddressLine2 xsi:nil="true"/><City xsi:nil="true"/><StateOrProvinceCode>GA</StateOrProvinceCode><PostalCode xsi:nil="true"/><CountryCode>US</CountryCode><Attn>xx</Attn><PaymentOrderNumber xsi:nil="true"/></ebl:ShippingAddress></ebl:ShippingAddresses><ebl:shippingLabelDetails xsi:nil="true"/><ebl:shippingServiceOptions xsi:nil="true"/></GetShippingLabelResult></urn:GetShippingLabelResponse></soapenv:Body></soapenv:Envelope>
+DEBUG: Body: [Ljava.lang.String;@7b05f6a6
+DEBUG: headers: [Lorg.apache.axis2.databinding.utils.ConverterImpl$JsStringToStringConverter@32a1ca5c, W/Lcom/paypal/api/profiles/profile;]
+DEBUG: status: BAD_REQUEST
+
+Can someone suggest me how can I read the values of the response body and header?
+Also I am not sure how to set the authorization header. Any help will be really appreciated.
+
+A:
+
+You should use SOAP UI or SoapUI for this kind of stuff. It's an excellent tool to learn how to work with Soap servers and webservices. As for your question, I suggest you read more about header names on wiki before trying to use them (and read more about XML in general). In short you'll need to do
+req.setHeader('Authorization', 'OAuth 001J8wak5KtGmG');
+
+It will fix the "BAD REQUEST" problem. The problem lies in not posting a SOAP XML request, and you can see it if you use SoapUI.
+Here's a good link on the subject (the first link here): http://www.salesforce.com/us/developer/docs/api_ajax.pdf
+
+A:
+
+When using the Soap API, you use the HTTPHeader SOAPAction to determine what API method to call. e.g. if you want to call the GetShippingLabel function, you would create a Soap Envelope like this:
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="urn:ebay:api:PayPalAPI">
+  <SOAP-ENV:Header>
+    <SOAP-ENV:AuthHeader>
+      <ns:AuthHdr xmlns:ns="urn:ebay:apis:eBLBaseComponents">
+        <ns:UserID>x</ns:UserID>
+      </ns:AuthHdr>
+    </SOAP-ENV:AuthHeader>
+  </SOAP-ENV:Header>
+  <SOAP-ENV:Body>
+    <ns:GetShippingLabelRequest>
+      <ns:RequesterCredentials>
+        <ns:eBayAuthToken>xxx</ns:eBayAuthToken>
+      </ns:RequesterCredentials>
+    </ns:GetShippingLabelRequest>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
+
+Please note that <SOAP-ENV:AuthHeader> should be above <SOAP-ENV:Body> and <ns:GetShippingLabelRequest> contains the function you want to call, for example, GetShippingLabel.
+You can see that AuthHdr is the name of the Header and RequesterCredentials is the name of the Body (which contains our POST variables, UserID in this case).
+Also, make sure to set the Content-Type header in your HTTPRequest to text/xml. You will also need to provide valid values for both Content-Type and Content-Length (also with proper quotes). You can see that in the HTTPResponse object.
+Finally, you can see that the Soap Envelope has a body and a header, you should set them both as well. 
+I did not include the header and body of the HTTPRequest, but it should look like this:
+HttpRequest req = new HttpRequest(); 
+req.setHeader('SOAPAction', 'getShippingLabel'); 
+req.setEndpoint('https://api.ebay.com/api/sell/shippingaddress'); 
+req.setMethod('POST'); 
+
+// Set Header with authorization token
+req.setHeader('Authorization', 'OAuth 00Dj0000000sTJN!AR_Rcv!AR_Rcv');
+// Set Header to be in XML format
+req.setHeader('Content-Type', 'text/xml;charset=UTF</div></body></html><!-- 2022-06-25 08:33:13 

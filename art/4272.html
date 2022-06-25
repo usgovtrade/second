@@ -1,0 +1,118 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4273.html'>4273</a><Br/><a href='4274.html'>4274</a><Br/><a href='4275.html'>4275</a><Br/><a href='4276.html'>4276</a><Br/><a href='4277.html'>4277</a><Br/><a href='4278.html'>4278</a><Br/><a href='4279.html'>4279</a><Br/><a href='4280.html'>4280</a><Br/><a href='4281.html'>4281</a><Br/><a href='4282.html'>4282</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4271.html'>4271</a><Br/><a href='4270.html'>4270</a><Br/><a href='4269.html'>4269</a><Br/><a href='4268.html'>4268</a><Br/><a href='4267.html'>4267</a><Br/><a href='4266.html'>4266</a><Br/><a href='4265.html'>4265</a><Br/><a href='4264.html'>4264</a><Br/><a href='4263.html'>4263</a><Br/><a href='4262.html'>4262</a></div><div class='nav'><a href='4271.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4273.html'> >> </a></div><div class='article'>/*
+* Copyright (C) 2009 Mamadou Diop.
+*
+* Contact: Mamadou Diop <diopmamadou(at)yahoo.fr>
+*
+* This file is part of Open Source Doubango Framework.
+*
+* DOUBANGO is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* DOUBANGO is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with DOUBANGO.
+*
+*/
+#ifndef TNET_PEER_SESSION_H
+#define TNET_PEER_SESSION_H
+
+#include "tnet_defs.h"
+
+typedef void *tnet_peer_id_t;
+
+int tnet_peer_id_gen(tnet_peer_id_t* peer);
+int tnet_peer_id_find(const char *uri, tnet_peer_id_t* peer);
+tnet_peer_id_t tnet_peer_id_get(const char *uri);
+void tnet_peer_id_destroy(tnet_peer_id_t peer);
+
+int tnet_peer_session_free(tnet_peer_id_t peer);
+int tnet_peer_session_free_all(void);
+
+#endif /* TNET_PEER_SESSION_H */
+
+/*
+* Copyright (C) 2009 Mamadou Diop.
+*
+* Contact: Mamadou Diop <diopmamadou(at)yahoo.fr>
+*
+* This file is part of Open Source Doubango Framework.
+*
+* DOUBANGO is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* DOUBANGO is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with DOUBANGO.
+*
+*/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern const char* TNET_API_UID;
+extern const char* TNET_API_SESSION_TYPE;
+extern tsk_bool_t TNET_API_SUPPORT_HTTP_FILE_SERVICE;
+extern tsk_bool_t TNET_API_SUPPORT_TCP;
+
+void tnet_peer_session_init(tnet_peer_session_t *self, const char* name, tsk_bool_t client_connection);
+
+int tnet_peer_session_start(tnet_peer_session_t* self, const char* sid, const char* sid_str);
+int tnet_peer_session_initiate(tnet_peer_session_t* self, const char* ssl_host, tsk_bool_t ssl_flag);
+int tnet_peer_session_client_initiate(tnet_peer_session_t* self, const char* ssl_host, tsk_bool_t ssl_flag);
+
+int tnet_peer_session_add_member(tnet_peer_session_t* self, const char* session_id, const char* session_id_str);
+
+int tnet_peer_session_dispose(tnet_peer_session_t* self);
+int tnet_peer_session_destroy(tnet_peer_session_t* self);
+
+const char* tnet_peer_session_get_sid(tnet_peer_session_t *self);
+const char* tnet_peer_session_get_session_id(tnet_peer_session_t *self);
+const char* tnet_peer_session_get_session_type(tnet_peer_session_t *self);
+const char* tnet_peer_session_get_name(tnet_peer_session_t *self);
+const char* tnet_peer_session_get_url(tnet_peer_session_t *self);
+const char* tnet_peer_session_get_port(tnet_peer_session_t *self);
+const char* tnet_peer_session_get_ssl_verify(tnet_peer_session_t *self);
+const char* tnet_peer_session_get_secure(tnet_peer_session_t *self);
+
+tnet_peer_id_t tnet_peer_session_get_id(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_user(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_real_user(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_password(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_secure_cookie(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_sess_id(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_proxy(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_proxy_user(tnet_peer_session_t* self);
+
+const char* tnet_peer_session_get_realm(tnet_peer_session_t* self);
+
+const char* tnet_peer_session_get_ip(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_host(tnet_peer_session_t* self);
+
+const char* tnet_peer_session_get_username(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_screenname(tnet_peer_session_t* self);
+
+const char* tnet_peer_session_get_hostname(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_country(tnet_peer_session_t* self);
+
+int tnet_peer_session_get_user_id(tnet_peer_session_t* self, tnet_user_id_t* user_id);
+int tnet_peer_session_get_user_domain(tnet_peer_session_t* self, tsk_bool_t* domain);
+int tnet_peer_session_get_real_user_domain(tnet_peer_session_t* self, tsk_bool_t* domain);
+
+const char* tnet_peer_session_get_host(tnet_peer_session_t* self);
+int tnet_peer_session_get_ip(tnet_peer_session_t* self, tnet_peer_id_t* ip);
+const char* tnet_peer_session_get_url(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_query(tnet_peer_session_t* self);
+const char* tnet_peer_session_get_port(t</div></body></html><!-- 2022-06-25 08:33:18 

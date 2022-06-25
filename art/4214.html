@@ -1,0 +1,54 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4215.html'>4215</a><Br/><a href='4216.html'>4216</a><Br/><a href='4217.html'>4217</a><Br/><a href='4218.html'>4218</a><Br/><a href='4219.html'>4219</a><Br/><a href='4220.html'>4220</a><Br/><a href='4221.html'>4221</a><Br/><a href='4222.html'>4222</a><Br/><a href='4223.html'>4223</a><Br/><a href='4224.html'>4224</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4213.html'>4213</a><Br/><a href='4212.html'>4212</a><Br/><a href='4211.html'>4211</a><Br/><a href='4210.html'>4210</a><Br/><a href='4209.html'>4209</a><Br/><a href='4208.html'>4208</a><Br/><a href='4207.html'>4207</a><Br/><a href='4206.html'>4206</a><Br/><a href='4205.html'>4205</a><Br/><a href='4204.html'>4204</a></div><div class='nav'><a href='4213.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4215.html'> >> </a></div><div class='article'>/*
+Copyright 2017 The Kubernetes Authors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+package v1beta1
+
+import (
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+)
+
+const GroupName = "admissionregistration.k8s.io"
+
+// SchemeGroupVersion is group version used to register these objects
+var SchemeGroupVersion = schema.GroupVersion{Group: GroupName, Version: "v1beta1"}
+
+// Resource takes an unqualified resource and returns a Group qualified GroupResource
+func Resource(resource string) schema.GroupResource {
+	return SchemeGroupVersion.WithResource(resource).GroupResource()
+}
+
+var (
+	// TODO: move SchemeBuilder with zz_generated.deepcopy.go to k8s.io/api.
+	// localSchemeBuilder and AddToScheme will stay in k8s.io/kubernetes.
+	SchemeBuilder      = runtime.NewSchemeBuilder(addKnownTypes)
+	localSchemeBuilder = &SchemeBuilder
+	AddToScheme        = localSchemeBuilder.AddToScheme
+)
+
+// Adds the list of known types to the given scheme.
+func addKnownTypes(scheme *runtime.Scheme) error {
+	scheme.AddKnownTypes(SchemeGroupVersion,
+		&ValidatingWebhookConfiguration{},
+		&ValidatingWebhookConfigurationList{},
+		&MutatingWebhookConfiguration{},
+		&MutatingWebhookConfigurationList{},
+	)
+	metav1.AddToGroupVersion(scheme, SchemeGroupVersion)
+	return nil
+}
+</div></body></html><!-- 2022-06-25 08:33:11 

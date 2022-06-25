@@ -1,0 +1,136 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4252.html'>4252</a><Br/><a href='4253.html'>4253</a><Br/><a href='4254.html'>4254</a><Br/><a href='4255.html'>4255</a><Br/><a href='4256.html'>4256</a><Br/><a href='4257.html'>4257</a><Br/><a href='4258.html'>4258</a><Br/><a href='4259.html'>4259</a><Br/><a href='4260.html'>4260</a><Br/><a href='4261.html'>4261</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4250.html'>4250</a><Br/><a href='4249.html'>4249</a><Br/><a href='4248.html'>4248</a><Br/><a href='4247.html'>4247</a><Br/><a href='4246.html'>4246</a><Br/><a href='4245.html'>4245</a><Br/><a href='4244.html'>4244</a><Br/><a href='4243.html'>4243</a><Br/><a href='4242.html'>4242</a><Br/><a href='4241.html'>4241</a></div><div class='nav'><a href='4250.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4252.html'> >> </a></div><div class='article'>Q:
+
+How to show the date/time from SQL Server (datetime) to VB.Net (DatagridView)
+
+I want to use DatagridView to show the contents from my database in VB.Net and I also want to show the date and time when my data in the database. 
+I already tried some codes that I found from other question in stackoverflow.
+Here is one of the example:
+Code:
+        Dim sql = "SELECT TOP 1000 [Amt], [Date] FROM [Table1]"
+        Dim conn = New SqlConnection("Data Source=Server;Initial Catalog=TestDB;Integrated Security=True")
+        Dim da = New SqlDataAdapter(sql, conn)
+        Dim dt = New DataTable("NewTable")
+
+        da.Fill(dt)
+
+        dgridview1.DataSource = dt
+
+Example
+(Sorry, I could not post image since my reputation too low)
+
+A:
+
+First, you should avoid SELECT TOP syntax if you have data in millions. 
+
+It uses extra space to maintain the original query. 
+It will slow down SQL engine. 
+It will lead you to unexpected behavior like duplicate values,  or unexpected behavior at all.
+
+This is good:
+        Dim sql = "SELECT Amt, Date FROM [Table1]"
+
+For the Date field you can use GetDate() function. Check here for details.
+For time difference you can use:
+If System.DateTime.Now.TimeOfDay > yourDateTime Then
+
+    ' your datetime is after now
+
+Else
+
+    ' your datetime is before now
+
+End If
+
+I suggest reading more about LINQ with VB.Net. I think you will benefit from it.
+Update 1: For the datagridview:
+For DataGridView1.Columns.Count > 0 To 1 Step -1
+    Dim dataType = DataGridView1.Columns(i).DataType
+    If dataType Is GetType(Date) Then
+        ' use date property here
+    ElseIf dataType Is GetType(DateTime) Then
+        'use DateTime.Now property
+    End If
+Next
+
+Update 2: To format the date
+If DataGridView1.Columns(i).Value is Date AndAlso DataGridView1.Columns(i).DefaultCellStyle.Format = "M/d/yyyy h:mm:ss tt" Then
+    'Format of Date is MM/dd/yyyy hh:mm:ss tt
+ElseIf DataGridView1.Columns(i).Value is DateTime Then
+    'Format of Date is yyyy/MM/dd hh:mm:ss tt
+Else
+    'Default
+End If
+
+Update 3: To compare two date values:
+If DataGridView1.Columns(i).Value < dateFrom Then
+    'Your code to do here
+ElseIf DataGridView1.Columns(i).Value > dateTo Then
+    ' Your code to do here
+Else
+    ' Nothing
+End If
+
+Update 4: You could use a DataTable, add new columns with the date and the time then bind to your datagridview:
+Dim dt = New DataTable("dateColumn")
+Dim dt2 = New DataTable("timeColumn")
+
+Using connection As New SqlConnection(connectionString)
+    Dim command = connection.CreateCommand
+    command.CommandText = "SELECT Date FROM Table1 ORDER BY Date DESC"
+    command.CommandType = CommandType.Text
+    command.Connection = connection
+
+    connection.Open()
+    Dim adapter = New SqlDataAdapter(command)
+    Dim ds = New DataSet()
+    adapter.Fill(ds)
+
+    For Each Row As DataRow In ds.Tables(0).Rows
+        Dim row2 = New DataRow()
+        row2.BeginEdit()
+        row2("Date") = Row.Item("Date")
+        row2("Time") = Row.Item("Time")
+        dt.Rows.Add(row2)
+        row2.EndEdit()
+    Next
+
+    DataGridView1.DataSource = dt
+    DataGridView1.DataMember = "Table1"
+End Using
+
+To Format:
+Public Sub FormattingWithDatagridview(ByVal DataGridView As DataGridView)
+    DataGridView.Columns.Clear()
+    DataGridView.DataSource = YourDataTable
+End Sub
+
+Public Sub FormattingWithDatagridview2(ByVal DataGridView As DataGridView)
+    Dim dt As New DataTable
+
+    dt.Columns.Add("Time")
+    dt.Columns.Add("Date")
+
+    dt.Rows.Add("18:00")
+    dt.Rows.Add("17:00")
+    dt.Rows.Add("16:00")
+
+    DataGridView.DataSource = dt
+End Sub
+
+Formatting with Datagridview is done by using the DataGridView1.CellFormatting event:
+Private Sub DataGridView1_CellFormatting(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellFormattingEventArgs) Handles DataGridView1.CellFormatting
+
+    If e.CellStyle.BackColor = Color.Black Then
+        e.CellStyle.Font = New Font(DataGridView1.Font.Name, DataGridView1.Font.Size * 0.001)
+    End If
+
+    If TypeOf (e.CellValue) Is Date AndAlso DataGridView1.Columns(e.ColumnIndex).Name = "Time" Then
+        e.CellStyle.ForeColor = Color.Green
+    ElseIf TypeOf (e.CellValue) Is Date AndAlso DataGridView1.Columns(e.ColumnIndex).Name = "Date" Then
+        e.CellStyle.ForeColor = Color.Blue
+    End If
+End Sub
+
+Hope this helps
+
+</div></body></html><!-- 2022-06-25 08:33:15 

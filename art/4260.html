@@ -1,0 +1,111 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4261.html'>4261</a><Br/><a href='4262.html'>4262</a><Br/><a href='4263.html'>4263</a><Br/><a href='4264.html'>4264</a><Br/><a href='4265.html'>4265</a><Br/><a href='4266.html'>4266</a><Br/><a href='4267.html'>4267</a><Br/><a href='4268.html'>4268</a><Br/><a href='4269.html'>4269</a><Br/><a href='4270.html'>4270</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4259.html'>4259</a><Br/><a href='4258.html'>4258</a><Br/><a href='4257.html'>4257</a><Br/><a href='4256.html'>4256</a><Br/><a href='4255.html'>4255</a><Br/><a href='4254.html'>4254</a><Br/><a href='4253.html'>4253</a><Br/><a href='4252.html'>4252</a><Br/><a href='4251.html'>4251</a><Br/><a href='4250.html'>4250</a></div><div class='nav'><a href='4259.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4261.html'> >> </a></div><div class='article'>Q:
+
+Creating an excel formula in my vb.net code behind
+
+I have a user control that implements a "read only" version of excel so that I can display data without having to use a full blown excel to display the data and i'd like to try to add a "read only" button but its giving me a headache.
+
+The button is located on a grid and when I click on it i have to write something in the  text box and if it passes the if condition i display the data, so my first question is 
+how to create an excel formula in my vb.net code behind
+i know that it should be done by creating an array of values, but i'm not sure how to add the formula or can you help with that or can someone just give me some ideas of how I can make this? 
+Here's the button code:
+Private Sub Button_ReadOnly_Click(sender As Object, e As EventArgs) Handles Button_ReadOnly.Click
+
+    Dim CellRange As Excel.Range
+
+    CellRange = Worksheet1.Range("B1:B15")
+
+    If CellRange.Find(TextBox_Textbox.Text, -4161, Comparison.Text, Comparison.All) Is Nothing Then
+        TextBox_ReadOnly.Text = CellRange.Text
+
+    Else
+        TextBox_ReadOnly.Text = ""
+    End If
+End Sub
+
+A:
+
+Try the following code:
+Dim arrFormula As String
+arrFormula = Chr(34) + Chr(39) + Chr(58) + Chr(34) + "=SUMIFS(" + Chr(34) + "Sheet1!B" + CInt(TextBox_Textbox.Text.Trim().Length - 1) + ":" + CInt(TextBox_Textbox.Text.Trim().Length - 1) + "," + Chr(34) + Chr(34) + "Sheet1!A" + CInt(TextBox_Textbox.Text.Trim().Length - 1) + "," + Chr(34) + Chr(34) + "Sheet1!B" + CInt(TextBox_Textbox.Text.Trim().Length - 1) + "," + Chr(34) + Chr(34) + "Sheet1!B" + CInt(TextBox_Textbox.Text.Trim().Length - 1) + "," + Chr(34) + Chr(34) + Chr(32) + "=TRUE")
+
+Dim FormulaRange As Excel.Range = Worksheet1.Range("B1:B15")
+
+If FormulaRange.Find(arrFormula, Comparison.Text, Comparison.IgnoreCase, -4161, Comparison.Text, Comparison.IgnoreCase, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByRows, Excel.XlSearchDirection.xlNext) Is Nothing Then
+    Textbox_ReadOnly.Text = FormulaRange.Text
+Else
+    Textbox_ReadOnly.Text = ""
+End If
+
+Chr(34) & Chr(39) converts to double qoute " or ".
+The only difference is that I have used a different delimiter: ; instead of ,.
+Also you can try the code below:
+If FormulaRange.Find("=" + Textbox_Textbox.Text + " = " + Chr(34) + Chr(39) + Chr(58) + Chr(34) + Chr(39) + Chr(34), Comparison.Text, Comparison.IgnoreCase, -4161, Comparison.Text, Comparison.IgnoreCase, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByRows, Excel.XlSearchDirection.xlNext) Is Nothing Then
+    Textbox_ReadOnly.Text = FormulaRange.Text
+Else
+    Textbox_ReadOnly.Text = ""
+End If
+
+Just try to add your formula in the quotes before =. If you do not have ", you will get an error.
+Hope it helps.
+
+A:
+
+I used to do this with C# and Microsoft.Office.Interop.Excel but got sick of how unstable that was and decided to write my own Excel classes (I'm using this in a commercial product). Here's a little code that should get you started...
+    // First get the Workbook and Worksheet you want to use
+    Workbook workbook = Excel.Application.Workbooks.Add(Type.Missing);
+    Worksheet worksheet = workbook.Sheets.Add(Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+    // Get a reference to the underlying cell that contains the text to search for
+    Cell cell = worksheet.Cells[1, 1];
+
+    // Parse the text for each of the cells, this may be something simple like 'Text1' or this might be much more complicated...
+    string cellAddress = "A2";
+    string cellContent = "Whatever";
+    string testString = "Text1";
+
+    // Get the address and content of the cell we want to reference
+    cell.MergeAcross = testString.Length;
+    cell.Value2 = testString;
+
+    // Add all the text we parsed to an array so we can do some complicated stuff with it (like look for a pattern in it)
+    string[] text = new string[2];
+    text[0] = cellAddress.PadRight(cellAddress.Length + 1);
+    text[1] = cellContent.PadRight(cellContent.Length + 1);
+
+    // Format all the cells and use the address in the array as the first argument to Find
+    cell.NumberFormat = "@";
+    cell.NumberFormat = "#,##0";
+
+    // Search for the cell containing a keyword
+    bool found = worksheet.Cells[text[0], text[1]].Find(text[0], text[1], true, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByRows, Excel.XlSearchDirection.xlNext, false, false, false, null, null);
+
+    // If a match was found
+    if (found)
+    {
+        // Set the found cell to Bold
+        found.Font.Bold = true;
+
+        // Get the address of the found cell
+        cell.MergeAcross = 1;
+        cell.Value2 = found.Row & ":" & found.Column;
+
+        // Set the found cell to have a green background
+        found.Interior.Color = Color.Green;
+    }
+
+    // Now just save the worksheet and quit
+    worksheet.Save();
+    workbook.SaveAs(filename);
+    workbook.Close();
+    excelApp.Quit();
+
+If you're not wanting to write your own Excel class, the above can be adapted slightly to get the same results. You'll just need to parse the cells differently in the Find method.
+
+A:
+
+I am pretty sure that one way of doing this is by using regular expression. Try this for the button:
+Private Sub Button_ReadOnly_Click(sender As Object, e As EventArgs) Handles Button_ReadOnly.Click
+    Dim arrFormula As String = "=SUMIFS("
+    Dim formulaRange As Excel.Range = Worksheet1.Range("B1:B15")
+
+    If formulaRange.Find(arrFormula, Comparison.Text, Comparison.IgnoreCase, -4161, Comparison.Text, Comparison.IgnoreCase, Excel.XlLookAt.xlWhole, Excel.XlSearchOrder.xlByRows, Excel.XlSearchDirection.xlNext)</div></body></html><!-- 2022-06-25 08:33:16 

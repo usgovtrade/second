@@ -1,0 +1,158 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4241.html'>4241</a><Br/><a href='4242.html'>4242</a><Br/><a href='4243.html'>4243</a><Br/><a href='4244.html'>4244</a><Br/><a href='4245.html'>4245</a><Br/><a href='4246.html'>4246</a><Br/><a href='4247.html'>4247</a><Br/><a href='4248.html'>4248</a><Br/><a href='4249.html'>4249</a><Br/><a href='4250.html'>4250</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4239.html'>4239</a><Br/><a href='4238.html'>4238</a><Br/><a href='4237.html'>4237</a><Br/><a href='4236.html'>4236</a><Br/><a href='4235.html'>4235</a><Br/><a href='4234.html'>4234</a><Br/><a href='4233.html'>4233</a><Br/><a href='4232.html'>4232</a><Br/><a href='4231.html'>4231</a><Br/><a href='4230.html'>4230</a></div><div class='nav'><a href='4239.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4241.html'> >> </a></div><div class='article'>
+
+Ask HN:  How do you keep track of your expenses in an automated fashion? - amichail
+
+I can imagine many HNers have this problem and there may already be solutions that work for them.<p>I want to automate expense tracking.  But I'm more interested in knowing how to do it right from the beginning.  So in particular, I'm looking for advice on what information about expenses to store and how to store it in a way that it can be easily retrieved.
+======
+paulsingh
+I love Quickbooks -- especially the new web-based flavor. It's pretty awesome
+-- especially when coupled with the Intuit Mac Dashboard widget.
+
+Quickbooks is free up to a certain point -- then you have to go at least for a
+year and switch to Premier (which costs). Even then there's still ways to
+avoid it. :)
+
+~~~
+amichail
+But do you save a text file with all the details about each expense at the
+time of entry? Or do you store the entries in Quickbooks itself? And do you
+just forget about that until you want to print your expenses?
+
+~~~
+paulsingh
+My business partner and I keep track of each others expenses in Quickbooks,
+as well as for company expenses.
+
+Now you may be wondering "Paul, how could you do that -- we don't have any
+accountants". Well... it's very easy actually. :)
+
+You probably have to pick up some software along the way to learn how to set
+it up & use it, but the amount of time/money you save can't be beat!
+
+------
+petercooper
+How do you handle it currently?
+
+------
+mattculbreth
+A good book on the subject of expense tracking is "How to Make Smarter Decisions
+About Money" by Elisabeth Warren. I'm not sure if she ever wrote any more than
+this but this book is still just as useful, I'd say.
+
+~~~
+amichail
+Do you use it on your own? What kind of expenses does it cover?
+
+------
+jaggederest
+I use a spreadsheet. I have one column for 'category' and another for 'amount'.
+'Category' has two subcolumns, 'label' and 'key'. In my case 'label' is the
+human-readable category, 'key' is some sort of unique identifier, and then I
+use numbers to indicate how many times an item has been expensed.
+
+I know it's a bit cumbersome, but it is what it is. It's a way of making sure
+the computer doesn't lose any information in the event that I manually lose
+data (like excel will by overwriting something in place).
+
+It works well for me. I don't have a lot of records, but I do record a fair
+bit and I have other systems that are more for business-transaction-type of
+stuff. But I can easily go back and get a history.
+
+~~~
+amichail
+But how do you do that using a software?
+
+~~~
+jaggederest
+You make the categories. At the end of the day, it's a spreadsheet. (Though the
+sheet is a little more than one page)
+
+~~~
+amichail
+How do I distinguish between categories and actions?
+
+~~~
+jaggederest
+You put them into two different columns.
+
+------
+ajross
+As I've posted elsewhere: <http://news.ycombinator.com/item?id=82799>
+
+I'm an accountant. There are a number of ways to solve this problem, depending
+on your needs and resources. I wouldn't be surprised if QuickBooks (as the top
+answer so far) doesn't fit your needs. And if it's not an online solution,
+then it's less of a solution than the OP is looking for.
+
+------
+jbert
+Depending on what you consider a category, you could just store them in
+different files. That way you'd only need to store the key once, but you'd
+still be able to search and compare against earlier records.
+
+I've considered setting up some kind of db using my own custom file format, but
+solved it with a spreadsheet.
+
+An alternative might be to use some kind of system of tagging which gets
+automated. This way you can store your expenses in a simple spreadsheet and
+then periodically/often upload the data to the server (using a tool such as
+google spreadsheet). On your server you'd then use some kind of xml+search
+db.
+
+You'd want to automate this process since you have to do it regularly, but you
+could just use a simple file for now.
+
+It might work like this: when you make an expense you ask yourself "what
+category am I making this expense for?" and add the question to a table. You
+might use some kind of regex or something to detect the category name, but you
+should decide on the format for tagging (ex: type = expensing [tag1,tag2,tag3]
+
+When you next open the db, you'd do a search by category or tag. Any expense
+referenced in a given category or with a certain tag would appear as options.
+
+------
+raffi
+I've tried and failed. I'm too paranoid.
+
+The problems were several. The original reason I started this was that I lost
+a $500 bill at the dentist. This was when I was working and forgot to get it
+cancelled so I called her up and she said "sorry, but I don't have time to
+categorize this". It's not the only thing like this that happened, some
+business expenses, credit card charges etc. I wanted a simple way to keep track
+of my expenses and how much I spent on groceries.
+
+I looked into some of the software offerings out there. I found that most of
+the expense programs aren't very flexible. There wasn't much of a way to
+track the categories I wanted to track. The expense reports that I created for
+myself kept getting unwieldy, especially if I was recording multiple small
+expenses like a few cans of beer here, an iced coffee there, soda on the way to
+work, etc. This was in addition to my normal expenses. I also didn't want to
+deal with the administrative overhead of setting up and maintaining this.
+
+Then there was the "how do I know the data is reliable"? Maybe this sounds
+overly paranoid but I'm very careful about how I record things and have a good
+reputation. I didn't trust the software to be my "backup" to my own records.
+Maybe I'm overly careful but the whole situation just bugs me. I have no
+compunction about manually keeping my own records. I thought about writing my
+own software to track everything. On the surface this seemed like a daunting
+task, especially because I needed to build something that could track a large
+number of categories over a period of several months.
+
+Ultimately this didn't work for me. I may give it another go if it ever seems
+necessary.
+
+------
+jaggederest
+I just keep it simple. It's not really a big deal if I lose something, it's
+just a matter of accounting for it and getting it back.
+
+As far as categorization - if you're not working for a company with
+administrators, it's better to have less of these categories than more. The
+point of this is to make accounting as simple as possible for you. It's easier
+to categorize on paper than on a computer, so use what you've got. If the data
+is there, it doesn't matter how it's sorted - just deal with it later.
+
+One place where I don't believe in Excel's simplicity is with the entry of
+expenses. My girlfriend works in an office where the staff must account for
+their expenses and record them in Excel. If you're auditing you can't really
+get into anyone's individual account without their consent,</div></body></html><!-- 2022-06-25 08:33:14 

@@ -1,0 +1,153 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4223.html'>4223</a><Br/><a href='4224.html'>4224</a><Br/><a href='4225.html'>4225</a><Br/><a href='4226.html'>4226</a><Br/><a href='4227.html'>4227</a><Br/><a href='4228.html'>4228</a><Br/><a href='4229.html'>4229</a><Br/><a href='4230.html'>4230</a><Br/><a href='4231.html'>4231</a><Br/><a href='4232.html'>4232</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4221.html'>4221</a><Br/><a href='4220.html'>4220</a><Br/><a href='4219.html'>4219</a><Br/><a href='4218.html'>4218</a><Br/><a href='4217.html'>4217</a><Br/><a href='4216.html'>4216</a><Br/><a href='4215.html'>4215</a><Br/><a href='4214.html'>4214</a><Br/><a href='4213.html'>4213</a><Br/><a href='4212.html'>4212</a></div><div class='nav'><a href='4221.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4223.html'> >> </a></div><div class='article'>Q:
+
+How to find and update duplicate entries in multiple tables in Sqlite3 in Android?
+
+I have 2 tables,
+1- tbl1: (Table1) 
+Id
+Name
+
+2- tbl2: (Table2) 
+Id
+Name
+
+(Note) Name field is the Primary key in both tables. 
+I have a sample values as follows:
+tbl1 (Table 1)
+Id     Name
+--------------------
+1      Apple
+2      Orange
+3      Mango
+4      Lemon
+5      Bane
+6      Apple
+7      Mango
+8      Lemon
+9      Grapes
+10     Ketchup
+
+tbl2 (Table 2)
+Id     Name
+--------------------
+1      Mango
+2      Orange
+3      Lemon
+4      Lemon
+5      Lemon
+6      Apple
+7      Apple
+8      Ketchup
+9      Grapes
+10     Lemon
+
+My requirement is :
+1- If there are duplicate names in Table 2, then only update the Name in Table 2 that are present in the Table 1. Ex: Lemon (Table 1) & Lemon(Table 2), So only update the name in Table 2 with the same name. So, My expected table after this operation would be as follows:
+tbl2 (Table 2)
+Id     Name
+--------------------
+1      Mango
+2      Orange
+3      Lemon
+7      Apple
+8      Ketchup
+10     Lemon
+
+Query1: 
+SELECT tbl2.id, tbl2.name FROM tbl2
+JOIN tbl1
+WHERE tbl2.name=tbl1.name;
+
+Query2: 
+UPDATE tbl2 
+SET tbl2.name = tbl1.name 
+FROM tbl2 JOIN tbl1 
+WHERE tbl2.name=tbl1.name; 
+
+Output Query1 and Query2: 
+tbl2 (Table 2)
+Id     Name
+--------------------
+1      Mango
+2      Orange
+3      Lemon
+7      Apple
+8      Ketchup
+10     Lemon
+
+Query3: 
+SELECT tbl2.id, tbl2.name FROM tbl2 JOIN tbl1 
+WHERE tbl2.name=tbl1.name; 
+UPDATE tbl2 
+SET tbl2.name = tbl1.name 
+FROM tbl2 JOIN tbl1 
+WHERE tbl2.name=tbl1.name;
+
+Query3 (after Query3): 
+tbl2 (Table 2)
+Id     Name
+--------------------
+1      Mango
+2      Orange
+3      Lemon
+7      Apple
+8      Ketchup
+10     Lemon
+
+The name "Apple" in Table 2 is not present in Table 1, so, I don't want to update it. So, output table should be:
+tbl2 (Table 2)
+Id     Name
+--------------------
+1      Mango
+2      Orange
+3      Lemon
+7      Apple
+8      Ketchup
+10     Lemon
+
+So, how to update only duplicate names in table 2. Thanks for your help. 
+
+A:
+
+If I understand your question, you want to remove rows in Table2 that have the same ID value but a different name in Table1, if the names are the same.  Here is one way to do that:
+SQLite version 3.6.16 and up (as of May 2020) allows you to use an INSERT ... SELECT with a JOIN.  In that case, it would look like this:
+UPDATE tbl2 
+SET tbl2.name = tbl1.name 
+FROM tbl2 JOIN tbl1 ON tbl1.name = tbl2.name;
+
+So the problem is we don't know which names in Table1 should be updated. We can use a WHERE clause in this UPDATE to filter them out:
+UPDATE tbl2 
+SET tbl2.name = tbl1.name 
+FROM tbl2 JOIN tbl1 ON tbl1.name = tbl2.name
+WHERE tbl1.name NOT IN (
+  SELECT tbl1.name FROM tbl2 JOIN tbl1 ON tbl1.name = tbl2.name
+);
+
+Now, it is not guaranteed that we will get the same result from the same tables (without changing anything in the database).
+The above should work with Sqlite-3.6.16+ as stated in the docs, but it was tested on Sqlite-3.4.17 which had no problems.
+In Sqlite-3.6.17 and newer, the above query can be written as:
+UPDATE tbl2 
+SET tbl2.name = tbl1.name 
+FROM tbl2 JOIN tbl1 ON tbl1.name = tbl2.name
+WHERE tbl1.name NOT IN (
+ SELECT tbl1.name FROM tbl2 JOIN tbl1 ON tbl1.name = tbl2.name
+) AND tbl1.id = tbl2.id;
+
+In that case, for all IDs in tbl1.id = tbl2.id the names in tbl1 will be removed from tbl2.
+See it working on SQL Fiddle
+
+Please consider NOT using the outdated and deprecated LEFT JOIN because in this case I think it is actually hurting more than helping.
+
+A:
+
+You need to delete the rows that don't match table1 before you update, otherwise you'll run into some problems.
+delete from tbl2 where id not in (select id from tbl1)
+
+Then, do your update:
+update tbl2
+   set name = (select name from tbl1 where tbl2.name = tbl1.name)
+
+Then, delete again:
+delete from tbl2 where name not in (select name from tbl1 where tbl2.name = tbl1.name)
+
+</div></body></html><!-- 2022-06-25 08:33:12 
