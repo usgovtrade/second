@@ -1,0 +1,95 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4019.html'>4019</a><Br/><a href='4020.html'>4020</a><Br/><a href='4021.html'>4021</a><Br/><a href='4022.html'>4022</a><Br/><a href='4023.html'>4023</a><Br/><a href='4024.html'>4024</a><Br/><a href='4025.html'>4025</a><Br/><a href='4026.html'>4026</a><Br/><a href='4027.html'>4027</a><Br/><a href='4028.html'>4028</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4017.html'>4017</a><Br/><a href='4016.html'>4016</a><Br/><a href='4015.html'>4015</a><Br/><a href='4014.html'>4014</a><Br/><a href='4013.html'>4013</a><Br/><a href='4012.html'>4012</a><Br/><a href='4011.html'>4011</a><Br/><a href='4010.html'>4010</a><Br/><a href='4009.html'>4009</a><Br/><a href='4008.html'>4008</a></div><div class='nav'><a href='4017.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4019.html'> >> </a></div><div class='article'>Q:
+
+How do I install the new version of phpMyAdmin from source code
+
+I need to install version 4.6.3 of phpMyAdmin from source code.
+It is available here:
+http://www.phpmyadmin.net/home_page/downloads.php
+Please tell me what I have to do after downloading phpmyadmin.zip ?
+
+A:
+
+Checkout the official documentation in the link below. 
+http://www.phpmyadmin.net/documentation/Documentation.html
+
+NOTE: Please make sure you unzip the contents in a place where you have the ability to write the php files.
+
+Also, you can get in touch with us at dev.phpmyadmin.net
+
+A:
+
+The latest development code can be found at this directory (sourceforge.net/projects/phpmyadmin/files/).
+I would recommend using the git version:
+sudo apt-get install git
+sudo apt-get build-dep phpmyadmin
+git clone git://git.phpmyadmin.net/phpmyadmin
+cd phpmyadmin
+make install
+
+The above should take care of all dependencies and install the latest version. 
+Please check our documentation for a reference on using phpMyAdmin with different web servers.
+
+A:
+
+This will install phpmyadmin
+wget http://sourceforge.net/projects/phpmyadmin/files/phpmyadmin4.5.5.1/phpMyAdmin-4.5.5.1-all-languages.tar.gz
+tar zxvf phpmyadmin4.5.5.1-all-languages.tar.gz
+cp -R ./phpmyadmin4.5.5.1/phpMyAdmin /var/www/phpmyadmin
+
+You have to login via mysql -u root -p  user
+Then you have to configure password for MySQL user root in phpmyadmin settings.
+If you want to login with phpmyadmin then use username:password combination in config.inc.php for login
+
+I also recommend that you make some user with limited privileges (this way you can use it on shared hosting or any server you wish)
+
+Go to phpmyadmin settings then go to Server Settings.
+go to Security Tab
+
+Click the "Add user/Host" link.
+Enter a username for this user and click "Add".
+Enter a password for this user and click "Add".
+Select "mysql" for Host and click "Add".
+Enter a privilege level and set the password.
+
+Now you can login with username/password as you created in last step.
+Now you have to edit /etc/phpmyadmin/apache.conf and place the following code under /etc/phpmyadmin/apache.conf:
+php_admin_value upload_tmp_dir "/var/www/phpmyadmin"
+
+Restart server:
+sudo service apache2 restart
+
+Create Database
+phpMyAdmin creates two databases for you
+(i) mysql database with default user root, a random password and name "phpmyadmin"
+(ii) phpmyadmin database with user root, password created in last step and name "phpmyadmin"
+Now, you can login with mysql username, password and phpmyadmin username and password.
+How to enable pma login?
+It is quite difficult to edit /etc/phpmyadmin/config-db.php to enable PMA login on localhost.
+It is possible with following steps
+Go to /etc/phpmyadmin/config-db.php
+Go to User Authentification Tab in Database Configuration
+
+Click "None"
+Add these two lines after if (isset($apache_use_db)) and before $hostuser = $_SERVER['REMOTE_USER'];
+
+$hostuser = $_SERVER['REMOTE_USER'];
+$dbuser = 'root';
+$dbpass = '*';
+$host = 'localhost';
+$user = $hostuser;
+$db = 'phpmyadmin';
+$pma__root = 'root';
+$pma__password = '*';
+$pma__db = 'phpmyadmin';
+$pma__dbuser = $dbuser;
+$pma__password = $pma__root;
+$pma__host = 'localhost';
+$pma__port = '3306';
+$pma__socket = '/var/lib/mysql/mysql.sock';
+
+After doing this do you have to restart apache.
+$ sudo service apache2 restart
+
+That's it now you can login as pma username and password as normal user.
+
+</div></body></html><!-- 2022-06-25 08:32:45 

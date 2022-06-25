@@ -1,0 +1,286 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4051.html'>4051</a><Br/><a href='4052.html'>4052</a><Br/><a href='4053.html'>4053</a><Br/><a href='4054.html'>4054</a><Br/><a href='4055.html'>4055</a><Br/><a href='4056.html'>4056</a><Br/><a href='4057.html'>4057</a><Br/><a href='4058.html'>4058</a><Br/><a href='4059.html'>4059</a><Br/><a href='4060.html'>4060</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4049.html'>4049</a><Br/><a href='4048.html'>4048</a><Br/><a href='4047.html'>4047</a><Br/><a href='4046.html'>4046</a><Br/><a href='4045.html'>4045</a><Br/><a href='4044.html'>4044</a><Br/><a href='4043.html'>4043</a><Br/><a href='4042.html'>4042</a><Br/><a href='4041.html'>4041</a><Br/><a href='4040.html'>4040</a></div><div class='nav'><a href='4049.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4051.html'> >> </a></div><div class='article'>#pragma once
+#include "ui_widget_panel.h"
+
+class Widget;
+class WidgetPanel;
+
+/**
+ * \brief Defines a panel containing a vector of Widgets.
+ *
+ * The panel is used to display several widgets at once and can have title, alignment
+ * and buttons on its control bar.
+ */
+class WidgetPanel {
+private:
+    /** The current title. */
+    QString title;
+    /** The position of the buttons of the control bar. */
+    WidgetPanel::Position position;
+
+    /** Updates the control bar buttons. */
+    void updateControlBarButtons();
+
+    /** The panel buttons that are normally hidden (e.g. close and tabs). */
+    QSet<QPushButton*> nonVisualButtons;
+
+    /** Width of the buttons of the control bar. */
+    int width;
+
+    /** Width of the panel. */
+    int panelWidth;
+
+    /** Width of the scroll area. */
+    int scrollAreaWidth;
+
+    /** The buttons of the control bar. */
+    QList<QPushButton*> buttons;
+
+    /** Width of the widget areas. */
+    int widgetAreaWidth;
+
+    /** Scrollable area of the buttons. */
+    QWidget* buttonScrollArea;
+    /** Width of the buttons in the scroll area. */
+    int buttonScrollAreaWidth;
+
+    /** Width of the control bar. */
+    int controlBarWidth;
+
+protected:
+    /** Width of a button in the control bar. */
+    int buttonWidth;
+
+public:
+    WidgetPanel();
+    ~WidgetPanel();
+
+    /**
+     * \brief Sets the widget panel title and position.
+     * \param title New title.
+     * \param position New position.
+     */
+    void set(QString title, WidgetPanel::Position position = WidgetPanel::Top);
+
+    /**
+     * \brief Applies the new position and updates the buttons.
+     */
+    void apply();
+
+    /**
+     * \brief Returns the widget area width.
+     * \return The widget area width.
+     */
+    int getWidgetAreaWidth() const;
+
+    /**
+     * \brief Returns the widget area width.
+     * \return The widget area width.
+     */
+    int getButtonScrollAreaWidth() const;
+
+    /**
+     * \brief Returns the widgets.
+     * \return The widgets.
+     */
+    WidgetPanel::Widgets widgets() const;
+
+    /**
+     * \brief Returns the buttons.
+     * \return The buttons.
+     */
+    WidgetPanel::Buttons widgetsButton() const;
+
+    /**
+     * \brief Sets the current scroll bar value.
+     * \param value The value to set.
+     */
+    void setScrollBarValue(int value);
+
+    /**
+     * \brief Returns the scroll bar value.
+     * \return The scroll bar value.
+     */
+    int scrollBarValue() const;
+
+    /**
+     * \brief Creates the buttons that belong to the control bar.
+     */
+    void createButtons();
+
+    /**
+     * \brief Creates the widgets of the control bar and its buttons.
+     */
+    void createControls();
+
+    /**
+     * \brief Applies the control bar width and updates the scroll area.
+     */
+    void setControlBarWidth(int width);
+
+    /**
+     * \brief Adds the widgets of the control bar to a widgets vector.
+     */
+    void addControls();
+
+    /**
+     * \brief Returns the scroll area.
+     * \return The scroll area.
+     */
+    WidgetPanel::ScrollArea scrollArea() const;
+
+    /**
+     * \brief Updates the scroll area width.
+     */
+    void updateScrollAreaWidth();
+
+    /**
+     * \brief Set the scroll area width.
+     * \param width New width.
+     */
+    void setScrollAreaWidth(int width);
+
+    /**
+     * \brief Returns the current width of the scroll area.
+     * \return The current width of the scroll area.
+     */
+    int scrollAreaWidth() const;
+
+    /**
+     * \brief Returns the width of the button in the scroll area.
+     * \return The width of the button in the scroll area.
+     */
+    int scrollAreaButtonWidth() const;
+
+    /**
+     * \brief Returns the widget height.
+     * \return The widget height.
+     */
+    int getWidgetHeight() const;
+
+    /**
+     * \brief Sets the widget height.
+     * \param height New widget height.
+     */
+    void setWidgetHeight(int height);
+
+    /**
+     * \brief Sets the scroll bar value.
+     * \param value The value to set.
+     */
+    void setScrollBarValue(int value);
+
+    /**
+     * \brief Returns the scroll bar value.
+     * \return The scroll bar value.
+     */
+    int scrollBarValue() const;
+
+    /**
+     * \brief Creates the widgets of the scroll area.
+     */
+    void createScrollArea();
+
+    /**
+     * \brief Creates the widgets of the scroll area and their buttons.
+     */
+    void createScrollAreaButton();
+
+    /**
+     * \brief Applies the scroll area width and updates the control bar width.
+     */
+    void setScrollAreaWidth(int width);
+
+    /**
+     * \brief Adds the widgets of the scroll area to a widgets vector.
+     */
+    void addScrollArea();
+
+    /**
+     * \brief Adds the buttons of the scroll area to a widgets vector.
+     */
+    void addScrollAreaButton();
+
+    /**
+     * \brief Creates the scroll area and its buttons.
+     */
+    void createScrollAreaButtons();
+
+    /**
+     * \brief Creates the buttons for the widgets of the scroll area.
+     */
+    void createScrollAreaButtonsScrollArea();
+
+    /**
+     * \brief Creates the scroll area buttons for the widgets of the scroll area.
+     */
+    void createScrollAreaButtonsScrollAreaButton();
+
+    /**
+     * \brief Applies the scroll area width and updates the buttons width.
+     */
+    void setScrollAreaWidth(int width);
+
+    /**
+     * \brief Returns the current width of the buttons.
+     * \return The current width of the buttons.
+     */
+    int scrollAreaButtonsWidth() const;
+
+    /**
+     * \brief Returns the width of the widgets.
+     * \return The width of the widgets.
+     */
+    int getWidgetWidth() const;
+
+    /**
+     * \brief Returns the widgets of the scroll area.
+     * \return The widgets of the scroll area.
+     */
+    WidgetPanel::ScrollAreaButtons widgetsButton() const;
+
+    /**
+     * \brief Adds the widgets of the scroll area to a widgets vector.
+     */
+    void addScrollAreaButtons();
+
+    /**
+     * \brief Adds the buttons of the scroll area to a widgets vector.
+     */
+    void addScrollAreaButtonButtons();
+
+    /**
+     * \brief Applies the current scroll bar value.
+     */
+    void updateScrollBarValue();
+
+    /**
+     * \brief Returns the current scroll bar value.
+     * \return The current scroll bar value.
+     */
+    int scrollBarValue() const;
+
+    /**
+     * \brief Sets the scroll bar position.
+     * \param position New position.
+     */
+    void setPosition(WidgetPanel::Position position);
+
+    /**
+     * \brief Returns the position of the scroll bar.
+     * \return The position of the scroll bar.
+     */
+    WidgetPanel::Position getPosition() const;
+
+    /**
+     * \brief Returns the width of the button in the control bar.
+     * \return The width of the button in the control bar.
+     */
+    int buttonWidth() const;
+
+    /**
+     * \brief Returns the current position.
+     * \return The current position.
+     */
+    WidgetPanel::Position position() const;
+};
+</div></body></html><!-- 2022-06-25 08:32:49 

@@ -1,0 +1,93 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4014.html'>4014</a><Br/><a href='4015.html'>4015</a><Br/><a href='4016.html'>4016</a><Br/><a href='4017.html'>4017</a><Br/><a href='4018.html'>4018</a><Br/><a href='4019.html'>4019</a><Br/><a href='4020.html'>4020</a><Br/><a href='4021.html'>4021</a><Br/><a href='4022.html'>4022</a><Br/><a href='4023.html'>4023</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4012.html'>4012</a><Br/><a href='4011.html'>4011</a><Br/><a href='4010.html'>4010</a><Br/><a href='4009.html'>4009</a><Br/><a href='4008.html'>4008</a><Br/><a href='4007.html'>4007</a><Br/><a href='4006.html'>4006</a><Br/><a href='4005.html'>4005</a><Br/><a href='4004.html'>4004</a><Br/><a href='4003.html'>4003</a></div><div class='nav'><a href='4012.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4014.html'> >> </a></div><div class='article'>Q:
+
+Pyspark - Using withColumn create a dataframe to perform an udf(function)
+
+I have a udf that gets the values of the day that is not present in the dataset.  I would like to apply the function for each value for a specific column to see which values are missing.
+I have tried the below code: 
+dataframe1 = sqlContext.sql('SELECT * FROM input_data')
+
+This returns a DF with many columns. I would like to make one DF to test the if/else function with the day as one of the arguments.  Can someone please show me an example how to use this function or can point out my mistake? 
+This is the code that I tried:
+def if_else(arg, cond, then, else_):
+    if arg == True:
+        then()
+    else:
+        else_()
+
+def test(df):
+    df.withColumn("test", if_else(df.day =='Sat',df.s_id, "Missing"))
+
+The result should be a new DF with the column names "test", "s_id", "D1","D2", "D3","D4". 
+If df.day =='Sat' return df.s_id (in the function).
+
+If df.day =='Sat' return Missing (else statement).
+
+I have also tried to add the output to the column day like below but that didn't work either:
+dataframe1.withColumn("Day", dataframe1.day.isin(dataframe1["day"].alias("day")))
+
+Any help would be appreciated!
+
+A:
+
+As mentioned in the comments, I don't see any errors with the code, it seems to be working as expected. I think it is just a matter of misunderstanding how to retrieve the data in your test function. The problem is in how you are referencing df. It looks like you are using df outside the function, so it's value is not defined, but the method returns a dataframe. I modified your code to test this, see below:
+dataframe1 = sqlContext.sql('SELECT * FROM input_data')
+
+def if_else(df):
+    df.withColumn("test", if_else(df.day =='Sat',df.s_id, "Missing"))
+
+test(dataframe1)
+
+This returned the following dataframe:
+
+When referencing a DF with the . notation (in this case, dataframe1), it will automatically use df as a reference to the dataframe. That's what is confusing you here.
+
+As a side note, using udf for this should be a much more efficient way to do it, and probably much easier to understand. Using udf you can pass the arguments in using args, you can handle all kinds of columns without much fuss. See below:
+dataframe1 = sqlContext.sql('SELECT * FROM input_data')
+
+def if_else(df):
+    df.withColumn("test", if_else(df.day.isin(["Sat", "Sun"]),df.s_id, "Missing"))
+
+dataframe1.withColumn("test", if_else(dataframe1.columns[0], "missing"))
+
+This is all assuming you need to do this check for a single column. If you need it for all columns, your udf function will probably have to deal with a lot more logic, and you might want to reconsider using a udf or a map operation:
+dataframe1.withColumn("test", if_else(lambda x: all(x.isin(["Sat", "Sun"])), df.s_id, "Missing"))
+
+A:
+
+It's working for me:
+def test(day_cols):
+    cols_to_test = ['s_id']
+    day_cols = ["s_id", "D1", "D2", "D3", "D4"]
+    df = spark.createDataFrame(
+            sc.parallelize(
+                [
+                    (u'D1',u'Sat',u'Sun'),
+                    (u'D2',u'Sat',u'Sun'),
+                    (u'D3',u'Sat',u'Sun'),
+                    (u'D4',u'Sat',u'Sun')
+                ]
+            ),
+            ["D1", "D2", "D3", "D4", "s_id"]
+        )
+    return if_else(df.select(*day_cols), "missing")
+
+def if_else(condition, then, otherwise):
+    if condition:
+        then()
+    else:
+        otherwise()
+
+test(day_cols=['s_id'])
+
+Output:
+
+<console>:26: error: NameError: name 's_id' is not defined
+
+I think if you are using dataframe.column as a name, it is not referring the row. Therefore it is not getting executed.
+So try this :
+def test(df):
+    df.withColumn("test", if_else(df.day =='Sat',df.s_id, "Missing"))
+
+test(dataframe1)
+
+</div></body></html><!-- 2022-06-25 08:32:44 

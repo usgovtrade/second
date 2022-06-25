@@ -1,0 +1,175 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4027.html'>4027</a><Br/><a href='4028.html'>4028</a><Br/><a href='4029.html'>4029</a><Br/><a href='4030.html'>4030</a><Br/><a href='4031.html'>4031</a><Br/><a href='4032.html'>4032</a><Br/><a href='4033.html'>4033</a><Br/><a href='4034.html'>4034</a><Br/><a href='4035.html'>4035</a><Br/><a href='4036.html'>4036</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4025.html'>4025</a><Br/><a href='4024.html'>4024</a><Br/><a href='4023.html'>4023</a><Br/><a href='4022.html'>4022</a><Br/><a href='4021.html'>4021</a><Br/><a href='4020.html'>4020</a><Br/><a href='4019.html'>4019</a><Br/><a href='4018.html'>4018</a><Br/><a href='4017.html'>4017</a><Br/><a href='4016.html'>4016</a></div><div class='nav'><a href='4025.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4027.html'> >> </a></div><div class='article'>/*
+ * Copyright (c) 2000 Apple Computer, Inc. All rights reserved.
+ *
+ * @APPLE_OSREFERENCE_LICENSE_HEADER_START@
+ * 
+ * This file contains Original Code and/or Modifications of Original Code
+ * as defined in and that are subject to the Apple Public Source License
+ * Version 2.0 (the 'License'). You may not use this file except in
+ * compliance with the License. The rights granted to you under the License
+ * may not be used to create, or enable the creation or redistribution of,
+ * unlawful or unlicensed copies of an Apple operating system, or to
+ * circumvent, violate, or enable the circumvention or violation of, any
+ * terms of an Apple operating system software license agreement.
+ * 
+ * Please obtain a copy of the License at
+ * http://www.opensource.apple.com/apsl/ and read it before using this file.
+ * 
+ * The Original Code and all software distributed under the License are
+ * distributed on an 'AS IS' basis, WITHOUT WARRANTY OF ANY KIND, EITHER
+ * EXPRESS OR IMPLIED, AND APPLE HEREBY DISCLAIMS ALL SUCH WARRANTIES,
+ * INCLUDING WITHOUT LIMITATION, ANY WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE, QUIET ENJOYMENT OR NON-INFRINGEMENT.
+ * Please see the License for the specific language governing rights and
+ * limitations under the License.
+ * 
+ * @APPLE_OSREFERENCE_LICENSE_HEADER_END@
+ */
+
+#ifndef _MACHO_LOADER_H_
+#define _MACHO_LOADER_H_
+
+
+/*
+ * Loader-data (ld) Section - as emitted in bsd_linkedit.h
+ */
+
+struct nlist {
+	union {
+		char *n_name;	/* object name */
+		long n_strx;	/* index into the string table */
+	} n_un;
+	long n_desc;		/* description field */
+};
+
+#define N_UNDF	0	/* undefined */
+#define N_ABS	1	/* absolute */
+#define N_PBUD	2	/* paged virtual */
+#define N_SECT	3	/* sectioned */
+#define N_PBRS	4	/* physical boundary */
+#define N_LDR	5	/* bound low */
+#define N_EXPB	6	/* expansion bound */
+#define N_BRS	7	/* boundary */
+#define N_PBRA	8	/* prebound address */
+#define N_MAX	9	/* same as N_TEXT above */
+
+/*
+ * The first 10 entries in the above table are the same as the text symbol table
+ * entries used in the first 10 entries of the file's symbol table.
+ */
+
+#define N_NOW	11	/* undefined now */
+#define N_FLAG	12	/* flag register */
+#define N_VERS	13	/* version register */
+#define N_SET	14	/* section set register */
+#define N_LCBB	15	/* line-count bound-low register */
+#define N_PCBB	16	/* page-count bound-low register */
+#define N_SCB	17	/* section count register */
+#define N_LCMB	18	/* line-count modulo bound-low register */
+#define N_PCM	19	/* page-count modulo bound-low register */
+#define N_LCM	20	/* line-count modulo register */
+#define N_PMC	21	/* page-count modulo register */
+#define N_SYM	22	/* symbol table register */
+#define N_NCACHE	23	/* no-cache bit (obsolete) */
+#define N_NTYP	24	/* number of defined types (not spaces) */
+
+/*
+ * The symbol table entry is composed of 4 parts:
+ * - a 3-character index to a string table (the same string table used for ld
+ *   output sections),
+ * - a 4-character index into the relocation table,
+ * - a 2-character index into the define table, and
+ * - a 4-character index into the indirect symbol table.
+ */
+
+struct syment {
+	union {
+		char *sym_string;	/* Symbol's name (index into string table) */
+		unsigned char sym_char;	/* Symbol's character */
+		unsigned char rela_char;	/* Relocation's character */
+		unsigned char indx_char;	/* Indirect symbol's character */
+	} sym_un;
+	union {
+		unsigned int sym_type;	/* Symbol's type (see const char *) */
+		unsigned int sym_offset;	/* Symbol's offset in the object */
+	} sym_val;
+	unsigned int sym_len;	/* Symbol's length */
+};
+
+#define SYM_STRING_LENGTH	3
+#define SYM_OFFSET	4
+#define SYM_TYPE	5
+#define SYM_LEN		6
+
+
+/*
+ * Symbol table entries are grouped into sets of three symbols.  At least one of
+ * the three symbols has an index into the define table.  This encodes the
+ * binding of the three symbol types.
+ *
+ *	table    bind   type
+ *	------   -----  ----
+ *	def     local  extern
+ *	def     global extern
+ *	def     weak   extern
+ *
+ * The weak symbol type is defined as a special type (i.e. non-negative
+ * value in the `type' field) if and only if the other two symbols are of
+ * extern type.
+ *
+ * This information is used to fill in the link edit and to lay out indented
+ * external data objects, which are formed by recursive calls to lay out
+ * smaller pieces of external data, each of which is identified by the offset
+ * of the external data (which is also included in the symbol table entry).
+ */
+
+/*
+ * The first level groups all local symbols, i.e. all symbols with an index
+ * into the define table that is a small positive integer. The second level
+ * groups all local extern symbols and all extern symbols that are defined to
+ * be global. The third level groups all local extern symbols that are weak
+ * (i.e. negative).
+ *
+ * The extern symbols in the second and third levels are the ones that are
+ * included in an external data object. These symbols are the weak ones if and
+ * only if the local symbols are local extern and weak, and thus, correspond to
+ * the second level of local symbols, but they can also be the other way around,
+ * if there are no local extern symbols. Note that there may be a maximum of one
+ * weak symbol for each second level of external data.
+ *
+ * We group the strong extern symbols with a special case, because otherwise the
+ * first two levels of external data could be of different sizes, which would be
+ * wrong.
+ */
+
+#define EXTERN(a)	(((unsigned char)((a)&1)<<6) | (a))
+
+#define STRONG_WEAK_BIND	0x01	/* strong extern, weak bound */
+#define STRONG_LOCAL_BIND	0x02	/* strong extern, local bound */
+#define EXTERN_BIND		0x04	/* extern, no special bind */
+#define EXTERN_WEAK_BIND	0x08	/* extern, weak bound */
+#define EXTERN_LOCAL_BIND	0x10	/* extern, local bound */
+
+/*
+ * The three fields in a syment data structure encode the binding of the three
+ * symbol types. We have just discussed the strong extern and the weak extern
+ * symbols, so we only have to discuss the local extern symbol type here.
+ *
+ * The encoding of the local extern binding is a 3-bit bit field containing the
+ * local extern, strong extern and weak extern symbols. The bit field is used as
+ * follows:
+ *   - The first bit is always zero.
+ *   - If there is a strong extern, the second bit is zero, and the third bit
+ *     is one if and only if the symbol is weak (extern).
+ *   - If there is no strong extern symbol, the second bit is one.
+ *   - If there is no symbol at all, i.e. the symbol is to be emitted in a
+ *     compilation only DSO, the second bit is zero.
+ *
+ * This allows any external data object to be bound as a local extern data
+ * object. It also allows more than one object to be bound as a local extern
+ * object.
+ *
+ * Note that the local extern binding need not necessarily be constant if it is
+ * not to be emitted as a compilation only DSO. This means that a section may
+ * have weak local extern symbols, even if its index symbol table entry has a
+ * value of 0 (i.e. NULL</div></body></html><!-- 2022-06-25 08:32:46 

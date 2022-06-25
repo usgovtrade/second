@@ -1,0 +1,77 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4036.html'>4036</a><Br/><a href='4037.html'>4037</a><Br/><a href='4038.html'>4038</a><Br/><a href='4039.html'>4039</a><Br/><a href='4040.html'>4040</a><Br/><a href='4041.html'>4041</a><Br/><a href='4042.html'>4042</a><Br/><a href='4043.html'>4043</a><Br/><a href='4044.html'>4044</a><Br/><a href='4045.html'>4045</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4034.html'>4034</a><Br/><a href='4033.html'>4033</a><Br/><a href='4032.html'>4032</a><Br/><a href='4031.html'>4031</a><Br/><a href='4030.html'>4030</a><Br/><a href='4029.html'>4029</a><Br/><a href='4028.html'>4028</a><Br/><a href='4027.html'>4027</a><Br/><a href='4026.html'>4026</a><Br/><a href='4025.html'>4025</a></div><div class='nav'><a href='4034.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4036.html'> >> </a></div><div class='article'>Q:
+
+Do we have a proof that Fubini's Theorem is True?
+
+I was wondering if the proof of Fubini's Theorem is a proof that uses Fubini's Theorem? If so, then isn't it circular? 
+
+A:
+
+Let $A \subset \mathbb{R}^{n}$, $B \subset \mathbb{R}^{m}$  be measurable sets, then
+$x\in A,y\in B \Rightarrow  A\times B\cap(A\times B+ (x,y)) $ is measurable
+If we define $f(x,y) =1$ if $(x,y)\in A\times B$ and $0$ otherwise, we have the following:
+$$\int_{A\times B} f(x,y) d x dy = \int_{A\times B} f(x,y) d y dx = \int_{A} \left( \int_{B} f(x,y) dy \right) d x= \int_{A} \left( \int_{B} f(x,y) d x\right) dy = \int_{A} \left( \int_{B} f(x,y) dx\right) dy$$
+The penultimate equality is the Fubini Theorem.
+
+A:
+
+Fubini's theorem is used in the proof of the theorem itself.
+
+A:
+
+No, we use Fubini's theorem, but we do not need to use it to prove that it is true. We can prove it is true directly using simple algebraic methods. 
+Just assume Fubini's theorem and prove it holds, then deduce Fubini's theorem from the result we have proved.
+
+We would be proving it by starting with the following statement.
+
+If $A$ and $B$ are measurable sets, then the set of all ordered pairs $(x,y)$ of real numbers such that $x\in A$ and $y\in B$ has Lebesgue measure zero.
+
+First, if $(x,y)$ belongs to the set, then $x$ must belong to $A$, and therefore $x$ must belong to the union of all sets of the form $A+m$, where $m$ belongs to $\mathbb Z$, because every real number is equivalent to a integer in this regard. Similarly, $y$ must belong to the union of all sets of the form $B+n$, where $n$ belongs to $\mathbb Z$. Therefore, $(x,y)$ must belong to the union of all sets of the form
+$$
+A+B+n+m = \{ a + b + n + m: a\in A, b\in B, n,m\in\mathbb Z \}.
+$$
+The following lemma holds:
+
+$E \subset \mathbb R^2$ is of the form $A+B+n+m$, where $A$ and $B$ are subsets of $\mathbb R$, if and only if $E$ is a subset of the union of the sets $\{ (i,j): i\in A, j\in B \} \cup \{ (0,k): k\in \mathbb Z \} \cup \{ (-k,0): k\in \mathbb Z \} \cup \{ (0,-k): k\in \mathbb Z \} \cup \{ (-i,j): i\in \mathbb R, j\in B \} \cup \{ (i,0): i\in A \}$.
+
+The union of the sets $\{ (i,j): i\in A, j\in B \} \cup \{ (0,k): k\in \mathbb Z \} \cup \{ (-k,0): k\in \mathbb Z \} \cup \{ (0,-k): k\in \mathbb Z \} \cup \{ (-i,j): i\in \mathbb R, j\in B \} \cup \{ (i,0): i\in A \}$ is equal to $\mathbb R^2$, because if $k$ and $l$ are natural numbers, then so is $k+l$. (If $k$ and $l$ are not natural numbers, then it is clear that $(k,l)$ is not in the union.)
+Since the union of two sets is a subset of the union of a larger set, we have proven:
+
+A set $E$ of the form $A+B+n+m$ is a subset of the union of the sets $\{ (i,j): i\in A, j\in B \} \cup \{ (0,k): k\in \mathbb Z \} \cup \{ (-k,0): k\in \mathbb Z \} \cup \{ (0,-k): k\in \mathbb Z \} \cup \{ (-i,j): i\in \mathbb R, j\in B \} \cup \{ (i,0): i\in A \}$.
+
+By Fubini's theorem, the left side of this statement is equal to
+$$
+\int_{\mathbb R^2} 1_E(x,y) dx dy.
+$$
+Now, if $(x,y)\notin E$, then $x$ is not in $A$, $y$ is not in $B$, $x\notin A + n$, and $y\notin B+n$, or $x\in A+n$ and $y\notin B+n$, for any natural number $n$. Therefore, $x$ is not in the union of all sets of the form $A+k$, where $k$ belongs to $\mathbb Z$, or $y$ is not in the union of all sets of the form $B+k$, where $k$ belongs to $\mathbb Z$, and hence $(x,y)\notin E + \mathbb Z^2$, where $\mathbb Z^2$ is the union of all sets of the form
+$$
+\left\{ (x,y): x\in A+k, y\in B+l, k,l\in\mathbb Z \right\}.
+$$
+In other words, $(x,y)\notin E + \mathbb Z^2$ if and only if one of the following holds:
+
+$(x,y)\notin E$;
+$x\notin A$;
+$y\notin B$;
+$x\in A$;
+$y\in B$;
+$x\in A+k$ and $y\notin B+l$, where $k,l$ belong to $\mathbb Z$;
+$x\in B+m$ and $y\in A+n$, where $m,n$ belong to $\mathbb Z$.
+
+Using this, we see that the integral of $1_E$ over $\mathbb R^2$ is equal to zero. Therefore, the set of all ordered pairs $(x,y)$ such that $x\in A$ and $y\in B$ has Lebesgue measure zero. Since $(x,y)$ can be any ordered pair of real numbers, $A$ and $B$ have measure zero.
+Using the above notation, we have proven:
+$$
+\int_{\mathbb R^2} 1_E(x,y) dx dy = \int_{A+B+n+m} 1_E(x,y) dx dy = \int_{A+B} 1_E(x,y) dx dy = \int_{A} \left( \int_{B} 1_E(x,y) dy \right) dx.
+$$
+The result is true, if and only if, for any Lebesgue measurable set $A$ and $B$, the double integral
+$$
+\int_{A} \left( \int_{B} 1_E(x,y) dy \right) dx
+$$
+is equal to zero, or in other words,
+$$
+\int_{A+B} 1_E(x,y) dx dy = 0
+$$
+whenever $(x,y)$ belongs to the union of all sets of the form
+$$
+\{ (i,j): i\in A, j\in B \} \cup \{ (0,k): k\in \mathbb Z \} \cup \{ (-k,0): k\in \mathbb Z \} \cup \{ (0,-k): k\in \mathbb Z \} \cup \{ (-i,j): i\in \mathbb R, j\in B \} \cup \{ (i,0): i\in A \}.
+$$
+
+</div></body></html><!-- 2022-06-25 08:32:47 

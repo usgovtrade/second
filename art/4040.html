@@ -1,0 +1,117 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4041.html'>4041</a><Br/><a href='4042.html'>4042</a><Br/><a href='4043.html'>4043</a><Br/><a href='4044.html'>4044</a><Br/><a href='4045.html'>4045</a><Br/><a href='4046.html'>4046</a><Br/><a href='4047.html'>4047</a><Br/><a href='4048.html'>4048</a><Br/><a href='4049.html'>4049</a><Br/><a href='4050.html'>4050</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4039.html'>4039</a><Br/><a href='4038.html'>4038</a><Br/><a href='4037.html'>4037</a><Br/><a href='4036.html'>4036</a><Br/><a href='4035.html'>4035</a><Br/><a href='4034.html'>4034</a><Br/><a href='4033.html'>4033</a><Br/><a href='4032.html'>4032</a><Br/><a href='4031.html'>4031</a><Br/><a href='4030.html'>4030</a></div><div class='nav'><a href='4039.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4041.html'> >> </a></div><div class='article'>Q:
+
+How to check if a string is a subset of other string in ksh?
+
+I have to check if a string is a subset of other string. Let's say I have these 2 strings:
+String1 = 'abc'
+String2 = 'acb'
+
+I need to know if String1 is a subset of String2, that is, if 'a' or 'c' occur in String2. I've tried these 2 ways but they return wrong result:
+if [[ "${String1}" != *"${String2}"* ]]
+then
+    echo "not"
+else
+    echo "not"
+fi
+
+if [[ "${String1}" != "${String2}"* ]]
+then
+    echo "not"
+else
+    echo "not"
+fi
+
+Output is: not when the output should be true. Please advise. I'm using ksh93.
+
+A:
+
+I believe you want this instead:
+[ "${String1}" = "${String2}" ] && echo true || echo false
+
+The problem you were running into, by the way, is that the test operators [ and [[, unfortunately, only support a limited set of operators when matching in an expression. Among those operators is = which is used for string comparison. I know that isn't very helpful, but at least you were trying to find that information on the internet to no avail. Hope it helps!
+NOTE: The only reason the above test is working is because the operators aren't supported. If you were using [[ instead of [ then you would be having a type mismatch problem there. It would look more like this:
+[ "${String1}" = "${String2}" ] && echo true || echo false
+
+Which won't work because = is a bashism and is not in /bin/sh by default. At the end of the day, the fact that a bashism isn't supported is by design. The idea is that shells should be self-contained, rather than having functionality from bash imported through /bin/sh.
+In short, my answer does nothing to explain why the original isn't working. The information on the internet to help you determine that was so hard to find that the above is by far the best answer. If you have any more specific questions then feel free to comment or ask for more details!
+
+A:
+
+Just as an alternative, you can use a set which contains all characters of your target, and then check if it contains every character of the source.
+This solution will work with any shell:
+if [[ $(printf "%s" "${string}") = *${strings[1]}[*] ]] ; then
+    printf "string [%s] contains string [%s]\n" \
+        "${string}" "${strings[1]}"
+else
+    printf "string [%s] does not contain string [%s]\n" \
+        "${string}" "${strings[1]}"
+fi
+
+The printf statement constructs a string made up of each character of the source string. For instance, if your strings were "xyz", and "abc", the result of the printf statement would be "abcxdefgh". This is then fed to the [[ command and compared to the target string.
+
+A:
+
+I would just use grep, as in:
+if grep -qs "${String1}" "${String2}"; then
+    echo true
+else
+    echo false
+fi
+
+The option -q is important, to not print the pattern it finds.  If you leave out the -q, grep will try to match and print the string it found:
+$ echo "abc" | grep -qs abc
+abc
+
+$ echo "abc" | grep -q abc
+abc
+
+$ echo "abc" | grep abc
+abc
+$ 
+
+Of course if you are running on a machine where grep is not installed, or if the file is too large, that could become a problem.
+
+A:
+
+With Bash
+[ "${String1}" = "${String2}" ] && echo true || echo false
+
+With ksh93 (ksh, zsh, Bash, etc.)
+if [[ "${String1}" = "${String2}" ]]; then echo true; else echo false; fi
+
+Example:
+[ "$a" = "$b" ] && echo yes || echo no
+yes
+[ "$a" = "$b" ] && echo yes || echo no
+no
+[ "$a" = "$b" ] && echo yes || echo no
+yes
+[ "$a" = "$b" ] && echo yes || echo no
+no
+[ "$a" = "$b" ] && echo yes || echo no
+no
+
+Edit: There's a difference between [ "$a" = "$b" ] and [[ $a == $b ]] (or [[ $a = $b ]]). The former returns a zero exit code (FALSE), if $a or $b are null or empty. It's always a bad idea to use the "empty string" as an empty variable for shell scripts, but this happens. If you want the "empty string" as null, use:
+[ -z "${a}" ] && echo null || echo empty string
+[ -z "${b}" ] && echo null || echo empty string
+
+However, [[ $a == $b ]] always returns a non-zero exit code if $a and $b are not equal. Here is an example.
+null values:
+[ "$a" = "$b" ] && echo true || echo false
+[ -z "${a}" ] && echo true || echo false
+false
+true
+
+empty strings:
+[ "$a" = "$b" ] && echo true || echo false
+[ -z "${a}" ] && echo true || echo false
+false
+true
+
+null + empty strings:
+[ "$a" = "$b" ] && echo true || echo false
+[ -z "${a}" ] && echo true || echo false
+true
+false
+
+</div></body></html><!-- 2022-06-25 08:32:48 

@@ -1,0 +1,62 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4031.html'>4031</a><Br/><a href='4032.html'>4032</a><Br/><a href='4033.html'>4033</a><Br/><a href='4034.html'>4034</a><Br/><a href='4035.html'>4035</a><Br/><a href='4036.html'>4036</a><Br/><a href='4037.html'>4037</a><Br/><a href='4038.html'>4038</a><Br/><a href='4039.html'>4039</a><Br/><a href='4040.html'>4040</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4029.html'>4029</a><Br/><a href='4028.html'>4028</a><Br/><a href='4027.html'>4027</a><Br/><a href='4026.html'>4026</a><Br/><a href='4025.html'>4025</a><Br/><a href='4024.html'>4024</a><Br/><a href='4023.html'>4023</a><Br/><a href='4022.html'>4022</a><Br/><a href='4021.html'>4021</a><Br/><a href='4020.html'>4020</a></div><div class='nav'><a href='4029.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4031.html'> >> </a></div><div class='article'>Q:
+
+What is best practice for developing a mobile app?
+
+I'm looking to develop my own mobile app for android and ios using kotlin. My main focus will be to build a simple app with multiple activities/screens to do work flow tasks. Once I develop and test it, I'm going to give it to some friends of mine, and I want to maintain the code while everyone else is using it. Is this normal practice?
+My question is if you have a mobile app and give it to others, is it best practice to let everyone have a local version of the app so they don't have to use our dev server? 
+I guess my question also applies to the rest of us that develop a web app. We will give them a link to the web app. However, we will need to fix things, add features, and other changes that will require maintenance. Do you guys just give out your website link? Does giving the web app link to the client with a local instance give them more of a peace of mind?
+
+A:
+
+It might sound a bit obvious, but there is no one-size-fits-all solution. 
+If you have a small app with minimal functionality and no server back-end, then you could just give them your entire project and let them do as they will. That will work well if you are working in a project with multiple people (as in you can provide them updates for changes and if one of them finds a bug, you can just fix it and move on to the next one).  
+However, if it's a project that depends on multiple features or there is some server back-end that you would like to maintain, then it might be a good idea to separate the project into different modules that would be given to each person. 
+For an example, let's say you have a game that you would like to give for others to play. However, this game might take a very long time to develop and you will also be adding many features to it during the time it is being used. The problem is, if the other users have access to the source code and they modify things at their own will (you do have to consider that), then you will need to provide updates as well, or that will create unnecessary work for you. So, what you might do instead is have each person that gets a copy of the project have their own separate database. In that case, the person will only be able to access and modify that database and you would not have to bother with a lot of code conflicts. 
+If your app is rather complicated and contains a large database with more than just the game data, then I would suggest that you would not just give them the whole project and leave them free to do anything they like with it. Instead, you should probably just give them the database along with instructions on how to set it up and let them handle all the rest. 
+This also brings us to another issue. You will need to make a decision. Do you give them access to the server or just give them the database and let them do as they will with it. If they can access the database, then they will be able to do anything they want (and change the game on their own without any updates). So, if you allow them to access the database, you might also want to consider limiting their access to the database in any way that you might want (for example, by using a role based security model). You should also think of what happens when the database grows and contains information which they should not be able to access. 
+Some of you may already have a solution for this and may simply want to know what the options are (and this answer only discusses one of them), but I hope that it answers your question somewhat. 
+
+A:
+
+Don't share a production application with end-users.
+If your app doesn't need modifications by more than one or two people, just copy the code in your machine and make copies of the files in your project. Do not share it with any other user.
+A small change by a certain person might affect the entire development of the product. So if you are the only developer, the only person who understands the changes and you don't use version control, you need to make sure that any version of the file is only altered by your own version.
+
+A:
+
+I am assuming you are using your own application and not a library that you can share.
+The best practice is to have a repository which can be used by everyone in the company and they should test against this repository. Only at the end you deploy the actual project which will be used by all of your customers.
+In your development cycle you should be using continuous integration to check in code and validate your projects. This might involve a build server with automated deployment to staging and testing environments.
+I have written more about this topic in this answer
+
+Building and maintaining a production quality software application involves a number of critical phases, from requirement analysis, design and implementation, through testing and deployment. If done right it will help the application maintain a high quality at all times but it is more complex than maintaining just a server configuration for an app that you release a couple times a year.
+There is no one-size-fits-all approach for this. Each project needs a certain degree of adaptation to the existing work environment, but with certain best practices in place, one can save a lot of time and money.
+This is meant to serve as a reference for how large organizations handle similar projects.
+
+Automation
+When it comes to CI, setting up a continuous integration environment to check in code and validate that project is ready to be released is extremely important. This goes through every stage of the software development life cycle.
+
+Writing unit and integration tests to ensure that the code works as expected.
+Linting the code.
+Running static analysis and auto-formatting tools to ensure that the code is clean and formatted.
+
+This doesn't only apply to the business logic but it also includes the deployment, configuration and maintenance of your infrastructure components (servers, databases and other data stores).
+
+All tasks are carried out through a task scheduler, with jobs scheduled in a queue. Build time increases with the complexity of the software project, but it is very important to have CI automation which checks every component of the build process for breaking changes, fixes them before the test team can even think about running the tests, and so on. A good CI system should be configured to trigger several builds within a period of time (usually 30-60 minutes) so the entire release pipeline is automated, which allows for much better response times to deployment issues. 
+There are a lot of benefits you can get from having a CI environment setup (and it only takes a few hours). 
+As a reference, please see: Continuous Integration.
+
+Automated deployment
+Now let's take the deployment of the final product.
+When talking about deployment you are usually talking about two types of setups:
+
+Pre-production. Just like the pre-production environment, you want to run on local machines, which include the same setup. The main difference between the pre-production and production setup is that you need to run a test before moving forward with the deployment process (if you have to do a deployment from scratch, production configuration).
+Production deployment. You might also want to setup a production configuration of your software application. This is a very critical phase and there are only a few things you need to worry about.
+
+Configuration
+Configuration is the process of setting up the infrastructure to start executing the program in a test environment. We are looking for the set up which will be used once you have to roll out a new version of the software.
+Again, having a good understanding of how this works will save you a lot of time and cost on the long run. The only way you can make sure you are properly configured is to setup the actual environment and deploy the software and test it.
+Configuration includes:
+
+Updating the configuration files that store everything from database credentials to IP addresses, web server URL and more. The default configuration file location is /config/application.properties. Most applications will also have a file for the environment they are being deployed on. This can be configured by providing different environments or environments for different hosts in your application server (Tomcat, JBoss, etc). This will help you with changes made when deploying the software.
+Database connection string is the most important file for production environments. It's often the only file which should be edited after the build, if that's not the case then just copy it from the /config/ file. Make sure you don't have anything sensitive in that file (no DB passwords in production). You can set the</div></body></html><!-- 2022-06-25 08:32:46 

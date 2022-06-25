@@ -1,0 +1,102 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4078.html'>4078</a><Br/><a href='4079.html'>4079</a><Br/><a href='4080.html'>4080</a><Br/><a href='4081.html'>4081</a><Br/><a href='4082.html'>4082</a><Br/><a href='4083.html'>4083</a><Br/><a href='4084.html'>4084</a><Br/><a href='4085.html'>4085</a><Br/><a href='4086.html'>4086</a><Br/><a href='4087.html'>4087</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4076.html'>4076</a><Br/><a href='4075.html'>4075</a><Br/><a href='4074.html'>4074</a><Br/><a href='4073.html'>4073</a><Br/><a href='4072.html'>4072</a><Br/><a href='4071.html'>4071</a><Br/><a href='4070.html'>4070</a><Br/><a href='4069.html'>4069</a><Br/><a href='4068.html'>4068</a><Br/><a href='4067.html'>4067</a></div><div class='nav'><a href='4076.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4078.html'> >> </a></div><div class='article'>Q:
+
+Why is this simple code giving segmentation fault?
+
+I was trying a basic program in C programming. The code is given below.
+#include <stdio.h>
+int main()
+{
+int i;
+printf("Enter the number");
+scanf("%d",&i);
+printf("The number entered is : %d\n",i);
+return 0;
+}
+
+I am getting segmentation fault. I have written this code after I got through some tutorials on C and C++. It could be a silly mistake.
+
+A:
+
+The prototype of main() is int main(void).  If you omit that argument, then it defaults to int main().
+You declared i with an incomplete type.  The type that you used was an int.  That is not compatible with the function parameter int.  C requires that the function's argument is compatible with the type of the function parameter.  If you want to use %d for a function with a prototype of int main(), then the parameter must be an int, not a void *. (In fact, it should have been int main(void).
+
+A:
+
+The way you have posted the code is wrong.
+
+When you are coding it is always better to declare and initialize all the variable before using them.
+There should be a semicolon after the int main().
+There should not be a return statement.
+
+Try the following code:
+#include <stdio.h>
+int main(void) //Declaring and initializing a function requires the presence of parameter
+{
+
+    printf("Enter the number");
+    scanf("%d",&i); //Correct syntax.
+
+    printf("The number entered is : %d\n",i); //Correct syntax.
+    return 0; //Since you are not returning a value, you can not use this line.
+}
+
+A:
+
+int main() is wrong. It should be int main(void).
+Try this :
+#include <stdio.h>
+
+int main(void)
+{
+    int i;
+    printf("Enter the number");
+    scanf("%d",&i);
+    printf("The number entered is : %d\n",i);
+    return 0;
+}
+
+And one more thing : scanf will give you undefined behavior if you are not passing the required number of arguments (including the %d format specifier) while your call to scanf is like scanf("%d",&i);. Here is a discussion for it.
+
+Undefined Behavior and One More Thing
+If scanf is given fewer arguments than required by the format string, the behavior is undefined. If the format is %d (equivalent to %d %*1[\n]), scanf does not skip leading white space, so a subsequent call to gets with a pointer to the first character that was not skipped causes undefined behavior.
+
+scanf can be used like this : scanf("%d\n",&i); as %d will skip leading white space.
+
+Regarding the fact that you're getting Segmentation Fault :
+
+For the case where i is less than 16 bytes, one would expect the scanf to write the remaining few bytes to memory that is not yet initialized. So, it's not possible to read those bytes without having undefined behaviour. Since the process did not have permission to access the memory, the operating system does what it can, and returns an error, which is a segmentation fault.
+
+A:
+
+If you want to read a string and then print it out, you must change your scanf function call to
+scanf("%s", &i);
+
+and change you printf call to
+printf("%s\n", i);
+
+or
+printf("%s\n", get_line(stdin));
+
+where you will define your get_line function that will read the line and return the result as a string.
+The main problem with your program is that you didn't take into account that scanf requires a pointer to the type of variables and not the variable itself.
+Here's an example code showing how to use it
+#include <stdio.h>
+
+#define MAX_LINE_LEN  100
+
+void show_the_line(char* a_line) {
+    int len = strlen(a_line);
+    for (int i = 0; i < len; i++) {
+        printf("%c", a_line[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+
+    char line[MAX_LINE_LEN] = {0};
+
+    printf("Please enter a number: ");
+    fgets(line, MAX_LINE_LEN, stdin);
+
+    printf</div></body></html><!-- 2022-06-25 08:32:53 

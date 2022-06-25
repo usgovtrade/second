@@ -1,0 +1,173 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4087.html'>4087</a><Br/><a href='4088.html'>4088</a><Br/><a href='4089.html'>4089</a><Br/><a href='4090.html'>4090</a><Br/><a href='4091.html'>4091</a><Br/><a href='4092.html'>4092</a><Br/><a href='4093.html'>4093</a><Br/><a href='4094.html'>4094</a><Br/><a href='4095.html'>4095</a><Br/><a href='4096.html'>4096</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4085.html'>4085</a><Br/><a href='4084.html'>4084</a><Br/><a href='4083.html'>4083</a><Br/><a href='4082.html'>4082</a><Br/><a href='4081.html'>4081</a><Br/><a href='4080.html'>4080</a><Br/><a href='4079.html'>4079</a><Br/><a href='4078.html'>4078</a><Br/><a href='4077.html'>4077</a><Br/><a href='4076.html'>4076</a></div><div class='nav'><a href='4085.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4087.html'> >> </a></div><div class='article'># Copyright (C) 2015  Mikolaj Zalewski
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+import os
+import logging
+import time
+import unittest
+import requests_mock
+import responses_mock
+from lxml.etree import ElementTree
+from requests.adapters import HTTPAdapter
+
+import mock
+
+from mwd.models import (Account, Transaction, Block, Address, BlockDiff, FeeStatus,
+                        AddressDiff, UuidToAddress)
+
+
+from mwd.services.api.v2.helpers.address_helpers import get_all_addresses
+from mwd.services.common.api.errors import BAD_REQUEST_ERROR
+from mwd.services.common.api.errors import BadRequestError, BadResponseError
+from mwd.services.common.constants import BLOCKCHAIN_PATH, BUCKET_PREFIX, \
+    CONTRACTS_PATH, BLOCK_PREFIX
+from mwd.services.common.types import AddressType
+from mwd.services.common.api.helpers import RequestHelper
+
+try:
+    from Crypto.Random import random
+except ImportError:
+    from mwd.services.crypto import Crypto
+    random = Crypto.Random.get_random_bytes
+
+
+class TestAPI(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_get_block_details_invalid_type(self):
+        """Test API returns 400 bad request when not passing block type."""
+        block = Block(uuid=123, height=0, txns=[], type='random_type')
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertRaises(requests_mock.BadRequest,
+                          Block.get_block_details,
+                          response, type='random_type')
+
+    def test_get_block_details(self):
+        """Test API returns good response for block with passed type."""
+        block = Block(uuid=123, height=0, txns=[], type='data')
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertEqual(
+            str(block), response.text)
+        self.assertFalse(response.status_code)
+
+    def test_get_block_details_invalid_type(self):
+        """Test API returns 400 bad request when not passing block type."""
+        block = Block(uuid=123, height=0, txns=[], type='123')
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertRaises(requests_mock.BadRequest,
+                         Block.get_block_details,
+                         response, type='123')
+
+    def test_get_block_details_no_txns(self):
+        """Test API returns 400 bad request when no txns added to block."""
+        block = Block(uuid=123, height=0)
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertRaises(requests_mock.BadRequest,
+                         Block.get_block_details,
+                         response,
+                         txn_check_query=False)
+
+    def test_get_block_details_height(self):
+        """Test API returns 400 bad request when no height passed."""
+        block = Block(uuid=123, height=0, txns=[], type='data')
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertRaises(requests_mock.BadRequest,
+                         Block.get_block_details,
+                         response, height=123)
+
+    def test_get_block_details_height_invalid_type(self):
+        """Test API returns 400 bad request when no height passed."""
+        block = Block(uuid=123, height=0, txns=[], type='123')
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertRaises(requests_mock.BadRequest,
+                         Block.get_block_details,
+                         response, height=123)
+
+    def test_get_block_details_txns(self):
+        """Test API returns 400 bad request when no txns added to block."""
+        block = Block(uuid=123, height=0, txns=[], type='data')
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertRaises(requests_mock.BadRequest,
+                         Block.get_block_details,
+                         response, txn_check_query=False)
+
+    def test_get_block_details_txns_invalid_type(self):
+        """Test API returns 400 bad request when no txns added to block."""
+        block = Block(uuid=123, height=0, txns=[], type='123')
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertRaises(requests_mock.BadRequest,
+                         Block.get_block_details,
+                         response, txn_check_query=False)
+
+    def test_get_block_details_contracts(self):
+        """Test API returns 400 bad request when no contracts added to block."""
+        block = Block(uuid=123, height=0, txns=[], type='data')
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertRaises(requests_mock.BadRequest,
+                         Block.get_block_details,
+                         response, contracts_check_query=False)
+
+    def test_get_block_details_contracts_invalid_type(self):
+        """Test API returns 400 bad request when no contracts added to block."""
+        block = Block(uuid=123, height=0, txns=[], type='123')
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertRaises(requests_mock.BadRequest,
+                         Block.get_block_details,
+                         response, contracts_check_query=False)
+
+    def test_get_block_details_no_txns_no_contracts(self):
+        """Test API returns 400 bad request when no txns added to block and no contracts passed."""
+        block = Block(uuid=123, height=0)
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertRaises(requests_mock.BadRequest,
+                         Block.get_block_details,
+                         response,
+                         txn_check_query=False,
+                         contracts_check_query=False)
+
+    def test_get_block_details_no_txns_height(self):
+        """Test API returns 400 bad request when no height passed."""
+        block = Block(uuid=123, height=0, txns=[], type='data')
+        url = '{}/{}'.format(BLOCK_PREFIX, str(block.uuid))
+        response = requests_mock.get(url, text=repr(block))
+
+        self.assertRaises(requests_mock.BadRequest,
+                         Block.get_block_details,
+                         response, height=123</div></body></html><!-- 2022-06-25 08:32:54 

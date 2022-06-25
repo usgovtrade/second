@@ -1,0 +1,185 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4067.html'>4067</a><Br/><a href='4068.html'>4068</a><Br/><a href='4069.html'>4069</a><Br/><a href='4070.html'>4070</a><Br/><a href='4071.html'>4071</a><Br/><a href='4072.html'>4072</a><Br/><a href='4073.html'>4073</a><Br/><a href='4074.html'>4074</a><Br/><a href='4075.html'>4075</a><Br/><a href='4076.html'>4076</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4065.html'>4065</a><Br/><a href='4064.html'>4064</a><Br/><a href='4063.html'>4063</a><Br/><a href='4062.html'>4062</a><Br/><a href='4061.html'>4061</a><Br/><a href='4060.html'>4060</a><Br/><a href='4059.html'>4059</a><Br/><a href='4058.html'>4058</a><Br/><a href='4057.html'>4057</a><Br/><a href='4056.html'>4056</a></div><div class='nav'><a href='4065.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4067.html'> >> </a></div><div class='article'>/*
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program; if not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "qemu/osdep.h"
+#include "qapi/error.h"
+#include "qemu/cutils.h"
+#include "cpu.h"
+#include "exec/exec-all.h"
+#include "hw/hw.h"
+#include "hw/sysbus.h"
+#include "hw/core/cpu.h"
+#include "hw/i386/pc.h"
+#include "hw/pci/pci.h"
+#include "sysemu/kvm.h"
+#include "kvm_i386.h"
+#include "hw/sysbus.h"
+#include "exec/cpu_ldst.h"
+#include "trace-root.h"
+#include "hw/pci-host/q35.h"
+#include "qemu/error-report.h"
+#include "qemu/range.h"
+#include "qemu/bitmap.h"
+
+#include "hw/boards.h"
+
+static void *get_host_cpu(void * opaque)
+{
+    return opaque;
+}
+
+static bool is_host_cpu(void * opaque)
+{
+    HostPPC64HostState *host_state = opaque;
+
+    return qemu_get_cpu((void **) &host_state->cpu);
+}
+
+static void host_get_rtc(Object *obj)
+{
+    HostPPC64HostState *host_state = HOST_CPU_PPC64(obj);
+
+    if (host_state->rtc) {
+        return;
+    }
+    object_property_set_bool(obj, true, "rtc", &error_abort);
+}
+
+static void host_set_rtc(Object *obj, int64_t value)
+{
+    HostPPC64HostState *host_state = HOST_CPU_PPC64(obj);
+
+    if (!host_state->rtc) {
+        error_report("rtc property only supported on qemu-kvm guests");
+        return;
+    }
+    if (host_state->type != HOST_CPU_TYPE_FSL_MPIC_20) {
+        /*
+         * Do not let the guest access the host real-time clock (RTC),
+         * because this would allow the guest to set a new time on the
+         * host, but as the Linux kernel refuses to accept this setting,
+         * it is just ignored.
+         */
+        return;
+    }
+    if (qemu_get_clock_ms(vm_clock) > rtc_offset) {
+        /* If the host clock is behind the guest clock, RTC
+         * time will be off.  For Linux guests, this is the right
+         * behavior, so we want to let the guest RTC be updated.
+         */
+        return;
+    }
+    rtc_offset = qemu_get_clock_ms(vm_clock);
+    if (value < rtc_offset) {
+        error_report("RTC overflow");
+        return;
+    }
+
+    host_state->rtc = true;
+}
+
+static void powernv_q35_vm_state_change(void *opaque, int running,
+                                        RunState state)
+{
+    PowerNVState *pnv_state = opaque;
+    PowerQ35State *regs = &pnv_state->powerq;
+
+    if (running) {
+        /* Enable the guest clock for the next tick */
+        regs->gclock = pnv_state->clk_rate;
+    }
+}
+
+static void *powernv_q35_init(const char *cpu_model)
+{
+    PowerNVState *pnv_state;
+    CPUPPCState *env;
+    CPUState *cs;
+    PowerQ35State *regs;
+
+    if (!cpu_model) {
+        cpu_model = "POWER9";
+    }
+    env = cpu_ppc_init(cpu_model);
+    if (!env) {
+        fprintf(stderr, "Unable to find PowerPC CPU definition\n");
+        exit(1);
+    }
+    cs = POWERPC_CPU(env);
+
+    pnv_state = g_malloc0(sizeof(PowerNVState));
+    pnv_state->clk_rate = POWERPC_EXTRACT_MULT(env->spr[SPR_SDR0]);
+
+    /* Configure PCI (map ISA space) */
+    pci_bus_new(&pnv_state->pci_dev, pnv_state->chipset.io_regions[0],
+                DEVFN_PCIBUS);
+    object_property_set_bool(OBJECT(pnv_state->pci_dev.qdev), true, "realized",
+                             &error_abort);
+
+    /* Get host clock time and start it */
+    host_get_rtc(OBJECT(pnv_state));
+
+    /* Initialize guest clock time, as it is needed by the guest CPUs */
+    qemu_get_clock(vm_clock);
+
+    regs = &pnv_state->powerq;
+    object_property_set_bool(OBJECT(pnv_state->powerq.parent), true, "dma",
+                              &error_abort);
+    pnv_state->powerq.parent = object_property_get_child_np(OBJECT(cs),
+                                                             "qemu,power8", NULL);
+    if (object_dynamic_cast(OBJECT(pnv_state->powerq.parent), TYPE_POWER8)) {
+        memcpy(&regs->acpu_pwrman, &((POWER8CPUState *)object_dynamic_cast(
+                                        OBJECT(pnv_state->powerq.parent),
+                                        TYPE_POWER8))->acpu_pwrman, sizeof(PowerQ35State));
+    } else {
+        error_report("Power8 guests not supported yet");
+        exit(1);
+    }
+    regs->pci_pwrman = pnv_state->pci_dev;
+
+    return pnv_state;
+}
+
+static void powernv_q35_class_init(ObjectClass *klass, void *data)
+{
+    PowerPCCPUClass *pcc = POWERPC_CPU_GET_CLASS(klass);
+    DeviceClass *dc = DEVICE_CLASS(klass);
+
+    dc->reset = powernv_q35_reset;
+    dc->realize = powernv_q35_realizefn;
+    dc->props = powernv_q35_props;
+    dc->vmsd = &vmstate_powernv;
+    dc->hotpluggable = false;
+    dc->reset_link = &powernv_q35_reset;
+    pcc->get_host_cpu = get_host_cpu;
+    pcc->cpu_type = POWERPC_CPU_POWER8;
+    pcc->cpu_write_elf32 = &powernv_write_elf32;
+    pcc->cpu_write_elf64 = &powernv_write_elf64;
+    pcc->boot_cpu = &powernv_reset_cpu;
+    pcc->ioremap = &powernv_ioremap;
+}
+
+static void powernv_q35_initfn(Object *obj)
+{
+    PowerPCCPU *cpu = POWERPC_CPU(obj);
+    PowerNVState *pnv_state = POWERNV_POWER8_HOST_CPU(obj);
+    PowerQ35State *regs = &pnv_state->powerq;
+
+    object_initialize_child(obj, "clk", &pnv_state->clk, sizeof(pnv_state->clk),
+                            TYPE_PNV_CLK, NULL);
+    object_initialize_child(obj, "mclk", &pnv_state->mclk,
+                            sizeof(pnv_state->mclk), TYPE_PNV_MCLK, NULL);
+
+</div></body></html><!-- 2022-06-25 08:32:51 

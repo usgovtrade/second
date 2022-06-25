@@ -1,0 +1,124 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4013.html'>4013</a><Br/><a href='4014.html'>4014</a><Br/><a href='4015.html'>4015</a><Br/><a href='4016.html'>4016</a><Br/><a href='4017.html'>4017</a><Br/><a href='4018.html'>4018</a><Br/><a href='4019.html'>4019</a><Br/><a href='4020.html'>4020</a><Br/><a href='4021.html'>4021</a><Br/><a href='4022.html'>4022</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4011.html'>4011</a><Br/><a href='4010.html'>4010</a><Br/><a href='4009.html'>4009</a><Br/><a href='4008.html'>4008</a><Br/><a href='4007.html'>4007</a><Br/><a href='4006.html'>4006</a><Br/><a href='4005.html'>4005</a><Br/><a href='4004.html'>4004</a><Br/><a href='4003.html'>4003</a><Br/><a href='4002.html'>4002</a></div><div class='nav'><a href='4011.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4013.html'> >> </a></div><div class='article'>Q:
+
+How to create a dynamic array
+
+I'm writing a small program that requires to use a dynamic array. I am not sure what I'm doing wrong, and I have been banging my head against the wall with this.
+Here's my C file:
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    const int maxElements = 4;
+    int numberOfItems = 0;
+    string numArr[maxElements];
+
+    cout << "Enter an integer to create the array: ";
+    cin >> numberOfItems;
+
+    for (int i = 0; i < numberOfItems; i++) {
+        cout << "Enter another integer to create the array: ";
+        cin >> numArr[i];
+    }
+
+    cout << endl << "You entered: ";
+
+    for (int i = 0; i < numberOfItems; i++) {
+        cout << numArr[i] << " ";
+    }
+
+    cout << endl << endl;
+}
+
+So, in the "Enter an integer to create the array:" section, I want to create an array that goes from 0 to 4. In the "Enter another integer to create the array:" section, I enter an integer, which is stored as my array's first element. Then I want to create a second entry. I don't want the array to grow itself every time, I just want it to start over at 0 every time.
+I thought about using string::append, but then I realized, I'm not using c++.
+I have a feeling I'm using new incorrectly, I have very little experience with pointers.
+What am I doing wrong?
+
+A:
+
+First of all the code you've shown us is not a real dynamic array because it only creates a sequence of arrays which get destroyed when the application finishes.
+Second, unless your intent is only to compile and run it on windows (which has very small dynamic arrays) you are going to have to learn a bit of C++. The C++ way of doing this is shown below. As it happens, I think you have got the syntax wrong.
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    const int maxElements = 4;
+    int numberOfItems = 0;
+    string* numArr= new string[maxElements];
+
+    cout << "Enter an integer to create the array: ";
+    cin >> numberOfItems;
+
+    for (int i = 0; i < numberOfItems; i++) {
+        cout << "Enter another integer to create the array: ";
+        cin >> numArr[i];
+    }
+
+    cout << endl << "You entered: ";
+
+    for (int i = 0; i < numberOfItems; i++) {
+        cout << numArr[i] << " ";
+    }
+
+    cout << endl << endl;
+    delete[] numArr;
+    return 0;
+}
+
+However, in C++ it is usually preferred to use a container class instead of an array.
+
+A:
+
+You've used the wrong data type to store the elements. You can't use an int for this, unless you want to re-implement a linked list in C. If you want an array you need to use the built-in std::string.
+A few other comments:
+
+Strings are not null terminated, you need to specify that the strings will be zero terminated
+You should use std::vector instead of an array.
+Prefer a "using namespace std" to your "using std::cout", there's no reason to use fully qualified names
+
+This should work for you:
+#include <iostream>
+#include <string>
+using namespace std;
+
+void foo(int n) {
+  string arr[4];
+  cout << "Enter a number of elements for the list: ";
+  cin >> n;
+  for (int i = 0; i < n; i++) {
+    cout << "Enter another number to create the array: ";
+    cin >> arr[i];
+ }
+  cout << "\n You entered: " << endl;
+  for (int i = 0; i < n; i++) {
+    cout << arr[i] << " ";
+ }
+  cout << "\n\n" << endl;
+}
+
+int main() {
+  if ( cin.get() != '\n') foo(0);
+  cout << endl;
+  return 0;
+}
+
+A:
+
+You don't need to create your own array, C++ already has the built in string for that.
+Also your for loop is wrong, it should be numElements, not i, i is an iteration variable, numElements is a number.
+std::string numArr[maxElements];
+
+This line is wrong:
+    cin >> numArr[i];
+You can just do this:
+    cin >> numArr;
+And finally:
+    std::cin.getline(tempNum, 1000); // Reads numbers until the enter key is hit.
+Change that line to:
+    cin >> tempNum;
+
+And add one more thing, instead of int maxElements use std::string::size(), because you are not using the string array in any other ways than iterating on it with an index, so std::string::size() is a better option than hardcoding maxElements with 4.
+
+</div></body></html><!-- 2022-06-25 08:32:44 

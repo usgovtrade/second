@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4059.html'>4059</a><Br/><a href='4060.html'>4060</a><Br/><a href='4061.html'>4061</a><Br/><a href='4062.html'>4062</a><Br/><a href='4063.html'>4063</a><Br/><a href='4064.html'>4064</a><Br/><a href='4065.html'>4065</a><Br/><a href='4066.html'>4066</a><Br/><a href='4067.html'>4067</a><Br/><a href='4068.html'>4068</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4057.html'>4057</a><Br/><a href='4056.html'>4056</a><Br/><a href='4055.html'>4055</a><Br/><a href='4054.html'>4054</a><Br/><a href='4053.html'>4053</a><Br/><a href='4052.html'>4052</a><Br/><a href='4051.html'>4051</a><Br/><a href='4050.html'>4050</a><Br/><a href='4049.html'>4049</a><Br/><a href='4048.html'>4048</a></div><div class='nav'><a href='4057.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4059.html'> >> </a></div><div class='article'>Q:
+
+Mongodb find documents by number of items in array
+
+I want to be able to query for documents that have an array of more than n number of items
+Say we have an array, which has one element:
+{
+  array: [
+    { _id: 1, name: "first" },
+    { _id: 2, name: "second" },
+    { _id: 3, name: "third" }
+  ]
+}
+
+Which I want to find if there are three items in the array. I want to do this without updating the documents. Is there a way to do this via some sort of query that would check that array's length is 3? 
+
+A:
+
+You can use $size on array field in order to achieve this.
+db.collection.find({'array.$size': {'$gte': 3}})
+
+A:
+
+It is not possible.
+All indexes are sparse.
+Queries only check "leaf values" (the actual values in the documents, not the whole value), and only in the "projection" part of the query. So in your case, the only place "array.$size" could ever be used, would be in the projection part of the query. And there it does not make sense, because there it simply evaluates to 1 (or more if there are multiple elements in array).
+
+A:
+
+You can use below aggregation.
+db.collection.aggregate({$project:{"array":{ $size: "$array" }}}).forEach(function(doc) {
+    printjson(doc)
+})
+
+or
+db.collection.find({
+    array:{ $size: 3 }})
+
+This will output documents having array size is greater than 3. You need to change above query based on your need
+
+NOTE : $size is not optimized for array having more than 64000 elements, may be in later releases this limitation will be removed.
+
+Ref : http://docs.mongodb.org/manual/reference/operator/size/
+EDIT: 1
+After update to the question.
+db.coll.find({array:{$size: {$gt:3}}})
+
+This query will return documents having array size more than 3.
+It's working perfectly, I also verified it with Mongotest.org
+db.test.insert({
+    "_id" : 1,
+    "array" : [
+        { "key" : 1 },
+        { "key" : 2 }
+    ]
+})
+
+db.test.insert({
+    "_id" : 2,
+    "array" : [
+        { "key" : 3 },
+        { "key" : 4 }
+    ]
+})
+
+db.test.insert({
+    "_id" : 3,
+    "array" : [
+        { "key" : 5 },
+        { "key" : 6 }
+    ]
+})
+
+db.test.insert({
+    "_id" : 4,
+    "array" : [
+        { "key" : 1 },
+        { "key" : 2 },
+        { "key" : 3 }
+    ]
+})
+
+db.test.insert({
+    "_id" : 5,
+    "array" : [
+        { "key" : 7 },
+        { "key" : 8 }
+    ]
+})
+
+db.test.find()
+{ "_id" : 5, "array" : [ { "key" : 7 }, { "key" : 8 } ] }
+
+db.test.find({array:{$size: {$gt:3}}})
+{ "_id" : 4, "array" : [ { "key" : 1 }, { "key" : 2 }, { "key" : 3 } ] }
+
+</div></body></html><!-- 2022-06-25 08:32:50 

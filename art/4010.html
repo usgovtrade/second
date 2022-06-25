@@ -1,0 +1,49 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4011.html'>4011</a><Br/><a href='4012.html'>4012</a><Br/><a href='4013.html'>4013</a><Br/><a href='4014.html'>4014</a><Br/><a href='4015.html'>4015</a><Br/><a href='4016.html'>4016</a><Br/><a href='4017.html'>4017</a><Br/><a href='4018.html'>4018</a><Br/><a href='4019.html'>4019</a><Br/><a href='4020.html'>4020</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4009.html'>4009</a><Br/><a href='4008.html'>4008</a><Br/><a href='4007.html'>4007</a><Br/><a href='4006.html'>4006</a><Br/><a href='4005.html'>4005</a><Br/><a href='4004.html'>4004</a><Br/><a href='4003.html'>4003</a><Br/><a href='4002.html'>4002</a><Br/><a href='4001.html'>4001</a><Br/><a href='4000.html'>4000</a></div><div class='nav'><a href='4009.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4011.html'> >> </a></div><div class='article'>---
+abstract: 'In this paper, we will prove the local existence and uniqueness of solutions to $3+1$ -dimensional Einstein equations coupled with a nonlinear wave equations. From the viewpoint of geometric partial differential equations (PDEs), we choose Einstein equations as our background equations. This choice is motivated by the fact that the spacetime metric serves as the metric tensor for geometric metric structure. This paper generalizes the local well-posedness of the vacuum Einstein equation with matter that was established by Christodoulou in the 1990s [@Chr91a].'
+address:
+- 'Department of Mathematics, University of Chicago'
+- 'Department of Mathematics, University of Chicago'
+author:
+- Sijue Wu
+- Chongchun Zang
+title: 'The Local Existence and Uniqueness of Solutions to $3+1$ Einstein Equations with Nonlinear Wave Equations'
+---
+
+[^1]
+
+[^2]
+
+Introduction
+============
+
+In this paper, we consider the local well-posedness of the Cauchy problem for the Einstein vacuum equations coupled with a nonlinear wave equations. The Einstein equations coupled with a nonlinear wave equation form an important class of nonlinear systems in mathematical relativity. They arise in the study of Einstein’s equations coupled with scalar fields or a perfect fluid, for example. Our main result proves the local existence and uniqueness of solutions of the Einstein equations coupled with a nonlinear wave equation with an arbitrary Cauchy data on a Cauchy surface. These spacetimes are complete in the future, but they may not be complete in the past. The assumptions in our main result and the conditions for the data (see Theorem \[Thm1\]) are generic and hence far from optimal (see [@Chr91a]).
+
+The local well-posedness of the Einstein equations coupled with a nonlinear wave equation is considered to be an extremely important open problem in mathematical relativity (see [@Chr93] for a survey). In order to describe our main result, we will present the Einstein equations with a nonlinear wave equation as an evolution equation for the spacetime metric in this paper.
+
+Let $M$ be a smooth $4$ dimensional Riemannian manifold, and $\g$ be the *spacetime metric*, the metric of $M$. In this paper, we choose the metric tensor $\g$ as our background metric. To describe it, we fix the volume form ${\left\vert\g\right\vert}^2 =: dvol(\g)$ for each element of $M$, where $dvol(\g)$ is the *Lebesgue measure* defined on $M$. The metric of $M$ is given as $$\begin{aligned}
+\g = \sum_{i,j=1}^4 g_{ij} \, dx^i \otimes dx^j\end{aligned}$$ where the Einstein summation convention is assumed. For $1\leq i,j,k,l \leq 4$, let $g_{ij,k} = \frac{1}{2}\p_k g_{ij}$ be the covariant derivatives of the metric tensor $\g$. The Einstein tensor is defined as the summation of all terms of the form $R_{ij} \cdot dx^i \otimes dx^j$ and $dx^i \otimes R_{ij} \cdot dx^j$ in the divergence of the Einstein tensor. In components, we have $$\begin{aligned}
+\label{1.2}
+G_{ij} = R_{ij} - \frac{1}{2}\sum_{k=1}^4 g^{kl}R_{ikjl} - \frac{1}{2}\sum_{k=1}^4 R_{ik}g_{kj}.\end{aligned}$$ Here, $R_{ij}$ are the components of the Ricci tensor and $R_{ijkl}$ are the components of the Riemann tensor. Then, the Einstein equation is given by the equation: $$\begin{aligned}
+\label{1.3}
+G_{ij} = 0.\end{aligned}$$ We will denote by $G$ the Einstein tensor, by $g$ the metric tensor, and by $R$ the Ricci curvature of the spacetime $M$. The initial data are given on a Cauchy surface $\Sigma \subset M$ as follows: Let $\gamma_0 = \gamma|_{\Sigma}$ and $K = K(\g)|_{\Sigma}$. The *conformal Gauss map* $k \in C^{2,\a}(S^2,\hat{\Sigma})$ is given by the pull back of the metric tensor $\g$ to the unit sphere $\hat{\Sigma} = S^2$ and the *mean curvature vector field* $H \in C^{1,\a}(\Sigma, T\Sigma)$ is given by $H = \frac{1}{2}{\rm div}_{\g}(k)\cdot k$ and $K = \frac{1}{4}{\rm Tr}_{\g}(k^2)$.
+
+We now define $\eta = e \cdot dvol(\g)$ and $\mu = {\left\vert\eta\right\vert}^2 dvol(\g)$, where the volume form $dvol(\g)$ is the *Lebesgue measure* defined on the spacetime $M$. Let $\chi = \frac{\mu}{\eta} \in C^{0,\a}(\Sigma)$. Thus, the *characteristic function* of a spacetime is defined as $\l = -\chi+\frac{\a}{2}{\left\vert\chi\right\vert}^2$. The initial data, given as $\chi|_{\Sigma}$ and $\l|_{\Sigma}$, satisfy the conditions of the following theorem:
+
+\[Thm1\] Let $(M,\g)$ be a vacuum spacetime satisfying the Einstein equations . Then for a generic characteristic initial data set $(\Sigma,\gamma_0,K)$, there is a unique local solution to the Einstein equations with the Cauchy data $(\Sigma, \gamma_0,K)$.
+
+The *characteristic initial data set* is chosen to be the initial data for the corresponding harmonic function. There are some results in the literature that can be reduced to Theorem \[Thm1\] using a conformal transformation to give the initial data for the Einstein equations in a certain form. Such a result is described in [@ABB]. Our proof is simpler and more self-contained.
+
+We remark that one cannot simply apply the result of [@Chr91a] to the Einstein equations, even if we choose an orthonormal frame $\{e_1,...,e_4\}$ for $M$, so that $\g$ is written as $\g = \sum_{i,j=1}^4 e_i \otimes e_j$. The reason for this is that in the proof of [@Chr91a], we used certain conformal transformations and the Kruskal manifold in order to obtain the estimates for a wave equation in the black hole exterior region $\mathcal{B}$. These ideas do not apply to the Einstein equations, due to the fact that we cannot make such a conformal transformation on a general vacuum spacetime.
+
+The remainder of this paper is organized as follows. In Section \[Sect2\], we introduce the equations for the Einstein-wave system, and we set up the global coordinates on a spacetime. In Section \[Sect3\], we introduce a weighted Sobolev space, and we show the local well-posedness for the Cauchy problem. In Section \[Sect4\], we prove the main result Theorem \[Thm1\]. Finally, we present an outline of the proof for Theorem \[Thm1\] in Section \[Sect5\].
+
+Local Existence of Solutions {#Sect2}
+============================
+
+In this section, we describe the local existence of solutions of Einstein equations with nonlinear wave equations. In order to describe the local well-posedness, we choose a conformal flat spacetime, and we solve the conformal equations. These ideas are motivated by the work of [@H2].
+
+First, we describe the global coordinates on a spacetime. Let $\g$ be the metric tensor, let $\psi$ be the *conformal factor* and let $dvol$ be the volume form for a spacetime $(M,g)$ (see for example [@T] for the definition of $dvol$). Let $\tilde{\psi} = \psi e^{\a}$ be the conformal transformation of the conformal factor. Now let $z$ be the global coordinates for $M$. Then, $$\begin{aligned}
+\label{2.1}
+g_{ij} = \tilde{\psi}^{4}\delta_{ij},\quad g_{ij,k} = \tilde{\psi}^{4}\tilde{\psi}_{,k} \delta_{ij} - 4 \tilde{\psi}^{4}\tilde{\psi}_{,i} \delta_{jk} + 2\tilde{\psi}^{3}\tilde{\psi}_{,j} \delta_{ik}\end{aligned}$$ where $\a$ is the *conformal factor*, $\tilde{\psi}$ is the *conformal factor*, and $\a = \log \tilde{\psi}$. By a slight abuse of notation, we denote the initial data for the conformal equations for $\psi$ and $g$ by $(\Sigma, \gamma_0,K)$.
+
+Let $\eta = e \cdot dvol(\g)$ and $\mu = {\left\vert\eta\right\vert}^2 dvol(\g)$. We will use the initial data, given as $\psi|_{\Sigma}$ and $\mu|_{\Sigma}$, for the solution of the Einstein equations with nonlinear wave equations, and</div></body></html><!-- 2022-06-25 08:32:44 

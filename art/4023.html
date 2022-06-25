@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4024.html'>4024</a><Br/><a href='4025.html'>4025</a><Br/><a href='4026.html'>4026</a><Br/><a href='4027.html'>4027</a><Br/><a href='4028.html'>4028</a><Br/><a href='4029.html'>4029</a><Br/><a href='4030.html'>4030</a><Br/><a href='4031.html'>4031</a><Br/><a href='4032.html'>4032</a><Br/><a href='4033.html'>4033</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4022.html'>4022</a><Br/><a href='4021.html'>4021</a><Br/><a href='4020.html'>4020</a><Br/><a href='4019.html'>4019</a><Br/><a href='4018.html'>4018</a><Br/><a href='4017.html'>4017</a><Br/><a href='4016.html'>4016</a><Br/><a href='4015.html'>4015</a><Br/><a href='4014.html'>4014</a><Br/><a href='4013.html'>4013</a></div><div class='nav'><a href='4022.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4024.html'> >> </a></div><div class='article'>Q:
+
+How to read the output of exec?
+
+Is it possible to read the output of a command and only do something if there is no output. If there is no output, then I'd like it to do nothing, not print an error. This command fails when run with sh:
+/home/ubuntu/bin/trap 'echo '' "$?" > /dev/null 2>&1' EXIT
+
+if you get some output, you'll be happy. However, if you don't have any output, you'll fail. I'd like it to just not have any output in that case. What is the simplest way to implement this?
+I thought I'd be able to do something like
+/home/ubuntu/bin/trap 'if [ -z "$(echo '' "$?")" ]; then echo ' "nothing" > /dev/null 2>&1'; fi' EXIT
+
+but this fails. Why? (or even when it works, why would it matter that I do a variable lookup inside the trap command? Shouldn't this be global to that instance of the script?)
+
+A:
+
+bash (4.4) has an undocumented option -o for the interpreter, that will cause it to simply exit if there is any output. There is an example on the bash man page:
+$ /bin/sh -c 'echo hi > tmp; false | command > /dev/null' 2>/dev/null
+hi
+$ /bin/sh -o -c 'echo hi > tmp; false | command > /dev/null' 2>/dev/null
+exit status 1
+$ shopt -oq failglob; /bin/sh -c 'echo hi > tmp; false | command > /dev/null' 2>/dev/null
+hi
+
+I can't seem to find a way to turn it off without a debugger. However, in practice, it appears to work like a charm, with or without -o. I strongly suggest you use this instead of the shell trap.
+
+A:
+
+One alternative is to use the command built-in.
+exec 3>&1
+command
+echo $? > /dev/null
+exec 3>&-
+
+The third line is necessary in case you want to return success even if it produces no output. The second one prevents the "command exists but returns non-zero exit status" warning, and the third line erases the output.
+To be clear, your original doesn't work because the command is already executed at this point.
+
+A:
+
+While Bash will not do that, sh does:
+sh -c 'echo hi > tmp; false | command > /dev/null' 2>/dev/null
+
+However, this runs the command in a sub-shell which makes it not very nice if you just want to perform some actions if there is no output.
+There is another way, though:
+status=$(command > /dev/null 2>&1)
+
+If you would want to capture the output, you could do:
+status=$(echo >&2)
+
+Finally: this one may be interesting:
+status=$(set -o err; command | tail -n 1 > /dev/null)
+
+This way, if the command doesn't produce any output, it exits with a status of zero, but otherwise it will print something like No such file or directory to stderr and exit with a status of 1.
+
+A:
+
+Instead of
+    if [ -z "$(echo '' "$?")" ]; then echo ' "nothing" > /dev/null 2>&1'; fi'
+
+Try this:
+    if [ -n "$(echo '' "$?")" ]; then echo ' "nothing" > /dev/null 2>&1'; fi'
+
+[ "$?" ] is a list of one word containing the status of the last command to complete.  The test is true if the result contains something other than an empty string.
+
+[ -z foo ] : (the empty string) is false if foo is not empty
+[ foo ] :  is true if the value of foo is the empty string.
+
+So [ -n '' ] will evaluate to true if the value of '' is the empty string.
+
+[ -z "$(echo '' "$?")" ] is true if echo '' "$?" is non-empty
+[ '' "$?" ] is true if '' "$?" is the empty string.
+
+I hope that helps you out.
+Also if you want the exit status of the last command to be returned to the calling script/process you can use this:
+    if [ -n "$(echo '' "$?")" ]; then echo ' "nothing" > /dev/null 2>&1'; echo $? > $pid_file; fi'
+
+(where $pid_file is a file like /tmp/run_status where you can see the value of $? at a glance.)
+
+I've also seen [ -e "$?" ]; where the intention is to check if the variable contains anything but an empty string. I find that harder to read, and easier to make a mistake on, than [ -n $string ].
+
+If you really want to do exactly what you are asking for, and capture the status in a variable, try:
+    status=$?
+    if [ "$status" != 0 ]; then echo ' "nothing" > /dev/null 2>&1'; fi'
+
+</div></body></html><!-- 2022-06-25 08:32:45 

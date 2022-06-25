@@ -1,0 +1,142 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4025.html'>4025</a><Br/><a href='4026.html'>4026</a><Br/><a href='4027.html'>4027</a><Br/><a href='4028.html'>4028</a><Br/><a href='4029.html'>4029</a><Br/><a href='4030.html'>4030</a><Br/><a href='4031.html'>4031</a><Br/><a href='4032.html'>4032</a><Br/><a href='4033.html'>4033</a><Br/><a href='4034.html'>4034</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4023.html'>4023</a><Br/><a href='4022.html'>4022</a><Br/><a href='4021.html'>4021</a><Br/><a href='4020.html'>4020</a><Br/><a href='4019.html'>4019</a><Br/><a href='4018.html'>4018</a><Br/><a href='4017.html'>4017</a><Br/><a href='4016.html'>4016</a><Br/><a href='4015.html'>4015</a><Br/><a href='4014.html'>4014</a></div><div class='nav'><a href='4023.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4025.html'> >> </a></div><div class='article'>package cmd
+
+import (
+	"fmt"
+
+	"github.com/aws-cloudformation/rain/cmd/util/cmd"
+	"github.com/aws-cloudformation/rain/errs"
+	"github.com/aws-cloudformation/rain/runner"
+	"github.com/jimstudt/go-ioutil"
+)
+
+func newRetryer() runner.Runner {
+	return runner.NewRunner(func(config *runner.Config) error {
+		config.LogLevel = "INFO"
+		return nil
+	})
+}
+
+func parseTemplate(tpl string, config *runner.Config) error {
+	tmpl, err := util.ParseTemplate(tpl)
+	if err != nil {
+		return errs.Wrap(err, "ParseTemplate failed: %s", util.Safe(tpl))
+	}
+	err = tmpl.Execute(config)
+	if err != nil {
+		return errs.Wrap(err, "Template execution failed: %s", util.Safe(tpl))
+	}
+	return nil
+}
+
+func doTemplateRetry(c *runner.Config, retryer *runner.Runner, args []string, tpl string, err error, retryCount int) error {
+	if retryCount <= 0 {
+		return err
+	}
+
+	if err != nil {
+		// Check error message for hints about where the problem is.
+		if len(err.Error()) < 20 {
+			errDesc := fmt.Sprintf("template failed: %s, but got unexpected error: %v, retrying... (%v attempts remaining)", util.Safe(tpl), err, retryCount)
+			err = fmt.Errorf("%s", errDesc)
+			return err
+	}
+	return errs.Wrap(err, "template failed: %s", util.Safe(tpl))
+}
+
+func executeTemplate(tpl string, c *runner.Config) (int, error) {
+	cmd := &cmd.Cmd{
+		Command: util.ParseTemplate(tpl),
+		Args:    []string{},
+		Config:  c,
+	}
+
+	_, err := cmd.Run()
+	if err != nil {
+		return 0, errs.Wrap(err, "Failed to run command")
+	}
+
+	return cmd.ExitCode, nil
+}
+
+func executeTemplateRetry(c *runner.Config, retryer *runner.Runner, tpl string, err error, retryCount int) error {
+	if err != nil {
+		return err
+	}
+
+	exitCode := executeTemplate(tpl, c)
+	if exitCode != 0 {
+		return doTemplateRetry(c, retryer, []string{"template", tpl}, tpl, err, retryCount)
+	}
+
+	return nil
+}
+
+func (c *runner.Config) ExecuteWith(logger *runner.Logger) error {
+	if logger == nil {
+		logger = &runner.StdoutLogger{}
+	}
+	logger.Debug("Started executing", runner.NoArgs)
+	return c.Execute(logger)
+}
+
+func (c *runner.Config) Execute() error {
+	err := c.ExecuteWith(newRetryer())
+	return err
+}
+
+func (c *runner.Config) ExecuteWithRetries(logger *runner.Logger) error {
+	if logger == nil {
+		logger = &runner.StdoutLogger{}
+	}
+	logger.Debug("Started executing", runner.NoArgs)
+
+	if err := c.ExecuteWith(logger); err != nil {
+		return errs.Wrap(err, "Failed to execute")
+	}
+
+	if err := retryWithRetries(c.Retries, c, logger); err != nil {
+		return errs.Wrap(err, "Failed to retry")
+	}
+
+	return nil
+}
+
+func retryWithRetries(retries int, c *runner.Config, logger *runner.Logger) error {
+	retryCount := 0
+	for {
+		retryCount++
+		result, err := executeTemplate(c.Root, c)
+		if result != 0 {
+			break
+		}
+
+		if retryCount == retries {
+			return errs.New(err)
+		}
+
+		logger.Debug(fmt.Sprintf("Retrying failed template %s (%v of %d attempts)", util.Safe(c.Root), retryCount, retries))
+		time.Sleep(time.Second * time.Duration(retries - retryCount))
+	}
+	return nil
+}
+
+func (c *runner.Config) Root() string {
+	return c.Template
+}
+
+func (c *runner.Config) ExecuteWithoutRetries() error {
+	return c.ExecuteWithRetries(nil)
+}
+
+func (c *runner.Config) SetTemplate(tpl string) {
+	c.Template = tpl
+}
+
+func (c *runner.Config) ExecuteAsRoot() error {
+	return c.ExecuteWithRetries(newRetryer())
+}
+
+func (c *runner.Config) Retries() int {
+	return c.Retries
+}
+</div></body></html><!-- 2022-06-25 08:32:46 

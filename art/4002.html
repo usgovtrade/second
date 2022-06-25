@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4003.html'>4003</a><Br/><a href='4004.html'>4004</a><Br/><a href='4005.html'>4005</a><Br/><a href='4006.html'>4006</a><Br/><a href='4007.html'>4007</a><Br/><a href='4008.html'>4008</a><Br/><a href='4009.html'>4009</a><Br/><a href='4010.html'>4010</a><Br/><a href='4011.html'>4011</a><Br/><a href='4012.html'>4012</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4001.html'>4001</a><Br/><a href='4000.html'>4000</a><Br/><a href='3999.html'>3999</a><Br/><a href='3998.html'>Girls Gone Wilder</a><Br/><a href='3997.html'>botnugget.com</a><Br/><a href='3996.html'>It Will Be My Reve</a><Br/><a href='3995.html'>Don't Bite the Han</a><Br/><a href='3994.html'>Eruption of Volcan</a><Br/><a href='3993.html'>Disney bedtime pho</a><Br/><a href='3992.html'>We’ve looked into </a></div><div class='nav'><a href='4001.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4003.html'> >> </a></div><div class='article'>/*
+ * JBoss, Home of Professional Open Source.
+ * Copyright 2015, Red Hat, Inc., and individual contributors
+ * as indicated by the @author tags. See the copyright.txt file in the
+ * distribution for a full listing of individual contributors.
+ *
+ * This is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of
+ * the License, or (at your option) any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this software; if not, write to the Free
+ * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+ * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+ */
+
+package org.jboss.as.jpa.model;
+
+import javax.persistence.PersistenceUnit;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import static org.mockito.Mockito.*;
+
+@RunWith(MockitoJUnitRunner.class)
+public class EntityManagerFactoryUtilsTest {
+
+    @Mock
+    private PersistenceUnit persistenceUnit;
+
+    @Test
+    public void testPersistenceUnitFromModuleConfiguration() {
+
+        final String persistenceUnitName = "MyTestPU";
+
+        EntityManagerFactoryUtils.persistenceUnitFromModuleConfiguration(persistenceUnitName);
+
+        verify(persistenceUnit).getName();
+        Assert.assertEquals(persistenceUnitName, persistenceUnit.getName());
+    }
+
+    @Test
+    public void testPersistenceUnitFromModuleConfigurationWithNoName() {
+
+        final String persistenceUnitName = "MyTestPU";
+
+        EntityManagerFactoryUtils.persistenceUnitFromModuleConfiguration(persistenceUnitName, true);
+
+        Assert.assertEquals(persistenceUnitName, persistenceUnit.getName());
+    }
+
+    @Test
+    public void testPersistenceUnitFromModuleConfigurationWithNonPersistenceUnit() {
+        final String persistenceUnitName = "nonPersistenceUnitName";
+
+        EntityManagerFactoryUtils.persistenceUnitFromModuleConfiguration(persistenceUnitName);
+
+        Assert.assertNull(persistenceUnit);
+    }
+
+}
+</div></body></html><!-- 2022-06-25 08:32:43 

@@ -1,0 +1,112 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4060.html'>4060</a><Br/><a href='4061.html'>4061</a><Br/><a href='4062.html'>4062</a><Br/><a href='4063.html'>4063</a><Br/><a href='4064.html'>4064</a><Br/><a href='4065.html'>4065</a><Br/><a href='4066.html'>4066</a><Br/><a href='4067.html'>4067</a><Br/><a href='4068.html'>4068</a><Br/><a href='4069.html'>4069</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4058.html'>4058</a><Br/><a href='4057.html'>4057</a><Br/><a href='4056.html'>4056</a><Br/><a href='4055.html'>4055</a><Br/><a href='4054.html'>4054</a><Br/><a href='4053.html'>4053</a><Br/><a href='4052.html'>4052</a><Br/><a href='4051.html'>4051</a><Br/><a href='4050.html'>4050</a><Br/><a href='4049.html'>4049</a></div><div class='nav'><a href='4058.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4060.html'> >> </a></div><div class='article'>Q:
+
+How to calculate percentage of time using the values in columns of a dataframe
+
+I am fairly new to data analysis and struggling to understand the syntax for a problem I am trying to solve. I have a dataframe with start and end dates of some events, and am trying to calculate the proportion of events that occurred between start and end date. My data looks like this:
+start          end          event        
+2014-05-05     2014-05-07   event 1    
+2014-06-01     2014-06-02   event 2    
+2014-06-04     2014-06-05   event 3    
+2014-06-08     2014-06-09   event 4    
+2014-06-14     2014-06-15   event 5    
+2014-06-21     2014-06-23   event 6    
+2014-06-29     2014-06-30   event 7    
+
+and I want to calculate the proportion of events that occurred between 2014-05-06 (start) and 2014-06-25 (end) for each week, so the result would look like this:
+week start        end        percentage    
+1    2014-05-06  2014-05-15     0.00%
+2    2014-05-16  2014-05-31     0.00%
+3    2014-06-01  2014-06-15     20.00%
+4    2014-06-16  2014-06-29     20.00%
+5    2014-06-30  2014-07-05     60.00%
+6    2014-07-06  2014-07-12     0.00%
+7    2014-07-13  2014-07-19     0.00%
+8    2014-07-20  2014-07-26     0.00%
+9    2014-07-27  2014-07-31     0.00%
+10   2014-08-01  2014-08-07     0.00%
+
+I would be very grateful for help in constructing a dplyr solution to this problem.  Thanks a lot in advance!
+
+A:
+
+Here's an option with dplyr and lubridate:
+library(dplyr)
+library(lubridate)
+df %>% 
+  group_by(Week_num = week(start)) %>%
+  mutate(Percentage = 100 * (end - start)/difftime(max(end, start), start)) %>%
+  distinct()
+
+Output:
+# A tibble: 10 × 5
+    start   end     event Week_num Percentage
+    <date>  <date> <fct>    <int>      <dbl>
+ 1 2014-05-05 2014-05-07 event 1          0  
+ 2 2014-06-01 2014-06-02 event 2          0  
+ 3 2014-06-04 2014-06-05 event 3          0  
+ 4 2014-06-08 2014-06-09 event 4          0  
+ 5 2014-06-14 2014-06-15 event 5          0  
+ 6 2014-06-21 2014-06-23 event 6          0  
+ 7 2014-06-29 2014-06-30 event 7          0  
+ 8 2014-07-01 2014-07-03 event 8          0  
+ 9 2014-07-06 2014-07-08 event 9          0  
+10 2014-07-13 2014-07-15 event 10         0  
+
+DATA:
+df <- read.table(text = 
+    "start          end           event  
+     '2014-05-05'     '2014-05-07'   event 1
+     '2014-06-01'     '2014-06-02'   event 2
+     '2014-06-04'     '2014-06-05'   event 3
+     '2014-06-08'     '2014-06-09'   event 4
+     '2014-06-14'     '2014-06-15'   event 5
+     '2014-06-21'     '2014-06-23'   event 6
+     '2014-06-29'     '2014-06-30'   event 7", 
+    header = TRUE)
+
+Edit: using weekly option:
+weekly(df) %>% 
+ group_by(Week_num = week(start)) %>% 
+ mutate(Percentage = 100 * (end - start)/difftime(max(end, start), start)) %>% 
+ distinct()
+
+or 
+df %>% 
+ group_by(Week_num = week(start)) %>%
+ mutate(Percentage = 100 * (end - start)/diff(start, days = 7)) %>%
+ distinct()
+
+Output:
+# A tibble: 10 × 5
+# Groups:   Week_num [3]
+    start   end     event Week_num Percentage
+    <date> <date> <fct>    <int>      <dbl>
+ 1 2014-05-05 2014-05-07 event 1          0  
+ 2 2014-06-01 2014-06-02 event 2          0  
+ 3 2014-06-04 2014-06-05 event 3          0  
+ 4 2014-06-08 2014-06-09 event 4          0  
+ 5 2014-06-14 2014-06-15 event 5          0  
+ 6 2014-06-21 2014-06-23 event 6          0  
+ 7 2014-06-29 2014-06-30 event 7          0  
+ 8 2014-07-01 2014-07-03 event 8          0  
+ 9 2014-07-06 2014-07-08 event 9          0  
+10 2014-07-13 2014-07-15 event 10         0  
+
+DATA:
+df <- read.table(text = 
+    "start          end           event  
+     '2014-05-05'     '2014-05-07'   event 1
+     '2014-06-01'     '2014-06-02'   event 2
+     '2014-06-04'     '2014-06-05'   event 3
+     '2014-06-08'     '2014-06-09'   event 4
+     '2014-06-14'     '2014-06-15'   event 5
+     '2014-06-21'     '2014-06-23'   event 6
+     '2014-06-29'     '2014-06-30'   event 7", 
+    header = TRUE)
+
+Also, a base-r option is a bit simpler:
+df %>% 
+  group_by(Week_num = week(start)) %>% 
+  summarize(Percentage = 100 * (end - start)/difftime(max(end, start), start))
+
+</div></body></html><!-- 2022-06-25 08:32:50 

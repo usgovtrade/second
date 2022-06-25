@@ -1,0 +1,272 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4039.html'>4039</a><Br/><a href='4040.html'>4040</a><Br/><a href='4041.html'>4041</a><Br/><a href='4042.html'>4042</a><Br/><a href='4043.html'>4043</a><Br/><a href='4044.html'>4044</a><Br/><a href='4045.html'>4045</a><Br/><a href='4046.html'>4046</a><Br/><a href='4047.html'>4047</a><Br/><a href='4048.html'>4048</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4037.html'>4037</a><Br/><a href='4036.html'>4036</a><Br/><a href='4035.html'>4035</a><Br/><a href='4034.html'>4034</a><Br/><a href='4033.html'>4033</a><Br/><a href='4032.html'>4032</a><Br/><a href='4031.html'>4031</a><Br/><a href='4030.html'>4030</a><Br/><a href='4029.html'>4029</a><Br/><a href='4028.html'>4028</a></div><div class='nav'><a href='4037.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4039.html'> >> </a></div><div class='article'>Q:
+
+What is the right way to do an asynchronous call to fetch a JSON payload using Retrofit 2.0?
+
+I was trying to learn how to use Retrofit for an Android app, but the example they gave at the official site in the following link: https://futurestud.io/tutorials/retrofit-tutorial-part-3-asynchronous-networking does not make sense.
+For example, if I'm retrieving some JSON data from a server using retrofit, it should look like this:
+    @GET("/data.json")
+    Call<Data> dataResponse()
+
+And then, I should implement the callback like this:
+    dataResponse().enqueue(new Callback<Data>() {
+        @Override
+        public void onResponse(Call<Data> call, Response<Data> response) {
+            if (response.isSuccessful()) {
+                Data data = response.body();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<Data> call, Throwable t) {
+        }
+    });
+
+When you send the request using http://192.168.1.2/getdata.php it will create a request with the following body:
+{
+    "data": {
+        "name": "data",
+        "state": "123",
+        "data": [{
+            "name": "data",
+            "state": "123",
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            }
+        }, {
+            "name": "data",
+            "state": "123",
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            }
+        }]
+    }
+}
+
+I thought that it could be done as follows:
+    interface ListModel {
+    String name;
+    String state;
+    List<Data> data;
+    }
+    interface Data {
+    String name;
+    String state;
+    List<Data> data;
+    }
+
+    class DataService {
+    private static final String BASE_URL = "http://192.168.1.2";
+
+    private List<ListModel> get(String... params) {
+    List<ListModel> list = new ArrayList<>();
+    for(String param : params) {
+    String uri = String.format("get?%s=%s", param, param);
+    Call<ListModel> call = HttpClient.getHttp().getCall(uri);
+    try {
+        list = call.execute().body();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    }
+    return list;
+    }
+
+    class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    // Get JSON from API and parse it using GSON
+    Call<List<ListModel>> call = new RetrofitInstance(DataService.class)
+                    .get(new String[]{"data", "id", "2"}, new String[]{"name", "state", "data"});
+    call.enqueue(new Callback<List<ListModel>>() {
+        @Override
+        public void onResponse(Call<List<ListModel>> call, Response<List<ListModel>> response) {
+            if (response.isSuccessful()) {
+                List<ListModel> models = response.body();
+                // Do something with models
+            } else {
+                // handle error
+                String error = response.errorBody().string();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<List<ListModel>> call, Throwable t) {
+
+        }
+    });
+    }
+    }
+
+    class RetrofitInstance {
+    public static Retrofit getRetrofitInstance() {
+        return Retrofit.Builder()
+                    .baseUrl(BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+    }
+    }
+
+And I was going to parse the JSON in the RetrofitInstance class like this:
+        JSONObject jsonObject = new JSONObject(jsonString);
+        Gson gson = new Gson();
+        DataModel dataModel = gson.fromJson(jsonObject.toString(), DataModel.class);
+        List<Data> dataList = dataModel.getData();
+
+But, in this case, the JSON is not properly parsed. The JSON that is sent from the server is different from what I'm expecting. It looks like this:
+{
+    "data": {
+        "name": "data",
+        "state": "123",
+        "data": [{
+            "name": "data",
+            "state": "123",
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            }
+        }],
+        "data": {
+            "name": "data",
+            "state": "123",
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            }
+        },
+        "data": {
+            "name": "data",
+            "state": "123",
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            "data": {
+                "name": "data",
+                "state": "123"
+            },
+            </div></body></html><!-- 2022-06-25 08:32:48 

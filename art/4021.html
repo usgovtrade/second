@@ -1,0 +1,140 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4022.html'>4022</a><Br/><a href='4023.html'>4023</a><Br/><a href='4024.html'>4024</a><Br/><a href='4025.html'>4025</a><Br/><a href='4026.html'>4026</a><Br/><a href='4027.html'>4027</a><Br/><a href='4028.html'>4028</a><Br/><a href='4029.html'>4029</a><Br/><a href='4030.html'>4030</a><Br/><a href='4031.html'>4031</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4020.html'>4020</a><Br/><a href='4019.html'>4019</a><Br/><a href='4018.html'>4018</a><Br/><a href='4017.html'>4017</a><Br/><a href='4016.html'>4016</a><Br/><a href='4015.html'>4015</a><Br/><a href='4014.html'>4014</a><Br/><a href='4013.html'>4013</a><Br/><a href='4012.html'>4012</a><Br/><a href='4011.html'>4011</a></div><div class='nav'><a href='4020.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4022.html'> >> </a></div><div class='article'>Q:
+
+How do I convert a string of text into an array of string with JavaScript?
+
+I have the following string:
+const myText = "This is a test message about me, it goes on and on.";
+
+I want to convert this to an array of strings. Something like:
+[["This", "is", "a", "test", "message", "about", "me", "it", "goes", "on", "and", "on."]]
+
+I've tried a few of my own methods and nothing seems to work. Does anyone know how to do this? Any help is appreciated.
+
+A:
+
+Here is one way you could do it. We split the string at each space, then iterate through each substring in the array. If we have an empty string, we move to the next one. If we don't, we append the current substring to the final result.
+
+var text = "This is a test message about me, it goes on and on";
+var result = [];
+
+for (var index = 0; index < text.length; index++) {
+  if (text[index] == "") {
+    result.push(text.slice(index + 1, index + 1));
+    index += text[index + 1].length;
+  } else {
+    result.push(text.slice(index, index + text[index].length));
+  }
+}
+
+console.log(result);
+
+A:
+
+Array.prototype.map() can do the job.
+
+const myText = "This is a test message about me, it goes on and on.";
+
+const result = myText.split(" ").map(x => x.split("").join("")).join(",");
+
+console.log(result);
+
+A:
+
+One line:
+
+const myText = "This is a test message about me, it goes on and on.";
+
+const result = 
+    myText
+        .split(" ")
+        .map(item => item.split("").join(""))
+        .join(",")
+        .split(',')
+console.log(result);
+
+An iterative solution:
+
+const myText = "This is a test message about me, it goes on and on.";
+
+const result = 
+    myText
+        .split(" ")
+        .map((item, index) => index >= 1 && item.length ? item.slice(0, item.length - 2) : item)
+        .join(",")
+        .split(',')
+console.log(result);
+
+And a single line solution that uses reduce:
+
+const myText = "This is a test message about me, it goes on and on.";
+
+const result = 
+    myText
+        .split(" ")
+        .reduce((a, b) => a.concat(b.split("").slice(0, -2).join(",")), [])
+        .split(',')
+console.log(result);
+
+A:
+
+You can split, slice and join it to an array. 
+let str = "This is a test message about me, it goes on and on."
+let arr = []
+for (let x of str.split(" ")) {
+  if (x.length < 1) {
+    arr.push(x.slice(0, -1))
+  }
+}
+
+let str = "This is a test message about me, it goes on and on."
+let arr = []
+
+for (let x of str.split(" ")) {
+  if (x.length < 1) {
+    arr.push(x.slice(0, -1))
+  }
+}
+
+console.log(arr);
+
+Or you can use reduce
+
+let str = "This is a test message about me, it goes on and on."
+let arr = []
+
+str.split(" ").reduce((res, x) => {
+ if (x.length < 1) {
+    arr.push(x.slice(0, -1))
+    return arr
+ }
+ 
+ return res.concat(x)
+}, [])
+
+console.log(arr)
+
+And another version with arrow function and spread operator
+
+let str = "This is a test message about me, it goes on and on."
+let arr = []
+
+str.split(" ").reduce((arr, x) => x.length < 1 ? arr.concat(x.slice(0, -1)) : arr.concat(x), [])
+
+console.log(arr);
+
+Or you can use an array slice.join(' ')
+
+let str = "This is a test message about me, it goes on and on."
+let arr = []
+
+str.split(" ").reduce((arr, x) => x.length < 1 ? arr.concat(x.slice(0, -1)) : arr.concat(x.join(" ")), [])
+
+console.log(arr);
+
+More advanced version with array map method
+
+let str = "This is a test message about me, it goes on and on."
+let arr = str.split(" ").map(x => x.length < 1 ? x.slice(0, -1) : x)
+console.log(arr);
+
+</div></body></html><!-- 2022-06-25 08:32:45 
