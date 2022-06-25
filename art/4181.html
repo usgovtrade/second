@@ -1,0 +1,95 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4182.html'>4182</a><Br/><a href='4183.html'>4183</a><Br/><a href='4184.html'>4184</a><Br/><a href='4185.html'>4185</a><Br/><a href='4186.html'>4186</a><Br/><a href='4187.html'>4187</a><Br/><a href='4188.html'>4188</a><Br/><a href='4189.html'>4189</a><Br/><a href='4190.html'>4190</a><Br/><a href='4191.html'>4191</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4180.html'>4180</a><Br/><a href='4179.html'>4179</a><Br/><a href='4178.html'>4178</a><Br/><a href='4177.html'>4177</a><Br/><a href='4176.html'>4176</a><Br/><a href='4175.html'>4175</a><Br/><a href='4174.html'>4174</a><Br/><a href='4173.html'>4173</a><Br/><a href='4172.html'>4172</a><Br/><a href='4171.html'>4171</a></div><div class='nav'><a href='4180.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4182.html'> >> </a></div><div class='article'>Q:
+
+Cant get the data for this field
+
+I was trying to get the value of 'product_name' by using this function
+$products = [];
+$query = "select id, product_name, prod_group from ebs_product_details where prod_group = ''";
+$select_products = "select product_name, prod_group from ebs_product_details where prod_group = ''";
+if ($result = mysqli_query($con,$query)) {
+    while($data = mysqli_fetch_assoc($result)){
+
+        if($data['product_name'] != ''){
+            $products[] = $data;
+            print_r($data);
+            var_dump($data['product_name']);
+            echo "<br/>";
+
+        }
+
+    }
+}
+
+But I am not getting anything...
+
+A:
+
+You can use this sql:
+$result = mysqli_query($con,"SELECT prod_group,product_name FROM ebs_product_details WHERE prod_group=''");
+
+and if you need you can use this code too:
+while($data = mysqli_fetch_assoc($result)){
+
+            if(empty($data['prod_group'])){
+                continue;
+            }
+
+            if($data['prod_group'] != ''){
+                $products[] = $data;
+                var_dump($data);
+            }
+
+        }
+
+In if statement should check prod_group!=''
+
+it will give you all name of the product without empty result
+
+it will return empty result
+
+i hope it helps :)
+
+A:
+
+The issue here is that you are only returning if the record is not empty, but the empty ones are not empty.
+This could be done with a simple tweak to your query:
+$products = [];
+$query = "select id, product_name, prod_group from ebs_product_details where prod_group = ''";
+$select_products = "select product_name, prod_group from ebs_product_details where prod_group = ''";
+if ($result = mysqli_query($con,$query)) {
+    while($data = mysqli_fetch_assoc($result)){
+        if($data['product_name'] != ''){
+            $products[] = $data;
+            print_r($data);
+            var_dump($data['product_name']);
+            echo "<br/>";
+        }
+    }
+}
+
+As you can see, instead of:
+if($data['product_name'] != ''){
+
+do
+if($data['product_name'] != 'NULL'){
+
+This will leave you with an array of all the results, or an empty array if there is no product_name in the product_details table
+
+A:
+
+Because you are performing SELECT * FROM EBS_PRODUCT_DETAILS where the value is NULL and because in mysql NULL != '', you cannot retrieve the field value.
+SELECT product_name FROM EBS_PRODUCT_DETAILS where prod_group = '';
+
+This way will show only records which have a field product_name, but the value will be NULL.
+
+Edit: Since you mentioned that your prod_group column contains only 1 value, you need to use something like this, otherwise you will get an error:
+SELECT `product_name`, `prod_group` from `ebs_product_details` where prod_group = '' LIMIT 1
+
+Now, if you need the value:
+if ($row = mysqli_fetch_assoc($result)) {
+    echo $row["product_name"];
+}
+
+Take a look at mysqli_fetch_assoc docs.
+
+</div></body></html><!-- 2022-06-25 08:33:06 

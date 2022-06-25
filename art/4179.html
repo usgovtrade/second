@@ -1,0 +1,229 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4180.html'>4180</a><Br/><a href='4181.html'>4181</a><Br/><a href='4182.html'>4182</a><Br/><a href='4183.html'>4183</a><Br/><a href='4184.html'>4184</a><Br/><a href='4185.html'>4185</a><Br/><a href='4186.html'>4186</a><Br/><a href='4187.html'>4187</a><Br/><a href='4188.html'>4188</a><Br/><a href='4189.html'>4189</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4178.html'>4178</a><Br/><a href='4177.html'>4177</a><Br/><a href='4176.html'>4176</a><Br/><a href='4175.html'>4175</a><Br/><a href='4174.html'>4174</a><Br/><a href='4173.html'>4173</a><Br/><a href='4172.html'>4172</a><Br/><a href='4171.html'>4171</a><Br/><a href='4170.html'>4170</a><Br/><a href='4169.html'>4169</a></div><div class='nav'><a href='4178.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4180.html'> >> </a></div><div class='article'>Q:
+
+jQuery AJAX POST not returning JSON object
+
+I am using the jQuery .post() method to send data to an HTTP Server.  After the AJAX request, the HTTP server is responding with:
+Server returned bytes: 0
+Connection: close
+
+Which doesn't seem to be valid JSON, so I guess the data isn't making it to the server.  Here is my AJAX call:
+$.post('test.php', {
+    command: 'submit_query',
+    data: {
+        var1: var1,
+        var2: var2,
+        var3: var3
+    }
+}, function(data) {
+    console.log(data);
+});
+
+I have another AJAX method that makes a GET request (which works) that looks like this:
+$.get('test.php', {
+    command: 'submit_query',
+    data: {
+        var1: var1,
+        var2: var2,
+        var3: var3
+    }
+}, function(data) {
+    console.log(data);
+});
+
+What am I doing wrong that the POST request is not working? Do I need to explicitly say in my HTTP Post request that I am sending JSON? I do not think this is the problem. Is this a speciality of my HTTP Server? (Apache) The HTTP Post response looks like this:
+HTTP/1.1 200 OK
+Date: Sun, 02 Jan 2011 00:09:03 GMT
+Server: Apache/2.2.14 (Ubuntu) DAV/2 SVN/1.5.2
+X-Powered-By: PHP/5.3.1-1ubuntu4.18
+Content-Length: 0
+Connection: close
+Content-Type: application/json
+
+Update:
+I have tried a few different things:
+1) Returning a simple html message, and this worked:
+$res = "test";
+echo $res;
+
+2) Returning json_encode($res) to the AJAX request. This DID NOT work:
+$res = "test";
+echo json_encode($res);
+
+3) Returning json_encode($res) to the HTTP Server (using the simple PHP functions) and this worked:
+<?php
+
+    $my_result = json_encode($res);
+    echo $my_result;
+
+?>
+
+4) Returning echo json_encode($res) to the AJAX request. This DID NOT work:
+$.post('test.php', {
+    command: 'submit_query',
+    data: {
+        var1: var1,
+        var2: var2,
+        var3: var3
+    }
+}, function(data) {
+    console.log(data);
+});
+
+5) Returning echo json_encode($res) to the HTTP Server (using the Simple PHP functions). This WORKED:
+<?php
+
+    $my_result = json_encode($res);
+    echo $my_result;
+
+?>
+
+6) Returning echo json_encode($res) to the HTTP Server (using the Simple PHP functions). This WORKED:
+<?php
+
+    echo json_encode($res);
+
+?>
+
+So, I am back to step 1. My server has apparently done something. I am not sure what though.
+
+A:
+
+I think you need to explicitly tell it to json_encode.
+json_encode('The Value'); // This works!
+var_dump(json_encode($var)); // This also works!
+
+So in your case it should be like this:
+<?php
+
+$var = "Hello World";
+echo json_encode($var);
+
+EDIT
+For your original code in the OP:
+I tested this and it worked just fine:
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+
+    $('#testform').submit(function(){
+
+        $.post('test.php', 
+                {
+                    var1: 1,
+                    var2: 2,
+                    var3: 3
+                }, 
+                function(data) {
+                    console.log(data);
+                });
+
+        return false;
+    });
+
+});
+</script>
+</head>
+<body>
+
+<form id="testform">
+    <input type="submit">
+</form>
+
+</body>
+</html>
+
+A:
+
+PHP:
+echo json_encode(array( "success" => "true" ));
+
+jQuery:
+$.ajax({
+  url: 'test.php',
+  type: 'POST',
+  data: { mydata: mydata },
+  dataType: 'json', // <--  this is the important part
+  success: function(res) {
+    alert('It worked');
+    console.log(res);
+  }
+});
+
+If you don't specify dataType: 'json', jQuery will try to parse it as a string.
+
+A:
+
+Ok so I figured it out. I changed my script to be like so:
+        function test(var1, var2, var3) {
+
+            $.ajax({
+                type: 'POST',
+                url: 'test.php',
+                data: {
+                    command: 'test_response',
+                    var1: var1,
+                    var2: var2,
+                    var3: var3,
+                },
+                success: function(data) {
+
+                    alert(data.length);
+
+                },
+                error: function(err) {
+
+                    alert(err);
+
+                }
+            });
+
+        }
+
+And added this to the php file that was handling the request:
+if(isset($_POST['command'])){
+
+    $val1 = $_POST['var1'];
+    $val2 = $_POST['var2'];
+    $val3 = $_POST['var3'];
+
+    if(!empty($_POST['data'])){
+
+        $val1 = $_POST['data']['var1'];
+        $val2 = $_POST['data']['var2'];
+        $val3 = $_POST['data']['var3'];
+
+    }
+
+    echo json_encode(array('success' => true));
+
+}else{
+    echo json_encode(array('success' => false, 'error_message' => 'The command was not recognised.'));
+}
+
+All of this was just because the server has PHP 5.3.1 and earlier not supporting JSON. So you need to do this in order to get it to work. Also there was a problem with the data going through and I was just receiving an error message so I added this:
+        if(isset($_POST['command'])){
+
+            $val1 = $_POST['var1'];
+            $val2 = $_POST['var2'];
+            $val3 = $_POST['var3'];
+
+            if(!empty($_POST['data'])){
+
+                $val1 = $_POST['data']['var1'];
+                $val2 = $_POST['data']['var2'];
+                $val3 = $_POST['data']['var3'];
+
+            }
+
+            echo json_encode(array('success' => true));
+
+        }else{
+            echo json_encode(array('success' => false, 'error_message' => 'The command was not recognised.'));
+        }
+
+After that everything works. I hope this helps people because I couldn't find anything that would work the same as this on the internet. I also am hoping that the person who posted that this method is not a good practice did not actually mean it, because this is the only solution that I could find.
+
+</div></body></html><!-- 2022-06-25 08:33:06 

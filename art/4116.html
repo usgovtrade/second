@@ -1,0 +1,191 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4117.html'>4117</a><Br/><a href='4118.html'>4118</a><Br/><a href='4119.html'>4119</a><Br/><a href='4120.html'>4120</a><Br/><a href='4121.html'>4121</a><Br/><a href='4122.html'>4122</a><Br/><a href='4123.html'>4123</a><Br/><a href='4124.html'>4124</a><Br/><a href='4125.html'>4125</a><Br/><a href='4126.html'>4126</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4115.html'>4115</a><Br/><a href='4114.html'>4114</a><Br/><a href='4113.html'>4113</a><Br/><a href='4112.html'>4112</a><Br/><a href='4111.html'>4111</a><Br/><a href='4110.html'>4110</a><Br/><a href='4109.html'>4109</a><Br/><a href='4108.html'>4108</a><Br/><a href='4107.html'>4107</a><Br/><a href='4106.html'>4106</a></div><div class='nav'><a href='4115.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4117.html'> >> </a></div><div class='article'>Q:
+
+How to get text color from a cell in a custom cell class - Xamarin iOS
+
+I have a custom cell which has a label property in it.
+I use the custom cell class to add this label to any other tableview's cell.
+What I want to do is get the text color of this label so that I can change the cell's textColor to that of the text color in this label.
+My Custom Cell Class :
+public class CustomCell : UITableViewCell
+{
+    public static UILabel myLabel;
+
+    public CustomCell(IntPtr handle) : base(handle)
+    {
+
+    }
+
+    public static void setCustomLabel(UITableViewCell cell, UILabel textLabel)
+    {
+        CustomCell myCell = (CustomCell)cell;
+
+        myCell.myLabel = textLabel;
+
+    }
+
+    [Export("initWithStyle:reuseIdentifier:")]
+    public CustomCell(UITableViewCellStyle style, string reuseIdentifier) : base(UITableViewCellStyle.Subtitle,reuseIdentifier)
+    {
+        myLabel = new UILabel();
+        ContentView.AddSubview(myLabel);
+
+    }
+
+    [Export("initWithCoder:")]
+    public CustomCell(NSCoder aDecoder) : base(UITableViewCellStyle.Subtitle, aDecoder)
+    {
+        myLabel = new UILabel();
+
+    }
+
+    [Export("setText:")]
+    public override void SetText(UITextField value)
+    {
+        myLabel.Text = value.Text;
+    }
+
+    [Export("setDetailText:")]
+    public override void SetDetailText(NSString value)
+    {
+        myLabel.Text = value;
+    }
+
+    [Export("setDetailTextColor:")]
+    public override void SetDetailTextColor(UIColor value)
+    {
+        myLabel.TextColor = value;
+    }
+}
+
+In my viewController class I did :
+private void setUpTableView()
+    {
+        ...
+        private TableSource.CustomCell objCustomCell;
+
+        objCustomCell = (TableSource.CustomCell)myTableView.DequeueReusableCell("mycell");
+
+        objCustomCell.myLabel.Text = "MyText";
+
+        // this next line gives error "Reference to non-static field requires an object reference."
+        objCustomCell.SetTextColor(objCustomCell.myLabel.TextColor);
+
+        // objCustomCell.myLabel is not declared. Do I have to create a UILabel instance here?
+        // objCustomCell.myLabel = new UILabel()
+
+        objCustomCell.Subviews.Clear();
+        objCustomCell.Subviews.Add(new UILabel()
+        {
+            Text = "Hello World!"
+        });
+
+        myTableView.Source = objCustomCell;
+
+    }
+
+I want the cell to show the text and text color of the text which I added using myLabel and the textColor property of it. How do I accomplish this?
+The error I get is :
+"Reference to non-static field requires an object reference."
+
+A:
+
+I found the answer to my own question.
+The reason why I wasn't able to add the text color by adding a UILabel to the cell was because the UILabel was being added inside the static myLabel property and it couldn't be seen outside of that property.
+I had to create a label object and then set the text color of that object and then add it to the cell.
+The corrected code looks something like this :
+objCustomCell.myLabel.Text = "MyText";
+
+objCustomCell.myLabel.TextColor = objCustomCell.myLabel.TextColor;
+
+objCustomCell.Subviews.Clear();
+objCustomCell.Subviews.Add(new UILabel()
+{
+    Text = "Hello World!"
+});
+
+myTableView.Source = objCustomCell;
+
+Hope this helps someone in the future :)
+
+A:
+
+Your cell definition has no name. Do not do that; you will never have any control over the label inside the cell, and cannot change the color anyways.
+Instead, change your setTextColor to something like this:
+public void SetTextColor(UIColor value)
+{
+    if(myLabel == null)
+        return;
+
+    // set the color of the label in the view hierarchy
+    myLabel.TextColor = value;
+}
+
+// then use it like this:
+myCustomCell.SetTextColor(myCustomCell.myLabel.TextColor);
+
+If you are adding and removing the UILabel inside your cell, then you can do something like this:
+public void SetTextColor(UIColor value)
+{
+    if(myLabel == null)
+        return;
+
+    // set the color of the label in the view hierarchy
+    myLabel.TextColor = value;
+
+    // force the label to draw itself to the cell, reusing it
+    myLabel.SetNeedsDisplay();
+}
+
+// then use it like this:
+myCustomCell.SetTextColor(myCustomCell.myLabel.TextColor);
+
+I would recommend you also add code to change the color of the UITableViewCellAccessoryIndicatorView that has the colored chevron. That can be done in SetTextColor as well.
+
+A:
+
+If you want to change color of all cells in the table view without using CustomCell class , then you can use custom UITableViewCell. Create two UILabel in custom cell. Place one label below other and set cell background to your desired color.
+CustomTableCell.h
+@interface CustomTableCell : UITableViewCell {
+    UILabel *label1;
+    UILabel *label2;
+}
+@property (nonatomic, retain) UILabel *label1;
+@property (nonatomic, retain) UILabel *label2;
+@end
+
+CustomTableCell.m
+- (void)awakeFromNib {
+
+    self.label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
+    [self.contentView addSubview:self.label1];
+
+    self.label2 = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, 60, 30)];
+    [self.contentView addSubview:self.label2];
+
+    [self.label1 setTextColor:[UIColor grayColor]];
+    [self.label1 setTextAlignment:UITextAlignmentCenter];
+    [self.label1 setBackgroundColor:[UIColor whiteColor]];
+    [self.label2 setTextAlignment:UITextAlignmentCenter];
+    [self.label2 setBackgroundColor:[UIColor whiteColor]];
+
+}
+
+You can change label1 color by setting color in this method.
+-(void)setLabelTextColor:(UIColor *)color
+{
+
+    label1.textColor = color;
+    label2.textColor = color;
+
+}
+
+And use this method for changing all label text color.
+ CustomTableCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+ [cell setLabelTextColor:[UIColor greenColor]];
+
+If you are adding tableView and tableViewCell programmatically, please use the following code for that.
+CustomTableCell *cell = [[CustomTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"CustomCell"];
+
+Hope, it helps you to get out of this error.
+
+</div></body></html><!-- 2022-06-25 08:32:58 

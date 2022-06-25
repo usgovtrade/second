@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4091.html'>4091</a><Br/><a href='4092.html'>4092</a><Br/><a href='4093.html'>4093</a><Br/><a href='4094.html'>4094</a><Br/><a href='4095.html'>4095</a><Br/><a href='4096.html'>4096</a><Br/><a href='4097.html'>4097</a><Br/><a href='4098.html'>4098</a><Br/><a href='4099.html'>4099</a><Br/><a href='4100.html'>4100</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4089.html'>4089</a><Br/><a href='4088.html'>4088</a><Br/><a href='4087.html'>4087</a><Br/><a href='4086.html'>4086</a><Br/><a href='4085.html'>4085</a><Br/><a href='4084.html'>4084</a><Br/><a href='4083.html'>4083</a><Br/><a href='4082.html'>4082</a><Br/><a href='4081.html'>4081</a><Br/><a href='4080.html'>4080</a></div><div class='nav'><a href='4089.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4091.html'> >> </a></div><div class='article'>Q:
+
+How does the function of the Github API compare with GitHub's own mobile app?
+
+We are thinking about replacing the GitHub mobile app by a HTML5 Web App. We have read about a client-side code of Github's own app.
+GitHub supports API calls in a similar fashion but I would like to know what function they use the API for compared to the GitHub mobile app.
+
+A:
+
+The documentation for the GitHub App's API shows that this API call has the following purpose:
+
+Get information about a repository from a user. This includes such
+  things as who has access to a repository and who created and last
+  updated it.
+
+As far as I can tell, this does not replace any functionality of the app and is instead used to retrieve extra information about repositories via API calls.
+
+A:
+
+The app sends a request to the following URL: 
+https://api.github.com/repos/:user/:repo?access_token=:access_token
+It's this URL which does the work of looking for the user's repos. 
+Note that this API can also be used to look at other users' information, just like the website. I know there was a post a while back (with the link to a repo) in which someone used it to look at some users' repositories - there was an app.
+
+A:
+
+The GitHub app uses the API to provide additional information about repositories (such as their content) and collaborators (e.g. who can write to the repository). See https://developer.github.com/apps/ for more details.
+
+A:
+
+With the introduction of access tokens, the user can now request access for the private repos or also can use the API for searching by repository or for authenticated users to get permissions.
+For more info check: 
+https://developer.github.com/apps/
+
+The GitHub app, as the other Git and GitHub desktop tools, is
+  developed as a mobile-friendly extension for the GitHub website. The
+  GitHub app makes a request to the https://api.github.com/
+  in order to access the different endpoints.
+As well as the endpoints for the public project API, the mobile apps
+  use those related to the private projects or any other permission
+  restricted endpoints.
+
+For now the app is available in the following languages:
+
+Apple iOS
+Google Android
+Blackberry 10
+Windows Phone
+Apple macOS
+
+https://developer.github.com/apps/
+
+Also it depends what privileges you have with your account. Is it public repo? Is it private? It depends on that.
+
+If you have push privileges on the repo, then you can use it without using it via API.
+In order to use the API from the mobile app, the following permissions are required:
+
+Repository Read permissions
+Repository Write permissions
+
+Reference: https://help.github.com/articles/about-github-apps-feature
+Also, if you have a private repo, you can not push to it. You can get the status of your repo via API:
+GET https://api.github.com/repos/:user/:repo/deployments
+
+https://developer.github.com/v3/#deployments
+
+I hope this will help you.
+Reference: How to get the GitHub repo status using API
+
+The GitHub app uses the GitHub API to authenticate and read information about public repositories. It is not necessary to authenticate to access private repositories.
+
+</div></body></html><!-- 2022-06-25 08:32:55 

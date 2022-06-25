@@ -1,0 +1,95 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4122.html'>4122</a><Br/><a href='4123.html'>4123</a><Br/><a href='4124.html'>4124</a><Br/><a href='4125.html'>4125</a><Br/><a href='4126.html'>4126</a><Br/><a href='4127.html'>4127</a><Br/><a href='4128.html'>4128</a><Br/><a href='4129.html'>4129</a><Br/><a href='4130.html'>4130</a><Br/><a href='4131.html'>4131</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4120.html'>4120</a><Br/><a href='4119.html'>4119</a><Br/><a href='4118.html'>4118</a><Br/><a href='4117.html'>4117</a><Br/><a href='4116.html'>4116</a><Br/><a href='4115.html'>4115</a><Br/><a href='4114.html'>4114</a><Br/><a href='4113.html'>4113</a><Br/><a href='4112.html'>4112</a><Br/><a href='4111.html'>4111</a></div><div class='nav'><a href='4120.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4122.html'> >> </a></div><div class='article'>Q:
+
+How to use HtmlUnit to crawl through a page that uses javascript?
+
+I have tried a few different HtmlUnit options and cannot get it to print out all the information I would like. 
+<input type=radio name="radioGroup" id="R18" value="0" style="visibility: visible; display: inline; position: static; height: auto; width: auto; z-index: 9999;">
+
+This is what I am trying to print out the value for, which is 0. Here is my code:
+try {
+    WebClient webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_9);
+    webClient.getOptions().setThrowExceptionOnScriptError(false);
+
+    HtmlPage page = webClient.getPage("http://www.zogis.com/home.aspx");
+
+    for (HtmlAnchor anchor : page.getAnchors()) {
+        if (anchor.getHref().contains("/en-us/catalog")) {
+            System.out.println("text:" + anchor.getText() + " link:" + anchor.getHref());
+        }
+    }
+} catch (Exception e) {
+    e.printStackTrace();
+}
+
+Is there anything I can add to get it to print this out? I would like to print out all of the values from this page. I have been going through the documentation but am at a loss.
+
+A:
+
+I will try to explain how to use HtmlUnit. Here are couple of useful links that might be helpful in starting to use it: 
+
+http://htmlunit.sourceforge.net/gettingStarted.html
+http://htmlunit.sourceforge.net/apidocs/index.html
+
+An example of code using HtmlUnit would look like this:
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.HtmlForm;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlInputRadio;
+import com.gargoylesoftware.htmlunit.html.HtmlPage.HTMLConfiguration;
+import com.gargoylesoftware.htmlunit.html.HtmlRadioInput;
+import com.gargoylesoftware.htmlunit.html.HtmlSelect;
+import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
+
+import java.io.IOException;
+
+public class Main {
+
+    public static void main(String[] args) {
+        BrowserVersion browserVersion = BrowserVersion.INTERNET_EXPLORER_9;
+        try {
+            WebClient webClient = new WebClient(browserVersion);
+            webClient.getOptions().setThrowExceptionOnScriptError(false);
+
+            HtmlPage page = webClient.getPage("http://www.zogis.com/home.aspx");
+
+            for (HtmlAnchor anchor : page.getAnchors()) {
+                if (anchor.getHref().contains("/en-us/catalog")) {
+                    HtmlForm form = page.getFormByName("filterForm");
+                    HtmlInputRadio radio = form.getInputByName("siteType");
+                    System.out.println("text:" + anchor.getText() + " link:" + anchor.getHref() + " for radio: " + radio.getValue());
+                    // Or
+                    // System.out.println("text:" + anchor.getText() + " link:" + anchor.getHref() + " for radio: " + webClient.getJavascriptExecutor().executeScript("document.getElementById(\"filterForm\").elements['siteType'].value").toString());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+I think that you are interested in getting selected value from form and in the case of this page: http://www.zogis.com/home.aspx - it is value with name siteType from group radio buttons called Filter Options, so you need to change condition in if to the following:
+if (anchor.getHref().contains("/en-us/catalog")) {
+    HtmlForm form = page.getFormByName("filterForm");
+    HtmlInputRadio radio = form.getInputByName("siteType");
+    System.out.println("text:" + anchor.getText() + " link:" + anchor.getHref() + " for radio: " + radio.getValue());
+}
+
+In this case radio will be an instance of HtmlRadioInput object, which is a child of a form. In this case you can get selected value of radio using webClient.getJavascriptExecutor().executeScript("document.getElementById(\"filterForm\").elements['siteType'].value").toString()). This will return value of siteType attribute of element with id filterForm.
+In the page you showed in your question there is no form with name filterForm. But there are many other kinds of radio buttons like <input type="radio" name="site" id="R18" value="0" style="visibility: visible; display: inline; position: static; height: auto; width: auto; z-index: 9999;"> and for them value will be retrieved using similar way. In this case element to look for will be id=site which means that the name of the element will be site, not filterForm.
+
+A:
+
+One reason you might not be seeing data is that the javascript is rewriting the data before sending the HTTP response. This can happen for many reasons, including security.
+To force it to not rewrite the data, you should add the following meta tag to your HTML page. This will make the browser believe that it is receiving the unaltered content of the page:
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+The other issue is that page is sending javascript information back, which the webpage you have referenced does not support. The last issue is that there are a large number of elements with the id=siteType. To fetch the value using javascript, you need to know their IDs and can't get it using getElementById because it throws a null pointer exception. You can access them using getElementsByName
+System.out.println("text:" + anchor.getText() + " link:" + anchor.getHref() + " for radio: " + webClient.getJavascriptExecutor().executeScript("document.getElementsByName('siteType')[0].value").toString());
+
+When I use the code above I get this:
+text: siteType
+link: /en-us/catalog
+for radio: 1
+
+</div></body></html><!-- 2022-06-25 08:32:59 

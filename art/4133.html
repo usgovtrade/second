@@ -1,0 +1,153 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4134.html'>4134</a><Br/><a href='4135.html'>4135</a><Br/><a href='4136.html'>4136</a><Br/><a href='4137.html'>4137</a><Br/><a href='4138.html'>4138</a><Br/><a href='4139.html'>4139</a><Br/><a href='4140.html'>4140</a><Br/><a href='4141.html'>4141</a><Br/><a href='4142.html'>4142</a><Br/><a href='4143.html'>4143</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4132.html'>4132</a><Br/><a href='4131.html'>4131</a><Br/><a href='4130.html'>4130</a><Br/><a href='4129.html'>4129</a><Br/><a href='4128.html'>4128</a><Br/><a href='4127.html'>4127</a><Br/><a href='4126.html'>4126</a><Br/><a href='4125.html'>4125</a><Br/><a href='4124.html'>4124</a><Br/><a href='4123.html'>4123</a></div><div class='nav'><a href='4132.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4134.html'> >> </a></div><div class='article'>Q:
+
+In my Rails app, how to disable asset pre-compilation in dev environment?
+
+I have a rails app where I'm using a gem called redactor-wysiwyg. It works really well, except that precompilation slows it down. For that reason I want to disable asset precompilation for my development environment.
+How can I achieve this?
+My gemfile looks like this:
+# Gemfile
+source 'https://rubygems.org'
+gem 'bootstrap-sass', '2.2.2.1'
+gem 'redactor-wysiwyg', '0.0.5'
+
+My development environment in environment/development.rb:
+# development.rb
+Rails::Initializer.run do |config|
+  config.cache_classes = false
+  config.action_controller.perform_caching = false
+  config.assets.compress = false
+
+end
+And my config/environments/production.rb:
+# config/environments/production.rb
+  # This is required to output spec build status
+  config.assets.compile = true
+  config.assets.digest = true
+
+  # Specs should be able to use asset helpers and access
+  # javascripts, cascading style sheets, and images
+  # config.assets.precompile += ['my_stylesheet.css', 'my_javascript.js']
+
+  # Version of your assets, change this if you want to expire all your old assets
+  config.assets.version = '1.0'
+
+  # Routing
+  config.serve_static_assets = false
+  # Disable Rails's static asset server (Apache or nginx will already do this).
+  config.serve_static_assets = true
+
+  # Static
+  config.static_cache_control = "public, max-age=172800"
+
+I tried putting:
+config.assets.compile = false
+config.assets.precompile = false
+config.assets.version = '1.0'
+
+at the top of environment/development.rb and production.rb respectively, but that didn't help, precompilation still happens.
+
+A:
+
+Rails 4.1+ (thanks to @p0s)
+In your config/environments/production.rb:
+config.assets.compress = false
+config.assets.compile = true
+config.assets.version = '1.0'
+
+And your development.rb:
+config.serve_static_files = true
+config.assets.precompile = 'true'
+
+A:
+
+I know this has already been answered, but the question is still relevant. I had the same issue on a site I was making (rails 4.2, paperclip, nginx) and I decided to check my nginx configuration. In case it could help someone else.
+If you use the following configuration on your nginx.conf, (that came with my install of nginx) it will disable all asset precompilation in development, with no changes needed to your nginx configuration, except for turning off precompilation.
+precompiling the assets doesn't make much sense if the files aren't changed and can be removed.
+I'm using a custom rack server instead of the default webserver.
+location / {
+                root   /path/to/public/root/of/the/application;
+
+                try_files $uri @rack;
+
+                location ~ ^/assets/ {
+                    expires max;
+                    break;
+                }
+
+                location ~* ^/(favicon.ico|robots.txt|sitemap.xml|404.html) {
+                    expires max;
+                    break;
+                }
+
+                location ~* ^/(assets/)|(js/|css/|less/|png/|gif/) {
+                    expires max;
+                    break;
+                }
+
+                location /images/ {
+                    try_files $uri @rack;
+                }
+
+                # if you use rails UJS
+                location = /touch-icons { access_log off; log_not_found off; }
+
+                # if you don't use rails UJS
+                location = / { access_log off; log_not_found off; }
+}
+
+I added this to my config/environments/production.rb
+  config.serve_static_assets = false
+
+Hope this can be helpful.
+Update 1: I got a new error trying to access my rails app from my browser and I found out that nginx was throwing an error, so the configuration above doesn't work. However, the precompile line in development.rb is not needed for the first call to your app after changing some assets, but, once the asset changes, it needs to be added again, or precompilation will take place in production as well. That's how I figured out the correct solution.
+Hope this helps.
+Update 2:
+For Rails 4.2.4, the correct code for nginx in production.rb is:
+# config/environments/production.rb
+config.assets.compile = false
+config.assets.version = '1.0'
+config.assets.precompile = [ /([^_\/])(?!_)/ ]
+config.serve_static_assets = true
+
+A:
+
+I was developing using rvm, and for my project I needed to use another server: thin.
+My solution was this:
+My development.rb:
+ENV["RAILS_ENV"] ||= 'production'
+require_relative 'boot'
+
+Rails::Initializer.run do |config|
+  config.cache_classes = false
+  config.assets.compile = false
+end
+
+And my production.rb:
+config.autoload_paths += %W(#{config.root}/lib)
+config.assets.compile = true
+
+Thin was listening on port 3000:
+./bin/rails s thin -p 3000 -e production
+
+That's it.
+I don't know if there's an option for RAILS_ENV=development in rails. It was enough for me.
+
+A:
+
+Set precompile = false in development.rb
+
+A:
+
+I had to remove 'rails_12factor' gem (which came with my rails version) in production.rb
+config.assets.compile = false
+config.assets.version = '1.0'
+
+and add:
+config.assets.precompile = ['application.js', 'application.css', 'all_javascripts.js', 'all_css_includes.css']
+
+after the line:
+config.serve_static_assets = true
+
+That's what finally fixed it for me!
+
+</div></body></html><!-- 2022-06-25 08:33:00 

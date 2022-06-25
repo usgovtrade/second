@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4123.html'>4123</a><Br/><a href='4124.html'>4124</a><Br/><a href='4125.html'>4125</a><Br/><a href='4126.html'>4126</a><Br/><a href='4127.html'>4127</a><Br/><a href='4128.html'>4128</a><Br/><a href='4129.html'>4129</a><Br/><a href='4130.html'>4130</a><Br/><a href='4131.html'>4131</a><Br/><a href='4132.html'>4132</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4121.html'>4121</a><Br/><a href='4120.html'>4120</a><Br/><a href='4119.html'>4119</a><Br/><a href='4118.html'>4118</a><Br/><a href='4117.html'>4117</a><Br/><a href='4116.html'>4116</a><Br/><a href='4115.html'>4115</a><Br/><a href='4114.html'>4114</a><Br/><a href='4113.html'>4113</a><Br/><a href='4112.html'>4112</a></div><div class='nav'><a href='4121.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4123.html'> >> </a></div><div class='article'>Q:
+
+What is the purpose of the "no-access-control-allow-origin" security measure?
+
+I read an article on CORS and a lot of websites (like google.com) has this header in it's response:
+Access-Control-Allow-Origin: http://localhost:8080
+
+If the request is cross-domain what is this good for? It must block all cross-domain requests then? Why doesn't google use a "simple" access control like:
+Access-Control-Allow-Origin: *
+
+When is this good for? When is the other access control, with wildcard origins, useful?
+
+A:
+
+As an answer, I cannot use quote from RFC6797 but just from google:
+
+CORS was created to improve the performance of HTTP and Ajax by enabling 
+  cross-domain calls. It allows websites and APIs to call each other's 
+  methods and includes a set of rules for security and integrity. 
+  For example, Facebook's graph API allows pages to post on users' walls without exposing users' 
+ identity. To prevent abuse, developers are required to use a cross-domain 
+ mechanism to verify the caller is who they claim to be.
+
+Source: https://developers.google.com/web/fundamentals/security/cors
+I think the answer is: In case you create an API and want to access from an external server (but not every website)
+
+A:
+
+The short answer is that it will prevent CSRF attacks against websites and APIs that do not have a CORS policy, using the browser's built-in features for Cross-Origin Resource Sharing (CORSH). The only exception to this is the Access-Control-Allow-Origin header itself, which, if present, enables this CORS policy on a domain.
+For example: 
+
+https://example.com:1234/corsPolicy.js will work if the response for a preflight request to https://example.com/api/foo contains Access-Control-Allow-Origin: https://www.google.com
+https://example.com:1234/corsPolicy.js will not work if the response for a preflight request to https://example.com/api/foo contains Access-Control-Allow-Origin: https://example.com
+
+This means a user agent making the request will have to make two requests to access data from another domain.
+To better understand how CORS works and how it can prevent CSRF attacks and improve security, see http://www.troyhunt.com/2015/02/ecmascript-5-lets-get-to-the-point.html, https://softwareengineering.stackexchange.com/questions/131311/is-cross-origin-resource-sharing-really-necessary-for-preventing-csrf, or http://www.w3.org/TR/cors/
+
+A:
+
+This question is still pretty vague, as it comes up quite often in the context of the question "what's the point of having a special header for cross domain access".
+The most important reason it is useful to have this kind of access control is, IMHO, for defense in depth. For example, if you have a JavaScript program that runs in a web browser, and uses cross domain AJAX to access data stored on a remote server, you might want to make sure you control access to the data you are retrieving.
+If you don't, a clever script can trick the server into letting it access data belonging to another user and send it to your program. 
+It might seem harmless (after all, the data isn't being read by the user) but some (probably clever) attacker could use this feature to retrieve personal information from some other user's data. It's for that reason I have always used this kind of access control to protect data where the access is remote, i.e. there is no possibility of manually checking authorization.
+To answer the specific question in the comments, I think a lot of people just think it is there for completeness' sake, and they don't know it makes any difference in practice.
+But like I said, I think it's for the best to use it where it's needed.
+
+However, if you already have a system that prevents you from accessing data from another user, you probably don't need it for that. But the question still stands: is there a security concern that makes you want this access control? If you know your business requirements are such that you need access to the data, then go ahead and use it. Just realize that if your users are savvy enough to exploit that it is insecure, they'll find other ways to do it.
+
+If you still haven't convinced yourself of the need for it, there are some other ways to do similar things (like CORS), which can be useful for certain things. They all have downsides though (they can interfere with user interface or with browser functionality), and for that reason I think it is better to go with CORS whenever possible.
+However, this all hinges on the fact that you have something you want to protect, and something you are requesting that you need to protect. If you don't have either of those, there's probably no use to have that kind of security protection. If you don't even know why you need the security, it's probably just insecurity paranoia.
+
+A:
+
+I think the reason is two-fold. The most important reason is for security, the same reason CSRF attacks exist. Cross domain access in the context of CSRF means that an attacker doesn't have to use an iframe to get data from another website. All they need to do is set up a cross-domain request to gather the data from your website. There are some reasons not to allow access, but a lot of times it's a lot easier than building out your own iframe service (which does require an API to exist on the server that doesn't require any user interaction). 
+The second reason is a little more esoteric and not a security issue. It has to do with keeping your page focused on what it's for. There are a lot of things on the Internet that aren't secure, and the cross-domain header tells you when you're talking to an insecure domain. By giving this information up to the browser (which is supposed to be secure), the browser can alert you to websites that might try to do something malicious. For instance, you might type in "paypal.com" into the address bar to log into your online account, but someone else might do "paypala.com" and you might end up logging into someone's account. If you just had access to your account, it would have allowed this. This is why it's not safe to allow everyone to access things; if you're a user of another website and they're able to access your cookies, they can mess with your account.
+
+TL;DR: For defense in depth, prevent any form of cross-site scripting and cross-site request forgery.
+
+</div></body></html><!-- 2022-06-25 08:32:59 

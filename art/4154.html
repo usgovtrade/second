@@ -1,0 +1,143 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4155.html'>4155</a><Br/><a href='4156.html'>4156</a><Br/><a href='4157.html'>4157</a><Br/><a href='4158.html'>4158</a><Br/><a href='4159.html'>4159</a><Br/><a href='4160.html'>4160</a><Br/><a href='4161.html'>4161</a><Br/><a href='4162.html'>4162</a><Br/><a href='4163.html'>4163</a><Br/><a href='4164.html'>4164</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4153.html'>4153</a><Br/><a href='4152.html'>4152</a><Br/><a href='4151.html'>4151</a><Br/><a href='4150.html'>4150</a><Br/><a href='4149.html'>4149</a><Br/><a href='4148.html'>4148</a><Br/><a href='4147.html'>4147</a><Br/><a href='4146.html'>4146</a><Br/><a href='4145.html'>4145</a><Br/><a href='4144.html'>4144</a></div><div class='nav'><a href='4153.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4155.html'> >> </a></div><div class='article'>Q:
+
+Why a pointer cannot be dereferenced in a function argument of another pointer?
+
+Consider this function:
+int myfunc(int *(*p)()) { 
+  return p(); 
+}
+
+When calling the function as myfunc(&foo) the value is returned to the caller.
+But, when I call the function inside another function, myfunc(func()) and call the function pointer p as func(), I get a runtime error. Why is it so?
+
+A:
+
+*p is an rvalue, it doesn't point to a valid object, so the call p() dereferences an invalid pointer.
+
+A:
+
+Dereferencing a function name (function pointer) is an unary operator: it returns a function and does not affect any arguments, while a function call expression which has an explicit parentheses after a function name is a binary operator that has an lvalue as an operand: it returns a pointer to the object.
+Now, if the object is a prvalue expression, the unary * can be applied to that; it is the same as writing &prvalue. When prvalue is a pointer to function type, the value of *prvalue is the address of that function, which is again a function pointer. However, when prvalue is a pointer to data type, *prvalue is equivalent to the indirection operator.
+This means that
+&*p
+
+is the same as
+*(p())
+
+which means that p() will return a pointer (lvalue) to the function. But p() is not a pointer to function type; it is a pointer to function type, thus giving you a rvalue. So when calling func(), the type of p() is a pointer to function type, and is not the same as a pointer to function type and thus the type is illegal. This is your error.
+
+When func() is called with another function pointer p, an additional argument of type int(*)(void) is implicitly passed to the function: an integer argument.
+Here's an example:
+#include <iostream>
+using namespace std;
+
+int func(int (*p)(int)) { return (*p)(); }
+
+int main() {
+    cout << &func << endl;
+    cout << &func(function<int(int)>()) << endl;
+    cout << &func(&foo) << endl;
+}
+
+Since we used a function instead of an object, the function name became a function pointer to an int(int) function (which is legal to pass to func()). The parentheses tell the compiler that we're passing a function pointer instead of calling it.
+
+So, the function calls are
+void func(int (*)(int))
+cout << &func << endl;
+  |             |
+  |             |
+ |         lvalue         |
+ +-----------------+      
+       i      p    +-----+
+       |             |
+       |             |
+       |             |
+ +-  x----v-----+----+
+ |                 |
+ |                 |
+ +-----------------+
+  |         int   |
+  p()       int   +-----+
+          ^
+          p
+          |
+          |
+          |
+          +-----+
+             |
+             |
+             v
+       void*
+
+The output for the first call is 1:
+int func(int (*)(int)) { return (*p)(); }
+
+We have the call to the function template.
+So we get:
+int (*)() { return p; }
+int (*)() { return p(); }
+
+and the first call is equivalent to 
+(*func)()
+
+which is what we have. Thus, the type is int(*)(int).
+In the second call, we take another pointer:
+int func(int (*)(int)) { return (*p)(); }
+
+We add the parentheses to signify the argument type. Again we have the function template with the type int(*)(int).
+As a side note, the value of func() is also 1. If you put a * in it, you get the address of func().
+The following:
+int func(int (*p)(int)) { return (*p)(); }
+
+is also equivalent to:
+int func(int (*p)(int)) { return p(); }
+
+which is nothing more than a function template taking a function pointer and returning a function pointer.
+*p returns a function pointer. When called, it will return the value of p(). The value of p() returns an int (*)(int) which is a function pointer. However, p() is not a function pointer; it is a function pointer to data type.
+
+The third call passes another function pointer:
+int func(int (*p)(int)) { return (*p)(); }
+
+*p returns a function pointer and in this case it is not compatible with this function template and thus the call to p() is an error.
+
+A:
+
+This program has undefined behaviour and it fails.
+char x[4] = {1,2,3,4};
+int func(int (*p)(int)) { return p(); }
+
+int main() {
+    int (*q)() = func(&x[1]);
+}
+
+The output is:
+0x7ffe55420000
+
+Program terminated with signal SIGABRT, Aborted.
+#0  0x7ffe55420000 in func() at test.cpp:3
+
+If the function has the prototype int (*p)(int), then it cannot accept an argument of type int(*)(int). In this case, the argument is a function that returns a function pointer to the type int(int). It can't return a function pointer to a function of the type int(int) since it's illegal for function pointers to be declared with variadic parameter lists.
+If the function has the prototype int (*p)(int), then it can accept a function of type int(*)(int). In this case, the function is a function that returns a pointer to function type int(*)(int).
+
+References: N3337 4.3/3:
+
+A function type of the form
+  — 8pointer to function with rg parameters of types — r2 ... rn, 
+  where r1 is 
+
+is called a function with a variably modified parameter list
+
+and 4.2/3:
+
+Types declared with a function declarator that ends in a
+  pointer to function type other than void, function, or function
+  pointer shall have a complete object type ([basic.compound]).
+
+N1570 5.2.2/1:
+
+A function designator is an expression that has function type. Except when it is the
+  operand of the sizeof operator, the _Alignof operator, or the
+  unary & operator, a function designator with type T indicates a
+  function template specialization for function type T. A function
+  template specialization has the same name as the template
+  from</div></body></html><!-- 2022-06-25 08:33:03 

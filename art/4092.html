@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4093.html'>4093</a><Br/><a href='4094.html'>4094</a><Br/><a href='4095.html'>4095</a><Br/><a href='4096.html'>4096</a><Br/><a href='4097.html'>4097</a><Br/><a href='4098.html'>4098</a><Br/><a href='4099.html'>4099</a><Br/><a href='4100.html'>4100</a><Br/><a href='4101.html'>4101</a><Br/><a href='4102.html'>4102</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4091.html'>4091</a><Br/><a href='4090.html'>4090</a><Br/><a href='4089.html'>4089</a><Br/><a href='4088.html'>4088</a><Br/><a href='4087.html'>4087</a><Br/><a href='4086.html'>4086</a><Br/><a href='4085.html'>4085</a><Br/><a href='4084.html'>4084</a><Br/><a href='4083.html'>4083</a><Br/><a href='4082.html'>4082</a></div><div class='nav'><a href='4091.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4093.html'> >> </a></div><div class='article'>Q:
+
+How to save a blob to the server in java?
+
+I am saving a blob to the server and that blob is a png image.
+Code:
+OutputStream out = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", out);
+            String filePath = "c:\\upload\\" + (Long.toString(index));
+            Files.write(Paths.get(filePath), new ByteArrayInputStream(out.toByteArray()));
+
+This gives me a file. It is a correct png image but when I try to retrieve that file then the browser is giving me an error:
+Response Code:404
+Requested URL :http://localhost:8080/app/upload/0
+Severity: Error
+Message:java.io.FileNotFoundException: http://localhost:8080/app/upload/0
+
+But in my index page there is a link for upload image:
+<img id="im" src="<%=request.getContextPath()%>/upload/0.png" style="margin-left:5px; padding-left:5px;" />
+
+In my log file:
+
+But I don't know why it is showing a page not found error.
+Please help me.
+Thanks
+
+A:
+
+You don't need to specify context path in img src attribute like:
+src="<%=request.getContextPath()%>/upload/0.png"
+
+Just pass whole path
+src="upload/0.png"
+
+Also you don't need Files.write method to write stream to local file. You can just do
+Files.write(Paths.get(filePath), out);
+
+So, complete code:
+//write
+OutputStream out = new ByteArrayOutputStream();
+ImageIO.write(image, "png", out);
+String filePath = "c:\\upload\\" + (Long.toString(index));
+Files.write(Paths.get(filePath), new ByteArrayInputStream(out.toByteArray()));
+
+//read
+Blob imageData =  Files.read(Paths.get(filePath));
+
+System.out.println(imageData.length());
+
+System.out.println(imageData.getContentType());
+
+System.out.println(imageData.getMimeType());
+
+System.out.println(imageData.getLength());
+
+System.out.println(imageData.getFileName());
+
+System.out.println(imageData.getContentLength());
+
+System.out.println(imageData.getType());
+
+System.out.println(imageData.getMimeType());
+
+System.out.println(imageData.length());
+
+System.out.println(imageData.length());
+
+Here is output:
+14471276
+image/png
+image/png
+14471276
+image/png
+image/png
+14471276
+image/png
+
+It looks like browser can't load the image or your image data is not present. 
+BTW, if you'll set correct url in img, you will see that the image is not found for download, because url can't be found by default in web browser
+
+A:
+
+You are trying to retrieve a file which is not present. If you are using the file name for the browser then it tries to find a file with the given name but finds none.
+The best approach is to use URIs which provide a correct path:
+<img id="im" src="<c:url value="/upload/0.png" />" style="margin-left:5px; padding-left:5px;" />
+
+Or URL encoding for those who do not use any frameworks.
+
+</div></body></html><!-- 2022-06-25 08:32:55 

@@ -1,0 +1,114 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4128.html'>4128</a><Br/><a href='4129.html'>4129</a><Br/><a href='4130.html'>4130</a><Br/><a href='4131.html'>4131</a><Br/><a href='4132.html'>4132</a><Br/><a href='4133.html'>4133</a><Br/><a href='4134.html'>4134</a><Br/><a href='4135.html'>4135</a><Br/><a href='4136.html'>4136</a><Br/><a href='4137.html'>4137</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4126.html'>4126</a><Br/><a href='4125.html'>4125</a><Br/><a href='4124.html'>4124</a><Br/><a href='4123.html'>4123</a><Br/><a href='4122.html'>4122</a><Br/><a href='4121.html'>4121</a><Br/><a href='4120.html'>4120</a><Br/><a href='4119.html'>4119</a><Br/><a href='4118.html'>4118</a><Br/><a href='4117.html'>4117</a></div><div class='nav'><a href='4126.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4128.html'> >> </a></div><div class='article'>Q:
+
+How can I add 'custom data' in Drupal 8?
+
+I'm trying to add custom data to a node entity for it to be automatically displayed on the front-end for certain pages, and I'm a bit confused as to where to start. I've already added new variables to my custom module by following the Drupal 8 Upgrade Guide - but how can I use them?
+In Drupal 7 I could add data with something like this in my node-type.module:
+function mymodule_node_type_form($form, &$form_state) {
+    $form['custom_data'] = array(
+        '#type' => 'textarea',
+        '#title' => t('Custom Data'),
+        '#default_value' => 'Custom Data Here',
+    );
+    return $form;
+}
+
+Is there a similar function or structure for this in Drupal 8? I'd appreciate any advice on how to properly use the new custom data.
+Thanks
+
+A:
+
+In Drupal 8 (using Twig templates) you can do the same in the node-type.html.twig as you did before, with a bit different syntax:
+<div{{ attributes }}>
+  {{ title_prefix }}
+  {{ title }}
+
+  {{ content }}
+
+  {{ attributes }}
+</div>
+
+But also, in D8, you can create new display modes which inherit from the node display modes. These are then available in the Content admin pane. The good thing about these is, they provide a hook, so you can customize them however you want:
+function mymodule_entity_bundle_entity_display_alter(&$displays) {
+  $displays['mymodule']['show']['custom_data'] = TRUE;
+}
+
+Now you have all of your custom data displayed automatically in the node page. If you want to only use it for a specific node type, for example, you could add an entity_view_mode key to the entity, something like this:
+function mymodule_entity_bundle_entity_display_alter(&$displays) {
+  $displays['mymodule']['show']['custom_data'] = TRUE;
+  $displays['mymodule']['show']['entity_view_mode'] = array(
+    'node' => 'full',
+  );
+}
+
+Now only your custom data is displayed for full nodes.
+
+A:
+
+This is easy way to do this:
+function mymodule_entity_bundle_entity_view_alter(&$entity_view, EntityInterface $entity) {
+  if ($entity->getEntityTypeId() == 'node') {
+    if ($entity->bundle() == 'custom_type') {
+      //do some stuff here with custom data (eg. custom template and css)
+    }
+  }
+}
+
+To see it in action see this video:
+http://www.youtube.com/watch?v=Xa_bXvP6CZM
+
+A:
+
+You need to learn about the configuration of entity bundles and you need to implement entity type configurations. 
+Configuring entity bundles
+The best example how to use it is the entity reference module. 
+The Drupal 8 reference block has 3 different states. You can configure the 3 states with config overrides. 
+In the Entity Reference Configuration module you can enable the configurations. 
+
+You can define new settings (like the visibility) for the entity types. In the image below the 'Entity Type' refers to an entity type configuration. 
+Entity types and configurations
+In the example above, you can choose to have the reference field not visible in the 'node' type, the comment form or any other node type. 
+
+Note: If you want to enable the reference field for the view modes of the content entity type, you can use the hook_view_mode_node_form_alter() as shown here.  
+There are many examples in the Drupal 8 source code repository. I think that the best example is the reference module that uses 3 different contexts. 
+
+You can see the code here and the configuration file for the reference module here.
+
+How to add a custom new entity type
+Entity types are config entities so that you need to define a configuration for them. These settings are also stored in the database. 
+Creating a new entity type is quite easy. 
+You need to create an entity type first. 
+/**
+ * Implements hook_entity_type_build().
+ */
+function entity_type_build(array $entity_types) {
+  // For example I want to create a new entity type.
+  // It is good practice to rename the entity type to something
+  // more meaningful than its id.
+  if ($entity_type = 'node') {
+    $entity_type = 'commerce_cart';
+    $entity_type = str_replace('commerce_', '', $entity_type);
+  }
+
+  $entity_types['entity:' . $entity_type] = $entity_type;
+
+  return $entity_types;
+}
+
+If you create a new entity type you need to add your own configuration for the new entity type. For example if you want to create a field which references to other entities you have to add the field mapping here. 
+/**
+ * Implements hook_entity_type_build().
+ */
+function commerce_cart_entity_type_build(array $entity_types) {
+  // The fields will be created in a separate file later.
+  $entity_types['commerce_cart'] = array(
+   'base table' => 'commerce_cart',
+   'fieldable' => TRUE,
+   'entity keys' => array(
+    'id' => 'cid',
+    'uuid' => 'vid',
+    'translatable' => 'trid',
+    'deleted' => 0,
+    'label' => '',
+    'bundle' => 'commerce_cart',
+    </div></body></html><!-- 2022-06-25 08:33:00 

@@ -1,0 +1,155 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4148.html'>4148</a><Br/><a href='4149.html'>4149</a><Br/><a href='4150.html'>4150</a><Br/><a href='4151.html'>4151</a><Br/><a href='4152.html'>4152</a><Br/><a href='4153.html'>4153</a><Br/><a href='4154.html'>4154</a><Br/><a href='4155.html'>4155</a><Br/><a href='4156.html'>4156</a><Br/><a href='4157.html'>4157</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4146.html'>4146</a><Br/><a href='4145.html'>4145</a><Br/><a href='4144.html'>4144</a><Br/><a href='4143.html'>4143</a><Br/><a href='4142.html'>4142</a><Br/><a href='4141.html'>4141</a><Br/><a href='4140.html'>4140</a><Br/><a href='4139.html'>4139</a><Br/><a href='4138.html'>4138</a><Br/><a href='4137.html'>4137</a></div><div class='nav'><a href='4146.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4148.html'> >> </a></div><div class='article'># Copyright 2019 The Kubernetes Authors.
+# SPDX-License-Identifier: Apache-2.0
+
+# This template is used to generate the values.yaml file from template.yaml
+# as described here:
+# https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api_changes.md#external-values-defined-in-template
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: example-project-config
+data:
+  # Replace this with your token from https://github.com/settings/tokens
+  api: "5c3de4f1cbe4ad917b6de8c73cc1fd2c"
+  clusterCredentials: "1da4ffc22cbd47b2a1547e7a8cd1ccd9"
+  cloudRegistry: http://testcafe-test-image:5000/ 
+  
+# For a list of supported types, refer to https://github.com/kubernetes/api/blob/master/v1.18/types.go#L32
+# This tag should match the image tag set in the source repository.
+imageTag: "1.18"
+ 
+# The version of kustomize is recommended to be v1.18.0 and later
+kustomizeVersion: v1.18.0
+kustomizeBuildTag: v1.18.0-e3ea13d
+
+# Additional tags can be specified in kustomize that will be applied on top of the tags listed here
+
+commonLabels: []
+
+# The project and namespace for the resource
+project: example
+project_namespace: example-project
+
+# Where to store the configuration files
+configMapDir: /etc/testcafe/config
+configMapName: example-project-config
+
+# The secret names used to mount configuration files in the testcafe pods
+secretName: example-project-config-secret
+
+# To specify the paths to exclude from controller manager deployments, 
+# include the name of the config map here
+excludedConfigMapNames: []
+
+# Specify the testcafe image version you want to use for your builds.
+# The image tag may have a suffix (such as v1.17.0 or latest) which will be added to the tag for you.
+image: "testcafe/testcafe:1.19"
+
+
+# Includes a list of ConfigMap references to be created by kustomize.
+# This can be used for sharing resources with other Kubernetes clusters (e.g. an external database).
+includes:
+- configMapName: example-project-config
+  name: example-project-config
+  from:
+    configMapRef:
+      name: example-project-config-cid
+  path: "/usr/share/ca-certificates/extra-ca-certificates"
+
+# List of external service accounts to build the serviceAccountNames.
+# This must be a list of usernames which are not already used for other resources
+serviceAccountNames:
+- serviceAccountName: testcafe
+- serviceAccountName: testcafe2
+- serviceAccountName: testcafe3
+- serviceAccountName: testcafe4
+
+
+# If you need to update the build parameters (such as the image)
+# after a re-deployment, you need to specify the values by:
+# 1) Update the kustomization spec object, or
+# 2) Call this build's kustomize build function with --prune.
+buildParams: {}
+# The build number can be specified with the buildParams parameter.
+buildNumber: 1
+
+# Includes a list of DaemonSet references to be created by kustomize.
+# This can be used for sharing resources with other Kubernetes clusters (e.g. an external database).
+includes:
+- kind: DaemonSet
+  name: example-project-daemonset
+  from:
+    kind: ServiceAccount
+    name: testcafe
+
+# Includes a list of CronJob references to be created by kustomize.
+# This can be used for sharing resources with other Kubernetes clusters (e.g. an external database).
+includes:
+- kind: CronJob
+  name: testcafe-run-job
+  from:
+    kind: Deployment
+    name: testcafe-deployment
+
+# The image name that the builder will use
+imageName: testcafe/testcafe:1.18
+
+# The kind of job that the builder will create
+kind: CronJob
+
+# The image tag of the testcafe image that the builder will build with
+imageTag: 1.18
+
+# The base image name used to build the testcafe image
+baseImage: testcafe/testcafe:1.18
+
+# You can configure the image to build using this option
+buildImage: ""
+
+# You can specify the user name for basic auth in the builder. This user must have
+# "view" permissions in the build account.
+basicAuthUsername: ""
+
+# You can specify the user password for basic auth in the builder. This user must have
+# "view" permissions in the build account.
+basicAuthPassword: ""
+
+# You can enable or disable log rotation for the build pod in the builder.
+enableLogRotation: false
+
+# Enable or disable verbose logging for the build pod in the builder.
+enableVerboseLog: false
+
+# Specify the resource quota values that are used to request resources from Kubernetes.
+quotaConfig:
+  cores: 1
+  memory: 3Gi
+
+# Specify the service tier (frontend, backend, or frontend + backend)
+serviceTier: frontend
+
+# Specify the region in which the cluster should be created.
+region: westeurope
+
+# Specify the network to deploy the backend services into.
+# You can specify a single network interface using the network interface to be used for the backend services or a list of interfaces.
+# networkInterface: ""
+# networkInterface: "eth0"
+networkInterface: "eth1"
+
+# The network policy to deploy the backend services into. The policy can be either of the built-in static policies, such as 'AlwaysAllow' or 'HostNetwork' or it can be specified using networkPolicies field.
+# networkPolicy: 'HostNetwork'
+# networkPolicy: 'AlwaysAllow'
+networkPolicy: 'HostNetwork'
+
+# Specify the IP to use for the default backend service.
+# defaultBackendServiceIP: "172.30.0.200"
+# defaultBackendServiceIP: "172.30.0.201"
+# defaultBackendServiceIP: "172.30.0.202"
+defaultBackendServiceIP: "172.30.0.203"
+
+# Specify the URL to send http requests for the default backend service.
+# defaultBackendServiceURL: "http://localhost:8000"
+# defaultBackendServiceURL: "http://10.8.0.1:8080"
+# defaultBackendServiceURL: "http://localhost:5000"
+defaultBackendServiceURL: "http://172.30.0.203:8</div></body></html><!-- 2022-06-25 08:33:02 

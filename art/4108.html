@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4109.html'>4109</a><Br/><a href='4110.html'>4110</a><Br/><a href='4111.html'>4111</a><Br/><a href='4112.html'>4112</a><Br/><a href='4113.html'>4113</a><Br/><a href='4114.html'>4114</a><Br/><a href='4115.html'>4115</a><Br/><a href='4116.html'>4116</a><Br/><a href='4117.html'>4117</a><Br/><a href='4118.html'>4118</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4107.html'>4107</a><Br/><a href='4106.html'>4106</a><Br/><a href='4105.html'>4105</a><Br/><a href='4104.html'>4104</a><Br/><a href='4103.html'>4103</a><Br/><a href='4102.html'>4102</a><Br/><a href='4101.html'>4101</a><Br/><a href='4100.html'>4100</a><Br/><a href='4099.html'>4099</a><Br/><a href='4098.html'>4098</a></div><div class='nav'><a href='4107.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4109.html'> >> </a></div><div class='article'>Q:
+
+Adding a new field in a Data Extension
+
+I am trying to add a new column of data to a Data Extension but its giving me the following error.
+The relationship email, {7ab0fd6e-7f9c-e511-82f2-fbcd9f0bcbe3} is invalid.
+Is there any way I can add a new column or can add and populate the column without removing the existing columns. I tried to delete the column before adding a new one but there is no option available to do so. Any help is appreciated.
+
+A:
+
+It's easy to add a new field to a data extension in Contact Builder, but this field may be used as part of the ContactKey, i.e. it may be used in the API query which creates new records in the Data Extension.
+For this to work, the data extension must have a Data Designer assigned. The way you go about that in Contact Builder depends on how Contact Builder was initially populated (through EDA, CSV, Data Extract) as different means of populating Contact Builder give you different options to assign a Data Designer.
+If you already have a data design and you already added a column to that design, then you can simply select the Data Designer and click "Edit" on the designer:
+
+In Data Designer with Data Extensions:
+
+Then add a column to the Data Designer:
+
+The trick to add a column to a Contact Builder-created Data Designer is to click on an existing field and "Delete field":
+
+Then you can add your new field:
+
+Now you need to add this column to your data extension.
+You have several options:
+
+If you added the field in a later step, you can go back to the data extension (Data Designer), click on Data Designer, and click "Edit":
+
+In the Data Designer, click on "Edit":
+
+Then add a new column:
+
+In that step, the Data Extension Builder automatically adds a relationship which is automatically stored as a relationship in the data extension.
+
+If the field already exists in a later step, you can also add the column through the field selector:
+
+In the Data Designer, click on the Data Extensions tab.
+
+Click "Advanced options".
+
+If there are fields selected which are not part of your data extension, then only those fields will be included in the data extension (you may need to re-order your data extensions so that the selected fields are not in a data extension):
+
+Now you can add a new column:
+
+If the field is already added and you need to add more data to the column, you will need to re-add the field (or rename it). You can find the Data Extension ID in the settings for your contact, or in the header of the Data Extension:
+
+Note that you need to have "Developer Mode" enabled in the API in order to see the Data Extension ID. If you don't have it enabled, you can enable it by going to API > Contact Builder API > Contact > Contacts and click "Enable". You will also need to go to API > Contact Builder API > Contact > Contacts and "Add a column to Contact Builder".
+Once the API settings are set up, you can find the Data Extension ID in the settings.
+Here is a snippet of my JSON request:
+{
+  "CustomerKey": "12345",
+  "ContactKey": "4567",
+  "Email": "foobar@email.com",
+  "FirstName": "Fred",
+  "LastName": "Baker",
+  "CompanyName": "Fabrikam, Inc.",
+  "City": "Seattle",
+  "StateOrProvince": "WA",
+  "Zip": "90210",
+  "CountryCode": "US",
+  "Title": "Mr.",
+  "Fax": "555-555-5555",
+  "Phone": "555-555-1234",
+  "MailingCity": "Seattle",
+  "MailingState": "WA",
+  "MailingPostalCode": "90210",
+  "MailingCountryCode": "US",
+  "CreatedDateUTC": "2019-06-12T15:20:06Z",
+  "ModifiedDateUTC": "2019-06-14T08:16:21Z"
+ 
+}
+
+A:
+
+From what I've been reading, you need to make sure that all of your Data Extensions (or Lists for that matter) are created on the default Contact Builder Data Designer.
+Otherwise, the API needs to be set to developer mode. The documentation also states that a data extension must be added to order for an add column request to be successful.
+
+A:
+
+In the Data Designer you can view and delete fields in the header row,
+and you can add new fields to the Data Designer with the Data Extensions tab.
+
+In the Data Designer with Data Extensions you can also view and delete fields in the list rows,
+and you can add new fields to the Data Designer with the Custom Fields tab.
+
+In the Data Designer, you can use the following tabs to add a column to an existing data extension:
+
+Data Designer
+Data Extensions
+Custom Fields
+
+See: Understanding Data Extensions in Contact Builder for Salesforce
+
+A:
+
+I figured it out. While doing the process you have to go to that particular data extension to create new field. You can find it here --> Data Extensions. To create a new field while creating a data extension choose that data extension and hit save button. 
+
+</div></body></html><!-- 2022-06-25 08:32:57 

@@ -1,0 +1,88 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4094.html'>4094</a><Br/><a href='4095.html'>4095</a><Br/><a href='4096.html'>4096</a><Br/><a href='4097.html'>4097</a><Br/><a href='4098.html'>4098</a><Br/><a href='4099.html'>4099</a><Br/><a href='4100.html'>4100</a><Br/><a href='4101.html'>4101</a><Br/><a href='4102.html'>4102</a><Br/><a href='4103.html'>4103</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4092.html'>4092</a><Br/><a href='4091.html'>4091</a><Br/><a href='4090.html'>4090</a><Br/><a href='4089.html'>4089</a><Br/><a href='4088.html'>4088</a><Br/><a href='4087.html'>4087</a><Br/><a href='4086.html'>4086</a><Br/><a href='4085.html'>4085</a><Br/><a href='4084.html'>4084</a><Br/><a href='4083.html'>4083</a></div><div class='nav'><a href='4092.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4094.html'> >> </a></div><div class='article'>//
+//  Test_XCTestObservation.m
+//  BossTests
+//
+//  Created by 孙昕 on 15/12/28.
+//  Copyright © 2015年 孙昕. All rights reserved.
+//
+
+#import <XCTest/XCTest.h>
+#import "Test_XCTestObservation.h"
+@interface Test_XCTestObservation ()
+@property(nonatomic,strong)id testObservation;
+@end
+@implementation Test_XCTestObservation
+
+- (void)setUp {
+    [super setUp];
+    // Put setup code here. This method is called before the invocation of each test method in the class.
+}
+
+- (void)tearDown {
+    // Put teardown code here. This method is called after the invocation of each test method in the class.
+    [super tearDown];
+}
+
+- (void)testExample {
+    
+    // This is an example of a functional test case.
+    // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    // Create a temporary folder that can be used as the destination of a new download.
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    // Store a reference to the current path.
+    NSString *tempDirectoryPath = [fileManager createDirectoryAtPath:NSTemporaryDirectory() withIntermediateDirectories:YES attributes:nil error:nil];
+    // Delete it when we're done.
+    [fileManager removeItemAtPath:tempDirectoryPath error:nil];
+    
+    // Make a test observation.
+    // Don't forget to initialize a new observer every time. The default value should be nil (except in UnitTests).
+    self.testObservation = [[Test_XCTestObservation alloc] init];
+    
+    XCTestObservation *testObservation1 = self.testObservation;
+    XCTestObservation *testObservation2 = self.testObservation;
+    XCTestObservation *testObservation3 = self.testObservation;
+    
+    
+    [testObservation1 onTest:self didStartWithInvocation:[NSInvocation invocationWithTarget:testObservation1 selector:@selector(receiveFirstEventFromTestObservation:) object:nil]];
+    [testObservation1 onTest:self didFinishWithInvocation:[NSInvocation invocationWithTarget:testObservation1 selector:@selector(didFinishWith:error:) object:nil]];
+    
+    [testObservation2 onTest:self didStartWithInvocation:[NSInvocation invocationWithTarget:testObservation2 selector:@selector(receiveSecondEventFromTestObservation:) object:nil]];
+    [testObservation2 onTest:self didFinishWithInvocation:[NSInvocation invocationWithTarget:testObservation2 selector:@selector(didFinishWith:error:) object:nil]];
+    
+    [testObservation3 onTest:self didStartWithInvocation:[NSInvocation invocationWithTarget:testObservation3 selector:@selector(receiveThirdEventFromTestObservation:) object:nil]];
+    [testObservation3 onTest:self didFinishWithInvocation:[NSInvocation invocationWithTarget:testObservation3 selector:@selector(didFinishWith:error:) object:nil]];
+    
+    
+    [self waitUntilTestObservationDidFinish];
+    // Ensure that each of the observers saw the results of the tests.
+    XCTAssertTrue([testObservation1.receivedFirstEvent boolValue], @"The first test finished");
+    XCTAssertTrue([testObservation2.receivedSecondEvent boolValue], @"The second test finished");
+    XCTAssertTrue([testObservation3.receivedThirdEvent boolValue], @"The third test finished");
+    
+    // If you do NOT want to run more than one test at a time, you can use the property TestExample1/TestExample2/TestExample3 which has onTest:didStartWithInvocation:didFinishWithInvocation:
+    // Make sure to set the didStartWithInvocation: to nil (as the default value is YES)
+    [self setTestExample1:nil];
+    // Set didFinishWithInvocation: as nil
+    [self setTestExample2:nil];
+    // Set didStartWithInvocation: as nil
+    [self setTestExample3:nil];
+    
+    XCTAssertEqual(testObservation1.lastFailureCount, 0);
+    XCTAssertEqual(testObservation1.lastError, nil);
+    XCTAssertEqual(testObservation1.lastExecutionOrder, 0);
+    XCTAssertEqual(testObservation2.lastFailureCount, 0);
+    XCTAssertEqual(testObservation2.lastError, nil);
+    XCTAssertEqual(testObservation2.lastExecutionOrder, 0);
+    XCTAssertEqual(testObservation3.lastFailureCount, 0);
+    XCTAssertEqual(testObservation3.lastError, nil);
+    XCTAssertEqual(testObservation3.lastExecutionOrder, 0);
+    
+    // Release observation
+    [testObservation release];
+    // No need to release
+    testObservation = nil;
+}
+
+@end
+</div></body></html><!-- 2022-06-25 08:32:55 

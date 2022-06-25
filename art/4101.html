@@ -1,0 +1,146 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4102.html'>4102</a><Br/><a href='4103.html'>4103</a><Br/><a href='4104.html'>4104</a><Br/><a href='4105.html'>4105</a><Br/><a href='4106.html'>4106</a><Br/><a href='4107.html'>4107</a><Br/><a href='4108.html'>4108</a><Br/><a href='4109.html'>4109</a><Br/><a href='4110.html'>4110</a><Br/><a href='4111.html'>4111</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4100.html'>4100</a><Br/><a href='4099.html'>4099</a><Br/><a href='4098.html'>4098</a><Br/><a href='4097.html'>4097</a><Br/><a href='4096.html'>4096</a><Br/><a href='4095.html'>4095</a><Br/><a href='4094.html'>4094</a><Br/><a href='4093.html'>4093</a><Br/><a href='4092.html'>4092</a><Br/><a href='4091.html'>4091</a></div><div class='nav'><a href='4100.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4102.html'> >> </a></div><div class='article'>Q:
+
+How to remove duplicate row from UITableView?
+
+I have the following data inside an array which is used as a source in a UITableView:
+array = [
+  {user : "A" },
+  {user : "B" },
+  {user : "C" },
+  {user : "D" }
+]
+
+Then I add the data into the tableView:
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+    let cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as! TableViewCell
+
+    let user = array[indexPath.row]
+    cell.title.text = user["user"] as? String
+
+    return cell
+}
+
+But in my table, I want to show the data like this without repeating the username:
+
+user A
+user B
+user C
+user D
+
+Here is my current setup:
+
+A:
+
+Use below Code to get the required result 
+let sortedArray = (array.map { $0["user"] as? String }) ?? [] // This will not return nil
+
+var sortedKeys = Set<String>()
+var keys = array.map { $0["user"] as! String }
+for key in keys {
+    if sortedKeys.contains(key) {
+        sortedKeys.insert(key)
+    } else {
+        sortedKeys.insert(sortedArray.index(of: key) ?? key) // to get the last index of key if key not exist in array
+    }
+}
+
+let unsortedKeys = sortedKeys.sorted()
+let result = sortedKeys.map { unsortedKeys[$0]! }
+
+// result is ["A", "B", "C", "D"]
+
+And now your UITableView dataSource method will be like
+let filteredArray = (array.map { $0["user"] as? String }) ?? [] // This will not return nil
+
+var filteredKeys = Set<String>()
+var keys = array.map { $0["user"] as! String }
+for key in keys {
+    if filteredKeys.contains(key) {
+        filteredKeys.insert(key)
+    } else {
+        filteredKeys.insert(filteredArray.index(of: key) ?? key) // to get the last index of key if key not exist in array
+    }
+}
+
+let unfilteredKeys = filteredKeys.sorted()
+let result = filteredKeys.map { unfilteredKeys[$0]! }
+
+// result is ["A", "B", "C", "D"]
+
+And for the TableView
+func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    return result.count
+}
+
+func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCell(withIdentifier: "reusableCell", for: indexPath) as! TableViewCell
+
+    let user = array[indexPath.row]
+    cell.title.text = user["user"] as? String
+
+    return cell
+}
+
+Hope This helps..!
+
+A:
+
+let sorted = array.sorted(by: {$0["user"] as! String < $1["user"] as! String})
+
+let keys = sorted.map {$0["user"] as! String}
+let filtered = sorted.map {$0["user"] as! String}
+
+let filteredKeys = keys.sorted()
+let result = sortedKeys.map { filtered[$0]! }
+
+Note: This solution will works for you perfectly with Swift 3
+
+A:
+
+You can use this elegant solution:
+let items = [
+    ["user": "A"],
+    ["user": "B"],
+    ["user": "C"],
+    ["user": "D"]
+]
+let orderedItems = items.sorted(by: {$0["user"] < $1["user"]})
+let filteredItems = orderedItems.map{ $0["user"] }
+
+print(filteredItems) // A, B, C, D
+
+Edit:
+Use this variant to add index numbers in order:
+let items = [
+    ["user": "A"],
+    ["user": "B"],
+    ["user": "C"],
+    ["user": "D"]
+]
+let orderedItems = items.sorted(by: {$0["user"] < $1["user"]})
+let filteredItems = orderedItems.map{ [String($0["user"]!): $0["user"]!] }
+
+let filteredKeys = filteredItems.map{ $0.keys.map{String($0)!}.sorted() }
+
+print(filteredItems) // [["user": "B"], ["user": "C"], ["user": "A"], ["user": "D"]]
+print(filteredKeys) // ["C", "B", "A", "D"]
+
+Explanation:
+In this solution we create a filteredItems, it is an array of dictionaries, like:
+[["A",1],["B",2],["C",3],["D",4]]
+
+We also create a filteredKeys array, it contains number labels as the first key and the names as the second key:
+[1:"A",2:"B",3:"C",4:"D"]
+
+Then we filter the items by keys, and sort them by keys in an order ([4,"D",3,"C",2,"B",1,"A"]),
+and then we get the number labels as the first key and the names as the second.
+Result:
+$ scala
+Welcome to Scala 2.13.0 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_25).
+Type in expressions for evaluation. Or try :help.
+
+scala> val items = Seq(Seq(("user", "A"), ("user", "B")), Seq(("user", "C"), ("user", "D")))
+items: Seq[Seq[(String, String)]] = List((user,A), (user,B), (user,C), (user,D))
+
+scala> val orderedItems = items.sorted(by: { case ((x:</div></body></html><!-- 2022-06-25 08:32:56 

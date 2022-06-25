@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4125.html'>4125</a><Br/><a href='4126.html'>4126</a><Br/><a href='4127.html'>4127</a><Br/><a href='4128.html'>4128</a><Br/><a href='4129.html'>4129</a><Br/><a href='4130.html'>4130</a><Br/><a href='4131.html'>4131</a><Br/><a href='4132.html'>4132</a><Br/><a href='4133.html'>4133</a><Br/><a href='4134.html'>4134</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4123.html'>4123</a><Br/><a href='4122.html'>4122</a><Br/><a href='4121.html'>4121</a><Br/><a href='4120.html'>4120</a><Br/><a href='4119.html'>4119</a><Br/><a href='4118.html'>4118</a><Br/><a href='4117.html'>4117</a><Br/><a href='4116.html'>4116</a><Br/><a href='4115.html'>4115</a><Br/><a href='4114.html'>4114</a></div><div class='nav'><a href='4123.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4125.html'> >> </a></div><div class='article'>Q:
+
+How does a computer get its time?
+
+How does a computer get its time? Or time is just a function of the local environment? For instance, if I send a network packet on Windows 2008 R2 to a computer on another domain, does the Windows 2008 R2 get the time from an NTP server or from some time service? If it's from an NTP server, how does the computer know which NTP server it should use?
+
+A:
+
+I'm going to assume you're talking about the system time when you say "how does a computer get its time?"
+From Microsoft's documentation on system time:
+
+The system time is based on the local hardware clock. The system time
+  determines the order of day and the time to apply daylight saving time
+  (DST).
+The system time is maintained by the Coordinated Universal Time (UTC)
+  service on a Network Time Protocol (NTP) client or server. The NTP
+  service on a computer maintains the time of the local computer and synchronizes
+  the local clock with UTC (Coordinated Universal Time) when you have set the time
+  appropriately on a computer.
+[...]
+The NTP Service updates the system time and indicates that an adjustment
+  occurred by writing a "tick" record to the system registry. To determine the
+  number of times that an NTP server has adjusted the system time, view the
+  "Ticks" entry in the System Registry. Ticks is a value, measured in 100-nanoseconds,
+that tracks changes to the system time. If an NTP server has not adjusted the
+ system time, "Ticks" is 0.
+
+And as stated earlier, I've presumed you're talking about the system time, because this NTP documentation page says about that subject:
+
+This article describes how Windows XP, Windows Vista, Windows 7, Windows 2008, and Windows Server 2008 assign a local system time to your computer. This time is based on Coordinated Universal Time (UTC). In contrast, you assign an automatic time to your computer when you create a Network Time Protocol (NTP) client or server that receives or publishes the correct time from a NTP server. Automatic time is based on the time of day (or daylight saving time) in the time zone of the computer where you create the NTP client or server.
+[...]
+Windows checks the local system time using an internal clock and Network Time Protocol (NTP) software. This internal clock determines the local system time. NTP software can then use this internal clock to check for clock changes on NTP clients.
+
+So to answer your question, it gets its time by either using an internal clock (with NTP) or by being set manually, which updates the local time with NTP on each access to some time servers.
+You can disable the time service in order to make sure that Windows uses only the internal clock. This means that it will only update the internal clock with the NTP time. This is useful to make sure that windows can't retrieve the time from untrusted sources or from the Internet. You can do this by running sc config time binpath= C:\Windows\system32\time.exe as an administrator.
+I must confess, I find this article (and information linked within it) interesting as it describes many interesting events in the NTP world. It also mentions all times listed below, except for my time server which isn't the Microsoft time server. This is due to the fact that my time server is provided by the University of Oslo, as I'm a fellow student there.
+
+A:
+
+At the system level the operating system acquires its time either from an atomic clock which provides an accuracy level of 5 microseconds or from a time server.
+The time is then maintained by applications that are installed and may be time consuming but, generally speaking, will be more accurate than the system time.
+For example, a program that runs a database may query a remote time server and then updates the system time accordingly.
+You can use a command line program "w32tm" to query the time in Windows.
+You can also view the time on some devices, for example a smart watch can tell you the date and time.
+
+A:
+
+As others have said it depends on the context whether it's from an internal clock or an external one. But more often than not it's internal.
+On Microsoft's Windows servers, this is normally handled via the operating system's time service which keeps the server's time in sync with a time server maintained by the registry keys mentioned here. It's a fairly important feature for Windows servers in general.
+As for querying time on a Windows server from a machine on the same network, by default it should just use its internal clock, unless your machine is configured to use some kind of time server for its clock. A network admin may have installed such a time server on the network and configured it to allow queries from other machines in the network.
+If you want to know how to query time on a Windows server for any reason, it's worth reading up on it in detail because it's actually quite different in different Windows versions.
+
+EDIT: As some users have pointed out below, there are many kinds of clocks, or as the man page calls it, time sources, that the OS can use. It's not only Windows that uses an internal clock. So it's best to not refer to it as a system time when talking about an internal clock.
+
+The clock used by the kernel is the system clock.
+There is another layer above this that is called "clock sources" and is what is queried by the above mentioned registry keys to determine the server's time.
+These different time sources can come from local, external, network (including domain), or from a server with one or more NTP-clients (for a time server that accepts NTP-queries for NTP-clients). This can be configured in the registry via the registry keys NtTimeSources, TimeProviders, TimeProvidersList, TimeProvidersEx, NtTimeProviders, TimeProvidersEx.
+Again, this is Windows specific as there are differences in time sources between different versions and editions of Windows.
+As @jscott pointed out in his answer, Windows has no way of setting time from the command line unless you use NtTimeSource which I didn't mentioned.
+
+That said, there are many programs that allow you to change your computer's time on the command line (e.g. using time command).
+
+It's best to not use it because it's system dependent and it's not recommended for any purpose other than setting the time by hand.
+
+</div></body></html><!-- 2022-06-25 08:32:59 

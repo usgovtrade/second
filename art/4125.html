@@ -1,0 +1,111 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4126.html'>4126</a><Br/><a href='4127.html'>4127</a><Br/><a href='4128.html'>4128</a><Br/><a href='4129.html'>4129</a><Br/><a href='4130.html'>4130</a><Br/><a href='4131.html'>4131</a><Br/><a href='4132.html'>4132</a><Br/><a href='4133.html'>4133</a><Br/><a href='4134.html'>4134</a><Br/><a href='4135.html'>4135</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4124.html'>4124</a><Br/><a href='4123.html'>4123</a><Br/><a href='4122.html'>4122</a><Br/><a href='4121.html'>4121</a><Br/><a href='4120.html'>4120</a><Br/><a href='4119.html'>4119</a><Br/><a href='4118.html'>4118</a><Br/><a href='4117.html'>4117</a><Br/><a href='4116.html'>4116</a><Br/><a href='4115.html'>4115</a></div><div class='nav'><a href='4124.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4126.html'> >> </a></div><div class='article'>Q:
+
+Why do I get this java error: error: ';' expected on the last statement of the for loop in this method?
+
+I'm getting this error: error: ';' expected on the last statement of the for loop in the function run().
+Why am I getting this error and how do I solve it?
+public void run(){
+    int N;
+    N = 2;
+    Scanner scan = new Scanner(System.in);
+    System.out.print("Please enter a positive integer: ");
+    N = scan.nextInt();
+    while(N < 0){
+        N = scan.nextInt();
+    }
+    int[] a = new int[N];
+    for(int i = 0; i < N; i++){
+        a[i] = scan.nextInt();
+    }
+
+    for(int i = 0; i < N; i++){
+        System.out.println("The " + i + "th term of sequence is: " + a[i]);
+    }
+
+}
+
+A:
+
+It seems that you are copying some code, which was originally not intended to work like this (i.e. this was not written to work like this). In that case, go back to the code's author and ask them to fix it for you.
+If you really want to fix it, you should start with finding what's wrong with this line:
+int[] a = new int[N];
+
+You cannot write int[] a = new int[N]; if you never initialize the length of the array. You should replace the new int[] with a new int[N], as in the code below.
+int[] a = new int[N];
+for(int i = 0; i < N; i++){
+    a[i] = scan.nextInt();
+}
+
+But then, we will still have the other problem: The problem of how you use your array in the for loop. If you think you understand what I mean when I say 'the problem of how you use your array', then I suggest you open up another question, ask the question, and post the code as an answer. This answer will likely be a link rot, so use common sense before asking a new question.
+Also, please consider rephrasing your title a little. "Error - ';' expected" is hard to understand. "Error - I'm getting an error because I'm using the array in a for loop". That is a clearer title and will help people understand your problem a lot better.
+Good luck.
+
+A:
+
+Change:
+int[] a = new int[N];
+
+To
+int[] a = new int[N];
+
+As:
+System.out.println("The " + i + "th term of sequence is: " + a[i]);
+
+Should look like:
+System.out.println("The " + i + "th term of sequence is: " + a[i-1]);
+
+That is because you create the array and then enter the for loop which starts from i=0 until i=1.
+To loop from i=1 until i=N, you should change:
+for(int i = 0; i < N; i++){
+    System.out.println("The " + i + "th term of sequence is: " + a[i]);
+}
+
+to:
+for(int i = 1; i <= N; i++){
+    System.out.println("The " + i + "th term of sequence is: " + a[i-1]);
+}
+
+To be more accurate you should add:
+scan.nextLine();
+
+after scan.nextInt() to consume the new line after your number, but it will only work if you enter a number followed by a new line.
+
+A:
+
+change it to: 
+for(int i = 1; i <= N; i++){
+    System.out.println("The " + i + "th term of sequence is: " + a[i-1]);
+}
+
+The loop is only running once because you only initialised it with N amount of size
+
+You also should add an int N = scan.nextInt(); right before the for loop or before the while loop
+
+And don't mix the int[] array a with normal int variables, you will get a ArrayIndexOutOfBoundsException when you try to access an array element with a normal int variable.
+
+Try to stick to java standard for example do not use == to compare two objects or integers. Use the equals or equalsIgnoreCase functions.
+
+Always make sure to define an upper-bound for your array because it will work until you exceed that. A good way to do this is to use a boolean. It doesn't need to be in a variable but instead put the following code in the loop:
+boolean isFull = false;
+if (a.length == N) {
+    System.out.println("The array is full");
+    System.exit(0);
+}
+if (N == 0) {
+    System.out.println("No elements have been entered");
+    System.exit(0);
+}
+if (N == 1) {
+    System.out.println("The array is full");
+    System.exit(0);
+}
+
+if (isFull) {
+    System.out.println("The array is full");
+    System.exit(0);
+}
+else {
+    isFull = true;
+}
+
+</div></body></html><!-- 2022-06-25 08:32:59 
