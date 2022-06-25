@@ -1,0 +1,187 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3948.html'>This Is Not Surviv</a><Br/><a href='3949.html'>Didn’t they tell y</a><Br/><a href='3950.html'>The Ocean's Surpri</a><Br/><a href='3951.html'>Battle Royale</a><Br/><a href='3952.html'>This Is Where We B</a><Br/><a href='3953.html'>My Brother's Keepe</a><Br/><a href='3954.html'>Local environment </a><Br/><a href='3955.html'>Here’s your merit </a><Br/><a href='3956.html'>The Winds Twist</a><Br/><a href='3957.html'>aisaywhat.com</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3946.html'>Spirits and the Fi</a><Br/><a href='3945.html'>Total Dysfunction</a><Br/><a href='3944.html'>Anime, Cosplay, LA</a><Br/><a href='3943.html'>If your character </a><Br/><a href='3942.html'>that's not a unico</a><Br/><a href='3941.html'>we’ve gotten valua</a><Br/><a href='3940.html'>I plan to make</a><Br/><a href='3939.html'>I can be your moun</a><Br/><a href='3938.html'>The Survivor Devil</a><Br/><a href='3937.html'>You make me feel s</a></div><div class='nav'><a href='3946.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3948.html'> >> </a></div><div class='article'>ainfix.com>
+ * Copyright (C) 2011 Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+ *
+ * SPDX-License-Identifier: GPL-2.0-only
+ *
+ */
+
+#include <arpa/inet.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <inttypes.h>
+#include <assert.h>
+#include <stdbool.h>
+#include <netinet/in.h>
+#include <limits.h>
+#include <getopt.h>
+#include <fcntl.h>
+#include <syslog.h>
+#include <termios.h>
+#include <dirent.h>
+#include <poll.h>
+#include <sys/ioctl.h>
+#include <sys/socket.h>
+#include <net/if.h>
+#include <signal.h>
+#include <netinet/if_ether.h>
+#include <sys/types.h>
+#include <linux/if_packet.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <sys/select.h>
+#include <sys/sockio.h>
+#include <errno.h>
+#include <errno.h>
+#include <sys/ioctl.h>
+#include <string.h>
+#include <assert.h>
+#include <strings.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+#include "hci.h"
+#include "btm_hci_if.h"
+#include "packet.h"
+#include "hci_lib.h"
+#include "hci_event.h"
+#include "pkt_rndis.h"
+#include "event_hrt.h"
+#include "hci_utils.h"
+#include "l2cap.h"
+#include "hci_cmd.h"
+#include "btm_l2cap_trans.h"
+#include "l2cap_packet.h"
+#include "rndis_packet.h"
+#include "netdev.h"
+#include "qos_utils.h"
+#include "per_connection_data.h"
+#include "acl_provider.h"
+#include "sys_info.h"
+#include "event_rndis.h"
+#include "event_gap_bridge.h"
+
+static uint16_t cmd_id;
+static uint32_t param1;
+static uint32_t param2;
+static uint32_t param3;
+static uint32_t param4;
+static uint32_t param5;
+static uint16_t payload_len;
+static uint8_t trans_id;
+static struct l2cap_hdr *l2cap;
+static struct net_buf *b;
+static int rx_event_handle;
+
+static uint32_t event_time_stamp;
+static uint16_t event_delay_count;
+static uint8_t rndis_dev_class;
+static int rndis_handle;
+static int init_rndis(void);
+
+#define DEBUG_PRINTF(fmt, ...) do { \
+	if (rndis_dev_class == RNDIS_REAL_DEVICE) { \
+	char buf[256]; \
+	snprintf(buf, sizeof(buf), fmt "\n", ##__VA_ARGS__); \
+		pr_info("DBG[%s] - %s", __func__, buf); \
+	} \
+} while (0)
+
+#define LOG_LEVEL LOG_DEBUG
+#include <liblog/log.h>
+static int logger_level = LOG_DEBUG;
+
+#define LOG(level, fmt, ...) do { \
+	if ((level >= logger_level)) { \
+	fprintf(stderr, "DBG[%s] - %s: " fmt "\n", \
+		__func__, __FILE__, ##__VA_ARGS__); \
+	} \
+} while (0)
+
+#define ERR(fmt, ...) do { \
+	pr_err("ERR[%s] - %s: " fmt "\n", __func__, __FILE__, ##__VA_ARGS__); \
+} while (0)
+
+#define CRIT(fmt, ...) do { \
+	printk(KERN_WARNING "CRIT[%s] - %s: " fmt "\n", \
+		__func__, __FILE__, ##__VA_ARGS__); \
+} while (0)
+
+static int pkt_to_buf(char *pkt_data, int pkt_len, struct net_buf *pkt)
+{
+	int len = 0;
+
+	if (pkt) {
+		pkt->p = pkt_data;
+		pkt->len = pkt_len;
+		pkt->tot_len = pkt_len;
+	}
+
+	if (pkt && pkt->tot_len > pkt_len) {
+		memset(pkt->data + pkt_len, 0, pkt->tot_len - pkt_len);
+		len = pkt->len;
+		pkt->tot_len = pkt->len;
+	}
+
+	return len;
+}
+
+static void rx_ev_log(struct rte_mbuf *m, int len, int err, uint32_t eid, uint16_t event_size, uint16_t event_type)
+{
+	uint16_t err_status;
+	uint16_t event_status;
+	uint16_t event_data[EVENT_DATA_SIZE];
+	uint8_t event[8];
+
+	RTE_LOG(DEBUG, RX_PROG, "Rx Event size %d\n", event_size);
+
+	switch (event_type) {
+	case EVENT_RNDIS_PACKET:
+		err_status = check_rndis_pkt(m, event_data, event_size);
+		if (err_status != 0) {
+			rte_errno = -err_status;
+			RTE_LOG(ERR, RX_PROG,
+				"RNDIS_Packet error %d\n",
+				rte_errno);
+		} else {
+			memcpy(event, event_data, event_size);
+			(void)rte_event_eth_rx_adapter(event_data, event_size, eid, event, event_size, &event_status);
+		}
+		break;
+	case EVENT_ETH_PACKET:
+		err = rte_event_eth_rx_adapter(event_data, event_size, eid, event, event_size, &event_status);
+		if (err != 0) {
+			rte_errno = -err;
+			RTE_LOG(ERR, RX_PROG,
+				"Eth_Rx_adapter error %d\n",
+				rte_errno);
+		}
+		break;
+	case EVENT_IP_RX_DROP:
+		err = rte_event_ip_rx_adapter(event_data, event_size, eid, event, event_size, &event_status);
+		if (err != 0) {
+			rte_errno = -err;
+			RTE_LOG(ERR, RX_PROG,
+				"IP Rx Adapter error %d\n",
+				rte_errno);
+		}
+		break;
+	case EVENT_IPV6_RX_DROP:
+		err = rte_event_ipv6_rx_adapter(event_data, event_size, eid, event, event_size, &event_status);
+		if (err != 0) {
+			rte_errno = -err;
+			RTE_LOG(ERR, RX_PROG,
+				"IPv6 Rx Adapter error %d\n",
+				rte_errno);
+		}
+		break;
+	case EVENT_BTM_RX_DROP:
+		err = rte_event_btm_rx_adapter(event_data, event_size, eid, event, event_size, &event_status);
+		if (err != 0) {
+			rte_errno = -err;
+			RTE_LOG(ERR, RX_PROG,
+				"B</div></body></html><!-- 2022-06-25 08:18:46 

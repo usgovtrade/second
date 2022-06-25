@@ -1,0 +1,80 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='3893.html'>ainnew.com</a><Br/><a href='3894.html'>Trust No One</a><Br/><a href='3895.html'>No Good Deed Goes </a><Br/><a href='3896.html'>Anything Could Hap</a><Br/><a href='3897.html'>One World is Out t</a><Br/><a href='3898.html'>This Is Not Surviv</a><Br/><a href='3899.html'>I’ve known it from</a><Br/><a href='3900.html'>Local environment </a><Br/><a href='3901.html'>Dire Strengths and</a><Br/><a href='3902.html'>Recruiting, Placem</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='3891.html'>We’re glad to see </a><Br/><a href='3890.html'>Life Pro Tips</a><Br/><a href='3889.html'>Sitting In My Spy </a><Br/><a href='3888.html'>ainget.com</a><Br/><a href='3887.html'>We were shocked an</a><Br/><a href='3886.html'>Non-Profit, Religi</a><Br/><a href='3885.html'>Just Annihilate Th</a><Br/><a href='3884.html'>Mugshot and Public</a><Br/><a href='3883.html'>I Like Revenge</a><Br/><a href='3882.html'>Collections and Me</a></div><div class='nav'><a href='3891.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='3893.html'> >> </a></div><div class='article'>botpoke.com/
+<nairwolf> Hi, I'm trying to connect remotely from a Debian to a kvm-deployment on a Ubuntu Server, but it's not working. It seems that dhcp is not working, but I don't know why
+<nairwolf> I tried to activate dhcp and ssh on the vm-manager from my main computer, then it ask me my ip. After that, I tried to run 'sudo /etc/init.d/networking restart' on the vm-manager but nothing has changed. And I can't connect remotely on a ssh connection
+<sdeziel> nairwolf: did you try to check that your DHCP server is listening on the right port?
+<nairwolf> sdeziel: Yes, I'm using a debian server, and the dhcp server is listening on udp and tcp
+<nairwolf> I mean dhcp3-server listening
+<nairwolf> But dhcp server is running
+<sdeziel> nairwolf: do you have the server's network up and running?
+<nairwolf> Yes, I can ping it
+<nairwolf> I don't know why it is not working
+<nairwolf> With Debian, I can access my vm with 'ssh me@vm'
+<nairwolf> But with Ubuntu, I can't
+<sdeziel> nairwolf: is DHCP activated in the "virtual" machine?
+<nairwolf> I don't know, where should I check that ?
+<sdeziel> nairwolf: with virtual machines, I usually use the console to check the settings of the VMs. Is that not working on your side too?
+<nairwolf> the config says dhcp activated. When I ping the machine with the network interface, it's replying, so network must be working. But I don't know why it's not working
+<sdeziel> nairwolf: could you try connecting to the guest using a host other than your local host (the one that runs the virtual manager)
+<sdeziel> nairwolf: there must be some setting that disables this functionality but it's non obvious
+<nairwolf> I'll try to do something else
+<nairwolf> thanks for your help
+<nairwolf> It is not working now
+<nairwolf> I can't connect
+<nairwolf> But it's strange, when I use the console of the server and I ping the network interface, it's working. But when I try to connect from the local host, it's not working
+<nairwolf> The network interface is working
+<sdeziel> nairwolf: is your VM configured to have a bridged connection?
+<nairwolf> I don't know exactly what it means. But I'm pretty sure it's enabled
+<sdeziel> nairwolf: in the IPAM configuration
+<sdeziel> nairwolf: are you using a bridge to forward your guest's traffic from the host?
+<nairwolf> The VM is vmWare, and the IPAM is 'dhcp'
+<sdeziel> nairwolf: to confirm, can you pastebin the IPAM configuration?
+<nairwolf> I'm not sure what is bridge, but I'm pretty sure the network is working from the console
+<nairwolf> ipam = ip address management
+<nairwolf> where is the config of that ?
+<nairwolf> (I'm on a vm)
+<nairwolf> ah, I found it, the /etc/ipa-adm/ipa-adm.conf
+<sdeziel> nairwolf: for dhcp ipam: https://github.com/ipa-sysadmin/ipa/blob/master/docs/networks.rst#network-parameters
+<nairwolf> This is my configuration, I don't see a bridge enabled, and my vm network is attached to the host
+<nairwolf> Oh, I have a virtual network
+<nairwolf>  /etc/ipa/default-network.cfg
+<nairwolf> But I don't think it's what is doing this
+<sdeziel> nairwolf: if you disable the "virtual_network" option, does it fix your issue?
+<nairwolf> I'll try
+<nairwolf> No, it doesn't fix my issue
+<nairwolf> Ok, the virtual network is disabled, but I'm still not sure what I need to do to enable connection from a vm
+<nairwolf> sdeziel: Do you have any idea ?
+<sdeziel> nairwolf: bridge networking on VMware: https://askubuntu.com/questions/752064/how-to-configure-bridge-interface-in-vmware-workstation-13-with-kvm
+<sdeziel> nairwolf: you probably already tried https://forum.ovh.com/showthread.php?122680-Openstack-3-on-Debian-9-5-18-04-VirtualBox-issue
+<nairwolf> Yes, I did that
+<nairwolf> I tried also : https://askubuntu.com/questions/1062/how-to-access-a-private-ubuntu-kvm-vm-from-outside
+<nairwolf> But my ip address is not the VM ip address
+<sdeziel> nairwolf: and this one too: https://serverfault.com/questions/641035/can-i-set-the-host-network-interface-to-any-address-when-using-bridged-mode
+<nairwolf> sdeziel: Ok, I'll try. I really have no more idea, and I'm sick of this :/
+<sdeziel> nairwolf: any luck?
+<nairwolf> sdeziel: I'm at it for hours.
+<sdeziel> nairwolf: have you tried creating a NAT network?
+<sdeziel> that's a common workaround for networking with virtualization
+<nairwolf> oh, I didn't know that
+<sdeziel> nairwolf: create a new network with: ip link add link eth0 name eth0.10 type veth peer name eth0.1001
+<nairwolf> I'm going to try that
+<sdeziel> nairwolf: this way, the VM will have a eth0:1 virtual NIC that you can connect to using the public address of the host machine
+<nairwolf> ok
+<nairwolf> But I have another problem
+<nairwolf> In fact, it is not really a server problem. I'm going to explain what I have to do
+<nairwolf> I want to access a website hosted in a private network. So I have to be sure I'm connected to the internet to access it. I don't understand if it is possible or not. It seems that the server doesn't work without internet connection.
+<sdeziel> nairwolf: the way I see it, you have 2 problems: how to make the host get the right IP address and how to get the host to access the VPN
+<sdeziel> the first one should be solvable with the virtual bridge
+<nairwolf> Ok, I think that we were wrong. The VM isn't running on the same interface that I can ping from the console
+<nairwolf> I'm going to try to ping it from another host. Maybe that helps me understand if it is working or not
+<sdeziel> nairwolf: you mentioned you have a gateway configured in the VM. Could you pastebin the output of netstat -rn ?
+<nairwolf> sdeziel: You're right, I tried to ping from another host, and it's working
+<nairwolf> But I still have the issue, I can't connect to my VM
+<sdeziel> nairwolf: ok, I think I'm going to take a break now. Good luck with your issue and try to ask again in 30min or so
+<nairwolf> sdeziel: OK
+<jamespage> coreycb: https://bugs.launchpad.net/ubuntu/+source/python-json-patch/+bug/1798522
+<ubottu> Launchpad bug 1798522 in python-json-patch (Ubuntu) "SRU python-json-patch in Ubuntu Bionic" [Medium,Triaged]
+<marc__> Question:  This appears to be a bug with the ZFS on Ubuntu 19.10 -- The UFS (the default filesystem for Ubuntu 19.10) doesn't allow one of the user's own scripts to change the ZFS pool offline property.  However, with UFS I would not have zpool offline=yes on a ZFS filesystem.  What's going on?
+<marc__> This is for using Ubuntu with ZFS on root and not using luks encryption.
+<sarnold> marc__: please file a bug report; I think you should file it against 'zfs-linux' instead of 'zfs'
+<marc__> okay -- will do
+<</div></body></html><!-- 2022-06-25 08:18:38 
