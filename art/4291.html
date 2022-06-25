@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4290.html'>4290</a><Br/><a href='4289.html'>4289</a><Br/><a href='4288.html'>4288</a><Br/><a href='4287.html'>4287</a><Br/><a href='4286.html'>4286</a><Br/><a href='4285.html'>4285</a><Br/><a href='4284.html'>4284</a><Br/><a href='4283.html'>4283</a><Br/><a href='4282.html'>4282</a><Br/><a href='4281.html'>4281</a></div><div class='nav'><a href='4290.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;</div><div class='article'>package com.alibaba.alink.operator.common.clustering.randomclusters;
+
+import com.alibaba.alink.operator.common.clustering.ClusterAssignmentModel;
+import com.alibaba.alink.operator.common.clustering.ClusterModel;
+import com.alibaba.alink.operator.common.distance.ClusterDistanceMetric;
+import com.alibaba.alink.params.clustering.KMeansParams;
+import com.alibaba.alink.params.clustering.CentroidInitialization;
+import com.alibaba.alink.params.clustering.ClusteringMetricType;
+import com.alibaba.alink.params.clustering.KMeansDistanceParams;
+import com.alibaba.alink.params.clustering.KMeansWeightParam;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class RandomClusterAssigner extends RandomClusteringAlgorithm {
+    public static final String MODE_USE_LOCAL_CLUSTER = "use_local_cluster";
+
+    protected int currentClusterId = 0;
+    protected ClusterAssignmentModel clusterAssignment;
+    protected int numSampleFeatures = 0;
+    protected String tempDir;
+    protected String[] fileList;
+
+    private int numTopCluster = 0;
+
+    protected HashMap<Integer, List<String>> labelmap;
+    protected String fileName;
+
+    private String modelPath;
+
+    public RandomClusterAssigner() {
+        this(null, null, null, null, null, null);
+    }
+
+    public RandomClusterAssigner(String modelPath, String fileList, String tempDir, String[] fileList1, KMeansDistanceParams kmdparams,
+                                 KMeansWeightParam weightparam, KMeansParams kmsparams, int numOfIteration) {
+        this.tempDir = tempDir;
+        this.fileList = fileList;
+        this.modelPath = modelPath;
+        if (kmdparams != null) {
+            KMeansDistanceParams localParams = kmdparams.clone();
+            localParams.setCenterNumber(kmdparams.centerNumber);
+            kmsparams.setDistanceMetricType(ClusteringMetricType.WEIGHTED);
+            kmsparams.setKmInitializer((CentroidInitialization) localParams.getCentroidInitialization());
+            kmsparams.setDistanceMetricType(ClusteringMetricType.CLUSTER_EMBEDDING);
+        } else {
+            kmsparams.setDistanceMetricType(ClusteringMetricType.WEIGHTED);
+            kmsparams.setKmInitializer((CentroidInitialization) null);
+        }
+        if (numOfIteration > 0) {
+            this.numOfIteration = numOfIteration;
+        } else {
+            this.numOfIteration = 20;
+        }
+
+    }
+
+    @Override
+    public void run(String[] args) throws Exception {
+        String userCols = "categorical_cols";
+        if (args != null) {
+            userCols = args[0];
+        }
+
+        if (args != null && args.length > 0) {
+            try {
+                String modelPath1 = args[0];
+                if (!new File(modelPath1).exists())</div></body></html><!-- 2022-06-25 08:33:20 
