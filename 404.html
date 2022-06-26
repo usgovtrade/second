@@ -74,7 +74,7 @@ a:hover, .d1:hover{
 </style>
 </head>
 <body >
-
+<canvas id="myCanvas" width="800" height="600"></canvas>
 
   
   <Br/>
@@ -314,51 +314,59 @@ var b = y / height;
 b= b *100;
 eye[0].style.cssText = "left: " + a + "%; top: " + b + "%;" + "transform:translate(-"+a+"%,-"+b+"%)";
 }
-  
-  n_part = 40
-thres = 15
-# 
-subr connect
-  h = dx * dx + dy * dy
-  dist = sqrt h
-  if dist < thres
-    lw = (thres - dist) / 30
-    linewidth lw
-    move px py
-    line px[j] py[j]
-  .
-.
-on animate
-  clear
-  for i range n_part
-    px = px[i]
-    py = py[i]
-    move px py
-    circle 0.3125
-    for j range i
-      dx = abs (px[j] - px)
-      if dx < thres
-        dy = abs (py[j] - py)
-        if dy < thres
-          call connect
-        .
-      .
-    .
-    if px > 100 or px < 0
-      pvx[i] = -pvx[i]
-    .
-    if py > 100 or py < 0
-      pvy[i] = -pvy[i]
-    .
-    px[i] += pvx[i]
-    py[i] += pvy[i]
-  .
-.
-for i range n_part
-  px[] &= randomf * 100
-  py[] &= randomf * 100
-  pvx[] &= (0.5 - randomf) / 3
-  pvy[] &= (0.5 - randomf) / 3
+
+ function line(particle, particle2) {
+  context.beginPath();
+  context.moveTo(particle.x, particle.y);
+  context.lineTo(particle2.x, particle2.y);
+  context.stroke();
+}
+ 
+function animate() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < maxParticles; i++) {
+    let particle = particles[i];
+    context.fillRect(particle.x - particleSize / 2, particle.y - particleSize / 2, particleSize, particleSize);
+    for (let j = 0; j < maxParticles; j++) {
+      if (i != j) {
+        let particle2 = particles[j];
+        let distanceX = Math.abs(particle.x - particle2.x);
+        let distanceY = Math.abs(particle.y - particle2.y);
+        if (distanceX < threshold && distanceY < threshold) {
+          context.lineWidth = ((threshold * 2) - (distanceX + distanceY)) / 50;
+          let color = 200 - Math.floor(distanceX + distanceY);
+          context.strokeStyle = 'rgb(' + color + ',' + color + ',' + color + ')';
+          line(particle, particle2);
+        }
+      }
+    }
+    particle.x = particle.x + particle.vx;
+    particle.y = particle.y + particle.vy;
+    if (particle.x > canvas.width - particleSize || particle.x < particleSize)
+      particle.vx = -particle.vx;
+    if (particle.y > canvas.height - particleSize || particle.y < particleSize)
+      particle.vy = -particle.vy;
+  }
+  window.requestAnimationFrame(animate);
+}
+ 
+let canvas = document.getElementById('myCanvas');
+let context = canvas.getContext('2d');
+let particles = [];
+let particleSize = 4;
+let maxParticles = 40;
+let threshold = 100;
+for (let i = 0; i < maxParticles; i++) {
+  let particle = {
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: Math.random(),
+    vy: Math.random()
+  }
+  particles.push(particle);
+}
+context.fillStyle = 'white';
+animate();
   
 </script>
 </body>
