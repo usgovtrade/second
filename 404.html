@@ -74,7 +74,7 @@ a:hover, .d1:hover{
 </style>
 </head>
 <body >
-<canvas id="myCanvas" width="800" height="600"></canvas>
+<canvas id="myCanvas" width="800" height="600" style="position:absolute"></canvas>
 
   
   <Br/>
@@ -315,6 +315,7 @@ b= b *100;
 eye[0].style.cssText = "left: " + a + "%; top: " + b + "%;" + "transform:translate(-"+a+"%,-"+b+"%)";
 }
 
+ //https://slicker.me/javascript/particles.htm
  function line(particle, particle2) {
   context.beginPath();
   context.moveTo(particle.x, particle.y);
