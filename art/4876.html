@@ -1,0 +1,86 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4877.html'>Dennis Wilson is a</a><Br/><a href='4878.html'>/*
+ * This file is</a><Br/><a href='4879.html'>Introduction
+=====</a><Br/><a href='4880.html'>Category: Tile Roo</a><Br/><a href='4881.html'>Krampus: Reindeer </a><Br/><a href='4882.html'>Tesla founder Elon</a><Br/><a href='4883.html'>
+
+A couple years a</a><Br/><a href='4884.html'>The effect of theo</a><Br/><a href='4885.html'>Category: The Dile</a><Br/><a href='4886.html'>A high-performance</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4875.html'>Surgical treatment</a><Br/><a href='4874.html'>Hillary Clinton, s</a><Br/><a href='4873.html'>Q:
+
+Python: Create</a><Br/><a href='4872.html'>Effect of differen</a><Br/><a href='4871.html'>Motorist Tries To </a><Br/><a href='4870.html'>The invention rela</a><Br/><a href='4869.html'>
+How to use Amazon</a><Br/><a href='4868.html'>This week, the U.S</a><Br/><a href='4867.html'>The content publis</a><Br/><a href='4866.html'>The overall goals </a></div><div class='nav'><a href='4875.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4877.html'> >> </a></div><div class='article'>Q:
+
+Can I use a C# "using" declaration in an IronPython script?
+
+I would like to have IronPython use the C# using declaration for all instances of IDisposable (without having to change my library).
+When I have
+using (Bitmap bmp = new Bitmap(fileName))
+{
+    ...
+}
+
+and try to run
+bmp = Bitmap(fileName)
+
+in an IronPython script, I get a TypeError, saying the type isn't available.  I can, however, use
+from System import *
+from System.IO import *
+from System.Drawing import *
+from System.Windows.Forms import *
+
+This feels hacky and will increase memory usage (I suppose I can get around that by wrapping them in functions or, as the error message says, importing them), but it does allow me to do all the things I want to do.  Is there a better way?
+
+A:
+
+You can add this in your project file:
+<Imports><Import module='System'><Import module='System.IO' /><Import module='System.Drawing' /><Import module='System.Windows.Forms' /></Imports>
+
+This should allow you to reference Bitmap in a normal fashion.
+But note that you're better off with the normal imports if you're going to be running your code in the regular .NET runtime.
+
+A:
+
+The cleanest way is to use the Python bindings to use c# in python.
+For your specific example, with c#2.0 and up you can use the Bitmap(string name) constructor.
+EDIT
+You can use PIL as well, which has a much better interface for writing image manipulations, but has a few problems with GDI+.
+
+A:
+
+If you can get past your .NET snobbery, pinvoke.net gives you C# code for the .NET APIs.  It works fairly well with IronPython.
+I'm not a big C# programmer, but I seem to recall that most of the time, the C# using block automatically cleans up the object when it goes out of scope.  I would imagine this is a side effect of garbage collection.  I'm not sure how long the resources will stick around, but for short code, it probably doesn't matter.  I suspect the next major version of IronPython will be C#-only; it's nice to have the ability to share code between scripting languages.
+One big problem you will have is that IronPython doesn't use the same "IDisposable" pattern as C#, it instead uses IDisposable.  You can use the "using" as you have it now, but you'll need to wrap it in a function to support IronPython's dynamic-ness:
+def using_function(obj):
+   try:
+       obj.SomeFunction()
+   finally:
+       obj.Dispose()
+
+The next problem you will have is that you will have to manage the memory yourself. C# uses garbage collection to release memory. In IronPython, there is no garbage collector. You'll have to manage the resources yourself.
+
+If you have a lot of code, pinvoke.net, or even the direct code may be easier to use.
+
+Using IronPython 2.6
+IronPython 2.6 supports using the using keyword, so it should work as expected, assuming that you have a suitable import statement for it (and you don't create the object with a local declaration, rather than assigning it to a variable):
+import clr
+clr.AddReference('System.Drawing')
+import System.Drawing as Drawing
+
+Using bmp = Bitmap(filename)
+    Using pic = new Drawing.Bitmap(filename)
+        # use `pic` here
+    End Using
+End Using
+
+See the Using Statement
+
+A:
+
+I think the easiest thing to do here is use C#. Then you don't have to deal with the issue of the GC and it is just standard code.
+However I would like to make the comment that you don't really want to use using (Bitmap bmp = new Bitmap(filename)) in the first place. If it is an IDisposable then just get rid of the using. The Garbage Collector will clean it up for you in the end anyway (though you probably want to call Dispose, just in case). There's really no need to use a using block or any form of a try/finally block in order to dispose of IDisposable objects. They will get disposed of if you lose the reference to them (such as if the object in which they are contained is dereferenced).
+EDIT: You can read more about Garbage Collection in the .NET Framework
+EDIT: Using is actually completely useless if you are not using the "using" keyword. That way, it is possible to have the GC collect the object while it is still in use. You can have an instance variable set to a variable inside the using, and as long as the variable has not been lost in the containing method, it will be fine. However if you were to assign a variable outside of the using block, then the memory allocated by the object would never be cleaned up. Using will give you access to methods or fields that might be implemented with a destructor or would throw exceptions, for example.
+
+The using statement guarantees that Dispose is called even if an exception occurs while you are calling Dispose. Therefore, you do not have to worry about calling Dispose in a finally block to ensure that Dispose is called even if an exception occurs while you are calling Dispose.
+
+http://msdn.microsoft.com/en-us/library/system.idisposable.dispose%28v=VS.90%29.aspx
+The thing is, you can simply call Dispose() without doing anything else.  The GC will clean up the memory allocated by the Bitmap instance at some point or another, and it doesn't matter if you're in the middle of a Using or not. There's no need to actually use the using statement for IDisposable instances that you don't own.
+
+</div></body></html><!-- 2022-07-17 11:30:38 

@@ -1,0 +1,108 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4826.html'>Q:
+
+How to convert</a><Br/><a href='4827.html'>Q:
+
+How to access </a><Br/><a href='4828.html'>Q:
+
+How to use the</a><Br/><a href='4829.html'>Q:
+
+How does the c</a><Br/><a href='4830.html'>Laparoscopic diagn</a><Br/><a href='4831.html'>The present invent</a><Br/><a href='4832.html'>Bahrain’s Foreign </a><Br/><a href='4833.html'>Newport Beach, Cal</a><Br/><a href='4834.html'>A group of interna</a><Br/><a href='4835.html'>Methotrexate-assoc</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4824.html'>The present invent</a><Br/><a href='4823.html'>Q:
+
+XPATH querying</a><Br/><a href='4822.html'>Oil and water, yin</a><Br/><a href='4821.html'>Methanotrophs colo</a><Br/><a href='4820.html'>Q:
+
+How to set the</a><Br/><a href='4819.html'>LOS ANGELES -- It'</a><Br/><a href='4818.html'>We’re back! Join h</a><Br/><a href='4817.html'>The present invent</a><Br/><a href='4816.html'>Q:
+
+PHP date() fun</a><Br/><a href='4815.html'>[A case of bilater</a></div><div class='nav'><a href='4824.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4826.html'> >> </a></div><div class='article'>Q:
+
+How can I add additional values to a List based on an if statement?
+
+I am trying to understand how you would implement a function in C# that takes a List, and inserts additional values based on a given condition.
+So for example, if my original list contains the following values: 1, 4, 7, 5, 8, 9. I would like to take the code that runs in this if statement, and add it to a new List which is not the same as the original List.  That new List should be the original list plus the numbers 1, 2, 3.  I am basically trying to find the index of each value from the original List which is less than 7, and append a 1 and 2 in front of the existing numbers. So the new list would be 3, 4, 5, 6, 1, 2, 3, 7, 8, 9. 
+I understand how to loop through the list, but do not understand how I can add values to a list at a specific index. In my code below I just get a null reference error for value = aList[i] and return value = newList[i]. 
+Any help or feedback would be appreciated!
+public void addOne(List<int> aList)
+{
+    if (aList.Min() < 6)
+    {
+        //get values that need to be added to the list and 
+        //put in a new list with a one before each number.
+    }
+    return value;
+}
+
+A:
+
+It's better to make a new list of a List type:
+var newList = Enumerable.Range(1,9)
+                       .Where(x => aList.Any(y => y < 7))
+                       .ToList();
+
+You can use a for loop instead of Enumerable.Range and also use an array instead of List.
+
+A:
+
+Just adding to an existing list, rather than creating a new one, can be done with the Aggregate extension method.  You can use:
+aList.Aggregate((current, next) => current + (current < 7 ? 1 : 0) + next);
+
+This requires C# 7, so you can either use Visual Studio 2017 or the newer .NET Core to compile this.
+
+You could also pass a custom delegate, as the name suggests, rather than a condition, you could write:
+aList.Aggregate(new int[] { 1, 2, 3 }, (current, next) => current.Concat(new [] { next }));
+
+where new int[] { 1, 2, 3 } is an IEnumerable<int> representing the items to add to the list.
+That's simpler than an if condition.
+
+A:
+
+Here's a slightly shorter version of the list.Add(i) answer:
+int[] aList = { 1, 4, 7, 5, 8, 9 };
+var result = aList.Concat(Enumerable.Repeat(1, 2));
+
+The Concat method takes an array and repeats the elements in it n times.
+Note: The Repeater overload takes the count you want it to repeat the array. I used a 1 and 2 in this example.
+Also note that the ToList method is expensive when you don't use the return value. If you just need the enumerable then avoid ToList.
+If you want to turn your list into a new list of ints rather than a list of arrays then do:
+List<int> newList = aList.Where(x => x < 7).ToList();
+
+Where will just filter your list for you. It's simpler to read than the array version.
+
+In response to the comment below the question. If you need to add items after your code already has a reference to the list:
+int[] aList = { 1, 4, 7, 5, 8, 9 };
+List<int> newList = aList.Where(x => x < 7).ToList();
+newList.Add(1);
+
+To access the items:
+foreach (var i in newList) {
+    Console.WriteLine(i);
+}
+
+If you want to avoid the performance of ToList, then:
+int[] aList = { 1, 4, 7, 5, 8, 9 };
+IEnumerable<int> newList = aList.Where(x => x < 7);
+
+foreach (var i in newList) {
+    Console.WriteLine(i);
+}
+
+Of course, in this case, you don't need a temporary array since you don't need to use the result, but in other situations you can do:
+int[] aList = { 1, 4, 7, 5, 8, 9 };
+IEnumerable<int> newList = aList.Where(x => x < 7).ToList();
+
+foreach (var i in newList) {
+    Console.WriteLine(i);
+}
+
+You can also use the ToList extension method. If you need to modify the result, but still have a reference to the original list:
+int[] aList = { 1, 4, 7, 5, 8, 9 };
+var newList = aList.Where(x => x < 7).ToList();
+newList.Add(1);
+
+If you need to add after the initial ToList call, you can use LINQ's ElementAt method to insert an element at a specific index.
+var newList = aList.ToList();
+var count = 1;
+var items = aList.ElementAt(0)...;
+for (var i = count + 1; i < aList.Length; i++) {
+    items.Add(aList[i]);
+}
+
+</div></body></html><!-- 2022-07-17 11:30:30 

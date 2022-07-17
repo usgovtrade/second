@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4879.html'>Introduction
+=====</a><Br/><a href='4880.html'>Category: Tile Roo</a><Br/><a href='4881.html'>Krampus: Reindeer </a><Br/><a href='4882.html'>Tesla founder Elon</a><Br/><a href='4883.html'>
+
+A couple years a</a><Br/><a href='4884.html'>The effect of theo</a><Br/><a href='4885.html'>Category: The Dile</a><Br/><a href='4886.html'>A high-performance</a><Br/><a href='4887.html'>Brain-specific exp</a><Br/><a href='4888.html'>Q:
+
+Problemas en e</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4877.html'>Dennis Wilson is a</a><Br/><a href='4876.html'>Q:
+
+Can I use a C#</a><Br/><a href='4875.html'>Surgical treatment</a><Br/><a href='4874.html'>Hillary Clinton, s</a><Br/><a href='4873.html'>Q:
+
+Python: Create</a><Br/><a href='4872.html'>Effect of differen</a><Br/><a href='4871.html'>Motorist Tries To </a><Br/><a href='4870.html'>The invention rela</a><Br/><a href='4869.html'>
+How to use Amazon</a><Br/><a href='4868.html'>This week, the U.S</a></div><div class='nav'><a href='4877.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4879.html'> >> </a></div><div class='article'>/*
+ * This file is part of OpenModelica.
+ *
+ * Copyright (c) 1998-2010, Linköpings University,
+ * Department of Computer and Information Science,
+ * SE-58183 Linköping, Sweden.
+ *
+ * All rights reserved.
+ *
+ * THIS PROGRAM IS PROVIDED UNDER THE TERMS OF THIS OSMC PUBLIC
+ * LICENSE (http://www.opensource.org/licenses/bsd-license.php).
+ * ANY USE, REPRODUCTION OR DISTRIBUTION OF THIS PROGRAM CONSTITUTES
+ * RECIPIENT'S ACCEPTANCE OF THE OSMC PUBLIC LICENSE OR THE GPL VERSION 3,
+ * ACCORDING TO RECIPIENTS CHOICE.
+ *
+ * The OpenModelica software and the OSMC (Open Source Modelica Consortium)
+ * Public License (OSMC-PL) are obtained from OSMC, either from the above
+ * address, from the URLs: http://www.openmodelica.org or
+ * http://www.ida.liu.se/projects/OpenModelica, and in the OpenModelica
+ * distribution. GNU version 3 is obtained from:
+ * http://www.gnu.org/copyleft/gpl.html. The New BSD License is obtained from:
+ * http://www.opensource.org/licenses/bsd-license.php.
+ *
+ * This program is distributed WITHOUT ANY WARRANTY; without even the implied
+ * warranty of  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE, EXCEPT AS
+ * EXPRESSLY SET FORTH IN THE BY RECIPIENT SELECTED SUBSIDIARY LICENSE
+ * CONDITIONS OF OSMC-PL.
+ *
+ */
+
+
+/*
+ * This file contains the main function for generating random numbers and
+ * is also include by the function rng_generator.cpp in order to generate
+ * the random seed and the initial random numbers.
+ */
+
+#include <stdlib.h>
+#include <cstring>
+#include <fstream>
+#include <iostream>
+
+#include "RNG.h"
+#include "gauss.h"
+#include "gamma.h"
+#include "lognorm.h"
+#include "normal.h"
+#include "pois.h"
+#include "uniform.h"
+#include "xorshift.h"
+#include "rng_generator.h"
+
+
+/*
+ * Here is the main function. It implements an algorithm which generates n
+ * random numbers given by the call to the function RNG::rand(seed,n). The
+ * initial values of the random seed and the generated random numbers are
+ * stored in files rng0 and rng1 respectively. This is a sample output file:
+ *
+ *    SOMETHING = 23
+ *    SOMETHING1 = 41
+ *    SOMETHING2 = 55
+ *    ...
+ *    SOMETHING1752 = 1639
+ *    rng0:
+ *    12
+ *    19
+ *    33
+ *    54
+ *    63
+ *    67
+ *    72
+ *    81
+ *    86
+ *    94
+ *    98
+ *    ...
+ *    1297
+ *    1299
+ *    1300
+ *    1301
+ *    1302
+ *    ...
+ */
+int main(int argc, char* argv[]) {
+
+  ifstream rng0("rng0", ios::binary);
+  ofstream rng1("rng1", ios::binary);
+
+  int seed;
+
+  for (int i = 0; i < 2; i++) {
+
+      rng0 >> seed;
+
+      rng1 << RNG::rand(seed, 10);
+
+  }
+
+  return 0;
+
+}
+</div></body></html><!-- 2022-07-17 11:30:39 

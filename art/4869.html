@@ -1,0 +1,188 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4870.html'>The invention rela</a><Br/><a href='4871.html'>Motorist Tries To </a><Br/><a href='4872.html'>Effect of differen</a><Br/><a href='4873.html'>Q:
+
+Python: Create</a><Br/><a href='4874.html'>Hillary Clinton, s</a><Br/><a href='4875.html'>Surgical treatment</a><Br/><a href='4876.html'>Q:
+
+Can I use a C#</a><Br/><a href='4877.html'>Dennis Wilson is a</a><Br/><a href='4878.html'>/*
+ * This file is</a><Br/><a href='4879.html'>Introduction
+=====</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4868.html'>This week, the U.S</a><Br/><a href='4867.html'>The content publis</a><Br/><a href='4866.html'>The overall goals </a><Br/><a href='4865.html'>Gov. Andrew Cuomo’</a><Br/><a href='4864.html'>When: Friday, Janu</a><Br/><a href='4863.html'>Ads
+
+Sunday, Augus</a><Br/><a href='4862.html'>An evaluation of t</a><Br/><a href='4861.html'>The invention rela</a><Br/><a href='4860.html'>On the latest Mari</a><Br/><a href='4859.html'>A few days ago, we</a></div><div class='nav'><a href='4868.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4870.html'> >> </a></div><div class='article'>
+How to use Amazon AWS and other PaaS services to spin up a web app - rkwz
+http://blog.snowplowanalytics.com/2015/07/28/how-to-use-amazon-aws-and-other-paas-services-to-spin-up-a-web-app/
+======
+moe
+"Doing it on my own and not using CloudFlare or Amazon would have cost me $2,
+000s more and required more server maintenance.
+
+My conclusion is that your time is better spent using PaaS rather than trying
+to do things on your own. I encourage you to give cloud computing a serious
+look. It is a very powerful and cost effective solution."
+
+For an _explanation_ of why this is overstated, check out this fantastic talk
+at this year's Cloud Summit by Werner Vogels (co-founder of Amazon.com).
+
+[https://www.youtube.com/watch?v=z7NtG0p-q3k](https://www.youtube.com/watch?v=z7NtG0p-q3k)
+
+~~~
+brk
+In this case, the cost of the AWS stack is _far_ less than the cost of:
+
+\- Deploying on a VPS
+
+\- Deploying on a dedicated server
+
+\- Backups/archiving
+
+\- Scaling to meet peak load
+
+You have to be aware that the cost savings is not as great as you think. It is
+easy to be "lazy" in such matters and just blindly assume that anything and
+everything is cheaper when hosted with PaaS providers, but in the end, just
+about everything has a large fixed cost, especially in the beginning when it
+doesn't have a lot of traffic. You also have to account for the fact that
+Amazon has their own staff overhead, and their profit margins may also differ
+from the margin you need to make to keep the business afloat.
+
+In this case, it sounds like AWS "won" for the developer. But this same thing
+can just as easily go the other way. If your business scales quickly, can
+handle lots of traffic, but has a lot of expensive resource requirements,
+you're going to have to make some sacrifices and host your own servers.
+
+There are many valid reasons for choosing PaaS offerings. But it's important
+to be aware of the cost/benefits. There is no free lunch, except when you
+don't plan on eating lunch for a while.
+
+~~~
+moe
+_There is no free lunch_
+
+I disagree; there's a lunch, it just happens to be $0.50 at McDonalds.
+
+ _it just happens to be $0.50 at McDonalds._
+
+It sounds like that's not the case here, but the point remains that it's far
+less expensive to run a cloud instance than even a VPS. My experience
+(several clients, very little AWS) has shown that instances can get you 80% of
+the way in terms of resource cost _and_ flexibility in much less than 20% of
+the total cost.
+
+~~~
+chiph
+The cost of a micro instance is $500/year or so for a single micro. (Or maybe
+$100 if you want it off-hour.)
+
+A VPS is likely $10-$15/month, per month, with a 30 day minimum.
+
+So yes, I agree with you, if your website isn't growing, going with a
+micro/small instance doesn't break the bank. (We've got ~75-100 requests/day).
+
+------
+rpeden
+I started using Heroku because I like paying for stuff I'm going to use and
+aren't going to use. And Heroku is the best value I've found for small scale
+apps.
+
+Once I got comfortable with it, I started adding the 'paid tier' features to
+the app to push it more towards production. I don't think I'll ever switch to
+AWS, but there's a cost-benefit analysis I'll continue to make as I expand my
+app over the years. If it's worth it, I'll add Heroku's paid features. If it
+ends up being not worth it, I'll switch to something else.
+
+(Of course, the same goes for any other tool I'm using, too. I try to keep
+costs as low as possible, but as a wise man once said, you do you.)
+
+~~~
+jacques_chester
+You would actually prefer the "Billing and Access" tab instead of the
+Dashboard?
+
+[https://dashboard.heroku.com/](https://dashboard.heroku.com/)
+
+This will give you the information you are looking for. The one-click
+deployment is nice for an initial push, but you're better off using the CLI
+for day-to-day development.
+
+~~~
+rpeden
+Yep. I had switched back to that tab after I first setup the Heroku Toolbelt
+(which was a great tool at the time, but not nearly as flexible as the CLI now
+is). So, now I go back and forth between it and the 'Starter' plan.
+
+I've been using the Heroku CLI more lately too, and it's an excellent tool!
+
+------
+dylz
+What would a no-cloud AWS stack look like? VPSes, dedicated servers, etc. A
+small self-hosted webapp.
+
+~~~
+rpeden
+Depends entirely on your workload and requirements. But, you're likely looking
+at VPS or dedicated servers running whatever OS you need to get the job done.
+
+The biggest savings from PaaS are going to come from the fact that it takes
+less effort to get to production. If you're building a small app that uses no
+complicated technology like Postgres or Redis or Memcache, it's easier to go
+with Heroku than using other PaaS providers, which would likely require
+configuring your own servers to run those services.
+
+------
+aagha
+For some folks, it's hard to let go of the "feel" of running your own servers,
+or what if you move to the cloud later? That's understandable, so I'll share
+my opinion:
+
+There are a number of very good resources that will help get you started. If
+you'd like to get even better advice and guidance on AWS, I'd highly recommend
+Amazon's own Webinar series. (See links below). The first session is a free
+one.
+
+AWS Webinars
+[http://aws.amazon.com/videos/](http://aws.amazon.com/videos/)
+
+I think AWS is getting easier to use. You'll never regret learning how to use
+Amazon's products. The AWS team has done a great job of providing a very
+simple interface for getting started, building an app and managing resources.
+And, if you're in a hurry, you don't have to think very hard to get started.
+Once you've learned the basics, you'll find that it's far easier than starting
+a traditional hosting company.
+
+What are the top reasons to go with AWS? (There's a good article here: [1])
+
+1\. Easy Scalability - Create as much, or as little infrastructure as you need
+
+2\. Failover/Availability - Highly available and redundant architecture makes
+it simple to add more capacity when you need it.
+
+3\. Data Location - With local copy of your data on the instance, in the cloud
+you're only charged for what you use, not how you use it.
+
+4\. Control - Cloud is flexible. You can spin up more instances of what you're
+working on, add more storage, and even add software. With VPS or traditional
+hosting, it's more expensive to scale on that scale than for AWS.
+
+5\. Security - AWS has one of the most reliable, secure hosting environments.
+
+6\. Network Effect - The more people build on AWS, the better it gets. As the
+ecosystem grows, you'll find there's an even greater selection of hardware and
+services.
+
+7\. Flexibility - You can build anything on AWS. I've built a small data
+storage system using MySQL and Amazon's SimpleDB. From there, you can build
+whatever you need.
+
+8\. Portability - Once you've got your application built and deployed, if you
+wanted to take it and move it somewhere else, you could. And, with no down-
+time.
+
+Good luck.
+
+[1] [http://www.huffingtonpost.com/2012/07/14/top-10-reasons-
+web...](http://www.huffingtonpost.com/2012/07/14/top-10-reasons-web-
+hosting_n_1633116.html)
+
+~~~
+rohitv
+Webinar links:
+
+[https://www.lunchandlearn.com/p/1T2q5QoF8uU0M1W9A20yVNg#](</div></body></html><!-- 2022-07-17 11:30:37 

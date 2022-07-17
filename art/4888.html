@@ -1,0 +1,124 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4889.html'>The present invent</a><Br/><a href='4890.html'>How important is s</a><Br/><a href='4891.html'>Q:
+
+Sorting column</a><Br/><a href='4892.html'>[E-RASC (electro-c</a><Br/><a href='4893.html'>In the beginning o</a><Br/><a href='4894.html'>Gustavo de los Río</a><Br/><a href='4895.html'>F.C. Bravo
+
+FC Bra</a><Br/><a href='4896.html'>In this episode, S</a><Br/><a href='4897.html'>There are over 40 </a><Br/><a href='4898.html'>1. Introduction {#</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4887.html'>Brain-specific exp</a><Br/><a href='4886.html'>A high-performance</a><Br/><a href='4885.html'>Category: The Dile</a><Br/><a href='4884.html'>The effect of theo</a><Br/><a href='4883.html'>
+
+A couple years a</a><Br/><a href='4882.html'>Tesla founder Elon</a><Br/><a href='4881.html'>Krampus: Reindeer </a><Br/><a href='4880.html'>Category: Tile Roo</a><Br/><a href='4879.html'>Introduction
+=====</a><Br/><a href='4878.html'>/*
+ * This file is</a></div><div class='nav'><a href='4887.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4889.html'> >> </a></div><div class='article'>Q:
+
+Problemas en el constructor de un ArrayList
+
+Hola estoy teniendo problemas con una clase que creo.
+Soy novato y tengo dudas con los ArrayList que estoy utilizando. ¿Como se le dice en su constructor al tamaño final en el que el programa se inicia, porque ahí donde se inicia el ArrayList (listaTareas) se sale del ciclo "for" y por ende ya no hay nada más añadido al ArrayList, creo que será por el segundo argumento en el constructor, el 5 y el nombre del clase, la clase lo he llamado ListaTareas.
+Dejo el código y adjunto imágenes para que vean como está.
+package com.esvidal;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class ListaTareas {
+
+ArrayList<Tareas> listaTareas = new ArrayList<Tareas>(); //crear arraylist a partir de la clase
+int opc1; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+int opc2; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+int opc3; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+int opc4; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+int opc5; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+String nombre; //variable para registrar el nombre de la persona que hace la tarea
+String hora; //variable para registrar la hora del trabajo del persona que hace la tarea
+int duracion; //variable para registrar la duración del trabajo de la persona que hace la tarea
+int puntos=0; //variable con el numero de puntos
+int numero = 0; //variable de 0
+int i=0;
+Scanner teclado = new Scanner(System.in);
+
+ public ListaTareas(ArrayList<Tareas> listaTareas, int opc1, int opc2, int opc3, int opc4, int opc5, String nombre, String hora, int duracion){
+    this.listaTareas = new ArrayList<Tareas>();
+    this.opc1 = opc1;
+    this.opc2 = opc2;
+    this.opc3 = opc3;
+    this.opc4 = opc4;
+    this.opc5 = opc5;
+    this.nombre = nombre;
+    this.hora = hora;
+    this.duracion = duracion;
+
+}
+}
+
+Añado el método getTareas que se supone debería traer la información y al parecer no puede y ahí donde marca por qué sale de ciclo y se queda null, no entiendo muy bien porque sale de ciclo
+ package com.esvidal;
+
+    import java.util.ArrayList;
+    import java.util.Scanner;
+
+    public class ListaTareas {
+
+    ArrayList<Tareas> listaTareas = new ArrayList<Tareas>(); //crear arraylist a partir de la clase
+    int opc1; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+    int opc2; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+    int opc3; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+    int opc4; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+    int opc5; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+    String nombre; //variable para registrar el nombre de la persona que hace la tarea
+    String hora; //variable para registrar la hora del trabajo del persona que hace la tarea
+    int duracion; //variable para registrar la duración del trabajo de la persona que hace la tarea
+    int puntos=0; //variable con el numero de puntos
+    int numero = 0; //variable de 0
+    int i=0;
+    Scanner teclado = new Scanner(System.in);
+
+    public void agregarTarea(){
+        Tareas tarea = new Tareas(opc1, opc2, opc3, opc4, opc5, nombre, hora, duracion);
+        this.listaTareas.add(tarea);
+        this.numero = listaTareas.size();
+        System.out.println(listaTareas);
+    }
+
+    public Tareas getTareas(int posicion){
+        return this.listaTareas.get(posicion);
+    }
+
+    public ArrayList<Tareas> mostrarTarea(){
+        for(Tareas tarea: this.listaTareas) {
+            System.out.println(tarea);
+        }
+        return this.listaTareas;
+    }
+
+}
+
+A:
+
+No estás inicializando la lista.
+Deberías probar a hacer ello de la siguiente manera:
+private ArrayList<Tareas> listaTareas = new ArrayList<Tareas>(5);
+
+Esto no solo te permitirá poner un número fijo de elementos sino que te impide realizar operaciones de actualizaciones en la lista a menos que vayas a agregar una nueva instancia.
+Tal como la implementación es la que da el ejemplo, no notarás un mayor desempeño en la lista pero te ahorrarás los límites del tamaño y la inicialización por defecto.
+
+A:
+
+¿Cuál es la diferencia entre estos dos tipos de inicialización?:
+List<String> lista = new ArrayList<String>();
+List<Integer> lista = new ArrayList<Integer>();
+
+La diferencia es que en la primera inicializas la variable de tipo List<String> pero en la segunda inicializas una variable de tipo ArrayList.  Por lo tanto es como si el argumento ArrayList fuera un parámetro.
+Cómo es que se puede pasar un parámetro tipo ArrayList al constructor?:
+package com.esvidal;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class ListaTareas {
+
+    ArrayList<Tareas> listaTareas = new ArrayList<Tareas>(); //crear arraylist a partir de la clase
+    int opc1; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+    int opc2; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+    int opc3; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+    int opc4; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+    int opc5; //variable contador para verificar si se ha marcado correctamente el numero que uno le pide a la persona
+    String nombre; //variable para registrar el nombre de la persona que hace la tarea
+    String hora; //variable para registrar la hora del trabajo del</div></body></html><!-- 2022-07-17 11:30:41 

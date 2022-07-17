@@ -1,0 +1,90 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4811.html'>Introduction
+=====</a><Br/><a href='4812.html'>Q:
+
+How to determi</a><Br/><a href='4813.html'>Bangladesh
+
+Bangla</a><Br/><a href='4814.html'>The Grape Vine
+
+Mo</a><Br/><a href='4815.html'>[A case of bilater</a><Br/><a href='4816.html'>Q:
+
+PHP date() fun</a><Br/><a href='4817.html'>The present invent</a><Br/><a href='4818.html'>We’re back! Join h</a><Br/><a href='4819.html'>LOS ANGELES -- It'</a><Br/><a href='4820.html'>Q:
+
+How to set the</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4809.html'>
+How To Get Your F</a><Br/><a href='4808.html'>Fracture rate and </a><Br/><a href='4807.html'>For anyone interes</a><Br/><a href='4806.html'>The Duel
+
+The Duel</a><Br/><a href='4805.html'>Eugene (Billy) Zup</a><Br/><a href='4804.html'>This invention rel</a><Br/><a href='4803.html'>Ceramic materials </a><Br/><a href='4802.html'>Category Archives:</a><Br/><a href='4801.html'>How to Write a Win</a><Br/><a href='4800.html'>As we prepare to c</a></div><div class='nav'><a href='4809.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4811.html'> >> </a></div><div class='article'>#!/usr/bin/env python
+
+import time
+import random
+
+# for more details see: https://github.com/sickill/reddittools
+# https://github.com/sickill/reddittools/tree/master/reddit_scraper
+
+from reddittools.scraper import RedditScraper
+
+from RedditTools.utils import Config, load_config
+
+if __name__ == "__main__":
+    app_name = "Reddit Scraper - Demo"
+    parser = Config(app_name, default_config={
+        "username": "reddit_bot",
+        "password": "This_is_my_password",
+        "proxy": "My_proxy",
+    })
+
+    if not parser.validate() or not parser.check_reddit():
+        parser.print_help()
+        exit()
+
+    reddit_scraper = RedditScraper(parser)
+    for page in xrange(10):
+        time.sleep(1)
+        print "Done", app_name
+        print reddit_scraper.save_to_file(parser, "Page_%s.html" % page)
+        print "Saved to", parser.output_dir
+
+    print
+    print reddit_scraper.save_all()
+    print "Saved all"
+    print
+    print
+    print "Done"
+    print
+    print "This is it folks!"
+    print
+    print
+    print "It's done"
+
+    print
+    parser.print_help()
+    parser.save_config()
+    exit()
+
+print "Waiting for the server to start"
+
+It runs without any issues on my own computer but when i want to run this using a cloud service like aws instance i get the following error:
+C:\Python27\lib\site-packages\requests\packages\chardet\ioc34lz.py:13: UnicodeWarning: Unicode equal comparison failed to convert both arguments to Unicode - interpreting them as being unequal
+  if buf.equal(s):
+[...]
+    # The server didn't return enough bytes.
+    IncompleteRead: 104 bytes read on a total of 4928 bytes.
+[...]
+    # The server disconnected before we could finish reading the data.
+    socket.error: [Errno 11] Resource temporarily unavailable
+    During handling of the above exception, another exception occurred:
+    [...]
+    [Errno 10054] An existing connection was forcibly closed by the remote host
+[...]
+  
+Traceback (most recent call last):
+  File "D:\Bot\scraper.py", line 35, in <module>
+    reddit_scraper = RedditScraper(parser)
+  File "D:\Bot\scraper.py", line 10, in __init__
+    server = reddit_sync.sync(reddit_scraper.get_api_info())
+  File "D:\Bot\lib\reddit_sync.py", line 24, in sync
+    raise IOError(msg)
+[...]
+   File "D:\Bot\lib\reddit_sync.py", line 23, in sync
+    data = self.get_json(url, proxy)
+  File "D:\Bot\lib\reddit_sync.py", line 13, in get_json
+    r = requests.get(url, proxies=proxy, timeout</div></body></html><!-- 2022-07-17 11:30:27 

@@ -1,0 +1,129 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4790.html'>The invention is c</a><Br/><a href='4791.html'>Phoenix (Ariz.) Un</a><Br/><a href='4792.html'>// Copyright 2013 </a><Br/><a href='4793.html'>Introduction {#s1}</a><Br/><a href='4794.html'>Q:
+
+Python convert</a><Br/><a href='4795.html'>As the number of c</a><Br/><a href='4796.html'>Category Archives:</a><Br/><a href='4797.html'>---
+abstract: 'In </a><Br/><a href='4798.html'>Ruthie has been wo</a><Br/><a href='4799.html'>The New York State</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4788.html'>
+
+Ask HN: Who has </a><Br/><a href='4787.html'>Introduction
+=====</a><Br/><a href='4786.html'>Q:
+
+Does the order</a><Br/><a href='4785.html'>Q:
+
+When is the nu</a><Br/><a href='4784.html'>You are here
+
+Jazz</a><Br/><a href='4783.html'>Therapeutic effect</a><Br/><a href='4782.html'>Woolly monkeys, in</a><Br/><a href='4781.html'>An analysis of the</a><Br/><a href='4780.html'>YouTube user Dr. D</a><Br/><a href='4779.html'>Introduction
+=====</a></div><div class='nav'><a href='4788.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4790.html'> >> </a></div><div class='article'>Q:
+
+Creating an AngularJS App in Visual Studio 2017
+
+I want to create a sample Angular JS Application in Visual Studio 2017.
+I tried to install Angular JS, angular-cli, and create a basic project but it always give me a error. 
+error screenshot: 
+
+A:
+
+You need to run npm install --global @angular/cli@latest.
+In Visual Studio: Tools > Options > Projects and Solutions > Web Package management > External Web Tools
+Set Update package on build to Always (the default)
+Type searchterm and search for the correct version of the Angular cli.
+Type @angular/cli and find the version you are using in Step 1.
+Hit OK to download and install.
+
+(I tried setting this up using the instructions from the ng help docs and could not get it to work.  The above worked for me on a brand new Angular CLI based project.)
+
+A:
+
+You just need to install the Angular cli globally. In order to do that, do the following.
+npm install -g @angular/cli
+
+This will take some time, but afterwards, it will be available globally.
+
+A:
+
+I'm using Visual Studio 2017 update 5.2.1 (latest stable) and i've found some weird configuration issue that's been going on for some time. I have tried uninstalling and installing a dozen different times. The issue I've found that's never worked was this (I have tried different versions of angular globally as well):
+ng add angular-cli
+
+I finally installed global version of Node.js and it worked. But I can't find a way to make npm work globally for me. It gives me "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\Common7\IDE\Extensions\Microsoft\Web Tools\External\ npm"
+
+I am using TypeScript because I can't get Angular-cli to work.
+
+Visual Studio 2019 v16.3.5
+
+I have used the instructions here to get Angular-cli working (thanks @hildychase's answer).
+
+I have been trying to get Angular-cli to work with Visual Studio 2015 all day yesterday and i've came across this thread. There have been various solutions to this, none of which have worked for me. I will be happy to post my Visual Studio config when i have the time, but right now it is 1am and I need to finish my work.
+
+I hope that this is helpful for other people with the same problem.
+
+A:
+
+I am in the same boat and I found a solution that works for me.
+Visual Studio Team Tools (ext)
+https://marketplace.visualstudio.com/items?itemName=vs-publisher.vscode-angular-5.1.1
+Install the following extension inside Visual Studio and when prompted for a key, leave the current key blank. This will resolve the dependency issue.
+
+Once that is done, create a brand new Angular 5 project by running this in the command prompt: ng new MyAngular5App
+
+Reference this Angular 5 template from Visual Studio:
+Tools > Extensions and Updates > Visual Studio Gallery
+or
+Tools > Extensions and Updates > Online Gallery
+
+Reference this Angular CLI: 
+Tools > NuGet Packages > Package Manager > Manage Packages for Solution
+
+Use this Angular CLI:
+ng set newApp1@1.0.0
+ng new @angular/cli my-new-app
+
+Finally, you should be able to configure your app as follows:
+{
+  "name": "my-app-1",
+  "version": "1.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve --proxy-config proxy.config.json",
+    "build": "ng build --base-href /newApp1/",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^5.1.1",
+    "@angular/common": "^5.1.1",
+    "@angular/compiler": "^5.1.1",
+    "@angular/core": "^5.1.1",
+    "@angular/forms": "^5.1.1",
+    "@angular/http": "^5.1.1",
+    "@angular/platform-browser": "^5.1.1",
+    "@angular/platform-browser-dynamic": "^5.1.1",
+    "@angular/router": "^5.1.1",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.5.6",
+    "zone.js": "^0.8.19"
+  },
+  "devDependencies": {
+    "@angular/cli": "1.6.7",
+    "@angular/compiler-cli": "^5.1.1",
+    "@angular/language-service": "^5.1.1",
+    "@types/jasmine": "~2.5.53",
+    "@types/jasminewd2": "~2.0.2",
+    "@types/node": "~6.0.60",
+    "codelyzer": "^4.3.0",
+    "jasmine-core": "~2.6.2",
+    "jasmine-spec-reporter": "~4.1.0",
+    "karma": "~1.7.0",
+    "karma-chrome-launcher": "~2.1.1",
+    "karma-cli": "~1.0.1",
+    "karma-coverage-istanbul-reporter": "^1.2.1",
+    "karma-jasmine": "~1.1.0",
+    "karma-jasmine-html-reporter": "^0.2.2",
+    "protractor": "~5.1.2",
+    "ts-node": "~4.1.0",
+    "tslint": "~5.9.1",
+    "typescript": "~2.5.3"
+}
+
+}
+
+</div></body></html><!-- 2022-07-17 11:30:23 

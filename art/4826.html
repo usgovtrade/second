@@ -1,0 +1,80 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4827.html'>Q:
+
+How to access </a><Br/><a href='4828.html'>Q:
+
+How to use the</a><Br/><a href='4829.html'>Q:
+
+How does the c</a><Br/><a href='4830.html'>Laparoscopic diagn</a><Br/><a href='4831.html'>The present invent</a><Br/><a href='4832.html'>Bahrain’s Foreign </a><Br/><a href='4833.html'>Newport Beach, Cal</a><Br/><a href='4834.html'>A group of interna</a><Br/><a href='4835.html'>Methotrexate-assoc</a><Br/><a href='4836.html'>Q:
+
+PHP Regex - No</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4825.html'>Q:
+
+How can I add </a><Br/><a href='4824.html'>The present invent</a><Br/><a href='4823.html'>Q:
+
+XPATH querying</a><Br/><a href='4822.html'>Oil and water, yin</a><Br/><a href='4821.html'>Methanotrophs colo</a><Br/><a href='4820.html'>Q:
+
+How to set the</a><Br/><a href='4819.html'>LOS ANGELES -- It'</a><Br/><a href='4818.html'>We’re back! Join h</a><Br/><a href='4817.html'>The present invent</a><Br/><a href='4816.html'>Q:
+
+PHP date() fun</a></div><div class='nav'><a href='4825.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4827.html'> >> </a></div><div class='article'>Q:
+
+How to convert a list into int in c#
+
+I have a list of integers and I want to count the length of that list but the value of the list is List.
+In my code it displays like this:
+
+How can i convert it into an int?
+This is my code:
+foreach (var item in list_number)
+{
+    numbers = numbers + 1;
+}
+
+A:
+
+Use the .Count() extension method, which will give you the Count of the list:
+var count = list_number.Count();
+
+A:
+
+I believe you mean the Count() method. The foreach loop you have will assign each element to a variable named item, but then it will perform the addition, which is not what you want.
+foreach (var item in list_number)
+{
+    numbers = numbers + 1;
+}
+
+would be better as:
+numbers = list_number.Count();
+
+This will give you the number of elements in the list.
+EDIT: It looks like you want the size of the list (which is more than just its count), so you can do:
+int size = list_number.Count;
+
+This will get the size of the list into the size variable.
+
+A:
+
+var size = list_number.Count;
+
+Or you could use the List.Count Property
+
+A:
+
+You can just use a variable for the Count and add 1 to it:
+int sum = 0;
+foreach (var item in list_number)
+{
+   sum++;
+}
+
+Or, better yet, use a LINQ Extension method:
+int sum = list_number.Count();
+
+The Count method will loop through the List and only count the items in it.
+
+The Count property is a convenient way of getting the count without having to loop through the items and add one to a variable. It will do all the incrementing for you.
+
+When you're working with lists, there are several different ways of getting the count. Check them out here:
+How to get the size of a list?
+
+The Count property is just syntactic sugar for calling the IList<T> Count property, but you're still adding one to the total.
+
+</div></body></html><!-- 2022-07-17 11:30:30 

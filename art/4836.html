@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4837.html'>Solar Power in Okl</a><Br/><a href='4838.html'>Gastric varices: p</a><Br/><a href='4839.html'>Gigapans
+
+An artis</a><Br/><a href='4840.html'>/*	$OpenBSD: pwd_t</a><Br/><a href='4841.html'>Wheat quality para</a><Br/><a href='4842.html'>AUSTIN — After the</a><Br/><a href='4843.html'>FORT COLLINS, Colo</a><Br/><a href='4844.html'>/* SPDX-License-Id</a><Br/><a href='4845.html'>1. Field of the In</a><Br/><a href='4846.html'>In many parts of t</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4835.html'>Methotrexate-assoc</a><Br/><a href='4834.html'>A group of interna</a><Br/><a href='4833.html'>Newport Beach, Cal</a><Br/><a href='4832.html'>Bahrain’s Foreign </a><Br/><a href='4831.html'>The present invent</a><Br/><a href='4830.html'>Laparoscopic diagn</a><Br/><a href='4829.html'>Q:
+
+How does the c</a><Br/><a href='4828.html'>Q:
+
+How to use the</a><Br/><a href='4827.html'>Q:
+
+How to access </a><Br/><a href='4826.html'>Q:
+
+How to convert</a></div><div class='nav'><a href='4835.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4837.html'> >> </a></div><div class='article'>Q:
+
+PHP Regex - Not sure why I'm getting this result?
+
+I have an interesting case. I am running PHP5.3 and using preg_match() to create a regex to find a link (or similar) in HTML. For some reason, if I capture the regex into a variable and then run a second preg_match(), it fails, while if I run the capture straight into the regex pattern it finds it just fine. What's up with this?
+$rawHtml = 'some html text here';
+$a = '(<a.{0,10}href="http://www.mydomain.com/{0}">{0}</a>|)<img.*src="http://www.mydomain.com/".*?(<img.*src="http://www.mydomain.com/".*?>)';
+
+preg_match($a, $rawHtml, $matches); // Returns 0
+
+preg_match($a, $rawHtml, $matches); // Returns 1
+
+$regexPattern = '/<a.{0,10}href="http://www.mydomain.com/{0}">{0}</a>|)<img.*src="http://www.mydomain.com/".*?(<img.*src="http://www.mydomain.com/".*?>)';
+preg_match($regexPattern, $rawHtml, $matches); // Returns 0
+
+preg_match($regexPattern, $rawHtml, $matches); // Returns 1
+
+A:
+
+The function preg_match() returns the number of matches. Your regex does not contain any capturing groups and thus there are no results to return. If you want to save the matches you have to use preg_match_all().
+See the difference:
+$a = '(<a.{0,10}href="http://www.mydomain.com/{0}">{0}</a>|)<img.*src="http://www.mydomain.com/".*?(<img.*src="http://www.mydomain.com/".*?>)';
+preg_match($a, $rawHtml, $matches); // Returns 0
+
+// if you run the regex (without string interpolation)
+// it will return no matches, if the pattern does not match
+preg_match($a, $rawHtml, $matches); 
+
+preg_match_all($a, $rawHtml, $matches); // Returns 1, as all occurrences were found
+
+$regexPattern = '/<a.{0,10}href="http://www.mydomain.com/{0}">{0}</a>|)<img.*src="http://www.mydomain.com/".*?(<img.*src="http://www.mydomain.com/".*?>)';
+preg_match($regexPattern, $rawHtml, $matches); // Returns 0, as no matches were found
+
+preg_match_all($regexPattern, $rawHtml, $matches); // Returns 1, as all occurrences were found
+
+// if you want to capture all groups, you need
+// preg_match_all() and preg_match() can be used interchangeably
+preg_match($regexPattern, $rawHtml, $matches); 
+
+preg_match($regexPattern, $rawHtml, $matches); // Returns 1, because the pattern matched
+
+From the PHP manual for preg_match():
+
+Returns
+  the number of full pattern matches (which might be zero), or FALSE if an error occurred.
+
+and for preg_match_all():
+
+Return Values
+  Returns an array of matches from the last REGEX_MATCH() if the subject is given by reference. Otherwise, returns FALSE.
+
+A:
+
+When you pass a regex as the first argument to preg_match(), it doesn't return anything. The result returned is the number of matches.
+So, you need to use preg_match_all():
+preg_match($a, $rawHtml, $matches); // Returns 0
+preg_match($a, $rawHtml, $matches); // Returns 1
+
+And, no, it is not necessary to create $a.
+
+A:
+
+Preg_match() returns the number of matches. You can use preg_match_all() if you wish to know about more details on the matches. 
+From the docs
+
+Returns
+  The number of full pattern matches (which might be zero), or FALSE if an error occurred. 
+
+Try adding something like this:
+preg_match($regexPattern, $rawHtml, $matches); 
+echo "$matches";
+
+http://php.net/preg_match_all
+
+A:
+
+For anybody like me that wasn't aware of the difference between preg_match and preg_match_all:
+preg_match() will return 0 if a match is found (in that case, preg_match_all will return 1) and 1 if a match is not found.
+(From the docs:
+
+Returns the number of
+  matches
+
+http://php.net/manual/en/function.preg-match.php)
+P.S. I actually did know about this, but I was trying to perform the same task as another programmer, who had originally developed the code that needed fixing. I didn't realize that it was returning zero because of the regex's structure until I had already given the developer my best guess as to why it wasn't working the way he wanted it to. Oh well, thanks guys!
+
+</div></body></html><!-- 2022-07-17 11:30:32 

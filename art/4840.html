@@ -1,0 +1,188 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4841.html'>Wheat quality para</a><Br/><a href='4842.html'>AUSTIN — After the</a><Br/><a href='4843.html'>FORT COLLINS, Colo</a><Br/><a href='4844.html'>/* SPDX-License-Id</a><Br/><a href='4845.html'>1. Field of the In</a><Br/><a href='4846.html'>In many parts of t</a><Br/><a href='4847.html'>Invasive Species
+
+</a><Br/><a href='4848.html'>Q:
+
+How do I chang</a><Br/><a href='4849.html'>Penn State junior </a><Br/><a href='4850.html'>The world's only r</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4839.html'>Gigapans
+
+An artis</a><Br/><a href='4838.html'>Gastric varices: p</a><Br/><a href='4837.html'>Solar Power in Okl</a><Br/><a href='4836.html'>Q:
+
+PHP Regex - No</a><Br/><a href='4835.html'>Methotrexate-assoc</a><Br/><a href='4834.html'>A group of interna</a><Br/><a href='4833.html'>Newport Beach, Cal</a><Br/><a href='4832.html'>Bahrain’s Foreign </a><Br/><a href='4831.html'>The present invent</a><Br/><a href='4830.html'>Laparoscopic diagn</a></div><div class='nav'><a href='4839.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4841.html'> >> </a></div><div class='article'>/*	$OpenBSD: pwd_test.c,v 1.6 2020/05/04 20:46:22 otto Exp $	*/
+
+/*
+ * Copyright (c) 2019 Otto Kim <totkim@gmail.com>
+ *
+ * Permission to use, copy, modify, and distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
+/* $FreeBSD$ */
+
+/*
+ * pwd_test.c, tests pwd(1)
+ */
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <err.h>
+#include <string.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <time.h>
+#include <sys/time.h>
+#include <sys/mman.h>
+#include <pwd.h>
+#include <setvbuf.h>
+#include <signal.h>
+#include <time.h>
+#include <sys/resource.h>
+
+#define errx(X, S...)					\
+	do {						\
+		fprintf(stderr, "%s:%d: " S,		\
+		    __FUNCTION__, __LINE__, ##X);	\
+		err(1, X);				\
+	} while(0)
+
+int
+main(int argc, char **argv)
+{
+	char path[PATH_MAX], *p;
+	int fd;
+	char buf[1024], **ppwd;
+	struct timespec ts;
+	pid_t pid;
+	struct rusage rusage;
+	struct rlimit rlimit;
+	struct stat sbuf;
+	long int ulimit;
+
+	if (argc < 2)
+		usage();
+
+	umask(0);
+
+	if ((ppwd = malloc((argc + 1) * sizeof *ppwd)) == NULL) {
+		err(EXIT_FAILURE, "malloc");
+	}
+	argv++;
+	argc--;
+	for (p = *argv; *p != '\0'; p++)
+		if (*p == '/')
+			argv++, p--;
+	*argv++ = '\0';
+	if ((fd = open(argv, O_RDONLY|O_PATH)) < 0) {
+		warn("%s", argv);
+		return (1);
+	}
+	while ((p = getenv("PATH")) != NULL) {
+		snprintf(path, PATH_MAX, "%s/%s", argv, p);
+		if ((fd = open(path, O_RDONLY)) < 0)
+			continue;
+		break;
+	}
+	if (fd < 0)
+		err(EXIT_FAILURE, "getenv PATH");
+	lseek(fd, 0, SEEK_SET);
+	if (getenv("PWD") != NULL) {
+		if ((ppwd[0] = strdup(getenv("PWD"))) == NULL) {
+			err(EXIT_FAILURE, "strdup");
+		}
+		if ((ppwd[1] = strchr(ppwd[0], '/')) != NULL) {
+			*ppwd = ppwd[1] + 1;
+		}
+	} else {
+		strncpy(ppwd[0], path, sizeof(ppwd[0]));
+	}
+	lseek(fd, 0, SEEK_SET);
+	if (lstat(ppwd[0], &sbuf) < 0) {
+		warn("lstat");
+		return (1);
+	}
+	if (S_ISDIR(sbuf.st_mode)) {
+		strncpy(ppwd[1], argv, sizeof(ppwd[1]));
+		if ((ppwd[1] = dirname(ppwd[0])) == NULL) {
+			warn("dirname");
+			return (1);
+		}
+		lseek(fd, 0, SEEK_SET);
+		if (lstat(ppwd[1], &sbuf) < 0) {
+			warn("lstat");
+			return (1);
+		}
+		snprintf(buf, sizeof buf, "%s/%s", ppwd[0], ppwd[1]);
+		lseek(fd, 0, SEEK_SET);
+		if ((p = getenv("PWD")) == NULL ||
+		    !snprintf(path, PATH_MAX, "%s/", p)) {
+			(void)setenv("PWD", buf, 0);
+		}
+	} else if (lseek(fd, 0, SEEK_SET) < 0) {
+		warn("lseek");
+		return (1);
+	}
+	timespec_from_timespec(sbuf.st_mtime, &ts);
+	timespec_add_ns(&ts, NSEC_PER_SEC * sbuf.st_mtime);
+	timespec_to_timeval(ts.tv_sec, &ruid);
+	timespec_to_timeval(ts.tv_nsec, &ruc);
+	timespec_to_clock_t(&ruc, &ts.tv_sec);
+
+	if ((pid = getpid()) > 0) {
+		printf("pid = %d\n", pid);
+		timespec_to_timeval(ruid, &ruc);
+		if (getrlimit(RLIMIT_CPU, &rlimit) == 0) {
+			printf("cpu max user %ld\n", (long int)rlimit.rlim_max);
+			printf("cpu soft limit user %ld\n",
+			    (long int)rlimit.rlim_cur);
+			printf("soft limit user %ld\n",
+			    (long int)rlimit.rlim_min);
+			printf("cpu max system %ld\n",
+			    (long int)rlimit.rlim_max);
+			printf("cpu soft limit system %ld\n",
+			    (long int)rlimit.rlim_cur);
+			printf("soft limit system %ld\n",
+			    (long int)rlimit.rlim_min);
+		}
+		if (getuid() != 0) {
+			printf("running as root\n");
+		}
+		if (getgroups(5, groups) < 0) {
+			warn("getgroups");
+			return (1);
+		}
+		ulimit = (long int)rlimit.rlim_cur;
+		printf("max data segment size %ld\n",
+		    (long int)sysconf(_SC_PAGESIZE));
+		if (ulimit > 0) {
+			printf("max shared segment size %ld\n",
+			    (long int)sysconf(_SC_PAGESIZE));
+			printf("open files limit (%ld) %s\n", ulimit,
+			    "tried to set by ulimit -n");
+			printf("open file limit (%ld) %s\n",
+			    (long int)sysconf(_SC_OPEN_MAX), "tried to set by ulimit -n");
+			printf("open fd limit %ld\n",
+			    (long int)sysconf(_SC_OPEN_MAX));
+			printf("max user processes (%ld) %s\n",
+			    (long int)sysconf(_SC_NPROCESSORS_CONF),
+			    "tried to set by ulimit -n");
+			printf("max simultaneous processes (%ld) %s\n",
+			    (long int)sysconf(_SC_NPROCESSORS_CONF),
+			    "tried to set by ulimit -n");
+			printf("nice priority %ld\n", (long int)getpriority(PRIO_PROCESS, 0));
+			printf("maximum nice value %ld\n", (long int)getpriority(PRIO_PROCESS, 0));
+		}
+	}
+
+	if (setresuid(ruid.uid, ruid.ruid, ruid.euid) != 0) {
+		errx(EXIT</div></body></html><!-- 2022-07-17 11:30:32 

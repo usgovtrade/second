@@ -1,0 +1,133 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4830.html'>Laparoscopic diagn</a><Br/><a href='4831.html'>The present invent</a><Br/><a href='4832.html'>Bahrain’s Foreign </a><Br/><a href='4833.html'>Newport Beach, Cal</a><Br/><a href='4834.html'>A group of interna</a><Br/><a href='4835.html'>Methotrexate-assoc</a><Br/><a href='4836.html'>Q:
+
+PHP Regex - No</a><Br/><a href='4837.html'>Solar Power in Okl</a><Br/><a href='4838.html'>Gastric varices: p</a><Br/><a href='4839.html'>Gigapans
+
+An artis</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4828.html'>Q:
+
+How to use the</a><Br/><a href='4827.html'>Q:
+
+How to access </a><Br/><a href='4826.html'>Q:
+
+How to convert</a><Br/><a href='4825.html'>Q:
+
+How can I add </a><Br/><a href='4824.html'>The present invent</a><Br/><a href='4823.html'>Q:
+
+XPATH querying</a><Br/><a href='4822.html'>Oil and water, yin</a><Br/><a href='4821.html'>Methanotrophs colo</a><Br/><a href='4820.html'>Q:
+
+How to set the</a><Br/><a href='4819.html'>LOS ANGELES -- It'</a></div><div class='nav'><a href='4828.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4830.html'> >> </a></div><div class='article'>Q:
+
+How does the code behind of a WPF window actually know where it is
+
+I'm looking at the code behind of a WPF window and I see the following code:
+WindowInteropHelper h = new WindowInteropHelper(this);
+h.Owner = this.Owner;
+h.TopMost = this.Topmost;
+
+My question is, how does the code behind of the window know it's location in the window hierarchy? I can't seem to find anything in the WPF documentation that explains this.
+
+A:
+
+WindowInteropHelper is an IDispatchObject and uses the OwnerWindow property. You can see the implementation in the source code here
+WindowInteropHelper Class
+
+The owner of the owner window is itself and it sets the owner window to itself in that case.
+
+In general in WPF I would not assume that someone or something else is doing the job for you, unless the documentation explicitly states so.
+
+A:
+
+The most trivial way is to set your Window property in the constructor.
+When the window is shown and initialized the WindowInteropHelper uses the Owner property set in your constructor to retrieve the HWND of your window (this.Handle). 
+It then uses it to calculate where in the z-order it is positioned (with this.Top and this.TopMost).
+
+A:
+
+The WindowInteropHelper is defined as below.
+
+[ComImport]
+[Guid("0000000d-0000-0000-C000-000000000046")]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+public interface WindowInteropHelper
+{
+    [PreserveSig]
+    int GetWindowContext(ref GUID contextID, out object cookie);
+
+    [PreserveSig]
+    int SetWindowContext(ref GUID contextID, object cookie);
+
+    [PreserveSig]
+    int GetHWND(out int hwnd);
+
+    [PreserveSig]
+    int ReleaseHWND(int hwnd);
+
+    [PreserveSig]
+    int GetOwner(out int hwndOwner);
+
+    [PreserveSig]
+    int SetOwner(int hwndOwner);
+
+    [PreserveSig]
+    int GetOwnerHwnd(out int hwndOwner);
+
+    [PreserveSig]
+    int SetOwnerHwnd(int hwndOwner);
+
+    [PreserveSig]
+    int GetWindow(out IntPtr hwnd);
+
+    [PreserveSig]
+    int ReleaseHandle();
+
+    [PreserveSig]
+    int GetProcess();
+
+    [PreserveSig]
+    int GetProcessId(out IntPtr hProcess);
+
+    [PreserveSig]
+    int GetCurrentThreadId(out IntPtr hThread);
+
+    [PreserveSig]
+    int AttachThreadInput(int idAttach, IntPtr pIpUnk, int idAttachThunk, [MarshalAs(UnmanagedType.LPStruct)] ref THREADINFO pti);
+
+    [PreserveSig]
+    int GetWindowThreadProcessId(out IntPtr hwnd, out IntPtr pid);
+
+    [PreserveSig]
+    int GetWindowThreadIdealProcessor(out int pi);
+
+    [PreserveSig]
+    int EnumThreadWindows(out IntPtr lphEnum, int tid, int flags);
+
+    [PreserveSig]
+    int IsWindowVisible(IntPtr hwnd);
+
+    [PreserveSig]
+    int IsIconic(IntPtr hwnd);
+
+    [PreserveSig]
+    int IsZoomed(IntPtr hwnd);
+
+    [PreserveSig]
+    int IsHung(IntPtr hwnd);
+
+    [PreserveSig]
+    int IsQuickActivate(IntPtr hwnd);
+
+    [PreserveSig]
+    int GetWindowPlacement(IntPtr hwnd, out RECT rect);
+
+    [PreserveSig]
+    int GetWindowPlacementRect(IntPtr hwnd, out RECT rect);
+
+Here is the related blog post, which explains the relationship between the Window, HwndSource, WPF and C# nicely.
+
+(http://blogs.msdn.com/b/delay/archive/2005/03/30/394971.aspx)
+
+Hope this helps.
+
+Just to add a little bit of information on how WPF gets notified that the window was hidden.
+The way WPF listens for window visibility change notification is by registering to the Win32 WndProc message, and if your window's Visible property is set to false WPF will set the HWND to NULL. And on the next WM_PAINT message WPF does a bit of additional check to see if the owner is null and will then handle the painting accordingly.
+
+</div></body></html><!-- 2022-07-17 11:30:30 

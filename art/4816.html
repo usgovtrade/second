@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4817.html'>The present invent</a><Br/><a href='4818.html'>We’re back! Join h</a><Br/><a href='4819.html'>LOS ANGELES -- It'</a><Br/><a href='4820.html'>Q:
+
+How to set the</a><Br/><a href='4821.html'>Methanotrophs colo</a><Br/><a href='4822.html'>Oil and water, yin</a><Br/><a href='4823.html'>Q:
+
+XPATH querying</a><Br/><a href='4824.html'>The present invent</a><Br/><a href='4825.html'>Q:
+
+How can I add </a><Br/><a href='4826.html'>Q:
+
+How to convert</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4815.html'>[A case of bilater</a><Br/><a href='4814.html'>The Grape Vine
+
+Mo</a><Br/><a href='4813.html'>Bangladesh
+
+Bangla</a><Br/><a href='4812.html'>Q:
+
+How to determi</a><Br/><a href='4811.html'>Introduction
+=====</a><Br/><a href='4810.html'>#!/usr/bin/env pyt</a><Br/><a href='4809.html'>
+How To Get Your F</a><Br/><a href='4808.html'>Fracture rate and </a><Br/><a href='4807.html'>For anyone interes</a><Br/><a href='4806.html'>The Duel
+
+The Duel</a></div><div class='nav'><a href='4815.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4817.html'> >> </a></div><div class='article'>Q:
+
+PHP date() function for future dates
+
+I am using date() function as follows:
+echo date("d-M-Y",strtotime('+10 days'));
+
+Output is: 04-May-2017,
+but what if I want the result as: 05-May-2017?
+How to achieve this?
+
+A:
+
+I'd recommend adding 0 to the number of days you want, if you want it "ten days from now" you'd have to add the number of days to one year and then subtract that from the date() object. If you don't want it as a number, you'd have to use strftime() instead.
+If you really just want the date with the day number "one day" from now, use:
+date("d-M-Y", strtotime("+1 day"));
+You could also use Carbon::add().
+$time = Carbon::createFromDate(2016, 2, 1);
+
+$time->addDays(1);
+
+echo $time->format("d-M-Y");
+
+Or, from the moment you have the current date:
+$time = Carbon::now();
+
+echo $time->format("d-M-Y");
+
+Carbon::add() also has a function for minutes, hours, days and seconds.
+If you do want it as a number, you'll need to use strtotime() instead.
+echo date("d-M-Y", strtotime("+10 days"));
+
+This function only takes strings though.
+Output:
+04-May-2017
+
+Edit: Here's an example:
+$time = date("d-M-Y", strtotime("+10 days"));
+echo $time; // 04-May-2017
+echo $time->format("d-M-Y"); // 04-May-2017
+
+Another edit:
+$time = date("d-M-Y", strtotime("+10 days"));
+echo $time; // 04-May-2017
+echo $time->format("d-M-Y"); // 04-May-2017
+
+$time = Carbon::now();
+echo $time->addDays(10)->format("d-M-Y"); // 05-May-2017
+
+A:
+
+Just adding one day:
+echo date("d-M-Y",strtotime("+1 day"));
+
+Will output: 05-May-2017
+Adding ten days:
+echo date("d-M-Y",strtotime("+10 days"));
+
+Will output: 05-May-2017
+
+A:
+
+The format in which it returns is: Y-m-d
+E.g: 2016-09-15
+
+To display the date as 4th day, you can add 1 to the time and
+  format it as a date:
+$date = date("Y-m-d", strtotime("+1 day"));
+echo $date;
+
+This will display: 
+2016-11-25
+
+Hope this helps :)
+
+https://www.w3schools.com/php/func_date_strtotime.asp
+http://php.net/manual/en/function.date.php
+
+</div></body></html><!-- 2022-07-17 11:30:28 

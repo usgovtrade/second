@@ -1,0 +1,157 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4813.html'>Bangladesh
+
+Bangla</a><Br/><a href='4814.html'>The Grape Vine
+
+Mo</a><Br/><a href='4815.html'>[A case of bilater</a><Br/><a href='4816.html'>Q:
+
+PHP date() fun</a><Br/><a href='4817.html'>The present invent</a><Br/><a href='4818.html'>We’re back! Join h</a><Br/><a href='4819.html'>LOS ANGELES -- It'</a><Br/><a href='4820.html'>Q:
+
+How to set the</a><Br/><a href='4821.html'>Methanotrophs colo</a><Br/><a href='4822.html'>Oil and water, yin</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4811.html'>Introduction
+=====</a><Br/><a href='4810.html'>#!/usr/bin/env pyt</a><Br/><a href='4809.html'>
+How To Get Your F</a><Br/><a href='4808.html'>Fracture rate and </a><Br/><a href='4807.html'>For anyone interes</a><Br/><a href='4806.html'>The Duel
+
+The Duel</a><Br/><a href='4805.html'>Eugene (Billy) Zup</a><Br/><a href='4804.html'>This invention rel</a><Br/><a href='4803.html'>Ceramic materials </a><Br/><a href='4802.html'>Category Archives:</a></div><div class='nav'><a href='4811.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4813.html'> >> </a></div><div class='article'>Q:
+
+How to determine if an element has an active class using plain JS
+
+I'm creating a JS element to remove a bootstrap dropdown menu.
+If the element has the .active class, don't remove.
+If it doesn't, remove it.
+  $('.dropdown-toggle').click(function() {
+    var elements = $('.dropdown-menu');
+    var isActive = $('.dropdown-menu.active');
+
+    elements.removeClass('active');
+
+    if (!isActive) {
+      elements.toggleClass('active');
+    }
+
+  });
+
+Is this an acceptable way of implementing this?
+I.e. is the code above doing the same thing as .closest().find('.active')?
+UPDATE: The accepted answer worked for me, with minimal adjustments. I changed the if/else to 
+if ($.trim($(this).attr('class')).indexOf(' active ') >= 0) { 
+
+in the else block. This prevents the event listener from triggering when a menu item gets clicked.
+
+A:
+
+The .active class is not just for the active element but for the one that is currently opened, so instead of :
+var isActive = $('.dropdown-menu.active');
+
+You need to use :
+var isActive = $(this).closest('.dropdown').find('.active');
+
+EDIT
+For those of you who are concerned that you might add the .active class to an element manually, here is a full example of how you would use jQuery to check for the .active class on an element :
+
+$('.toggle').click(function() {
+  $('.menu > li').removeClass('active');
+  if ($(this).find('.dropdown').find('.active')) {
+    $(this).find('.dropdown').toggleClass('active');
+  }
+  console.log(
+    $(this).find('.dropdown').find('.active').length
+  );
+});
+ul {
+  list-style-type: none;
+}
+ul li {
+  background: #ccc;
+  color: black;
+  width: 200px;
+  padding: 10px;
+  margin: 0 10px;
+}
+li.active {
+  color: blue;
+}
+li.active:hover {
+  background: lightblue;
+  color: blue;
+}
+.toggle.active {
+  color: red;
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<ul class="menu">
+  <li class="toggle">Toggle</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li class="toggle">Toggle</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li>item</li>
+  <li class="toggle">Toggle</li>
+  <li>item</li>
+  <li>item</li>
+ 
+ </ul>
+
+And for your updated question about .closest() .find() method :
+The .closest() method will travel up the DOM tree and find the first ancestor matching the selector, where as the .find() method looks for an element matching a descendant selector, i.e. a child of the selected elements.
+So, if you call:
+$(this).closest('.dropdown').find('.active')
+
+It will go up the DOM and look for the first .dropdown parent that matches the selector.
+However, if you do:
+$('.menu > li.active')
+
+Then the .active class is on an <li> and this selector is simply searching for any <li> with the active class, and this selector will have no problem finding a child with the .active class on it.
+
+A:
+
+You can use jQuery's class selector like
+var elements = $('.dropdown-menu');
+
+var isActive = $('.dropdown-menu.active');
+
+ elements.removeClass('active');
+
+ if (!isActive) {
+    elements.toggleClass('active');
+ }
+
+So using jQuery, you do not need to have a special code in JS
+
+A:
+
+Since you're creating a function using JS, you could use one of the following:
+if ($(this).hasClass('active')) { 
+    //do stuff
+} else {
+    //do stuff
+}
+
+This would be faster than jquery methods. And if you dont want to use the class .active for another reason, you can make your own
+let active = {
+    className: 'active'
+}
+
+if ($(this).hasClass(active.className)) { 
+    //do stuff
+} else {
+    //do stuff
+}
+
+</div></body></html><!-- 2022-07-17 11:30:27 

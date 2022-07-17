@@ -1,0 +1,112 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4821.html'>Methanotrophs colo</a><Br/><a href='4822.html'>Oil and water, yin</a><Br/><a href='4823.html'>Q:
+
+XPATH querying</a><Br/><a href='4824.html'>The present invent</a><Br/><a href='4825.html'>Q:
+
+How can I add </a><Br/><a href='4826.html'>Q:
+
+How to convert</a><Br/><a href='4827.html'>Q:
+
+How to access </a><Br/><a href='4828.html'>Q:
+
+How to use the</a><Br/><a href='4829.html'>Q:
+
+How does the c</a><Br/><a href='4830.html'>Laparoscopic diagn</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4819.html'>LOS ANGELES -- It'</a><Br/><a href='4818.html'>We’re back! Join h</a><Br/><a href='4817.html'>The present invent</a><Br/><a href='4816.html'>Q:
+
+PHP date() fun</a><Br/><a href='4815.html'>[A case of bilater</a><Br/><a href='4814.html'>The Grape Vine
+
+Mo</a><Br/><a href='4813.html'>Bangladesh
+
+Bangla</a><Br/><a href='4812.html'>Q:
+
+How to determi</a><Br/><a href='4811.html'>Introduction
+=====</a><Br/><a href='4810.html'>#!/usr/bin/env pyt</a></div><div class='nav'><a href='4819.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4821.html'> >> </a></div><div class='article'>Q:
+
+How to set the size of an OpenPGP Message with GPGME
+
+I'm working on a Python project that uses GPGME to encrypt/sign/decrypt messages. I need to change the amount of data that I add to the message before encryption and decryption. I've gone through the GPGME documentation and have been unable to find this feature. Can someone point me in the right direction?
+
+A:
+
+This could probably be handled using the enc-gen-len attribute;
+
+use this option to set a length prefix in the encrypted message; it can be specified using "octet-count" or "octet-size" (see manual). Both options add a 32-bit unsigned integer (as decimal number) before encryption. If multiple keys are used on a message, all instances of enc-gen-len have to be the same
+
+(source: gpgme.org) 
+
+Here's an example to make a test message using the enc-gen-len;
+import gpgme
+import io
+
+with gpgme.GPGME() as gpg:
+    msg = gpg.msg_new()
+    with gpg.keyring.search_file('test-key.gpg') as keys:
+        if keys:
+            sign_key = keys.find( 'pubring.gpg')
+            if sign_key:
+                priv_key = keys.find_key(sign_key, 0)
+                if priv_key:
+                    gpg.keyring.add_key(sign_key, priv_key)
+            else:
+                print('no sign key')
+        else:
+            print('no keys in keyring')
+
+        data = b'Hello world'
+        msg.enc_text('foo', data)
+        encrypted = msg.enc_data(enc-gen-len='octet-size', data)
+        print(encrypted)
+        encrypted.hex()
+
+output:
+gpg: encrypted with RSA key, ID AA7F4E5A
+-----BEGIN PGP MESSAGE-----
+Version: BCPG C# v1.8.0.0
+
+hIwDOf7hvqgX/jVqg5x5ZxK5UgWl1JZoO/lEIZ4Ln4Q9g3Xk+T0z6N6IaOQsG7eZ2z
+QXoK7U9nC2JvwJG/k5QX+Jd6D/p1zS0pR1xwBXO2rO+ZCSC8d9b8oJ4F
+
+hIwDgB+qbZy8jZjNgqYH+3k3qNZlSxQmI6XyA3j9Tf7yRk1OoOQ9g
+G+6uFqJwKf3Jn/q7a/d+5mNJQwvMwN0Nqb0sK0xU1JxHvJWlH8F8J5
+jzqE59kKjO0jB6cOi9gA2+jLgQ1E3sHqjQfE+3WbIq+xV/2SXuN
+9oA5O8g7P+0zOe8UdYwCc+bR7n/F/vj4/WcEaYUY
+=5pVq
+-----END PGP MESSAGE-----
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+This is the message which will be signed.
+-----BEGIN PGP MESSAGE-----
+Version: BCPG C# v1.8.0.0
+
+hIwDOf7hvqgX/jVqg5x5ZxK5UgWl1JZoO/lEIZ4Ln4Q9g3Xk+T0z6N6IaOQsG7eZ2z
+QXoK7U9nC2JvwJG/k5QX+Jd6D/p1zS0pR1xwBXO2rO+ZCSC8d9b8oJ4F
+
+hIwDgB+qbZy8jZjNgqYH+3k3qNZlSxQmI6XyA3j9Tf7yRk1OoOQ9g
+G+6uFqJwKf3Jn/q7a/d+5mNJQwvMwN0Nqb0sK0xU1JxHvJWlH8F8J5
+jzqE59kKjO0jB6cOi9gA2+jLgQ1E3sHqjQfE+3WbIq+xV/2SXuN
+9oA5O8g7P+0zOe8UdYwCc+bR7n/F/vj4/WcEaYUY
+=5pVq
+-----END PGP MESSAGE-----
+
+The last output is the encrypted message;
+
+And this is the encrypted message with the correct byte-length;
+
+In some cases, the sign-key can be used for encrypting, too. But this option should only be used if the sign-key is just for signing and doesn't require any confidential information. In this case, you would use this with the private-key;
+    sign_key = keys.find( 'pubring.gpg')
+    if sign_key:
+        priv_key = keys.find_key(sign_key, 0)
+        if priv_key:
+            gpg.keyring.add_key(sign_key, priv_key)
+            gpg.keyring.import_subkeys(sign_key)
+
+Note that gpg.keyring.import_subkeys is needed to import the public subkey; import_subkeys doesn't work when adding a public key from the keyring directly.
+The python example above is for python3. A note on the example; gpgme.signing_name is deprecated since python3.6 and has been replaced with gpgme.signing_name.
+
+A:
+
+gpgme 0.6, which was released on August 20, 2018, now supports encryption with a fixed size.  See also the announcement on the gpgme-dev mailing list.
+In its current form (or soon, it seems), this feature is undocumented and not easily discoverable (yet).  The gpgme.cipher.use_fixed_size_buffer() function returns a Cipher object that should be used to encrypt data.  It takes two optional parameters, the length prefix length and max size.  There are examples of its use in the documentation for the gpgme package.
+
+</div></body></html><!-- 2022-07-17 11:30:29 

@@ -1,0 +1,134 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4828.html'>Q:
+
+How to use the</a><Br/><a href='4829.html'>Q:
+
+How does the c</a><Br/><a href='4830.html'>Laparoscopic diagn</a><Br/><a href='4831.html'>The present invent</a><Br/><a href='4832.html'>Bahrain’s Foreign </a><Br/><a href='4833.html'>Newport Beach, Cal</a><Br/><a href='4834.html'>A group of interna</a><Br/><a href='4835.html'>Methotrexate-assoc</a><Br/><a href='4836.html'>Q:
+
+PHP Regex - No</a><Br/><a href='4837.html'>Solar Power in Okl</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4826.html'>Q:
+
+How to convert</a><Br/><a href='4825.html'>Q:
+
+How can I add </a><Br/><a href='4824.html'>The present invent</a><Br/><a href='4823.html'>Q:
+
+XPATH querying</a><Br/><a href='4822.html'>Oil and water, yin</a><Br/><a href='4821.html'>Methanotrophs colo</a><Br/><a href='4820.html'>Q:
+
+How to set the</a><Br/><a href='4819.html'>LOS ANGELES -- It'</a><Br/><a href='4818.html'>We’re back! Join h</a><Br/><a href='4817.html'>The present invent</a></div><div class='nav'><a href='4826.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4828.html'> >> </a></div><div class='article'>Q:
+
+How to access elements inside function in JavaScript?
+
+Here I am trying to access elements inside function and trying to use if/else condition for that. Below are my two snippets:
+var data = [{name: 'A', color:'red'}, {name:'B', color: 'yellow'}];
+
+var randomObject = function(data) {
+if (data.length > 0) {
+    var key = data.randomIndex(); // generate random index for an array
+    var item = data[key]; // get random item
+    alert(item.name);
+    alert(item.color);
+} else {
+    return false;
+}}
+console.log(randomObject(data));
+
+The problem is, I can't access item.name inside else condition. I tried with alert(item.name); without else block and it worked.
+Thanks in advance!
+
+A:
+
+The problem is, you're returning the randomValue function at the end of the if condition:
+return false;
+
+Change it to
+} else {
+    return item;
+}
+
+A:
+
+Here item is the value which you have passed in condition else it will return false which is falsy value.
+Try this:
+var data = [{name: 'A', color:'red'}, {name:'B', color: 'yellow'}];
+
+var randomObject = function(data) {
+if (data.length > 0) {
+    var key = data.randomIndex(); // generate random index for an array
+    var item = data[key]; // get random item
+    alert(item.name);
+    alert(item.color);
+} else {
+    return item;
+}}
+console.log(randomObject(data));
+
+https://jsfiddle.net/j6z4m4Lg/
+
+A:
+
+The problem is you're passing in an anonymous function which runs immediately, then return a boolean (it's still executing at this point) which then sets the return value of randomObject which you're alerting.
+You should pass in the item, not the function.
+Change it to this:
+var data = [{name: 'A', color:'red'}, {name:'B', color: 'yellow'}];
+
+var randomObject = function(data) {
+if (data.length > 0) {
+    var key = data.randomIndex(); // generate random index for an array
+    var item = data[key]; // get random item
+    alert(item.name);
+    alert(item.color);
+} else {
+    return item;
+}
+};
+console.log(randomObject(data));
+
+Now you can alert the name property.
+
+Here's an example using anonymous functions to achieve the same thing as your original:
+var data = [{name: 'A', color:'red'}, {name:'B', color: 'yellow'}];
+
+var randomObject = function(data) {
+  for (var i=0; i < data.length; i++) {
+    var key = data[i].randomIndex(); // generate random index for an array
+    var item = data[key]; // get random item
+    if(item) {
+      alert(item.name);
+      alert(item.color);
+    } else {
+      return false;
+    }
+  }
+};
+console.log(randomObject(data));
+
+And here's an example that returns a new object:
+var data = [{name: 'A', color:'red'}, {name:'B', color: 'yellow'}];
+
+var randomObject = function(data) {
+  var newObject = {};
+  for (var i=0; i < data.length; i++) {
+    var key = data[i].randomIndex(); // generate random index for an array
+    var item = data[key]; // get random item
+    newObject[item.name] = item;
+  }
+  return newObject;
+};
+console.log(randomObject(data));
+
+And here's the object:
+var data = [{name: 'A', color:'red'}, {name:'B', color: 'yellow'}];
+
+var randomObject = function(data) {
+  var newObject = {};
+  for (var i=0; i < data.length; i++) {
+    var key = data[i].randomIndex(); // generate random index for an array
+    var item = data[key]; // get random item
+    newObject[item.name] = item;
+  }
+  return newObject;
+};
+console.log(randomObject(data));
+
+newObject is defined as {}.
+If you alert it, it will give you [object Object]. This object will have properties assigned by the item variables you passed into it.
+
+</div></body></html><!-- 2022-07-17 11:30:30 

@@ -1,0 +1,237 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4829.html'>Q:
+
+How does the c</a><Br/><a href='4830.html'>Laparoscopic diagn</a><Br/><a href='4831.html'>The present invent</a><Br/><a href='4832.html'>Bahrain’s Foreign </a><Br/><a href='4833.html'>Newport Beach, Cal</a><Br/><a href='4834.html'>A group of interna</a><Br/><a href='4835.html'>Methotrexate-assoc</a><Br/><a href='4836.html'>Q:
+
+PHP Regex - No</a><Br/><a href='4837.html'>Solar Power in Okl</a><Br/><a href='4838.html'>Gastric varices: p</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4827.html'>Q:
+
+How to access </a><Br/><a href='4826.html'>Q:
+
+How to convert</a><Br/><a href='4825.html'>Q:
+
+How can I add </a><Br/><a href='4824.html'>The present invent</a><Br/><a href='4823.html'>Q:
+
+XPATH querying</a><Br/><a href='4822.html'>Oil and water, yin</a><Br/><a href='4821.html'>Methanotrophs colo</a><Br/><a href='4820.html'>Q:
+
+How to set the</a><Br/><a href='4819.html'>LOS ANGELES -- It'</a><Br/><a href='4818.html'>We’re back! Join h</a></div><div class='nav'><a href='4827.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4829.html'> >> </a></div><div class='article'>Q:
+
+How to use the function that has a return type with a boolean and a bool in the same function?
+
+I want to make a program that accepts a string of characters, and the text is changed into the English equivalent, then I have a problem, can't make this function return either the number of words(including special characters and punctuation), or the number of sentences.
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApplication6
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Enter a sentence: ");
+            string Sentence = Console.ReadLine();
+
+            int NumberOfWords = convertWord(Sentence);
+            int NumberOfSentences = convertSentence(Sentence);
+
+            Console.WriteLine("Number of words: " + NumberOfWords);
+            Console.WriteLine("Number of sentences: " + NumberOfSentences);
+            Console.ReadLine();
+
+            Console.ReadLine();
+        }
+        static int convertSentence(string Text)
+        {
+            int NumberOfSentences = 0;
+            int Length = Text.Length;
+            bool IsCapital = true;
+            bool IsVowel = false;
+
+            for (int i = 0; i < Length; i++)
+            {
+                if (Char.IsLetter(Text[i]) && !Char.IsWhiteSpace(Text[i]))
+                {
+                    IsCapital = true;
+                }
+
+                if (IsCapital)
+                {
+                    if (Char.IsUpper(Text[i]) || Char.IsLower(Text[i]))
+                    {
+                        IsVowel = true;
+                    }
+                    else
+                    {
+                        NumberOfSentences++;
+                        IsCapital = false;
+                    }
+                }
+            }
+            return NumberOfSentences;
+        }
+
+        static int convertWord(string Text)
+        {
+            int NumberOfWords = 0;
+            int Length = Text.Length;
+            bool IsCapital = true;
+            bool IsVowel = false;
+
+            for (int i = 0; i < Length; i++)
+            {
+                if (Char.IsLetter(Text[i]) && !Char.IsWhiteSpace(Text[i]))
+                {
+                    IsCapital = true;
+                }
+
+                if (IsCapital)
+                {
+                    if (Char.IsUpper(Text[i]) || Char.IsLower(Text[i]))
+                    {
+                        IsVowel = true;
+                    }
+                    else
+                    {
+                        NumberOfWords++;
+                        IsCapital = false;
+                    }
+                }
+            }
+            return NumberOfWords;
+        }
+    }
+}
+
+Thanks!
+
+A:
+
+You can have only one return type for a function. If you have to return multiple values, then you have to use out parameters
+
+For example:
+public static void Main(string[] args)
+{
+    var result = convertWordAndSentence(text);
+}
+static int convertWordAndSentence(string text)
+{
+    int numberOfWords = 0;
+    int numberOfSentences = 0;
+
+    for (int i = 0; i < text.Length; i++)
+    {
+        char c = text[i];
+
+        if (Char.IsLetter(c) && !Char.IsWhiteSpace(c))
+        {
+            if (Char.IsUpper(c) || Char.IsLower(c))
+            {
+                numberOfWords++;
+            }
+            else
+            {
+                numberOfSentences++;
+            }
+        }
+    }
+
+    return numberOfWords, numberOfSentences;
+}
+
+Note: You can't return a boolean value as a single return value, since a boolean cannot be converted to any other value, you'll have to choose one of the three available types, namely bool, int or string (The last one is the easiest)
+
+EDIT:
+In your case you'll have to make use of out parameters as @Guffa suggested in the comments:
+static void Main(string[] args)
+{
+    Console.Write("Enter a sentence: ");
+    string Sentence = Console.ReadLine();
+
+    var result = convertSentence(Sentence);
+}
+static int convertSentence(string text, out int NumberOfSentences, out int NumberOfWords)
+{
+    int length = text.Length;
+
+    for (int i = 0; i < text.Length; i++)
+    {
+        char c = text[i];
+
+        if (Char.IsLetter(c) && !Char.IsWhiteSpace(c))
+        {
+            if (Char.IsUpper(c) || Char.IsLower(c))
+            {
+                NumberOfWords++;
+            }
+            else
+            {
+                NumberOfSentences++;
+            }
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return NumberOfSentences, NumberOfWords;
+}
+
+This will return the number of words and number of sentences, but as you want to return both at the same time, you'll have to use out parameters as mentioned above.
+
+And yes, you can return multiple values. And even if the return type of a function is void, you can still return a value. For example:
+static void Main(string[] args)
+{
+    Console.Write("Enter a sentence: ");
+    string Sentence = Console.ReadLine();
+
+    var result = convertSentence(Sentence);
+
+    int numOfWords = result.Item1;
+    int numOfSentences = result.Item2;
+}
+static IEnumerable<T> convertSentence(string text)
+{
+    // ...... code .....
+    return result;
+}
+
+Or, you can use a local variable and return it:
+static void Main(string[] args)
+{
+    Console.Write("Enter a sentence: ");
+    string Sentence = Console.ReadLine();
+
+    var result = convertSentence(Sentence);
+}
+static int convertSentence(string text)
+{
+    int numberOfWords = 0;
+    int numberOfSentences = 0;
+
+    for (int i = 0; i < text.Length; i++)
+    {
+        char c = text[i];
+
+        if (Char.IsLetter(c) && !Char.IsWhiteSpace(c))
+        {
+            if (Char.IsUpper(c) || Char.IsLower(c))
+            {
+                numberOfWords++;
+            }
+            else
+            {
+                numberOfSentences++;
+            }
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return numberOfWords, numberOfSentences;
+}
+
+</div></body></html><!-- 2022-07-17 11:30:30 

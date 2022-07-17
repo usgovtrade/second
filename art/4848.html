@@ -1,0 +1,119 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4849.html'>Penn State junior </a><Br/><a href='4850.html'>The world's only r</a><Br/><a href='4851.html'>Recommended Readin</a><Br/><a href='4852.html'>The World Trade Or</a><Br/><a href='4853.html'>This is a new appl</a><Br/><a href='4854.html'>Q:
+
+WCF, is it pos</a><Br/><a href='4855.html'>On September 20, 2</a><Br/><a href='4856.html'>Inhibiting P2X4 re</a><Br/><a href='4857.html'>---
+abstract: 'The</a><Br/><a href='4858.html'>C. V. Meenakshi Su</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4847.html'>Invasive Species
+
+</a><Br/><a href='4846.html'>In many parts of t</a><Br/><a href='4845.html'>1. Field of the In</a><Br/><a href='4844.html'>/* SPDX-License-Id</a><Br/><a href='4843.html'>FORT COLLINS, Colo</a><Br/><a href='4842.html'>AUSTIN — After the</a><Br/><a href='4841.html'>Wheat quality para</a><Br/><a href='4840.html'>/*	$OpenBSD: pwd_t</a><Br/><a href='4839.html'>Gigapans
+
+An artis</a><Br/><a href='4838.html'>Gastric varices: p</a></div><div class='nav'><a href='4847.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4849.html'> >> </a></div><div class='article'>Q:
+
+How do I change this formula to display the number of days between now and a cell with a date?
+
+I have a formula for the number of days left in the week, with the first row being "today".
+=INT((B9-1)/7)
+I'm trying to use this same formula for the number of days in any given date. Let's say a cell with "6/20/13"
+I can use the DATE function and the format for the day (mmddyyyy) to figure out the date, but when I put it all together in a formula it's not correct. The closest I've come is by using the number from cell B9 and subtracting one day, but then it displays a #NUM! error.
+What am I missing?
+
+A:
+
+The "int" function in excel (I assume this is what you are using) uses the system settings as a reference for number formatting.  I believe you need to enter the date as a text format (mm/dd/yyyy) and you can use a standard date function to convert it to a real number.  Do this instead:
+=DAYS(NOW(),DATEVALUE(C1))
+
+This assumes that the number entered in C1 is a valid date (i.e. something like 2/1/2016 is not considered a valid date by excel)
+If you just have text, you need to do a bit more work:
+=IF(TEXT(C1,"m/d/yyyy")="",INT(B9-1)/7,DAYS(NOW(),DATEVALUE(TEXT(C1,"m/d/yyyy"))))
+
+The trick to this is to convert the string into a date, then use the DATEVALUE function. This can be a pain if you aren't sure what the text will be (it needs to be a date in order to convert properly).
+
+A:
+
+Excel's "INT" function needs a date and a number to work. So, you have to use formulas.
+You have to subtract one day from the cell containing the date you want to convert to a number.
+So let's say that cell is E5, then you would enter the formula:
+=INT(E5-1)
+
+The result would be the number of days.
+
+A:
+
+Use the DateDif function from a standard module:
+Function Datediff( _
+  startDate As Date, _
+  endDate As Date, _
+  Optional weekdays As Variant = 1, _
+  Optional month As Variant = 0, _
+  Optional year As Variant = 0, _
+  Optional firstweekday As Variant = 0, _
+  Optional lastweekday As Variant = 0 _
+) As Long
+
+  Dim dateDiff    As Long
+  Dim d1          As Date
+  Dim d2          As Date
+
+  d1 = dateValue(startDate)    ' convert start date to Date object
+  d2 = dateValue(endDate)      ' convert end date to Date object
+
+  dateDiff = DateDiff(weekdays + month + year, d1, d2)
+
+  If weekdays > 0 Then
+    If firstweekday > 0 Then
+        dateDiff -= (dateDiff / 7 * firstweekday)
+    Else
+        dateDiff -= (dateDiff / 7 * firstweekday) + (dateDiff Mod 7)
+    End If
+ End If
+
+  If month > 0 Then
+    dateDiff += (dateDiff / 12 * (1 + month))
+ End If
+
+  If year > 0 Then
+    dateDiff += (dateDiff / 365 * year)
+ End If
+
+  dateDiff = dateDiff \ 1 ' Excel VBA doesn't return fraction of days
+
+  dateDiff = Abs(dateDiff) ' Excel VBA doesn't return negative days
+
+  If dateDiff > 0 Then    ' don't count negative dates
+    dateDiff = dateDiff + 1
+ Else
+    dateDiff = 0
+ End If
+
+End Function
+
+It uses the DateDif VBA function (also from a standard module).  It uses some work arounds to get around quirks in Excel's VBA date functions, it should work for your usage as well.
+
+To find the difference between two dates in days in Excel, you may need to use some work arounds.
+For example, if you put 4/6/2013 into cell A1 and 6/5/2013 into B1, and then do
+=Datediff(B1, A1, 0, 1, 0, 1)
+
+it gives you -1 (because 6/6/2013 minus 4/6/2013 is -2).
+This happens because Excel's DATEDIFF function does not know how to handle leap years. If the first date is not a leap year and the second date is, DATEDIFF gives you 1 extra day. You would have to use the Excel's work around to get Excel to give you the correct number.
+You can either do it by
+
+add 1 to the result you get from DATEDIFF
+
+=INT(A1 - DATEDIFF(A1, B1, 0, 1, 0, 1))
+
+add 1 to the result you get from DATEDIFF
+
+=INT(DATEDIFF(A1, B1, 0, 1, 0, 1)) + 1
+
+convert the values to decimal
+
+=(A1 - B1)*365 + (A1 - B1) / 4 / 4 + (A1 - B1) - MOD(A1 - B1, 4) * 14 - MOD(A1 - B1, 4) / 4 / 4 - MOD(A1 - B1, 4) + MOD(A1 - B1, 100) + MOD(A1 - B1, 400) + MOD(A1 - B1, 4) - MOD(A1 - B1, 100) / 100
+
+add 1 if the year is a leap year
+
+=INT(DATEDIFF(A1, B1, 0, 1, 0, 1) + IF(MOD(A1 - B1, 4) = 0, 1, 0))
+
+There are many similar workarounds, all of which can be found here:
+http://www.mrexcel.com/forum/excel-questions/90533-excel-difference-between-two-dates-leap-year-or-not.html
+
+The above functions use Excel 2007 VBA Language and Calendar functions. 
+
+</div></body></html><!-- 2022-07-17 11:30:34 
