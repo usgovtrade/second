@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4364.html'>Q:
+
+Why does my ta</a><Br/><a href='4365.html'>The long term goal</a><Br/><a href='4366.html'>The number of pati</a><Br/><a href='4367.html'>Synthesis and stru</a><Br/><a href='4368.html'>//
+//     Generate</a><Br/><a href='4369.html'>package hclwrite
+
+</a><Br/><a href='4370.html'>In recent years, a</a><Br/><a href='4371.html'>Birth of Arianne K</a><Br/><a href='4372.html'>A prospective, coh</a><Br/><a href='4373.html'>Rachel Maddow repo</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4362.html'>Q:
+
+Android: How c</a><Br/><a href='4361.html'>/*
+ * Copyright (c</a><Br/><a href='4360.html'>The first half of </a><Br/><a href='4359.html'>/**
+ * Copyright (</a><Br/><a href='4358.html'>Q:
+
+Javascript for</a><Br/><a href='4357.html'>"Hiding in the sha</a><Br/><a href='4356.html'>This is a request </a><Br/><a href='4355.html'>Category Archives:</a><Br/><a href='4354.html'>You are here
+
+Saud</a><Br/><a href='4353.html'>The long-term goal</a></div><div class='nav'><a href='4362.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4364.html'> >> </a></div><div class='article'>Q:
+
+Prove $\int_{x}^{x+h} f(t)dt= \int_a^b f(t)dt$ using only $\int_a^b f(t)dt=0$.
+
+Prove the following theorem:
+$\int_{x}^{x+h} f(t)dt= \int_a^b f(t)dt$, if $\int_a^b f(t)dt=0$ and $h \in R$.
+My idea was to use induction.
+Let $k=1$. Then, by hypothesis, $\int_a^b f(t)dt=0$. So $\int_a^{a+h} f(t)dt=0$ which can be written as
+$$h\int_a^{a+h}f(t)dt=0$$
+So $\int_a^{a+h}f(t)dt=0$.
+My intuition tells me I need to use the fact that $f$ is continuous on $a,b$ and then use that fact that 
+$$F(x+a)-F(x)= \lim_{\delta \to 0} \int_x^{x+\delta} f(t)dt$$
+
+A:
+
+One does not need continuity. Simply apply the definition of definite integral
+$$\int_x^{x+h} f(t)\,dt=F(x+h)-F(x)$$ where $F$ is antiderivative of $f$, 
+so that $F'(t)=f(t)$ and 
+$$\int_a^b f(t)\,dt=\int_a^b F'(t)\,dt=\left.F(t)\right|_a^b=F(b)-F(a)=0$$
+
+A:
+
+In general, one does not have that $F(x + h) - F(x) = \int_x^{x + h} f(t)\,dt$.  For a counterexample, consider $f(x) = \sin x$.  In this case, $F(x) = \frac12 x^2$.  
+The standard definition of definite integral is
+$$\int_a^b f(t)\,dt = \lim_{P\to\infty}\sum_{k=1}^n f(x_k)(x_{k+1}-x_k)$$ where $a = x_1 < x_2 < \cdots < x_n = b$ and $\{x_1,\dots,x_{n-1}\}$ is a partition of $[a,b]$.
+However, with the condition that $f$ has zero integral over $[a,b]$, we can deduce the following. 
+$$\int_a^b f(t)\,dt = \int_{a}^b f(t)\,dt = f(x) (b-a) + \int_a^b f(t)\,dt = 0(b-a) = 0.$$
+By convention, an integral over an interval of the form $[a,\infty)$ (or $[-\infty,a)$) is $+\infty$ if $f$ is nonzero there, and $0$ if $f$ is zero there.  In any case, it still equals to $0$.
+Here is an example for a nonnegative, continuous function which has a positive integral over some interval. Define
+$$f(x) = \begin{cases}
+1 & x\ge0,\\
+-1 & x<0.
+\end{cases}$$
+Then $\int_0^1 f(t)\,dt = \int_0^1 \frac{1}{x} \,dx = \infty$.
+
+A:
+
+As others have mentioned, the integral is well-defined only if the integral over some intervals of discontinuity vanishes. But if $f$ is continuous and nonnegative on $[a,b]$, this condition is equivalent to $f(x)>0$ on $[a,b]$: If $f$ is not identically $0$, $f(x)$ must have a positive sign somewhere, and hence can't be zero at all.
+So if $f$ is continuous, $f(x)\geq 0$ on $[a,b]$ and $f(x)\not=0$ for any $x\in[a,b]$, then
+$$\int_a^b f(x)\,dx>0$$
+
+However, if $f(x)\geq 0$ on $[a,b]$ and $f(x)=0$ somewhere in $(a,b)$, then the value of the integral can indeed be $0$. Take, for instance,
+$$f(x)=\frac{\sin x}{x}$$
+Then $f$ is continuous on $[0,\infty)$ and $f(x)\geq 0$ on $[0,\infty)$ and it has a $0$ where it crosses the discontinuity at $x=0$. Hence
+$$\int_0^\infty f(x)\,dx=0$$
+For this example, this is exactly the reason that the integral "fails" to converge because it oscillates infinitely many times.
+
+So the condition that the integral of $f$ over $[a,b]$ is zero in the statement of the theorem is equivalent to $f$ being identically zero, hence $F$ is identically $0$ so the integral over any interval is $0$. Hence the integral of $f$ over $[a,b]$ can indeed be zero.
+However, note that this condition is not enough for an integral of $f$ to be defined: it's still not clear that the function obtained by integrating $f$ over $[a,b]$ is differentiable on $(a,b)$.
+
+To answer one of the commentors who asked for an example of a function for which $F$ is not differentiable at $0$ but the integral of $f$ over any interval is $0$, try the function
+$$f(x)=\left\{\begin{array}{cc} \sin \frac{1}{x} & x\neq 0\\ 0 & x=0 \end{array}\right.$$
+then $\int_0^\infty f(x)\,dx=0$, but since $F(x)=\int_0^x f(t)\,dt$ is not differentiable at $0$, there is no guarantee that $F$ will be differentiable everywhere.
+
+P.S. This means that the condition that the integral of $f$ is zero for all intervals, which is required in the statement of the theorem, is a sufficient condition for an integral to exist, but not a necessary condition. Since the statement of the theorem says "if $f$ has zero integral over $[a,b]$, then...", it looks like it is a necessary condition. But it isn't.
+For instance, if the definition of the Riemann integral is instead extended to include any function which is integrable over every interval, then the function $F$ given above is integrable on $[a,b]$ and its integral over $[a,b]$ is zero.
+
+</div></body></html><!-- 2022-07-17 11:29:09 

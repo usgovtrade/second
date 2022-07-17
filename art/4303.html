@@ -1,0 +1,194 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4304.html'>Q:
+
+How to remove </a><Br/><a href='4305.html'>The influence of f</a><Br/><a href='4306.html'>---
+abstract: 'The</a><Br/><a href='4307.html'>Rapids midfielder </a><Br/><a href='4308.html'>The present disclo</a><Br/><a href='4309.html'>Epidemiology of cu</a><Br/><a href='4310.html'>// Copyright 2015 </a><Br/><a href='4311.html'>"A lot of people a</a><Br/><a href='4312.html'>---
+abstract: 'In </a><Br/><a href='4313.html'>---
+abstract: 'In </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4302.html'>Q:
+
+Using the same</a><Br/><a href='4301.html'>Terry Farrell (dir</a><Br/><a href='4300.html'>Q:
+
+Adding custom </a><Br/><a href='4299.html'>Ford announced thi</a><Br/><a href='4298.html'>{
+  "action": {
+  </a><Br/><a href='4297.html'>Q:
+
+how to remove </a><Br/><a href='4296.html'>On Wednesday, the </a><Br/><a href='4295.html'>In this series, I </a><Br/><a href='4294.html'>Dental fluorosis a</a><Br/><a href='4293.html'>Preliminary crysta</a></div><div class='nav'><a href='4302.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4304.html'> >> </a></div><div class='article'>Q:
+
+Django template tag to display objects from model
+
+I'm trying to pass two different instances of the same model into a template using a django template tag. I tried to follow the example for passing an instance of a model into the template as shown here: 
+Django template Tag: How to display related object list in template?
+{% for a in object.articles.all %}
+
+      <a href="a.id">{{ a }}</a>
+
+{% endfor %}
+
+However I would like to go another level in depth and be able to show the related objects for this model too. I have searched through the internet and found multiple ways of doing this, but it is just not working for me.
+models.py: 
+class Event (models.Model):
+    name = models.CharField(max_length=256)
+    venue = models.CharField(max_length=256)
+    venue_event_id = models.IntegerField(unique=True, null=True, blank=True)
+
+    venue_location_name = models.CharField(max_length=256)
+    venue_location_address = models.CharField(max_length=256)
+    venue_location_phone = models.CharField(max_length=256)
+    venue_location_street = models.CharField(max_length=256)
+    venue_location_postalcode = models.CharField(max_length=256)
+
+    venue_event_location_name = models.CharField(max_length=256)
+    venue_event_location_address = models.CharField(max_length=256)
+    venue_event_location_phone = models.CharField(max_length=256)
+    venue_event_location_street = models.CharField(max_length=256)
+    venue_event_location_postalcode = models.CharField(max_length=256)
+
+    related_venues = models.ManyToManyField(Venue)
+    related_events = models.ManyToManyField(Event)
+
+    def __unicode__(self):
+        return self.name
+
+class Venue (models.Model):
+    name = models.CharField(max_length=256)
+    address = models.CharField(max_length=256)
+    city = models.CharField(max_length=256)
+    state = models.CharField(max_length=256)
+    postalcode = models.CharField(max_length=256)
+    phone = models.CharField(max_length=256)
+    street = models.CharField(max_length=256)
+    distance = models.FloatField()
+    image_url = models.CharField(max_length=256)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+
+    objects = VenueQuerySet.as_manager()
+
+    def __unicode__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return "/venue/%s/" % self.slug
+
+class EventLocation (models.Model):
+    name = models.CharField(max_length=256)
+    address = models.CharField(max_length=256)
+    city = models.CharField(max_length=256)
+    state = models.CharField(max_length=256)
+    postalcode = models.CharField(max_length=256)
+    phone = models.CharField(max_length=256)
+    street = models.CharField(max_length=256)
+    distance = models.FloatField()
+    image_url = models.CharField(max_length=256)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+
+    objects = EventLocationQuerySet.as_manager()
+
+    def __unicode__(self):
+        return self.name
+
+class VenueLocation(models.Model):
+    event = models.ForeignKey(Event, related_name='events')
+    venue = models.ForeignKey(Venue, related_name='venues')
+    name = models.CharField(max_length=256)
+    address = models.CharField(max_length=256)
+    city = models.CharField(max_length=256)
+    state = models.CharField(max_length=256)
+    postalcode = models.CharField(max_length=256)
+    phone = models.CharField(max_length=256)
+    street = models.CharField(max_length=256)
+    distance = models.FloatField()
+    image_url = models.CharField(max_length=256)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+
+    objects = VenueLocationQuerySet.as_manager()
+
+    def __unicode__(self):
+        return self.name
+
+class EventQuerySet (models.Model):
+    slug = models.SlugField(max_length=256)
+    name = models.CharField(max_length=256)
+    events_description = models.CharField(max_length=256)
+    events_dates = models.CharField(max_length=256)
+
+    objects = EventQuerySetQuerySet.as_manager()
+
+    def __unicode__(self):
+        return self.name
+
+template.py:
+from django.template import Template, Context
+from django.template.loader import get_template
+from .models import *
+
+register = template.Library()
+
+@register.simple_tag(takes_context=True)
+def events_for_instance(context):
+    instance = context.get('object')
+    template = get_template('_events_by_instance.html')
+    html = template.render(Context({'instance': instance}))
+
+    return html
+
+html: 
+{% load events_by_instance %}
+
+    <ul>
+    {% for a in instance.related_venues.all %}
+
+      <li>
+        {{ instance.venue_location_name }}
+        {{ a.venue_location_address }}
+
+      </li>
+
+    {% endfor %}
+
+    </ul>
+
+  ================================================
+{% for a in instance.related_events.all %}
+
+      <li>
+        {{ instance.venue_location_name }}
+        {{ a.venue_location_address }}
+
+      </li>
+
+    {% endfor %}
+    </ul>
+
+How can I display all related object instances in a django template?
+
+A:
+
+Your issue is the related_name argument to the ForeignKey. By default django uses the related name as a reverse lookup when you specify a related_name argument.
+https://docs.djangoproject.com/en/dev/topics/db/queries/#related-object-lookups
+
+In case you specify a string as a related_name argument, the relation between the two models is done with a dictionary-like structure where the model name is the key, and the reverse relation is stored in the value. This means that it is possible to have two models that share the same name in the models.py, but still have unique related names:
+class Car(models.Model):
+    manufacturer = models.CharField(max_length=255, unique=True)
+    models = models.ManyToManyField('self', symmetrical=False,
+        related_name="cars_created", db_index=True)
+
+class License(models.Model):
+    car = models.ForeignKey(Car, related_name="cars_on_hold")
+    plates = models.ManyToManyField(LicensePlate, related_name="cars_held")
+
+In your case:
+class Event (models.Model):
+    name = models.CharField(max_length=256)
+    venue = models.CharField(max_length=256)
+    venue_event_id = models.IntegerField(unique=True, null=True, blank=True)
+    venue_location_name = models.CharField(max_length=256)
+    venue_location_address = models.CharField(max_length=256)
+    venue_location_phone = models.CharField(max_length=256)
+    venue_location_street = models.CharField(max_length=256)
+    venue_location_postalcode = models.CharField(max_length=256)
+    related_venues = models.ManyToManyField(Venue, related_name='events')
+
+    def __unicode__(self):
+        return self.</div></body></html><!-- 2022-07-17 11:28:59 

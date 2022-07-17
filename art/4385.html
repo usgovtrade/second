@@ -1,0 +1,80 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4386.html'>The present invent</a><Br/><a href='4387.html'>
+The Evolution of </a><Br/><a href='4388.html'>Q:
+
+PHP - How to s</a><Br/><a href='4389.html'>The present invent</a><Br/><a href='4390.html'>Introduction {#s1}</a><Br/><a href='4391.html'>The present invent</a><Br/><a href='4392.html'>A lot of people ar</a><Br/><a href='4393.html'>Q:
+
+What is the di</a><Br/><a href='4394.html'>Introduction {#Sec</a><Br/><a href='4395.html'>This application c</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4384.html'>In this study, we </a><Br/><a href='4383.html'>Q:
+
+SQL Server Man</a><Br/><a href='4382.html'># -*- encoding: ut</a><Br/><a href='4381.html'>Beta-cell autoimmu</a><Br/><a href='4380.html'>Q:
+
+Unable to pass</a><Br/><a href='4379.html'>Q:
+
+How to set up </a><Br/><a href='4378.html'>---
+title: Gatsby </a><Br/><a href='4377.html'>There are various </a><Br/><a href='4376.html'>Revealing insights</a><Br/><a href='4375.html'>Bangla
+
+The Bangla</a></div><div class='nav'><a href='4384.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4386.html'> >> </a></div><div class='article'>Q:
+
+Find the number of ways to place distinct labeled balls in $k$ labelled bins.
+
+Find the number of ways to place distinct labeled balls in $k$ labelled bins, assuming that each ball may only be placed in a single bin and assuming that the bins are distinct from each other?
+Let's say we have 5 bins with labels $a$, $b$, $c$, $d$ and $e$
+and 5 balls with the labels $p$, $q$, $r$, $s$ and $t$
+In this situation, by following these rules, we cannot place ball r in bin $d$.
+Because, if we placed ball r in the first or the second bin, that is $a$ or $b$ or $c$, it would not be the case that this ball is placed in a distinct bin.
+So, the answer is:
+$${5 \choose 1}{6 \choose 1} - 5 \cdot \big[{4 \choose 2}{5 \choose 1}{5 \choose 1} - {4 \choose 2}{5 \choose 2}{4 \choose 1}\big] = 3 \cdot 5 \cdot 7 - 10 = 105$$
+Is this correct?
+Thank you.
+
+A:
+
+I can't resist adding to what has been already said.  Perhaps in some other fashion you might like to think about it.  My solution follows along the lines of André Nicolas's solution but is written differently, perhaps for emphasis or some such.
+Let's say we have five bins labeled "a," "b," "c," "d," and "e."
+For any of the five bins, we're either placing the ball "p" there, or not placing the ball "p" there, and in the latter case we are placing the ball "q" there, or not placing the ball "q" there, and in the latter case we are placing the ball "r" there, or not placing the ball "r" there, and in the latter case we are placing the ball "s" there, or not placing the ball "s" there, and in the latter case we are placing the ball "t" there, or not placing the ball "t" there. We can now write down as much as we can by just listing the positions in the appropriate slots:
+We place the ball "p" in "b": 
+$$(0\quad1\quad2\quad3\quad4\quad5\quad6\quad7\quad8\quad9)$$
+We place the ball "q" in "a": 
+$$(0\quad1\quad2\quad3\quad4\quad5\quad6\quad7\quad8\quad9)$$
+We place the ball "r" in "a": 
+$$(0\quad1\quad2\quad3\quad4\quad5\quad6\quad7\quad8\quad9)$$
+We place the ball "s" in "e": 
+$$(0\quad1\quad2\quad3\quad4\quad5\quad6\quad7\quad8\quad9)$$
+We place the ball "t" in "d": 
+$$(0\quad1\quad2\quad3\quad4\quad5\quad6\quad7\quad8\quad9)$$
+This is of course only one way of placing the balls "p," "q," "r," "s," and "t" in the five bins labeled "a," "b," "c," "d," and "e." How many possible ways are there? Let's try placing all five balls in a different order. How many of these can we draw in?
+First let's imagine we don't know what order the balls "p," "q," "r," "s," and "t" came in.
+Then we have "0" balls of "p" left, "1" balls of "q" left, "2" balls of "r" left, and so on. Therefore we can place the balls in 5! different ways, since the permutations of 5 objects can be written as 5! = 5! permutations.
+Of course, we knew that each of these permutations is unique because each of the bins has a unique label.
+Therefore, there are 5! ways to put the balls in a different order.
+But we also knew that since each of the balls have a unique label, that any of the balls can only ever be placed in the bin that has a matching label. Therefore, any of the balls must be in the correct bin. Therefore, by the Pigeonhole Principle, we know that at least 2 of the balls will be in the same bin. This means that this way of placing the balls will repeat. So each way of placing the balls has the potential of having more than one permutation. Therefore, we multiply 5! by the number of ways of placing the balls, since each of the permutations is unique and each of the permutations is shared with every other permutation in some way.
+So this will be 5! * P, where P is the number of ways to place the balls. But we counted every permutation a second time when we multiplied by 5! so we have to subtract it out again.
+We have 5! * P minus 5!, so we have 
+$$5! * P - 5! = P = 105$$
+And we can now say, there are 105 ways of placing the balls in the bins, since 5! = 5! * P.
+
+A:
+
+I think it would be correct to see the number of cases as $5 \choose 1, 2, 1, 2, 1$ and we subtract those that repeat $(5, 4, 3, 3, 3)$, giving us ${5 \choose 1, 2, 1, 2, 1}-{5 \choose 1, 3, 1, 2, 1}=9(3(5 \choose 2))=15*3*7=105$.
+
+A:
+
+I didn't follow all your solution at first glance, but I think this method is pretty straightforward: We place the balls one by one. There are $6 \choose 1$ ways to do so for the first ball and $6 \choose 1$ ways to do so for the second ball, for a total of $6 \choose 1} \times 6 \choose 1$ ways to place both balls. We divide by the number of equivalent positions (i.e., those that correspond to a different arrangement of the balls):
+$${6 \choose 1}{6 \choose 1} \div {5 \choose 2} = {6 \choose 1} \times {5 \choose 2}$$
+Then we do the same thing for each ball in turn. When we place the third ball, we have $4$ bins available, so there are $4 \choose 2$ ways to put it there. When we place the fourth ball, we have $3$ bins available, so there are $3 \choose 2$ ways to put it there. We divide by the number of bins for that ball that are not used, and we have:
+$${4 \choose 2}{3 \choose 2} \div 2 = {4 \choose 2} \times {3 \choose 2}$$
+I'll leave it to you to figure out how many repetitions we need to remove from the count for each ball. When you've done that, you'll find that the total number of ways to place the five balls in the five bins is 
+$$ 5! [ {6 \choose 1}{6 \choose 1} \div {5 \choose 2} ]^{5} [ {4 \choose 2}{3 \choose 2} \div 2 ]^{5} [ {2 \choose 1}{1 \choose 1} \div 1 ]^{5} [ {2 \choose 1}{1 \choose 1} \div 1 ]^{5} [ {2 \choose 1}{1 \choose 1} \div 1 ]^{5}$$
+From there, you can expand the powers of the bin factors to the appropriate terms.
+
+A:
+
+First, you place the balls.
+Now you will have the balls in five bins.
+I will call your five bins A, B, C, D and E.
+Let $n_i$ be the number of balls in bin $i$, so for example $n_A$ is the number of balls in bin $A$.
+$n_A \ge n_B \ge n_C \ge n_D \ge n_E$, or $n_A = n_B = n_C = n_D = n_E$.
+Now you can count the number of ways of placing the balls.
+Since each ball has a unique place, you can do this by using what's called the "Binomial Coefficient Rule" from Arithmetic and Geometry, by Richard Dedekind (1831).
+
+First, calculate all possible ways to place all the balls except for one ball in the bins.
+Multiply</div></body></html><!-- 2022-07-17 11:29:13 

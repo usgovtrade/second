@@ -1,0 +1,208 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4303.html'>Q:
+
+Django templat</a><Br/><a href='4304.html'>Q:
+
+How to remove </a><Br/><a href='4305.html'>The influence of f</a><Br/><a href='4306.html'>---
+abstract: 'The</a><Br/><a href='4307.html'>Rapids midfielder </a><Br/><a href='4308.html'>The present disclo</a><Br/><a href='4309.html'>Epidemiology of cu</a><Br/><a href='4310.html'>// Copyright 2015 </a><Br/><a href='4311.html'>"A lot of people a</a><Br/><a href='4312.html'>---
+abstract: 'In </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4301.html'>Terry Farrell (dir</a><Br/><a href='4300.html'>Q:
+
+Adding custom </a><Br/><a href='4299.html'>Ford announced thi</a><Br/><a href='4298.html'>{
+  "action": {
+  </a><Br/><a href='4297.html'>Q:
+
+how to remove </a><Br/><a href='4296.html'>On Wednesday, the </a><Br/><a href='4295.html'>In this series, I </a><Br/><a href='4294.html'>Dental fluorosis a</a><Br/><a href='4293.html'>Preliminary crysta</a><Br/><a href='4292.html'>Miguel Roca
+
+Migue</a></div><div class='nav'><a href='4301.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4303.html'> >> </a></div><div class='article'>Q:
+
+Using the same function in 3 sub-pages for different input names
+
+I have a form where I have to enter data into 3 input boxes. My JS script is:
+<script>
+var error_msg = "";
+function validate() {
+if (error_msg != "") {
+    alert(error_msg);
+    return false;
+} else {
+    alert("valid form");
+    return true;
+}
+}
+</script>
+
+What I want is that when the form is submitted the function 'validate' will be called and if any of the 3 input values is empty, it will return false and show an alert. In this example, I want an alert to show if I leave any of the 3 input boxes blank. The problem is that I have 3 inputs with the same name. When I leave any of them empty it always shows an error no matter which one of them I don't fill in.
+Does anyone know how I can fix this problem?
+
+A:
+
+There is no way to do what you want. 
+You have to do one of the following: 
+
+Change the names of your input boxes so that they are unique, or 
+Wrap each of them in a div, and in the validation function check if any of the divs are not empty. 
+
+Edit: Here is the code I used to make the code working:
+<!DOCTYPE html>
+<html>
+<body>
+
+<form id="myform">
+
+<div id="inp1">
+
+<label> First Name </label>
+<input type="text" id="t" />
+
+<label> Last Name </label>
+<input type="text" id="t1" />
+
+</div>
+<div id="inp2">
+<label> First Name </label>
+<input type="text" id="t2" />
+
+<label> Last Name </label>
+<input type="text" id="t3" />
+</div>
+
+<div id="inp3">
+<label> First Name </label>
+<input type="text" id="t4" />
+
+<label> Last Name </label>
+<input type="text" id="t5" />
+</div>
+<br/>
+
+<button onclick="validate()">Submit</button>
+
+    <script>
+      var error_msg = "";
+      function validate() {
+
+          var inp1Error = "";
+          var inp2Error = "";
+          var inp3Error = "";
+
+          if (document.getElementById('t').value == "") {
+              inp1Error = "Your first name can't be empty";
+              error_msg = error_msg + inp1Error;
+          } else {
+              inp1Error = "";
+              error_msg = error_msg + inp1Error;
+          }
+
+          if (document.getElementById('t1').value == "") {
+              inp2Error = "Your last name can't be empty";
+              error_msg = error_msg + inp2Error;
+          } else {
+              inp2Error = "";
+              error_msg = error_msg + inp2Error;
+          }
+
+          if (document.getElementById('t4').value == "") {
+              inp3Error = "Your age can't be empty";
+              error_msg = error_msg + inp3Error;
+          } else {
+              inp3Error = "";
+              error_msg = error_msg + inp3Error;
+          }
+
+          if (inp1Error != "" || inp2Error != "" || inp3Error != "") {
+              alert(error_msg);
+              return false;
+          } else {
+              alert("valid form");
+              return true;
+          }
+
+      }
+
+    </script>
+
+</body>
+</html>
+
+You can make your own javascript which changes the value of all the divs, but it's not practical for large numbers of fields. 
+And please, don't ever use 'onclick' event handler to submit forms, use 'onsubmit' event handler. 
+
+A:
+
+Use array form data in Js. So that it will check with all elements.
+First put input box and same class name to all that you want to validate and then change javascript as shown in below code.
+JavaScript
+var error_msg = "";
+var msg = [];
+function validate() {
+    if (error_msg.length > 0) {
+        alert(error_msg);
+        return false;
+    } else {
+        alert("valid form");
+        return true;
+    }
+}
+if (msg.length > 0) {
+    alert(msg);
+}
+
+HTML Code:
+<input id="inp1" name="inp1" value="" type="text" class="input" />
+<input id="inp2" name="inp2" value="" type="text" class="input" />
+<input id="inp3" name="inp3" value="" type="text" class="input" />
+
+JavaScript Code:
+for(var i = 0; i < document.forms.length; i++){
+    var forms = document.forms[i];
+    var input = document.getElementsByName("inp"+i);
+    var msg = "";
+    if(input.length) {
+        msg = input.length == 0 ? "Your " + i + " number must be filled." : "";
+    }
+    if(msg.length){
+        alert(msg);
+        return false;
+    }else{
+        alert("valid form");
+        return true;
+    }
+}
+
+Here is the jsfiddle link for this example:
+Click here for jsfiddle demo link
+I hope this will help you.
+
+A:
+
+Instead of using the onsubmit attribute of the form, call a function that iterates over each input in a particular set (e.g. just the inputs with class=set) and check if it's empty.
+The function should return true or false based on your criteria.
+<form name="form1" onsubmit="return validate();" />
+<input name="example1" value="example" class="set" /><!-- Note: No value attribute. -->
+<input name="example2" value="example" /><!-- Note: No value attribute. -->
+<input name="example3" value="example" />
+<input name="example4" value="example" /><!-- Note: No value attribute. -->
+<input name="example5" value="example" />
+</form>
+
+// JavaScript Code
+function validate() {
+    // First, iterate over each input.
+    // Don't use 'class' as the selector. The ID should be unique for each input, so
+    // using it here is ok, but not advisable.
+    var inputs = document.forms["form1"].getElementsByTagName("input");
+    var totalErrors = 0;
+
+    for(var i = 0; i < inputs.length; i++) {
+        if(inputs[i].value != "" || inputs[i].type == "text") {
+            return true;
+        } else {
+            // Add an error to the 'error' array.
+            totalErrors++;
+        }
+    }
+
+    if(totalErrors > 0) {
+        alert("Please fill in all fields");
+        return false;
+    } else {
+        alert("valid form");</div></body></html><!-- 2022-07-17 11:28:59 

@@ -1,0 +1,108 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4332.html'>/**
+ * 
+ * WARNING</a><Br/><a href='4333.html'>The video of an NY</a><Br/><a href='4334.html'>It has been well-e</a><Br/><a href='4335.html'>Mitt Romney and Pa</a><Br/><a href='4336.html'>LONDON (Reuters) -</a><Br/><a href='4337.html'>Differences in the</a><Br/><a href='4338.html'>Rahul Gandhi to ta</a><Br/><a href='4339.html'>Re: The New Year’s</a><Br/><a href='4340.html'>A high temperature</a><Br/><a href='4341.html'>// Copyright (c) 2</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4330.html'>Astronomy Picture </a><Br/><a href='4329.html'>The use of optical</a><Br/><a href='4328.html'>This is part of a </a><Br/><a href='4327.html'>In this undated ph</a><Br/><a href='4326.html'>1. Introduction {#</a><Br/><a href='4325.html'>Q:
+
+How to make te</a><Br/><a href='4324.html'>The use of electro</a><Br/><a href='4323.html'>Choroidal neovascu</a><Br/><a href='4322.html'>---
+abstract: 'We </a><Br/><a href='4321.html'>New Zealand: Three</a></div><div class='nav'><a href='4330.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4332.html'> >> </a></div><div class='article'>Q:
+
+How to put condition on ng-class in angularjs?
+
+How to add condition in ng-class directive like ng-class="{'marginLeft': x>0}". Is there any way like below?
+ng-class="[x>0 ? 'marginLeft': 'marginLeft']"
+
+A:
+
+You can use it like this: ng-class="{'marginLeft': x>0}".
+
+Update: Here is one way to do it like you asked in comment:
+
+<div ng-class="marginLeft: x>0">text</div>
+
+angular.module('ngClassExample', [])
+.controller('ClassController', ['$scope', function($scope) {
+  $scope.marginLeft = function(x) { return x>0 ? 'marginLeft' : ''; }
+}])
+.directive('ngClass', function() {
+  return {
+    restrict: 'A',
+    priority: -1, // this directive runs after the class directive
+    compile: function(tElm, tAttrs) {
+      var setter,
+        getter,
+        parse,
+        result;
+
+      parse = angular.element("<div class='foo'></div>").attr("class");
+      result = parse.split(/\s+/g);
+
+      getter = function() {
+        return result[parse.length - 1];
+      };
+
+      setter = function(value) {
+        var set = angular.isDefined(value) ? "addClass" : "removeClass";
+        result[parse.length - 1] = value;
+        return $parse(set)(tElm, getter);
+      };
+
+      return function ngClassBind(scope, element, attr) {
+        scope.$watch(getter, function ngClassWatchAction(value) {
+          setter(value);
+        });
+      };
+    }
+  };
+});
+<script src="//unpkg.com/angular/angular.js"></script>
+<body ng-app="ngClassExample">
+  <div class="foo" ng-class="marginLeft(true)"></div>
+  <div class="foo" ng-class="marginLeft(false)"></div>
+  <div class="foo" ng-class="marginLeft(false)"></div>
+  <div class="foo" ng-class="marginLeft(false)"></div>
+  <div class="foo" ng-class="marginLeft(true)"></div>
+
+Working Fiddle
+I know this might not be the right answer for you but just for educational purposes, I hope you'll learn something.
+
+A:
+
+This is a possible solution that I found from this answer. Using a function that will return you the css class from inside the ng-class
+Use it like this.
+ <button ng-class="{'bold' : {theFunctionThatReturnsClass: true}}">Click Me</button>
+
+ $scope.theFunctionThatReturnsClass = function (a) {
+            return a;
+        };
+
+A:
+
+You can try this:
+<span ng-class="{invert ? 'no-top-margin' : 'margin-top'}"></span>
+
+In this example, invert should be true (boolean)
+or 
+<span ng-class="invert ? 'no-top-margin' : 'margin-top'"></span>
+
+invert should be a string of space-delimited values for the keys to the class object (boolean/string/object)
+or if you don't want to write ng-class twice:
+<span class="{{invert ? 'no-top-margin' : 'margin-top'}}"></span>
+
+In this example, invert is a field in the scope where ng-class is watching.
+https://plnkr.co/edit/f5DjYq
+
+See also:
+https://github.com/angular/angular.js/issues/4652
+
+Hope this helps.
+
+UPDATE: For the sake of completeness, another solution is to use the expression option of the ngClass directive (which is not mentioned in the ngClass documentation but is in the parent docs):
+<span ng-class="{'margin-top': invert, 'no-top-margin': !invert}"></span>
+
+DEMO: http://plnkr.co/edit/uP0E8Gz?p=preview
+
+Also, as @sagarchalise noted in the comments, instead of using the inver option, you can directly write a class expression:
+<span ng-class="{'margin-top': invert, 'no-top-margin': !invert}"></span>
+
+DEMO: http://plnkr.co/edit/v4Y3Jc?p=preview
+
+</div></body></html><!-- 2022-07-17 11:29:04 

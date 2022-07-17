@@ -1,0 +1,171 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4365.html'>The long term goal</a><Br/><a href='4366.html'>The number of pati</a><Br/><a href='4367.html'>Synthesis and stru</a><Br/><a href='4368.html'>//
+//     Generate</a><Br/><a href='4369.html'>package hclwrite
+
+</a><Br/><a href='4370.html'>In recent years, a</a><Br/><a href='4371.html'>Birth of Arianne K</a><Br/><a href='4372.html'>A prospective, coh</a><Br/><a href='4373.html'>Rachel Maddow repo</a><Br/><a href='4374.html'>As many of you kno</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4363.html'>Q:
+
+Prove $\int_{x</a><Br/><a href='4362.html'>Q:
+
+Android: How c</a><Br/><a href='4361.html'>/*
+ * Copyright (c</a><Br/><a href='4360.html'>The first half of </a><Br/><a href='4359.html'>/**
+ * Copyright (</a><Br/><a href='4358.html'>Q:
+
+Javascript for</a><Br/><a href='4357.html'>"Hiding in the sha</a><Br/><a href='4356.html'>This is a request </a><Br/><a href='4355.html'>Category Archives:</a><Br/><a href='4354.html'>You are here
+
+Saud</a></div><div class='nav'><a href='4363.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4365.html'> >> </a></div><div class='article'>Q:
+
+Why does my table's cell height doesn't change
+
+I have this table : 
+<table>
+<tr>
+<td class="c1" style="font-size:1px"></td>
+<td class="c2" style="font-size:2px"></td>
+<td class="c3" style="font-size:4px"></td>
+<td class="c4" style="font-size:6px"></td>
+<td class="c5" style="font-size:8px"></td>
+<td class="c6" style="font-size:10px"></td>
+<td class="c7" style="font-size:12px"></td>
+<td class="c8" style="font-size:14px"></td>
+</tr>
+</table>
+
+And all td's has font-size 1px...
+I want that cells' height increases according to the increase of the font size.
+And I found this code : 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Untitled Document</title>
+<style type="text/css">
+    table, th, td {
+        border: 1px solid black;
+    }
+
+    table tr th, table tr td {
+        height: 1px;
+    }
+
+    .one-size td {
+        height: 1px;
+        width: 1px;
+    }
+
+    .two-size td {
+        height: 1px;
+        width: 2px;
+    }
+
+    .three-size td {
+        height: 1px;
+        width: 3px;
+    }
+</style>
+</head>
+<body>
+<table>
+<tr>
+<td class="c1 one-size" style="font-size:10px"></td>
+<td class="c2 two-size" style="font-size:12px"></td>
+<td class="c3 three-size" style="font-size:14px"></td>
+<td class="c4 two-size" style="font-size:16px"></td>
+<td class="c5 two-size" style="font-size:18px"></td>
+<td class="c6 two-size" style="font-size:20px"></td>
+<td class="c7 two-size" style="font-size:22px"></td>
+<td class="c8 two-size" style="font-size:24px"></td>
+</tr>
+</table>
+</body>
+</html>
+
+And it works great , but I want it with my table... I changed the <tr> and <td>'s height to 1px but the size isn't changed.
+Why ? 
+In my mind , the value should be 1.5 (each cell has 1px height)
+but it's not. What did I do wrong ? 
+Thanks.
+
+A:
+
+Your height for td must be equal to height of the content inside the cell.
+Therefore in CSS set width for td and give class to each row cell as one of these classes:
+.one-size{height:1px;width:1px;}
+.two-size{height:1px;width:2px;}
+.three-size{height:1px;width:3px;}
+
+Than use this CSS instead:
+td{height:1px;width:1px;}
+
+And your problem should be solved.
+Here is demo: http://jsfiddle.net/3vWnC/
+Also you can get similar effect with CSS3 pseudo elements as described here:
+http://css-tricks.com/almanac/properties/p/padding-bottom/
+
+Alternatively, you can solve this by using css3 box-shadow. It also requires changes in the CSS code of the above jsfiddle:
+td{
+    height:1px;
+    width:1px;
+}
+.one-size{
+    box-shadow:inset 0 -1px 0 0 #000;
+}
+.two-size{
+    box-shadow:inset 0 -2px 0 0 #000;
+}
+.three-size{
+    box-shadow:inset 0 -3px 0 0 #000;
+}
+
+Here is demo: http://jsfiddle.net/7dMh7/
+
+Also you can use one of this 3 methods:
+
+table-layout: fixed - the table and its cells will have constant height, but it is not recommended because it makes the layout inflexible.
+<td style="background-color:#ff0000;width:100px;height:1px;"></td>
+
+html, body, table {
+    height:100%;
+    width:100%;
+}
+
+table-layout:auto - the table's cells automatically recalculate to be the height that allows all the text in all rows to be seen.
+html, body {
+    height:100%;
+}
+table {
+    width:100%;
+    table-layout:auto;
+}
+td {
+    height:1px;
+    border-bottom:1px solid #888;
+    width:1px;
+}
+td:last-child{
+    border-bottom:0;
+}
+
+table-layout: inherit - the table's cells will automatically recalculate to the height that allows all the text in all rows to be seen, and the table's width will be 100% of the width of its containing block.
+html, body, table {
+    height:100%;
+}
+table {
+    table-layout:inherit;
+    width:100%;
+}
+td {
+    height:1px;
+    border-bottom:1px solid #888;
+    width:1px;
+}
+td:last-child{
+    border-bottom:0;
+}
+
+A:
+
+You will need to change the height of the td in the css as well as have the same class name in each td. 
+Working example here.
+HTML: 
+<table>
+<tr>
+<td class="c1 one-size" style="font-size:10px"></td</div></body></html><!-- 2022-07-17 11:29:09 

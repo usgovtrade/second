@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4305.html'>The influence of f</a><Br/><a href='4306.html'>---
+abstract: 'The</a><Br/><a href='4307.html'>Rapids midfielder </a><Br/><a href='4308.html'>The present disclo</a><Br/><a href='4309.html'>Epidemiology of cu</a><Br/><a href='4310.html'>// Copyright 2015 </a><Br/><a href='4311.html'>"A lot of people a</a><Br/><a href='4312.html'>---
+abstract: 'In </a><Br/><a href='4313.html'>---
+abstract: 'In </a><Br/><a href='4314.html'>Q:
+
+Can't access m</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4303.html'>Q:
+
+Django templat</a><Br/><a href='4302.html'>Q:
+
+Using the same</a><Br/><a href='4301.html'>Terry Farrell (dir</a><Br/><a href='4300.html'>Q:
+
+Adding custom </a><Br/><a href='4299.html'>Ford announced thi</a><Br/><a href='4298.html'>{
+  "action": {
+  </a><Br/><a href='4297.html'>Q:
+
+how to remove </a><Br/><a href='4296.html'>On Wednesday, the </a><Br/><a href='4295.html'>In this series, I </a><Br/><a href='4294.html'>Dental fluorosis a</a></div><div class='nav'><a href='4303.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4305.html'> >> </a></div><div class='article'>Q:
+
+How to remove all zeros from a matrix?
+
+I have a n by 3 matrix A with zeros. I want to remove all the zeros except keeping the maximum entries in each column. 
+For instance, if the maximum entry of column 1 is 4 and the maximum entry of column 2 is 6, so we will have an m by 3 matrix where m = max (4,6). 
+How can I do this in MATLAB?
+
+A:
+
+Use max to extract the maximum values in each column of matrix A, then use that to index into matrix A to reconstruct the desired output matrix:
+out = A( max(A, [], 3) );
+
+EDIT: Alternatively, it seems @DanMcKenna has a one-liner solution, which has the advantage of not requiring the max function.
+out = A( sub2ind(size(A), 1:size(A, 1), max(A, [], 3) ) );
+
+A:
+
+n = 4;
+A = [2,5,7,3; 2,2,3,7; 3,5,9,0; 3,6,0,8];
+C = zeros(3,max(max(A)));
+
+C(min(1,1 + find(A))) = A;
+
+Result:
+C =
+
+     2     5     7     3
+     2     2     3     7
+     6     5     9     0
+
+Explanation:
+% Create indices for columns that have a max value in the matrix
+% then select from A the max values from that column
+C = zeros(3,max(max(A)));
+[C(1:1:3),C(2:1:3),C(3:1:3)] = deal(A);
+
+C will be C =
+
+     2     5     7     3
+     2     2     3     7
+     6     5     9     0
+
+A:
+
+A = [2,5,7,3; 2,2,3,7; 3,5,9,0; 3,6,0,8]
+[~,idx] = max(A,[],3)  % returns idx = [3,5,7]
+A(idx)
+
+gives you the desired result.
+EDIT
+for a general n-dimensional array, do:
+[~,idx] = max(A,[],3);
+res = reshape(A(idx), size(A))
+
+Note: If you don't want to reshape, then you can just do this instead:
+res = A(idx)
+
+EDIT
+There are certainly much more efficient ways to do this. For example, if you want to have the max in the last dimension, then you could use the following code:
+[idx,~,i] = max(A,[],3);
+res = reshape(A(idx), size(A,1), size(A,2),size(A,3));
+
+The idea is to use the fact that the last dimension is of size 1 and i(i>1) is all 0s.
+Cheers
+
+A:
+
+What if you did the opposite? You still have a vector, but there is no need to use max:
+[A, idx] = sort(A,3); %// Assuming A is n x m. 
+                        %// Only works for 3rd dimension.
+                        %// Will throw out extra dimension.
+
+You could always use max if you need the indices. 
+[A, idx] = max(A, [],3);
+
+And you would get the desired solution. 
+
+You do not really need a 'sorted' output. The reason for not using max is that there is no such thing as 'smallest'. For your data A, if you define the columns to be the columns of the matrix, you could do something like:
+[A, ~, idx] = sort(A, 3); %// This will put the smallest number in the last dimension
+
+Which is equivalent to using max on the first dimension and reverse sorting on the 3rd. This way your output will not be sorted, but I assume you are okay with it. If you really need sorted data, then you have to use max.
+
+You could do something similar with the second suggestion. The problem is that sort does not necessarily sort from 'smallest' to 'biggest'.
+[A, ~, idx] = sort(A,3);
+[maxV, idx] = max(A);
+
+This second version would work just fine for your example. But you might still run into problems if you have the max on all the columns. You could have the following matrix
+A = [0 2 0 0
+     0 1 0 1
+     0 2 0 0
+     0 3 0 1
+     0 0 0 0]
+
+To get the max, you would have to do this instead:
+[maxV, idx] = max(A(:,1), A(:,2), A(:,3));
+
+Which gives you the wrong answer. I believe you can get around this by doing the following:
+[maxV, idx] = max(max(A(:,1), A(:,2), A(:,3)), [],2);
+
+</div></body></html><!-- 2022-07-17 11:28:59 

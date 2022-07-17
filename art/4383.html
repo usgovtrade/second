@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4384.html'>In this study, we </a><Br/><a href='4385.html'>Q:
+
+Find the numbe</a><Br/><a href='4386.html'>The present invent</a><Br/><a href='4387.html'>
+The Evolution of </a><Br/><a href='4388.html'>Q:
+
+PHP - How to s</a><Br/><a href='4389.html'>The present invent</a><Br/><a href='4390.html'>Introduction {#s1}</a><Br/><a href='4391.html'>The present invent</a><Br/><a href='4392.html'>A lot of people ar</a><Br/><a href='4393.html'>Q:
+
+What is the di</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4382.html'># -*- encoding: ut</a><Br/><a href='4381.html'>Beta-cell autoimmu</a><Br/><a href='4380.html'>Q:
+
+Unable to pass</a><Br/><a href='4379.html'>Q:
+
+How to set up </a><Br/><a href='4378.html'>---
+title: Gatsby </a><Br/><a href='4377.html'>There are various </a><Br/><a href='4376.html'>Revealing insights</a><Br/><a href='4375.html'>Bangla
+
+The Bangla</a><Br/><a href='4374.html'>As many of you kno</a><Br/><a href='4373.html'>Rachel Maddow repo</a></div><div class='nav'><a href='4382.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4384.html'> >> </a></div><div class='article'>Q:
+
+SQL Server Management Studio 2008 R2: how to update a table from a previous version of itself?
+
+I'm using SQL Server Management Studio 2008 R2 and for one of our databases we do have previous copies of the database. The idea is that we are rebuilding the current DB on a daily basis. So, for that purpose we need the last copy which is the original DB in the database.
+Now I am trying to update the original DB from the previous copy by:
+
+Right-clicking on the database which is an "Original copy" in the left navigation panel
+Selecting "Tasks / Generate scripts..."
+Selecting the destination
+Then the operation that is called "Generate SQL Server Scripts"
+
+When I'm doing this I get a generated SQL script file but I can't execute this file to update my DB from the previous version. It says: 
+
+Object reference not set to an instance of an object.
+
+How can I update my original DB from the previous version in SQL Server Management Studio?
+
+A:
+
+The trick is to right click on the database, NOT the table(s) (which is default when right-clicking on a table in the Object explorer).
+A dialogue is then presented where you choose the database to update from.  I'm assuming this is from a script somewhere, which you would need to update to generate this dialogue.
+This will create a backup of the database (which you can delete as part of the script), but it will take only the schema.  You will also have to delete the trigger(s) for the table(s) in your script as well, but it should be pretty straight forward.  
+
+A:
+
+I know this is an old question, but it's the top hit for a search and for some reason I can't find the answer I was looking for.
+I wanted to make an automated solution to recreate our tables. That is the original table, one after each change, and a 'current' version which was used for testing and staging.
+I wanted to find a method in SSMS to do this automatically rather than building out a script to do this, as that could prove problematic if I needed to recreate the table for a different reason than what was originally intended (such as making some fields nullable when originally intended to not be).
+I was able to accomplish this with a small workaround and a stored procedure.
+
+Right click on the table and choose 'Tasks -> Generate Scripts'
+In the 'Save to' field select 'Folder'
+Create a new folder called 'Scripts' under the Program Files folder, this is the location where the scripts will be created (I found my folder under C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn)
+Now go to 'Tools' -> 'Options' and scroll to 'Scripting'
+Under the General tab check the 'SQL Server > General' checkbox and set the SQL Server path to the default SQL Server Data folder (C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\ManagementStudio\SqlManagementStudio\Data)
+Save the settings and close.
+Right click on your table again and choose 'Tasks -> Generate Scripts'.
+A dialogue will appear that will ask for a target database. Enter the current folder with all of your sql scripts in it, that's the one you want to create.
+Right click on the 'Scripting' folder under the 'Tasks' group in the left pane and choose 'New -> Stored Procedure'. The following form will appear, fill out as follows:
+
+Source: Select Program.Database.Tables -> From the drop down, select your table, select the option to specify the column names as they are, and add the table name to the end of the tablename.
+Output: select your 'output' folder, and choose to save to the table. In the next dialogue, make sure all of the checkboxes are unchecked and click 'OK'.
+
+This creates a t-sql script to insert data from the table as it was when the database was exported. You can also name the file as desired.
+
+This stored procedure can be scheduled by a SQL Agent job.
+EDIT: I created a stored procedure to create the t-sql script. This is a very basic example of the code, be sure to change the sql management studio path if it does not work for you.
+If object_id('usp_InsertSingleTableToScript') is null DROP PROC usp_InsertSingleTableToScript; GO
+
+    CREATE procedure usp_InsertSingleTableToScript
+    @tableName SYSNAME
+    as
+    begin
+
+        declare @tableExists bit = 0;
+
+        -- Check if table exists on disk already
+        select @tableExists = Count(*)
+        from sys.tables
+        where name = @tableName;
+
+        -- Get the folder path for the existing database scripts directory
+        declare @scriptingDir nvarchar(1000);
+        select @scriptingDir = 'C:\<sql management studio path>\Data\<database name>\Scripts\';
+
+        -- Create t-sql script in the same folder as the exported table.
+        -- The first line will update the file header with the database and table name
+        -- The second line will insert all columns, default values, and the data from the original table
+        insert into 
+            (select substring((select 'alter table ['+TABLE_SCHEMA+'].['+TABLE_NAME+'] drop constraint ['+SCHEMA_NAME+'].['+COLUMN_NAME+']_'+COLUMN_NAME+'];'
+                                from INFORMATION_SCHEMA.COLUMNS
+                                where TABLE_SCHEMA = PARSENAME(@tableName, 2)
+                                and TABLE_NAME = PARSENAME(@tableName, 1)
+                                and COLUMN_NAME not in ('ID', 'LogSeq')
+                                order by ORDINAL_POSITION
+                                for xml path('')), 2, 1000) [query]
+                   , 1, 250) + 'create table [' + TABLE_SCHEMA+'].['+TABLE_NAME+'] (['
+                    + COLUMN_NAME + '] ' +  COALESCE(DATA_TYPE,'nvarchar')+ ' NULL CONSTRAINT [' + SCHEMA_NAME + '].['+TABLE_NAME+']_FK FOREIGN KEY REFERENCES [' +SCHEMA_NAME + '].['+SCHEMA_NAME + '].['+TABLE_NAME+'](' + COLUMN_NAME + ') );'
+            from INFORMATION_SCHEMA.COLUMNS
+            where TABLE_SCHEMA = PARSENAME(@tableName, 2)
+            and TABLE_NAME = PARSENAME(@tableName, 1)
+            and COLUMN_NAME not in ('ID', 'LogSeq')
+            order by ORDINAL_POSITION
+            for xml path('')), 1, 1000) [query]
+        + 'GO'
+        -- This line appends the table name to the table definitions so it can be used in the alter statements
+        + 'alter table [' + TABLE_SCHEMA+'].['+TABLE_NAME+'] add [' + COLUMN_NAME + '] [' + CAST(COLUMN_NAME as nvarchar(1000)) + '] NULL CONSTRAINT [' + SCHEMA_NAME + '].['+TABLE_NAME+']_FK FOREIGN KEY REFERENCES [' +SCHEMA_NAME + '].['+SCHEMA_NAME + '].['+TABLE_NAME+'](' + COLUMN_NAME + ') );'
+        from INFORMATION_SCHEMA.COLUMNS
+        where TABLE_SCHEMA = PARSENAME(@tableName, 2)
+        and TABLE_NAME = PARSENAME(@tableName, 1)
+        and COLUMN_NAME not in ('ID', 'LogSeq')
+        order by ORDINAL_POSITION
+        for xml path('')
+        ) as [t]
+    -- The following line concatenates the rest of the text from the original select to the stored procedure above
+    exec (@query)
+
+    GO
+
+(If your database name is "MyData" and your t-sql export file is called "Data.Table.xml", the select statement in the stored procedure will be:
+select substring((select 'alter table ['+TABLE_SCHEMA+'].['+TABLE_NAME+'] drop constraint ['+SCHEMA_NAME+'].['+COLUMN_NAME+']_'+COLUMN_NAME+</div></body></html><!-- 2022-07-17 11:29:13 

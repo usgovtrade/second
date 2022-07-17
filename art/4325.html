@@ -1,0 +1,186 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4326.html'>1. Introduction {#</a><Br/><a href='4327.html'>In this undated ph</a><Br/><a href='4328.html'>This is part of a </a><Br/><a href='4329.html'>The use of optical</a><Br/><a href='4330.html'>Astronomy Picture </a><Br/><a href='4331.html'>Q:
+
+How to put con</a><Br/><a href='4332.html'>/**
+ * 
+ * WARNING</a><Br/><a href='4333.html'>The video of an NY</a><Br/><a href='4334.html'>It has been well-e</a><Br/><a href='4335.html'>Mitt Romney and Pa</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4324.html'>The use of electro</a><Br/><a href='4323.html'>Choroidal neovascu</a><Br/><a href='4322.html'>---
+abstract: 'We </a><Br/><a href='4321.html'>New Zealand: Three</a><Br/><a href='4320.html'>I know everyone is</a><Br/><a href='4319.html'>---
+abstract: 'Rec</a><Br/><a href='4318.html'>---
+title: "Docker</a><Br/><a href='4317.html'>The present invent</a><Br/><a href='4316.html'>---
+author:
+- 'D. </a><Br/><a href='4315.html'>This product is cu</a></div><div class='nav'><a href='4324.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4326.html'> >> </a></div><div class='article'>Q:
+
+How to make text underlined in a text element?
+
+I have the below html and css, when I do the mouse-over and mouse-out the css is not in effect.
+
+.title {
+  color: black;
+  font-weight: normal;
+}
+.sub-title {
+  color: black;
+  font-weight: bold;
+}
+.under-title {
+  border-bottom: 2px dotted black;
+}
+<div class="row text-center">
+  <p class="title">Product Category</p>
+  <p class="sub-title">Product</p>
+  <p class="under-title">Product description</p>
+</div>
+
+How can I make the description under product underlined when the mouse is over the product? 
+
+A:
+
+You can do this with CSS Pseudo Elements
+
+.title {
+  color: black;
+  font-weight: normal;
+}
+.sub-title {
+  color: black;
+  font-weight: bold;
+}
+p {
+  text-decoration: none;
+  position: relative;
+  padding-top: 10px;
+}
+p::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: black;
+  left: 0;
+  bottom: -10px;
+  margin-bottom: 20px;
+}
+
+.under-title {
+  display: block;
+  border-bottom: 2px dotted black;
+}
+<div class="row text-center">
+  <p class="title">Product Category</p>
+  <p class="sub-title">Product</p>
+  <p class="under-title">Product description</p>
+</div>
+
+Fiddle: https://jsfiddle.net/o4qdnsrL/2/
+
+A:
+
+You can make use of ::before pseudo element and apply border to it.
+
+.title {
+  color: black;
+  font-weight: normal;
+}
+.sub-title {
+  color: black;
+  font-weight: bold;
+}
+.under-title {
+ border-bottom: 2px dotted black;
+ position: relative;
+}
+.under-title:hover::before{
+  border-bottom:2px dotted red;
+}
+<div class="row text-center">
+  <p class="title">Product Category</p>
+  <p class="sub-title">Product</p>
+  <p class="under-title">Product description</p>
+</div>
+
+A:
+
+This can be done simply with CSS by using :hover on the p elements.
+Here's an example with :hover:
+
+.title {
+  color: black;
+  font-weight: normal;
+}
+.sub-title {
+  color: black;
+  font-weight: bold;
+}
+.under-title {
+    border-bottom: 2px dotted black;
+}
+.under-title:hover{
+    border-bottom:2px dotted red;
+    border-top:2px dotted red;
+}
+<div class="row text-center">
+    <p class="title">Product Category</p>
+    <p class="sub-title">Product</p>
+    <p class="under-title">Product description</p>
+</div>
+
+And here's the same example with javascript (to illustrate that we can avoid the use of javascript if we don't need it)
+
+.title {
+  color: black;
+  font-weight: normal;
+}
+.sub-title {
+  color: black;
+  font-weight: bold;
+}
+.under-title {
+    border-bottom: 2px dotted black;
+}
+.under-title:hover{
+    border-bottom:2px dotted red;
+    border-top:2px dotted red;
+}
+<div class="row text-center">
+    <p class="title">Product Category</p>
+    <p class="sub-title">Product</p>
+    <p class="under-title">Product description</p>
+</div>
+
+Here's a jsfiddle that works with no javascript.
+And one that doesn't.
+I'll leave this here since it seems to be what you're after.
+
+Edit 1:
+If you want to be able to select the first underlined item and second underlined item independently, you'll have to add a class to the elements, which will do just that.
+The code would be something like this.
+
+.title {
+  color: black;
+  font-weight: normal;
+}
+.sub-title {
+  color: black;
+  font-weight: bold;
+}
+.under-title {
+    border-bottom: 2px dotted black;
+}
+.under-title:hover{
+    border-bottom:2px dotted red;
+    border-top:2px dotted red;
+}
+.under-title.first{
+    border-bottom:2px dotted red;
+}
+.under-title.second{
+    border-top:2px dotted red;
+}
+<div class="row text-center">
+    <p class="title">Product Category</p>
+    <p class="sub-title">Product</p>
+    <p class="under-title">Product description</p>
+    <p class="under-title first">Second item</p>
+    <p class="under-title second">Second item</p>
+</div>
+
+</div></body></html><!-- 2022-07-17 11:29:03 

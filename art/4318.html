@@ -1,0 +1,182 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4319.html'>---
+abstract: 'Rec</a><Br/><a href='4320.html'>I know everyone is</a><Br/><a href='4321.html'>New Zealand: Three</a><Br/><a href='4322.html'>---
+abstract: 'We </a><Br/><a href='4323.html'>Choroidal neovascu</a><Br/><a href='4324.html'>The use of electro</a><Br/><a href='4325.html'>Q:
+
+How to make te</a><Br/><a href='4326.html'>1. Introduction {#</a><Br/><a href='4327.html'>In this undated ph</a><Br/><a href='4328.html'>This is part of a </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4317.html'>The present invent</a><Br/><a href='4316.html'>---
+author:
+- 'D. </a><Br/><a href='4315.html'>This product is cu</a><Br/><a href='4314.html'>Q:
+
+Can't access m</a><Br/><a href='4313.html'>---
+abstract: 'In </a><Br/><a href='4312.html'>---
+abstract: 'In </a><Br/><a href='4311.html'>"A lot of people a</a><Br/><a href='4310.html'>// Copyright 2015 </a><Br/><a href='4309.html'>Epidemiology of cu</a><Br/><a href='4308.html'>The present disclo</a></div><div class='nav'><a href='4317.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4319.html'> >> </a></div><div class='article'>---
+title: "Dockerizing Your Microservices"
+description: ""
+project: "riak_kv"
+project_version: "2.0.1"
+menu:
+  riak_kv-2.0.1:
+    name: "Dockerizing Your Microservices"
+    identifier: "managing_ref_dockerizing_your_app"
+    weight: 108
+    parent: "managing_ref"
+toc: true
+---
+
+Riak KV can be [containerized](/riak/kv/2.0.1/setup/installing/cluster-operations) with [Docker](https://www.docker.com) or another [container platform](/riak/kv/2.0.1/using/cluster-operations/setup) to manage and scale a project.
+
+## Prerequisites
+
+* Docker installation
+* Access to [Riak KV source](/riak/kv/2.0.1/developing/app-guide/source-code)
+* Strong desire to learn more about Docker and container orchestration
+
+## Getting Started
+
+If you're already familiar with Docker, creating and running a
+containerized Riak KV instance is relatively straightforward. We'll
+walk through the process of running a single instance of Riak KV in
+[Docker](http://www.docker.io/) on a popular cloud platform, Amazon
+EC2. While [using Docker for Amazon
+EC2](/riak/kv/2.0.1/using/cluster-operations/setup/amazon-ec2) is the most commonly available option, you can also use the information
+in this document to run Riak KV in other environments.
+
+### Create a Security Group for the Instance
+
+We'll be using a Security Group to manage network communication.
+This group is attached to the default security group on each EC2
+instance when it boots.
+
+```bash
+$ security_group_id=$(aws ec2 create-security-group \
+  --group-name Riak SecurityGroup \
+  --description Riak SecurityGroup \
+  --vpc-id vpc-xxx)
+```
+
+{{% note title="Note on permissions" %}}
+You will be creating a new security group for your Riak KV instance and, because the instance is managed by AWS, you will be creating the group in your own account. Ensure you have the proper permissions in your account before proceeding.
+{{% /note %}}
+
+### Create an Amazon Machine Image (AMI) for Riak KV
+
+This creates a special disk image containing all of the software
+necessary for the cluster. The AMI we use is available [here][1].
+
+```bash
+sudo bash -c 'curl -L https://github.com/basho/riak/releases/download/2.0.1/riak-2.0.1-linux-amd64.tar.gz | sudo tar -C /opt --strip-components=1 -xz'
+sudo mkdir /opt/riak
+sudo chown -R ec2-user:riak /opt/riak
+```
+
+### Launch an EC2 Instance
+
+Now that we have the AMI image, we need to launch an EC2 instance in
+which to run the Riak KV software.
+
+```bash
+AMI_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+INSTANCE_TYPE="t2.micro"
+aws ec2 run-instances \
+  --image-id $AMI_ID \
+  --count 1 \
+  --security-group-ids $security_group_id \
+  --key-name riak \
+  --instance-type $INSTANCE_TYPE \
+  --subnet-id subnet-xxx \
+  --ebs-optimized \
+  --key-name riak \
+  --region us-east-1 \
+  --iam-instance-profile riak_development
+```
+
+**Note**: Be sure to replace *$AMI_ID*, *$security_group_id*,
+*$INSTANCE_TYPE*, and *$AMI_ID* with appropriate values. Also,
+replace the highlighted values with the proper values for your
+particular environment.
+
+You should now be able to SSH into your new instance using the
+`ssh-keygen` command from your user's `~/.ssh` directory:
+
+```bash
+scp -i ~/.ssh/id_rsa.pub -r ~/.ssh/* ec2-user@YOUR_IP_HERE:~/.ssh/
+```
+
+> **Note**: Here we're using `~` to indicate the user's home
+directory, so, for example, `~/.ssh` means to look for the
+`id_rsa.pub` SSH key in the user's home directory.
+
+## Test the Instance
+
+Next, SSH into your new instance:
+
+```bash
+ssh -i ~/.ssh/id_rsa.pub ec2-user@YOUR_IP_HERE
+```
+
+Confirm that your instance has come online:
+
+```bash
+curl http://YOUR_IP_HERE:8088
+```
+
+This command should return something similar to:
+
+```bash
+{"num_partitions":1,"num_sets":5}
+```
+
+That last bit, `num_sets: 5`, is important. In this
+configuration, our setup will comprise one [replica set](/riak/kv/2.0.1/learn/glossary/#replica-set) per data directory. Thus, this
+means we'll have one [configuration][use ref].
+
+> **Note**: In this tutorial we'll be creating a basic single
+replica set, but more complex configurations are also supported in
+Riak KV 2.0.
+
+{{% note title="Backing Up Riak KV" %}}
+Riak KV makes it easy to back up data with the included
+[`riak-admin backup`](/riak/kv/2.0.1/using/admin/riak-admin/#backup) interface, which can perform full backups of your data at any time and even supports remote backups. You can also use the included `riak-admin console` utility to manage backups.
+
+{{% /note %}}
+
+To create a user and a configuration to store our data in:
+
+```bash
+riak-admin security add-user admin 'riakuser_admin'
+riak-admin security add-cluster-parameter \
+    'ensemble.riak_kv.config.ring_size' '100'
+riak-admin security add-user non-admin 'riakuser_sec'
+riak-admin security add-cluster-parameter \
+    'ensemble.riak_kv.config.vnode_num' '4'
+```
+
+We can now create our [bucket](/riak/kv/2.0.1/using/cluster-operations/creating-a-bucket/) and set the proper permissions:
+
+```bash
+riak-admin bucket-type create 'file' '{"props":{}}'
+riak-admin bucket-type permissions add 'file.riak_default' '{"se": {"user":"riakuser_sec", "vnodes": 4, "pw": "qwerty"}, "rw":true}'
+```
+
+{{% note title="Note on bucket permissions" %}}
+`Bucket ownership` refers to who is the owner of the underlying buckets.
+In Riak KV, the `user` refers to the user who owns the Riak KV node, while the `bucket`
+refers to the physical bucket in S3 where Riak stores data.
+
+`se.role` determines which Riak node may alter the bucket and its
+associated objects, and `se.rw` defines whether the node may READ from
+the bucket or not. The `pe.access` property determines who may perform
+WRITE operations on the bucket, and the `pe.group` property
+determines who may READ or write to the bucket.
+
+Please consult the documentation on [Access Control](/riak/kv/2.0.1/using/access-control) for more information.
+{{% /note %}}
+
+Next, we'll install [etcd](/riak/kv/2.0.1/using/reference/etcd), the distributed key-value store that makes Riak KV possible:
+
+```bash
+curl http://yum.puppetlabs.com/puppetlabs-release-el-5.noarch.rpm | sudo yum -y install puppetlabs-release && rm -f puppetlabs-release-el-5.noarch.rpm
+sudo yum install etcd
+sudo chkconfig etcd on
+```
+
+Before proceeding, be sure to add etcd's [IP and port](/riak/kv/</div></body></html><!-- 2022-07-17 11:29:01 

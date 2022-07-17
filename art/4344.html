@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4345.html'>[Plethysmography. </a><Br/><a href='4346.html'>In the fallout fro</a><Br/><a href='4347.html'>A New York Times r</a><Br/><a href='4348.html'>There are a lot of</a><Br/><a href='4349.html'>Tumor suppressor g</a><Br/><a href='4350.html'>
+/*
+ * Copyright (</a><Br/><a href='4351.html'>A former British c</a><Br/><a href='4352.html'>Everest College
+
+E</a><Br/><a href='4353.html'>The long-term goal</a><Br/><a href='4354.html'>You are here
+
+Saud</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4343.html'>Differences in bod</a><Br/><a href='4342.html'>This is the first </a><Br/><a href='4341.html'>// Copyright (c) 2</a><Br/><a href='4340.html'>A high temperature</a><Br/><a href='4339.html'>Re: The New Year’s</a><Br/><a href='4338.html'>Rahul Gandhi to ta</a><Br/><a href='4337.html'>Differences in the</a><Br/><a href='4336.html'>LONDON (Reuters) -</a><Br/><a href='4335.html'>Mitt Romney and Pa</a><Br/><a href='4334.html'>It has been well-e</a></div><div class='nav'><a href='4343.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4345.html'> >> </a></div><div class='article'>Q:
+
+Is it possible to do a deep comparison for a subset of keys of a hash (HMap)?
+
+In my program, I have many HashMaps, and I would like to be able to make a deep comparison on each.
+For example, given this hashMap:
+data={
+    {"A",[a,b,c],4},
+    {"B",[x,y,z],2},
+    {"C",[v,w],3},
+    {"D",[x,y,z,w],4},
+    {"E",[x,y,z,a],6},
+    {"F",[x,y,z,w,v],6}
+}
+
+I want to compare on the first element (e.g. "A") and so on. That is, this should return true:
+==data["A"]==({"A",[a,b,c],4})
+
+and this should return false:
+==data["C"]==({"C",[v,w],3})
+
+A:
+
+You can use the "==" operator for deep comparing, although it only works on built-in types, i.e. Strings, integers, arrays, objects, lists, maps, ...
+data = {{"A",[a,b,c],4}, {"B",[x,y,z],2}, {"C",[v,w],3}, {"D",[x,y,z,w],4}, {"E",[x,y,z,a],6}, {"F",[x,y,z,w,v],6}}
+
+data == data[0] # True
+
+As long as the other object has the same key, it will be true. The first item in a HMap is a key and the rest is a value.
+
+A:
+
+You can check the keys of the hashmap for your key and use these to create another hashmap (without the key) like
+import Data.Map as Map
+
+data = Map.fromList [("A", [a, b, c]), ("B", [x, y, z]), ("C", [v, w]), ("D", [x, y, z, w]), ("E", [x, y, z, a]), ("F", [x, y, z, w, v])]
+
+compareA = Map.filter (k -> k == "A") data
+
+-- compareA = Map.fromList [("A", [a, b, c]), ("D", [x, y, z, w]), ("E", [x, y, z, a])]
+
+data == compareA
+-- True
+
+A:
+
+How about Map.elem?
+> Map.elem "B" data
+Just [x, y, z]
+> Map.elem "A" data
+Just [a, b, c]
+> Map.elem "C" data
+Just [v, w]
+> Map.elem "F" data
+Just [x, y, z, w, v]
+
+Or do you want something like?
+> Map.elem "F" (Map.elems data)
+Just [x, y, z, w, v]
+
+You could always write a function to do it, of course:
+elemEqual :: Eq a => Map.Map k v -> k -> v -> Bool
+elemEqual m k v = not $ Map.null $ Map.filter (\ (k', _) -> k == k') $ Map.elems m
+
+elemEqual data "F"
+-- True
+
+I think it's a shame that the module exports this stuff as a single function, and then you have to use Map.elems afterwards anyway. If only there was a Map.elemsMap function that did what you want…
+(By the way, the "deep" comparison here is called "structural comparison".)
+
+An aside: you've written (a,b,c) rather than [a,b,c]. As a rule, this looks to me like something the map library should have fixed long ago. Perhaps it's a sign that we're running out of symbols that represent data types in Haskell…
+
+As for your comment to your question: Yes, you can define == on any type you like. For example, you could write
+nullable :: a -> a -> Bool
+nullable x y = not (null x) && y /= undefined
+
+and define
+> nullable (Map.lookup "A" data) (Map.lookup "C" data)
+True
+
+</div></body></html><!-- 2022-07-17 11:29:06 

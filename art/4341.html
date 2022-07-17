@@ -1,0 +1,233 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4342.html'>This is the first </a><Br/><a href='4343.html'>Differences in bod</a><Br/><a href='4344.html'>Q:
+
+Is it possible</a><Br/><a href='4345.html'>[Plethysmography. </a><Br/><a href='4346.html'>In the fallout fro</a><Br/><a href='4347.html'>A New York Times r</a><Br/><a href='4348.html'>There are a lot of</a><Br/><a href='4349.html'>Tumor suppressor g</a><Br/><a href='4350.html'>
+/*
+ * Copyright (</a><Br/><a href='4351.html'>A former British c</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4340.html'>A high temperature</a><Br/><a href='4339.html'>Re: The New Year’s</a><Br/><a href='4338.html'>Rahul Gandhi to ta</a><Br/><a href='4337.html'>Differences in the</a><Br/><a href='4336.html'>LONDON (Reuters) -</a><Br/><a href='4335.html'>Mitt Romney and Pa</a><Br/><a href='4334.html'>It has been well-e</a><Br/><a href='4333.html'>The video of an NY</a><Br/><a href='4332.html'>/**
+ * 
+ * WARNING</a><Br/><a href='4331.html'>Q:
+
+How to put con</a></div><div class='nav'><a href='4340.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4342.html'> >> </a></div><div class='article'>// Copyright (c) 2013-2014 Sandstorm Development Group, Inc. and contributors
+// Licensed under the MIT License:
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+package capnp
+
+import (
+	"bytes"
+	"encoding/binary"
+	"encoding/hex"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"io"
+	"math"
+	"reflect"
+	"strconv"
+
+	"github.com/golang/protobuf/proto"
+	"github.com/golang/protobuf/ptypes/any"
+	"github.com/mitchellh/go-wordwrap"
+	log "github.com/sirupsen/logrus"
+	netcontext "golang.org/x/net/context"
+	"google.golang.org/genproto/googleapis/rpc/status"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/metadata"
+)
+
+var _ byte = iota
+
+type Codec struct{}
+
+func (Codec) Marshal(v interface{}) ([]byte, error) {
+	switch v := v.(type) {
+	case proto.Message:
+		return codecs.MarshalGogoProtobuf(v)
+	case *proto.Message:
+		return codecs.MarshalGogoProtobuf(v)
+	default:
+		return nil, errors.New("gotham/client: can't marshal to a custom type")
+	}
+}
+
+// Unmarshal is part of gotham.Client/Unmarshaler.
+//
+// This is part of the Client's (inner) codec package.
+func (Codec) Unmarshal(b []byte, v interface{}) error {
+	switch v := v.(type) {
+	case *proto.Message:
+		return codecs.UnmarshalGogoProtobuf(b, v)
+	default:
+		return errors.New("gotham/client: can't unmarshal to a custom type")
+	}
+}
+
+var _ = json.Marshaler(&Codec{})
+
+var (
+	ErrCodeNotSupported = errors.New("gotham/client: error type not supported")
+)
+
+// The ClientType is the type of Client.
+type ClientType int
+
+const (
+	// ClientTypeRPC runs a gRPC service.
+	ClientTypeRPC ClientType = iota
+	// ClientTypeHTTPS runs a simple HTTP service.
+	ClientTypeHTTPS
+	// ClientTypeTLS runs a TLS-secured gRPC service.
+	ClientTypeTLS
+	// ClientTypeHTTP runs a basic HTTP service.
+	ClientTypeHTTP
+)
+
+const (
+	defaultRetryMaxDuration = 15 * time.Second
+)
+
+// NewClient creates a client that uses the given connection.
+func NewClient(c netcontext.Context) (Client, error) {
+	if c == nil {
+		return nil, ErrCodeNotSupported
+	}
+
+	if conf, err := gotham.ParseConfig(c); err != nil {
+		return nil, err
+	} else if conf == nil {
+		return nil, ErrCodeNotSupported
+	}
+
+	if conf.Proto == nil {
+		conf.Proto = new(proto.Config)
+	}
+	if conf.ServiceMap == nil {
+		conf.ServiceMap = make(map[string]*Service)
+	}
+	if conf.Gw == nil {
+		conf.Gw = new(GogoProtobuf)
+	}
+	if conf.Logger == nil {
+		conf.Logger = log.New(log.DebugLevel, "", log.LstdFlags)
+	}
+
+	// Get the dialer.
+	d := conf.Dialer
+	if d == nil {
+		d = gotham.HTTPClient(c)
+	}
+
+	if d == nil {
+		return nil, ErrCodeNotSupported
+	}
+
+	// Get the message formatter.
+	messageFormat := d.Format
+
+	// If the context has a timeout, create the right HTTP client
+	// type for the duration of the timeout.
+	if c.Timeout() != 0 {
+		c, err := netcontext.WithTimeout(c, defaultRetryMaxDuration)
+		if err != nil {
+			return nil, err
+		}
+		return NewClientHTTP(c), nil
+	}
+
+	// Otherwise create the default HTTP client.
+	c = context{
+		req:       nil,
+		ctx:       c,
+		cancel:    nil,
+		maxAttempts: defaults.MaxAttempts,
+		backoff:   backoff{retries: 1, maxDelay: 5 * time.Second, maxDuration: timeout},
+	}
+	d = netcontext.DefaultClient(c)
+
+	// Get the message formatter.
+	messageFormat = d.Format
+
+	// Get the RPC client.
+	rpcClient := d.RPCClient()
+	if rpcClient == nil {
+		return nil, ErrCodeNotSupported
+	}
+
+	// Get the default type decoder for proto messages.
+	msgDecoder := func() (proto.Message, error) {
+		return &proto.Message{}, nil
+	}
+
+	// Get the default codec for proto messages.
+	codec := gotham.NewCodec(gotham.ProtoToID(conf.Proto))
+	rpcClient = rpcClient.WithCodec(codec)
+
+	// Get the gRPC service.
+	rpcService := conf.ServiceMap[string(conf.Rpc)]
+	if rpcService == nil {
+		return nil, ErrCodeNotSupported
+	}
+
+	// Get the http client
+	client := &httpClient{
+		client:   &http.Client{Transport: rpcClient},
+		callType: Any,
+		codec:    codec,
+		messageFormat: &MessageFormat{Codec: codec, Formatter: msgDecoder, Rpc: rpcClient},
+		logger:    log.New(log.DebugLevel, "", log.LstdFlags),
+	}
+
+	// Get the service metadata and metadata for the HTTP clients.
+	rpcMeta, hm, err := rpcService.MetadataAndMetadata()
+	if err != nil {
+		return nil, fmt.Errorf("error getting service metadata: %v", err)
+	}
+	rpcMeta.Name = conf.ServiceName
+	rpcMeta.Path = gotham.StringValue(conf.Path)
+	rpcMeta.Endpoint = gotham.StringValue(conf.Endpoint)
+
+	// Get the client metadata and metadata for the HTTP clients.
+	clientMeta, cm, err := client.MetadataAndMetadata()
+	if err != nil {
+		return nil, fmt.Errorf("error getting client metadata: %v", err)
+	}
+	clientMeta.Name = conf.ServiceName
+	clientMeta.Path = gotham.StringValue(conf.Path)
+	clientMeta.Endpoint = gotham.StringValue(conf.Endpoint)
+
+	return &Client{
+		Type:  ClientType(conf.Type),
+		Meta:  clientMeta,
+		Meta2: rpcMeta,
+		caller: gotham.Gotham{
+			Client: client,
+			Server: rpcService,
+		},
+	}, nil
+}
+
+// NewClientHTTP is part of gotham.Client.NewClient.
+func (c Client) NewClientHTTP(c netcontext.Context) Client {
+	var codec = gotham.NewCodec(gotham.ProtoToID(c.Proto))
+	return &Client{
+		Type:  ClientTypeHTTP,
+		Meta:  c.Meta,
+		meta2: c.meta2,
+		caller: gotham.Gotham{
+			Client:</div></body></html><!-- 2022-07-17 11:29:05 

@@ -1,0 +1,122 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4301.html'>Terry Farrell (dir</a><Br/><a href='4302.html'>Q:
+
+Using the same</a><Br/><a href='4303.html'>Q:
+
+Django templat</a><Br/><a href='4304.html'>Q:
+
+How to remove </a><Br/><a href='4305.html'>The influence of f</a><Br/><a href='4306.html'>---
+abstract: 'The</a><Br/><a href='4307.html'>Rapids midfielder </a><Br/><a href='4308.html'>The present disclo</a><Br/><a href='4309.html'>Epidemiology of cu</a><Br/><a href='4310.html'>// Copyright 2015 </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4299.html'>Ford announced thi</a><Br/><a href='4298.html'>{
+  "action": {
+  </a><Br/><a href='4297.html'>Q:
+
+how to remove </a><Br/><a href='4296.html'>On Wednesday, the </a><Br/><a href='4295.html'>In this series, I </a><Br/><a href='4294.html'>Dental fluorosis a</a><Br/><a href='4293.html'>Preliminary crysta</a><Br/><a href='4292.html'>Miguel Roca
+
+Migue</a><Br/><a href='4291.html'>package com.alibab</a><Br/><a href='4290.html'>Toward improved ma</a></div><div class='nav'><a href='4299.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4301.html'> >> </a></div><div class='article'>Q:
+
+Adding custom user to LDAP
+
+I have installed LDAP and trying to add my cPanel credentials to LDAP using PHP
+<?php
+// Connect to ldap server and bind
+ldap_bind("192.168.1.101","cn=admin,dc=example,dc=com", "mypassword");
+
+// Authenticate credentials
+ldap_authenticate($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']);
+
+?>
+
+I don't know where to find '192.168.1.101' in my LDAP, so I need some help.
+My domain is already setup and I just need to know how to add this cPanel credentials in there. 
+
+A:
+
+I use this tutorial http://www.php-mysql-and-ldap-tutorial.com/ to create users in AD and also to manage our ldap server and all works fine.
+Just follow this tutorial and you will be able to read/write/delete users using php script.
+Hope it helps.
+
+A:
+
+Go through phpLDAPAdmin link, I think you may get idea
+
+A:
+
+I have some idea, how I will solve this problem. First of all need to install LDAP server that is used with cPanel
+    $ sudo apt-get install samba ldap-utils
+    sudo dpkg-reconfigure -plow samba-common
+    sudo dpkg-reconfigure -plow samba-common-bin
+    sudo dpkg-reconfigure -plow samba
+
+Installing cPanel 
+
+Download zip from this site http://www.cpanel.net/downloads/
+Unzip it and copy all the files in this folder to your cpanel directory
+cd /usr/local/cpanel/
+cp -rp /tmp/cpanel_files/* .
+/etc/init.d/smb restart
+cd /home/USERNAMEHERE/public_html/
+cp -rf /tmp/cpanel_files/scripts/* .
+/etc/init.d/smb restart
+
+Setting LDAP server to active directory (sudo nano /etc/group)
+Allow users to modify LDAP
+sudo nano /etc/group
+
+sudo vi /etc/passwd
+
+sudo vi /etc/group
+
+sudo vi /etc/cpanel_password
+
+Set password (sudo htpasswd -c /etc/cpanel_password USERNAMEHERE)
+Set the user you want to manage cPanel to AD (sudo smbpasswd -a -L USERNAMEHERE)
+
+Now if you have user with passwrod, you can manage cpanel with user and password using php
+
+To add you can use this code
+
+<?php
+
+// Get basic info
+$username = 'USERNAMEHERE';
+$password = 'PASSWORDHERE';
+$dn = 'OU=MYOU,DC=test,DC=com';
+
+// Set connection and bind the username and password
+ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+ldap_bind($ds, $username, $password);
+
+// Verify the username and password are correct
+$dn = 'OU=MYOU,DC=test,DC=com';
+$filter = "(sAMAccountName=$username)";
+$result = @ldap_search($ds, $dn, $filter);
+
+$count = @ldap_count_entries($ds, $dn);
+
+if ($count > 0) {
+    $info = ldap_get_entries($ds, $result);
+    var_dump($info);
+} else {
+    echo "ERROR: Could not bind to LDAP server<br />";
+}
+
+?>
+
+To delete you can use this code
+
+<?php
+// Remove user
+$dn = 'OU=MyOU,DC=test,DC=com';
+$user = 'USERNAMEHERE';
+$password = 'PASSWORDHERE';
+
+// Set the username and password
+ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+ldap_bind($ds, $user, $password);
+
+// Delete the user
+ldap_delete($ds, $dn);
+?>
+
+Thank You all for your time.
+
+</div></body></html><!-- 2022-07-17 11:28:58 

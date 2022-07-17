@@ -1,0 +1,210 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4359.html'>/**
+ * Copyright (</a><Br/><a href='4360.html'>The first half of </a><Br/><a href='4361.html'>/*
+ * Copyright (c</a><Br/><a href='4362.html'>Q:
+
+Android: How c</a><Br/><a href='4363.html'>Q:
+
+Prove $\int_{x</a><Br/><a href='4364.html'>Q:
+
+Why does my ta</a><Br/><a href='4365.html'>The long term goal</a><Br/><a href='4366.html'>The number of pati</a><Br/><a href='4367.html'>Synthesis and stru</a><Br/><a href='4368.html'>//
+//     Generate</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4357.html'>"Hiding in the sha</a><Br/><a href='4356.html'>This is a request </a><Br/><a href='4355.html'>Category Archives:</a><Br/><a href='4354.html'>You are here
+
+Saud</a><Br/><a href='4353.html'>The long-term goal</a><Br/><a href='4352.html'>Everest College
+
+E</a><Br/><a href='4351.html'>A former British c</a><Br/><a href='4350.html'>
+/*
+ * Copyright (</a><Br/><a href='4349.html'>Tumor suppressor g</a><Br/><a href='4348.html'>There are a lot of</a></div><div class='nav'><a href='4357.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4359.html'> >> </a></div><div class='article'>Q:
+
+Javascript form validation not working with form
+
+I've been trying to get this validator function working for the past 3 days.
+It's not giving me any errors, but my html input field is not being validated.
+I've checked out other stack overflow posts but they don't work either.
+I am using a WAMP stack.
+Here's my code:
+HTML:
+<form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
+
+    <div class="form_content">
+        <label for="username">Username: </label>
+        <input type="text" name="username" id="username" class="form_element" minlength="6" maxlength="25" required><br>
+    </div>
+
+    <div class="form_content">
+        <label for="password">Password: </label>
+        <input type="password" name="password" id="password" class="form_element" minlength="6" maxlength="25" required><br>
+    </div>
+
+    <div class="form_content">
+        <label for="full_name">Full name: </label>
+        <input type="text" name="full_name" id="full_name" class="form_element" minlength="6" maxlength="25" required><br>
+    </div>
+
+    <div class="form_content">
+        <label for="email">Email: </label>
+        <input type="email" name="email" id="email" class="form_element" minlength="6" maxlength="25" required><br>
+    </div>
+
+    <div class="form_content">
+        <label for="submit">Submit: </label>
+        <input type="submit" name="submit" id="submit" class="form_element" value="Send">
+    </div>
+</form>
+
+CSS:
+.form_content input {
+
+    width: auto;
+    height: 25px;
+    background-color: #e6f9ff;
+    font-weight: bold;
+    padding: 10px 10px 10px 10px;
+    margin: 0px 0px 0px 0px;
+    display: inline-block;
+    border: 1px solid #c3c0cc;
+    border-radius: 3px;
+}
+
+JS:
+function formValidation() {
+
+    var x = document.forms['validate'];
+
+    //Username
+    if (x.username.value.length > 6 && x.username.value.length < 25) {
+        document.getElementById('username').style.borderColor = 'green';
+    } else {
+        document.getElementById('username').style.borderColor = 'red';
+    }
+
+    //Password
+    if (x.password.value.length > 6 && x.password.value.length < 25) {
+        document.getElementById('password').style.borderColor = 'green';
+    } else {
+        document.getElementById('password').style.borderColor = 'red';
+    }
+
+    //Full name
+    if (x.full_name.value.length > 6 && x.full_name.value.length < 25) {
+        document.getElementById('full_name').style.borderColor = 'green';
+    } else {
+        document.getElementById('full_name').style.borderColor = 'red';
+    }
+
+    //Email
+    if (x.email.value.length > 6 && x.email.value.length < 25) {
+        document.getElementById('email').style.borderColor = 'green';
+    } else {
+        document.getElementById('email').style.borderColor = 'red';
+    }
+
+}
+
+It's something small I'm missing, but I can't figure it out.
+
+A:
+
+Add this function 
+function formValidation() {
+
+    var x = document.forms['validate'];
+
+    //Username
+    if (x.username.value.length > 6 && x.username.value.length < 25) {
+        document.getElementById('username').style.borderColor = 'green';
+    } else {
+        document.getElementById('username').style.borderColor = 'red';
+    }
+
+    //Password
+    if (x.password.value.length > 6 && x.password.value.length < 25) {
+        document.getElementById('password').style.borderColor = 'green';
+    } else {
+        document.getElementById('password').style.borderColor = 'red';
+    }
+
+    //Full name
+    if (x.full_name.value.length > 6 && x.full_name.value.length < 25) {
+        document.getElementById('full_name').style.borderColor = 'green';
+    } else {
+        document.getElementById('full_name').style.borderColor = 'red';
+    }
+
+    //Email
+    if (x.email.value.length > 6 && x.email.value.length < 25) {
+        document.getElementById('email').style.borderColor = 'green';
+    } else {
+        document.getElementById('email').style.borderColor = 'red';
+    }
+
+}
+
+<form method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
+<div class="form_content">
+    <label for="username">Username: </label>
+    <input type="text" name="username" id="username" class="form_element" minlength="6" maxlength="25" required>
+    <br>
+</div>
+
+<div class="form_content">
+    <label for="password">Password: </label>
+    <input type="password" name="password" id="password" class="form_element" minlength="6" maxlength="25" required>
+    <br>
+</div>
+
+<div class="form_content">
+    <label for="full_name">Full name: </label>
+    <input type="text" name="full_name" id="full_name" class="form_element" minlength="6" maxlength="25" required>
+    <br>
+</div>
+
+<div class="form_content">
+    <label for="email">Email: </label>
+    <input type="email" name="email" id="email" class="form_element" minlength="6" maxlength="25" required>
+    <br>
+</div>
+
+<div class="form_content">
+    <label for="submit">Submit: </label>
+    <input type="submit" name="submit" id="submit" class="form_element" value="Send" onclick="formValidation()">
+</div>
+</form>
+
+A:
+
+Try this:
+function formValidation() {
+
+    var x = document.forms['validate'];
+
+    //Username
+    if (x.username.value.length > 6 && x.username.value.length < 25) {
+        document.getElementById('username').style.borderColor = 'green';
+    } else {
+        document.getElementById('username').style.borderColor = 'red';
+    }
+
+    //Password
+    if (x.password.value.length > 6 && x.password.value.length < 25) {
+        document.getElementById('password').style.borderColor = 'green';
+    } else {
+        document.getElementById('password').style.borderColor = 'red';
+    }
+
+    //Full name
+    if (x.full_name.value.length > 6 && x.full_name.value.length < 25) {
+        document.getElementById('full_name').style.borderColor = 'green';
+    } else {
+        document.getElementById('full_name').style.borderColor = 'red';
+    }
+
+    //Email
+    if (x.email.value.length > 6 && x.email.value.length < 25) {
+        document.getElementById('email').style.borderColor = 'green';
+    } else {
+        document.getElementById('email').style.borderColor = 'red';
+    }
+
+}
+
+</div></body></html><!-- 2022-07-17 11:29:08 

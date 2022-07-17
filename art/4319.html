@@ -1,0 +1,61 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4320.html'>I know everyone is</a><Br/><a href='4321.html'>New Zealand: Three</a><Br/><a href='4322.html'>---
+abstract: 'We </a><Br/><a href='4323.html'>Choroidal neovascu</a><Br/><a href='4324.html'>The use of electro</a><Br/><a href='4325.html'>Q:
+
+How to make te</a><Br/><a href='4326.html'>1. Introduction {#</a><Br/><a href='4327.html'>In this undated ph</a><Br/><a href='4328.html'>This is part of a </a><Br/><a href='4329.html'>The use of optical</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4318.html'>---
+title: "Docker</a><Br/><a href='4317.html'>The present invent</a><Br/><a href='4316.html'>---
+author:
+- 'D. </a><Br/><a href='4315.html'>This product is cu</a><Br/><a href='4314.html'>Q:
+
+Can't access m</a><Br/><a href='4313.html'>---
+abstract: 'In </a><Br/><a href='4312.html'>---
+abstract: 'In </a><Br/><a href='4311.html'>"A lot of people a</a><Br/><a href='4310.html'>// Copyright 2015 </a><Br/><a href='4309.html'>Epidemiology of cu</a></div><div class='nav'><a href='4318.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4320.html'> >> </a></div><div class='article'>---
+abstract: 'Recently, many novel physical processes can be simulated in the context of relativistic quantum field theories. It would be useful to have a mathematical language that can formalize them for further applications. In the present work we show that an approach based on category theory can be used to express these processes as morphisms in a categorical theory. The structure of this theory is governed by an abstract “commutation rule”, which can be interpreted as a commutation condition among creation and annihilation operators in the Fock space representation of the theory. The formalism enables the construction of well defined operators, which may provide concrete physical predictions for those processes. As examples, we describe the simulation of particle emission and tunneling, as well as the possibility to formally describe bound states of several bosonic particles.'
+address: |
+    Institute of Theoretical Physics\
+    ETH Zurich\
+    8093 Zurich, Switzerland
+author:
+- |
+    Aaron J. Short\
+    *www.alumni.ethz.ch/$\sim$ajshor\
+    *Institute of Theoretical Physics\
+    *ETH Zurich\
+    *8093 Zurich, Switzerland***
+bibliography:
+- 'category1.bib'
+title: Using categories to simulate quantum field theories
+---
+
+Introduction
+============
+
+A great part of our current understanding of physics is based on the idea that nature can be described in terms of quantum fields living on a fixed spacetime background. This picture has emerged thanks to several key advances, such as the construction of fields as operators in some Hilbert space, the formulation of their equations of motion in the language of functional integration, and finally the application of Feynman’s path integral formalism to the description of time evolution. It has been immensely successful in the study of elementary particle physics, and has also been applied to high energy physics to some extent [@DeWitt], although the path integral approach is not really compatible with a fixed spacetime background. In other cases, such as QCD, where perturbative computations are intractable, one can still formulate the theory and perform numerical simulations on a lattice [@Mandula]. On the other hand, there is a growing interest in quantum field theories that lack a fixed background, such as loop quantum gravity, whose construction and analysis rely heavily on discrete variables such as triangulations [@Perez:2004hj]. The continuum limit of those models could be interesting, but is not directly accessible in current approaches. One of the challenges in this kind of setting is to translate the discrete nature of the system into the language of continuum quantum field theory [@Bahr:2011xs].
+
+In the present paper we propose an alternative approach, based on category theory, for quantum field theories where the spacetime background is no longer present. This approach is potentially useful in those cases where the continuum limit of quantum field theories with background independent degrees of freedom (i.e. theories with no fixed spacetime background) can not be directly simulated, but it is hoped that this approach could also be of use in other situations. An example could be the quantum gravity context mentioned above, in which simplicial quantum gravity and loop quantum gravity may be related in a way analogous to the continuum and discrete nature of elementary particle physics [@Dupuis:2010bf]. In this kind of theories the description of the system is typically more complicated than in ordinary quantum field theories and it is often useful to provide a more formal account for those aspects. This is the purpose of this paper.
+
+The basic framework is a generalization of the usual notion of category. A category has a set of objects and a set of morphisms between them, each morphism having a target object, a source object, and some extra data. The extra data allows for the composition of morphisms. This is enough to define the composition of morphisms in category theory, but this notion does not suffice for the definition of physical processes. These are the processes that occur in any physical system, and are described by (linear combinations of) operators in the operator algebra of the system. However, when only standard categories are used, the morphisms can not be combined in an operation that leads to new morphisms which could then be identified as quantum fields in the field theoretical setting. In order to remedy this situation we will describe a new category theory formalism, in which two new features are introduced:
+
+-   A category has a collection of objects, and each object has an associated space of states. The morphisms correspond to linear operators on these spaces.
+
+-   Some of the operators are composed from other operators, so that their properties can be deduced from these other operators. The properties of the composed operators are then “inherited” from the composite operators.
+
+The idea is that the morphisms are treated as the physical objects of the system, while the spaces of states correspond to the possible physical states of the system. This should allow to treat different types of processes in a unified formalism. One could think of them as different “particles” in the theory. There would be no need for a fixed background spacetime in this formalism, which can be interpreted as a “quantum field theory without a field.” It would be useful in situations such as the quantum gravity context discussed above, where there is no fixed background spacetime.
+
+In the present paper we describe how the formalism can be applied to the study of a quantum field theory with fixed spacetime background in one dimension. The resulting categories (but not the particular physical processes) may also be of use for a theory of quantum gravity with discrete degrees of freedom. This would provide some new insights, given that this formalism is quite distinct from the traditional quantum field theory formalism, and would not be possible in any other currently available approach. The formalism is quite general, and could also be used in other areas of physics where a formal description in terms of generalized categories may be useful.
+
+This paper is organized as follows: in section \[sec:framework\] we define the abstract framework of this paper in the simplest case, by studying an elementary quantum field theory, and the corresponding categories, and present examples. In section \[sec:simulations\] we describe how the above framework could be applied to describe various physical processes and to simulate quantum field theories in examples, with particular emphasis on the simulation of particle emission and tunneling. In section \[sec:boundstates\] we describe how bound states of several particles could be described by this framework. We conclude with a discussion in section \[sec:discussion\].
+
+The framework {#sec:framework}
+=============
+
+This paper proposes an approach that consists of two main components: a definition of the algebraic structure of quantum field theories in categories, and the process of physical simulation.
+
+The algebraic structure is defined in a very general way, without specifying any particular realization. The basic ingredient is a category, in which the objects are associated with regions of spacetime and the morphisms correspond to operators on the algebra of operators on the various spaces that correspond to those regions. The spaces associated with each object is interpreted as the space of states associated with that object.
+
+The physical processes are implemented through morphisms in a similar way as in ordinary quantum field theories. By considering general morphisms, instead of particular observables, we obtain the possibility of describing various kinds of processes. In this section we first give a very general overview of the approach, then we review a category that is sufficient for the most basic examples and to describe the general formalism, and finally we give a formal definition of this abstract framework.
+
+The first step is to define the setting. Consider a finite set of *categories* $C_1,\ldots C_N$. For every $C_i$, there is an associated *space of states* $\mathcal H_i$, which is an algebra. All these spaces are isomorphic to each other, and each space corresponds to a distinct region of the spacetime manifold. The $C_i$ can be ordered in a sequence $C_i, C_{i+1}, \ldots, C_j$, and each pair of consecutive categories is associated with a region of spacetime. We will assume that the region of spacetime associated with the pair $C_i, C_{i+1}$ includes the regions associated with $C_{i+1}, C_{i+2}, \ldots C_j$. (For more on how to represent regions of spacetime in this formalism see section \[sec:boundstates\].) The spaces $\mathcal H_i$ are finite dimensional, and each space can be equipped with an inner product, such that they form an inner product space of Hilbert spaces. The inner product of a state ${|\psi\rangle}\in \mathcal H_i$ is denoted by ${|{\langle{\psi}|\psi\rangle}|}$. We call this a *space of *quantum states*.
+
+For every two states ${|\psi\rangle}, {|\phi\rangle} \in \mathcal H_i$, and for every morphism $f\in C_i$, there exists a unique map $f^*\in C_{i-1}$ associated with $f$, so that $f^*(\psi)=\phi$. The $f^*$’s are associated with the opposite directions, and a particular $f$ can be written as $f_i f^*_{i-1}$, which is associated with a transformation in which the space associated with the state $\mathcal H_i$ is transformed into the space $\mathcal H_{i-1}$. In this way, we can define an algebra of operators associated with the sequence $C_1,\ldots C_N$.
+
+The maps in the $C_i$ are also assumed to be morphisms between the associated spaces, which are equipped with an inner product, such that they form a Hilbert space. This is used to define the operation</div></body></html><!-- 2022-07-17 11:29:02 

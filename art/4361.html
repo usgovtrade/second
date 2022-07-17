@@ -1,0 +1,96 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4362.html'>Q:
+
+Android: How c</a><Br/><a href='4363.html'>Q:
+
+Prove $\int_{x</a><Br/><a href='4364.html'>Q:
+
+Why does my ta</a><Br/><a href='4365.html'>The long term goal</a><Br/><a href='4366.html'>The number of pati</a><Br/><a href='4367.html'>Synthesis and stru</a><Br/><a href='4368.html'>//
+//     Generate</a><Br/><a href='4369.html'>package hclwrite
+
+</a><Br/><a href='4370.html'>In recent years, a</a><Br/><a href='4371.html'>Birth of Arianne K</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4360.html'>The first half of </a><Br/><a href='4359.html'>/**
+ * Copyright (</a><Br/><a href='4358.html'>Q:
+
+Javascript for</a><Br/><a href='4357.html'>"Hiding in the sha</a><Br/><a href='4356.html'>This is a request </a><Br/><a href='4355.html'>Category Archives:</a><Br/><a href='4354.html'>You are here
+
+Saud</a><Br/><a href='4353.html'>The long-term goal</a><Br/><a href='4352.html'>Everest College
+
+E</a><Br/><a href='4351.html'>A former British c</a></div><div class='nav'><a href='4360.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4362.html'> >> </a></div><div class='article'>/*
+ * Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package org.wso2.carbon.esb.saga.test.framework;
+
+
+import org.apache.axis2.AxisFault;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.wso2.carbon.business.exception.CarbonException;
+import org.wso2.carbon.commons.test.ConfigurationContext;
+import org.wso2.esb.integration.common.utils.common.ServerConfigurationManager;
+
+public class ExceptionLogger extends Thread {
+
+    public static final Log log = LogFactory.getLog(ExceptionLogger.class);
+
+    private boolean logging = false;
+    private ConfigurationContext context;
+
+    public ExceptionLogger(ConfigurationContext configurationContext) {
+        this.context = configurationContext;
+    }
+
+    @Override
+    public void run() {
+        try {
+            while (!this.logging) {
+                log.warn("Exception happened in framework context");
+            }
+
+            throw new AxisFault(new String("test"));
+        } catch (Exception e) {
+            log.error("exception message", e);
+            throw new CarbonException(e);
+        } finally {
+            try {
+                Thread.currentThread().join();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+
+    public void setLogger(boolean log) {
+        this.logging = log;
+    }
+
+    public boolean isLogging() {
+        return logging;
+    }
+
+    public void resetLogger() {
+        setLogger(false);
+    }
+
+    public ConfigurationContext getContext() {
+        return context;
+    }
+
+    public void setConfiguration(ServerConfigurationManager config) {
+        this.context = config.getConfigurationContext();
+    }
+}
+</div></body></html><!-- 2022-07-17 11:29:09 

@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4315.html'>This product is cu</a><Br/><a href='4316.html'>---
+author:
+- 'D. </a><Br/><a href='4317.html'>The present invent</a><Br/><a href='4318.html'>---
+title: "Docker</a><Br/><a href='4319.html'>---
+abstract: 'Rec</a><Br/><a href='4320.html'>I know everyone is</a><Br/><a href='4321.html'>New Zealand: Three</a><Br/><a href='4322.html'>---
+abstract: 'We </a><Br/><a href='4323.html'>Choroidal neovascu</a><Br/><a href='4324.html'>The use of electro</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4313.html'>---
+abstract: 'In </a><Br/><a href='4312.html'>---
+abstract: 'In </a><Br/><a href='4311.html'>"A lot of people a</a><Br/><a href='4310.html'>// Copyright 2015 </a><Br/><a href='4309.html'>Epidemiology of cu</a><Br/><a href='4308.html'>The present disclo</a><Br/><a href='4307.html'>Rapids midfielder </a><Br/><a href='4306.html'>---
+abstract: 'The</a><Br/><a href='4305.html'>The influence of f</a><Br/><a href='4304.html'>Q:
+
+How to remove </a></div><div class='nav'><a href='4313.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4315.html'> >> </a></div><div class='article'>Q:
+
+Can't access my files at /opt/lampp/htdocs when using XAMPP
+
+I am using xampp 1.8.2. When trying to access any file from /opt/lampp/htdocs/ I get the following message:
+
+Forbidden
+You don't have permission to access / on this server.
+
+I am using xampp in ubuntu 12.04. I don't know what to do! Please help!
+Thanks
+
+A:
+
+I found the solution. I followed this answer: https://stackoverflow.com/a/18151763/252544 and it fixed my problem. 
+In my httpd-xampp.conf file I added the following line:
+<directory "/opt/lampp/htdocs">
+        AllowOverride All
+</directory>
+
+Then restarted the server and it worked like a charm!
+
+A:
+
+You have to use /opt/lampp/htdocs/ for your new xampp documents.
+Otherwise it is not the same as the old xampp htdocs directory.
+When you want to access xampp folders, use /opt/lampp/htdocs/folder.html.
+I have changed an xampp document and wanted to keep the old link.
+Therefore:
+
+Go to apache configuration (apache2.conf or httpd.conf), in my case, the former is used by me.
+Add a file DirectoryIndex in the file with the following content (replace /opt/lampp/htdocs with your actual xampp directory and change index.html to your desired index file name):
+
+<Directory "/opt/lampp/htdocs">
+   AllowOverride All
+</Directory>
+
+Restart apache (sudo apache2ctl restart)
+
+When a call is made on /opt/lampp/htdocs it will return to your index.html and if you call something like /opt/lampp/htdocs/file, your new file will be shown.
+As far as I understand this way, you can use xampp as normal.
+
+A:
+
+You have to change the httpd-xampp.conf file, and modify a certain line:
+<Directory "/opt/lampp/htdocs">
+    AllowOverride All
+</Directory>
+
+And make sure that this line is uncommented. If you open the httpd-xampp.conf file with any text editor, you'll see the uncommented line with its corresponding commented text around it.
+
+The /opt/lampp/htdocs path is not accessable on linux, as it belongs to a windows environment.
+
+EDIT
+As stated in the comments, it is still not working with the above method. That's why you are getting the forbidden error. You need to install xampp files to /opt/lampp/htdocs folder. It's the best way to get it done.
+What is the command for that ?!
+
+/opt/lampp/lampp start  is used to start xampp with a service.
+sudo service apache2 start starts apache2.
+sudo service mysql start starts mysql.
+sudo service phpmyadmin start starts phpmyadmin.
+
+Why is it not working ?
+Because it is a linux environment and not a windows environment. I have explained the reason behind it on the comments, and I would advise you to go through them if you didn't get it, so I won't repeat them here.
+
+Afterwards, you just need to put all your php, htdocs files in your /opt/lampp/htdocs/ directory. And you're all set to go. 
+To do so, you need to create a new document with extension .php. Now drag and drop your folders from your home directory to /opt/lampp/htdocs. It will create a new folder in /opt/lampp/htdocs called php. You have to create php folders one by one. 
+When you have done it, open up the index.php file in your folder. 
+
+I hope it works and you're ready for the next step.
+
+How can I move my XAMPP files from home/user/lampp to /opt/lampp ?
+
+</div></body></html><!-- 2022-07-17 11:29:01 

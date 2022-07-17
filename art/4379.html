@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4380.html'>Q:
+
+Unable to pass</a><Br/><a href='4381.html'>Beta-cell autoimmu</a><Br/><a href='4382.html'># -*- encoding: ut</a><Br/><a href='4383.html'>Q:
+
+SQL Server Man</a><Br/><a href='4384.html'>In this study, we </a><Br/><a href='4385.html'>Q:
+
+Find the numbe</a><Br/><a href='4386.html'>The present invent</a><Br/><a href='4387.html'>
+The Evolution of </a><Br/><a href='4388.html'>Q:
+
+PHP - How to s</a><Br/><a href='4389.html'>The present invent</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4378.html'>---
+title: Gatsby </a><Br/><a href='4377.html'>There are various </a><Br/><a href='4376.html'>Revealing insights</a><Br/><a href='4375.html'>Bangla
+
+The Bangla</a><Br/><a href='4374.html'>As many of you kno</a><Br/><a href='4373.html'>Rachel Maddow repo</a><Br/><a href='4372.html'>A prospective, coh</a><Br/><a href='4371.html'>Birth of Arianne K</a><Br/><a href='4370.html'>In recent years, a</a><Br/><a href='4369.html'>package hclwrite
+
+</a></div><div class='nav'><a href='4378.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4380.html'> >> </a></div><div class='article'>Q:
+
+How to set up custom event listener for UISlider in Swift?
+
+I am working on a universal project in Swift. I want to handle a custom event whenever a user changes the value of a slider. I tried following code but it does not seem to work. This code is placed inside view controller class and not a view. 
+slider.addTarget(self, action: "sliderChanged", forControlEvents: .ValueChanged)
+
+A:
+
+Add this function in viewDidLoad and add sliderChanged() 
+func sliderChanged() {
+    //call slider changed function
+}
+
+Add Event to custom Event of Slider Class on value Changed 
+@IBAction func sliderChanged(sender: AnyObject) {
+    //your code here 
+}
+
+You should enable the 'User Interaction' for your slider otherwise this will not work
+
+A:
+
+Make sure you've added @IBOutlet for slider, here is the simple implementation of slider event:
+@IBOutlet weak var slider: UISlider!
+
+override func viewDidLoad() {
+    super.viewDidLoad()
+    slider.addTarget(self, action: "sliderChanged", forControlEvents: .ValueChanged)
+}
+
+func sliderChanged() {
+    print("Value Changed")
+}
+
+A:
+
+Add the following in your viewDidLoad() to listen for the slider value changed event:
+
+slider.addTarget(self, action: "sliderChanged:", forControlEvents: .ValueChanged)
+
+Note that it uses the "sliderChanged:" selector name which corresponds to the selector below:
+
+@IBAction func sliderChanged(sender: UISlider) {
+
+}
+
+This selector can also be done programmatically instead of through IB:
+
+@IBAction func sliderChanged(sender: UISlider) {
+
+}
+
+You can get some more details of Selectors here:
+http://www.macocrunch.com/2015/03/02/ios-swift-uicontrols-property-ivar-properties-overloading-and-selectors/
+
+The default event for a UISlider to fire is ValueChanged. However,
+  you can also hook this up to another control/action by either setting
+  it through Interface Builder or programmatically like this:
+
+@IBAction func sliderChanged(sender: UISlider) {
+    //some code
+}
+
+Note that sliderChanged() is the selector that needs to be hooked up, not sliderChanged
+
+A:
+
+Add target for ValueChanged and get your sliderValue
+slider.addTarget(self, action: "sliderChanged", forControlEvents: .ValueChanged)
+var valueChanged = 0.0
+
+func sliderChanged(){
+
+    let newValue = Int(slider.value) //Value is the current position
+
+    //Use this to decide action you want to do
+
+    if newValue == 1{
+
+        //DO THIS
+        valueChanged = 0.0
+    }
+    else if newValue == 2{
+
+        //DO THIS
+        valueChanged = 0.1
+    }
+    else if newValue == 3{
+
+        //DO THIS
+        valueChanged = 0.2
+    }
+    else if newValue == 4{
+
+        //DO THIS
+        valueChanged = 0.3
+    }
+    else if newValue == 5{
+
+        //DO THIS
+        valueChanged = 0.</div></body></html><!-- 2022-07-17 11:29:12 

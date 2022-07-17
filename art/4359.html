@@ -1,0 +1,245 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4360.html'>The first half of </a><Br/><a href='4361.html'>/*
+ * Copyright (c</a><Br/><a href='4362.html'>Q:
+
+Android: How c</a><Br/><a href='4363.html'>Q:
+
+Prove $\int_{x</a><Br/><a href='4364.html'>Q:
+
+Why does my ta</a><Br/><a href='4365.html'>The long term goal</a><Br/><a href='4366.html'>The number of pati</a><Br/><a href='4367.html'>Synthesis and stru</a><Br/><a href='4368.html'>//
+//     Generate</a><Br/><a href='4369.html'>package hclwrite
+
+</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4358.html'>Q:
+
+Javascript for</a><Br/><a href='4357.html'>"Hiding in the sha</a><Br/><a href='4356.html'>This is a request </a><Br/><a href='4355.html'>Category Archives:</a><Br/><a href='4354.html'>You are here
+
+Saud</a><Br/><a href='4353.html'>The long-term goal</a><Br/><a href='4352.html'>Everest College
+
+E</a><Br/><a href='4351.html'>A former British c</a><Br/><a href='4350.html'>
+/*
+ * Copyright (</a><Br/><a href='4349.html'>Tumor suppressor g</a></div><div class='nav'><a href='4358.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4360.html'> >> </a></div><div class='article'>/**
+ * Copyright (c) 2010-2020 Contributors to the openHAB project
+ *
+ * See the NOTICE file(s) distributed with this work for additional
+ * information.
+ *
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License 2.0 which is available at
+ * http://www.eclipse.org/legal/epl-2.0
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ */
+package org.openhab.binding.modbus.internal;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.io.FileUtils;
+import org.openhab.core.io.monitor.FileMonitor;
+import org.openhab.core.io.monitor.FileMonitorEvent;
+import org.openhab.core.io.monitor.FileMonitorService;
+import org.osgi.framework.Bundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * This Class handles all access to the modbus server file
+ *
+ * @author Pauli Anttila, Karel Goderis
+ * @since 1.2.0
+ */
+public class ModbusServer {
+    private static final String MODBUS_USER_PARAMETER = "modbus.user";
+    private static final String MODBUS_PASSWORD_PARAMETER = "modbus.password";
+
+    private final Logger logger = LoggerFactory.getLogger(ModbusServer.class);
+
+    private static FileMonitor serviceMonitor;
+    private static final String FILES_PARAMETER = "files";
+
+    /**
+     * Initialize a modbus server instance
+     */
+    private ModbusServer() {
+
+    }
+
+    /**
+     * Start a modbus server
+     *
+     * @param appDataDirectory directory with data files (e.g. database)
+     */
+    public static void start(String appDataDirectory) {
+        createFileMonitor();
+        List<String> paramFiles = new ArrayList<>();
+        paramFiles.add(MODBUS_USER_PARAMETER);
+        paramFiles.add(MODBUS_PASSWORD_PARAMETER);
+
+        // start the modbus service
+        try {
+            startModbusService();
+            List<String> configFileNames = findConfigFiles(appDataDirectory, paramFiles);
+            logFileInfo(configFileNames);
+            ModbusServer.log("Sending access password and config files to modbus server", 0,
+                    TimeUnit.SECONDS);
+            startModbusService(configFileNames);
+        } catch (Exception ex) {
+            logger.error("Error initializing or starting the modbus service", ex);
+            ModbusServer.log(ex.getMessage(), ex);
+            System.exit(1);
+        }
+    }
+
+    private static void createFileMonitor() {
+        if (serviceMonitor == null) {
+            serviceMonitor = new FileMonitor(MODBUS_SERVER_PARAMETER, 1000, 5000, 10000);
+        }
+    }
+
+    private static void startModbusService() {
+        ModbusServer.log("Starting the modbus server", 0, TimeUnit.SECONDS);
+        if (!ModbusServer.getInstance().isRunning()) {
+            return;
+        }
+
+        modbusClientConfig.startService(modbusServerAddress, -1, true, true);
+        logger.info("Started modbus server on {}", modbusServerAddress);
+    }
+
+    /**
+     * Stop the modbus server
+     *
+     * @param modbusServiceName name of the server
+     */
+    public static void stop(String modbusServiceName) {
+        if (serviceMonitor != null) {
+            serviceMonitor.stop();
+        }
+        if (ModbusServer.getInstance() != null) {
+            ModbusServer.getInstance().stopServer(modbusServerAddress, modbusServiceName);
+        }
+        modbusClientConfig.stopService();
+        ModbusServer.log("Stopped the modbus server", 0, TimeUnit.SECONDS);
+    }
+
+    /**
+     * Check if the modbus server is running
+     *
+     * @return true if running
+     */
+    public static boolean isRunning() {
+        return ModbusServer.getInstance() != null;
+    }
+
+    /**
+     * Check if the modbus server is running
+     *
+     * @param modbusServiceName name of the server
+     * @return true if running
+     */
+    public static boolean isRunning(String modbusServiceName) {
+        return ModbusServer.getInstance() != null && ModbusServer.getInstance().isRunning(modbusServiceName);
+    }
+
+    /**
+     * Get the file monitor instance for modbus server
+     *
+     * @return the modbus server file monitor
+     */
+    public static FileMonitor getFileMonitor() {
+        return serviceMonitor;
+    }
+
+    /**
+     * Get the modbus server address
+     *
+     * @return the modbus server address
+     */
+    public static String getModbusServerAddress() {
+        return modbusServerAddress;
+    }
+
+    /**
+     * Get a list of config files to include in modbus server startup
+     *
+     * @param modbusServerAddress the modbus server address
+     * @param paramFiles the files to include
+     * @return list of config files to include in modbus server startup
+     */
+    private static List<String> findConfigFiles(String modbusServerAddress, List<String> paramFiles) {
+        try {
+            List<File> configFiles = findFiles(new File(modbusServerAddress + FILES_PARAMETER), paramFiles);
+            if (configFiles.isEmpty()) {
+                ModbusServer.log("No config files found in {}", modbusServerAddress);
+                return new ArrayList<>();
+            }
+            FileMonitorEvent event = new FileMonitorEvent(MODBUS_SERVER_PARAMETER, configFiles);
+            serviceMonitor.setEvent(event);
+            return configFiles;
+        } catch (Exception ex) {
+            ModbusServer.log("Exception while setting modbus server config files: " + ex.getMessage(), ex);
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Find all configuration files of the modbus server
+     *
+     * @param appDataDirectory data directory for modbus server
+     * @param paramFiles files to look for
+     * @return list of modbus server config files found in the data directory
+     */
+    private static List<File> findFiles(Path appDataDirectory, List<String> paramFiles) {
+        Collection<File> files = null;
+        if (appDataDirectory != null && !appDataDirectory.isDirectory()) {
+            // find all config files in the modbus server data directory
+            files = appDataDirectory.toFile().listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    if (!pathname.toString().endsWith(".xml") || paramFiles.contains(pathname.toString())) {
+                        logger.info("{} matches the modbus config file pattern", pathname.toString());
+                        return true;
+                    }
+                    return false;
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Modbus Server File Filter";
+                }
+            });
+            for (File file : files) {
+                if (file != null) {
+                    ModbusServer.log("Found modbus config file: {}", file.getAbsolutePath());
+                }
+            }
+            logger.info("Found {} modbus config files", files.size());
+        } else {
+            // find config files in the modbus server lib directory
+            if (!appDataDirectory.isDirectory()) {
+                logger.error("Invalid configuration: {}", appDataDirectory);
+                return new ArrayList<>();
+            }
+            files = appDataDirectory.toFile().listFiles(new FileFilter() {
+                @Override
+                public boolean accept(File pathname) {
+                    if (!pathname.toString().endsWith(".xml") || paramFiles.contains(pathname.toString())) {
+                        logger.info("{} matches the modbus config file pattern", pathname.toString());
+                        return true;
+                    }
+                    return false;
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Modbus Server File Filter";
+                }
+            });
+            for</div></body></html><!-- 2022-07-17 11:29:08 
