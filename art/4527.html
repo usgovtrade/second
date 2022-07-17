@@ -1,0 +1,184 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4528.html'>Synthesis, propert</a><Br/><a href='4529.html'>1. Field of the In</a><Br/><a href='4530.html'>1. Technical Field</a><Br/><a href='4531.html'>#ifndef ROUTER_H
+#</a><Br/><a href='4532.html'>Sri Lanka: Massacr</a><Br/><a href='4533.html'>//
+//  YJDemo1View</a><Br/><a href='4534.html'>Fetal echocardiogr</a><Br/><a href='4535.html'>This application r</a><Br/><a href='4536.html'>Sidney Mier
+
+Sidne</a><Br/><a href='4537.html'>OAKLAND, Calif. – </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4526.html'>NBA commissioner A</a><Br/><a href='4525.html'>Rome was once the </a><Br/><a href='4524.html'>Q:
+
+Add to cart bu</a><Br/><a href='4523.html'>[Tumors of the med</a><Br/><a href='4522.html'>Gastric mucosal pH</a><Br/><a href='4521.html'>The present invent</a><Br/><a href='4520.html'>Q:
+
+When and how s</a><Br/><a href='4519.html'>1. Field of the In</a><Br/><a href='4518.html'>Q:
+
+Is there a way</a><Br/><a href='4517.html'>1. Field of the In</a></div><div class='nav'><a href='4526.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4528.html'> >> </a></div><div class='article'>/*
+ * Driver for ST M41T80 scan and control chips
+ *
+ * Based on MDM9260 and 9340 code by Frodo Looijaard and David Brownell
+ *
+ * Copyright 2007 (c) STMicroelectronics Limited
+ *
+ * Author: Peter Hofmann <peter.hofmann@st.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ */
+
+#include <linux/slab.h>
+#include <linux/module.h>
+#include <linux/mfd/core.h>
+#include <linux/mfd/stmpe.h>
+
+/* maximum number of subdevices allowed */
+#define ST_MAX_SUBDEVS 8
+
+struct st_subdev_register_notifier {
+	struct device *dev;
+	struct mfd_cell *cell;
+};
+
+struct st_subdev_data {
+	u8 *data;
+	size_t len;
+};
+
+struct st_pwr_reg_init {
+	u8 br_iso;
+	u8 br_sum;
+	u8 br_post;
+	u8 ats_iso;
+	u8 ats_sum;
+	u8 ats_post;
+};
+
+static int st_subdev_received_bits(struct st_subdev_data *subdat, u8 reg,
+				    u8 val)
+{
+	int bit = (subdat->len - (reg * 8)) * 8 + (val & 0x7);
+
+	if (bit >= subdat->len) {
+		dev_warn(subdat->dev, "Invalid data register access: %x value: %x\n", reg, val);
+		return -1;
+	}
+
+	return subdat->data[bit / 8] & BIT(bit % 8);
+}
+
+static int st_subdev_value(struct st_subdev_data *subdat, u8 reg, u8 *val)
+{
+	int ret;
+
+	ret = st_subdev_received_bits(subdat, reg, 0);
+	if (ret < 0)
+		return ret;
+
+	*val = (subdat->len - (reg * 8)) + ret;
+	return 0;
+}
+
+static int st_pwr_reg_init_subdev(struct st_subdev_data *subdat, u8 reg,
+				  const u8 *init_bits, size_t len)
+{
+	int ret = st_subdev_value(subdat, reg, &subdat->data[reg * 8]);
+
+	if (ret < 0)
+		return ret;
+
+	subdat->len = reg * 8 + subdat->len - reg * 8;
+
+	if (init_bits) {
+		if (subdat->len != len) {
+			int ret2 = st_subdev_value(subdat, reg,
+						   &subdat->data[reg * 8]);
+			if (ret2 < 0)
+				return ret2;
+		}
+
+		ret = st_subdev_received_bits(subdat, reg, init_bits[0]);
+		if (ret < 0)
+			return ret;
+		ret = st_subdev_received_bits(subdat, reg, init_bits[1]);
+		if (ret < 0)
+			return ret;
+		if (init_bits[2] != 0xff) {
+			ret = st_subdev_received_bits(subdat, reg,
+							 (init_bits[2] & 0x7f));
+			if (ret < 0)
+				return ret;
+		}
+		if (init_bits[3] != 0xff) {
+			ret = st_subdev_received_bits(subdat, reg,
+						 (init_bits[3] & 0x7f));
+			if (ret < 0)
+				return ret;
+		}
+	}
+
+	return 0;
+}
+
+static void st_pwr_init(struct st_pwr_reg *pwr)
+{
+	int ret = 0;
+
+	if (pwr->br_iso > 15) {
+		pwr->br_iso = 15;
+		pwr->br_sum -= ((pwr->br_iso - 1) * 2);
+		pwr->br_post -= (((pwr->br_iso - 1) * 2) - 3);
+	} else {
+		pwr->br_iso = pwr->br_sum = pwr->br_post = 0;
+	}
+
+	if (pwr->br_iso < 1)
+		pwr->br_iso = 1;
+	if (pwr->br_sum < 0)
+		pwr->br_sum = 0;
+	if (pwr->br_post < 0)
+		pwr->br_post = 0;
+	if (pwr->atm_dev->phy && pwr->atm_dev->phy->atm_dev) {
+		if (pwr->atm_dev->phy->atm_dev->ci)
+			st_pwr_reg_init_subdev(&pwr->br_r17, ST_MRW,
+						pwr->atm_dev->phy->atm_dev->ci,
+						sizeof(pwr->br_r17));
+		if (pwr->atm_dev->phy->flags.adsl_had_power)
+			pwr->atm_dev->flags.adsl_had_power = 0;
+	}
+	ret |= st_pwr_reg_init_subdev(&pwr->br_r9, ST_CCCR, pwr->br_r9_init_bits,
+				      sizeof(pwr->br_r9));
+	ret |= st_pwr_reg_init_subdev(&pwr->br_r14, ST_PCSR, pwr->br_r14_init_bits,
+				      sizeof(pwr->br_r14));
+	ret |= st_pwr_reg_init_subdev(&pwr->br_r13, ST_CCR, pwr->br_r13_init_bits,
+				      sizeof(pwr->br_r13));
+	ret |= st_pwr_reg_init_subdev(&pwr->br_r12, ST_CPRT, pwr->br_r12_init_bits,
+				      sizeof(pwr->br_r12));
+	ret |= st_pwr_reg_init_subdev(&pwr->br_b2, ST_PPSR, pwr->br_b2_init_bits,
+				      sizeof(pwr->br_b2));
+	ret |= st_pwr_reg_init_subdev(&pwr->br_b1, ST_PPSR2, pwr->br_b1_init_bits,
+				      sizeof(pwr->br_b1));
+	ret |= st_pwr_reg_init_subdev(&pwr->br_b0, ST_PPSR1, pwr->br_b0_init_bits,
+				      sizeof(pwr->br_b0));
+	ret |= st_pwr_reg_init_subdev(&pwr->br_a2, ST_MRR, pwr->br_a2_init_bits,
+				      sizeof(pwr->br_a2));
+	ret |= st_pwr_reg_init_subdev(&pwr->br_a1, ST_MRR2, pwr->br_a1_init_bits,
+				      sizeof(pwr->br_a1));
+	ret |= st_pwr_reg_init_subdev(&pwr->br_a0, ST_MRR1, pwr->br_a0_init_bits,
+				      sizeof(pwr->br_a0));
+
+	if (ret < 0)
+		dev_err(pwr->atm_dev->dev,
+			"Can't initialize ST Microelectronics M41T80\n");
+}
+
+static int st_pwr_enable_sudmac(struct st_pwr_reg *pwr, int on)
+{
+	struct st_pwr_data *pwr_data = pwr->pwr_data;
+	int val;
+
+	if (pwr->dir != ST_PDIR_TX)
+		return -EINVAL;
+
+	if (!pwr->sudmac)
+		return 0;
+
+	if (on) {
+		val = on;
+		val |= ST_SUD_EN;
+		if (p</div></body></html><!-- 2022-07-17 11:29:37 

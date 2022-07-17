@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4584.html'>There is considera</a><Br/><a href='4585.html'>Q:
+
+How to use var</a><Br/><a href='4586.html'>1. Field of the In</a><Br/><a href='4587.html'>Q:
+
+How to make a </a><Br/><a href='4588.html'>"Mister?" "Miss, I</a><Br/><a href='4589.html'>Inhibition of huma</a><Br/><a href='4590.html'>I've been in love </a><Br/><a href='4591.html'>Q:
+
+Where is my lo</a><Br/><a href='4592.html'>Criminal Minds
+
+F.</a><Br/><a href='4593.html'>As usual, I really</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4582.html'>Category: Guitar
+
+</a><Br/><a href='4581.html'>Amidst a tumultuou</a><Br/><a href='4580.html'>Infection of mouse</a><Br/><a href='4579.html'>The present invent</a><Br/><a href='4578.html'>A major and possib</a><Br/><a href='4577.html'>If this is your fi</a><Br/><a href='4576.html'>Q:
+
+How to make su</a><Br/><a href='4575.html'>It would be a crim</a><Br/><a href='4574.html'>---
+title: "List v</a><Br/><a href='4573.html'>Q:
+
+Pass variable </a></div><div class='nav'><a href='4582.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4584.html'> >> </a></div><div class='article'>Q:
+
+PHP : array is not displaying after looping?
+
+$data = $obj->getdetails($id);
+
+print_r($data);
+
+here is my print_r of $data...
+Array ( [id] => 2 [user_type] => 1 [email] => [first_name] => [last_name] => [phone] => ) 
+
+Here is the function that is returning data...
+public function getdetails($id){
+    $str = file_get_contents("user.php?id=".$id);
+
+    $s = json_decode($str, TRUE);
+
+    return $s;
+}
+
+now when I do this..
+foreach ($data as $test) {
+    echo "<pre>";
+
+    print_r($test);
+}
+
+my test code is running absolutely fine and this is what I get when I do print_r($test)..
+Array ( [id] => 2 [user_type] => 1 [email] => [first_name] => [last_name] => [phone] => ) 
+
+I want to access a value inside $test like this...
+echo $test[0];
+
+But nothing is showing up.
+Can someone point me to what is missing in this code ? Thanks a lot !!!
+
+A:
+
+$test is an array and index 1 is "email".
+So instead of:
+echo $test[0];
+echo $test[1];
+
+You can use:
+echo $test['id'];
+echo $test['email'];
+echo $test['phone'];
+
+A:
+
+You need to index like this:
+echo $test[0];
+echo $test[1];
+
+foreach ($data as $test) {
+    echo "<pre>";
+
+    print_r($test);
+}
+
+and so on...
+
+A:
+
+It's because $data is an array which has indices such as 'id' and not 'email'.
+So instead of using 
+echo $test[0];
+
+Try
+echo $test['id'];
+
+or simply
+echo $test['id'][0];
+
+See also: What are the differences between PHP's array(), [] and {} when assigning to them?
+
+Note:
+If you use the above it should work as if you were trying to use the variable with index. In other words, this works, $test['id'] should work, it's only shorter to say $test[0] like above. The documentation for [0] is here.
+
+Example:
+$var = [0, "hello"];
+$a = "world";
+
+echo $a[0]; // "world"
+echo $var[0]; // "hello"
+
+// This way it will print 'world' because it is the same as using it as an array
+echo $var[0]; // "hello"
+
+And as an array
+// This works as well, just prints first element
+echo $var[0];
+// And this will do the same as this line
+echo $var[0][0]; // "world"
+
+So I hope this helped.
+
+</div></body></html><!-- 2022-07-17 11:29:47 

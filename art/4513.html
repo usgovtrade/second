@@ -1,0 +1,152 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4514.html'>// ---------------</a><Br/><a href='4515.html'>Q:
+
+How can I inse</a><Br/><a href='4516.html'>The present invent</a><Br/><a href='4517.html'>1. Field of the In</a><Br/><a href='4518.html'>Q:
+
+Is there a way</a><Br/><a href='4519.html'>1. Field of the In</a><Br/><a href='4520.html'>Q:
+
+When and how s</a><Br/><a href='4521.html'>The present invent</a><Br/><a href='4522.html'>Gastric mucosal pH</a><Br/><a href='4523.html'>[Tumors of the med</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4512.html'>/**
+ * (C) Copyrig</a><Br/><a href='4511.html'>Inhibition of huma</a><Br/><a href='4510.html'>// Licensed to Ela</a><Br/><a href='4509.html'>//****************</a><Br/><a href='4508.html'>Mucins of the norm</a><Br/><a href='4507.html'>Vincent J. Fuller
+</a><Br/><a href='4506.html'>Q:
+
+Why I can't ge</a><Br/><a href='4505.html'>In a communication</a><Br/><a href='4504.html'>Novelty seeking be</a><Br/><a href='4503.html'>The best Side of c</a></div><div class='nav'><a href='4512.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4514.html'> >> </a></div><div class='article'>Q:
+
+How to create a custom image button in CSS?
+
+I have two custom images(png files) which i use to create a button. The problem is that the image does not seem to scale when i use it on a button.  This is my code for the button:
+<style>
+    #button1 {
+        background: url('image.png') no-repeat;
+        background-size: contain;
+        width: auto;
+        height: 45px;
+        margin-left: 20px;
+        margin-top: 30px;
+        margin-right: 50px;
+        font-family: BebasNeue, Arial;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
+
+ <button type="button" class="btn btn-warning btn-lg" style="margin-left:2%;
+     background: #4f82cb;
+     width: 45px;
+     height: 45px;
+     border: 0;
+     border-radius: 20px;
+     cursor: pointer;" id="button1">1
+</button>
+
+A:
+
+Try something like this.
+
+button {
+  background-image: url(http://i.stack.imgur.com/6VQ7b.png);
+  background-repeat: no-repeat;
+  background-size: contain;
+  padding: 1em 2em;
+  border: none;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 20px;
+}
+<button>Button 1</button>
+
+Using this button class i have created a class with a background image and set its all css properties. All you need to do is create a button tag and set the background image using the above css class as follows.
+
+<button>Button 1</button>
+
+If you want to set the size of the image as per your requirement change the value of the "background-size" property. Hope this helps!
+
+A:
+
+How to use the background image to set the size of the element: 
+
+Background-image in the element
+background-size in the element's style
+
+How to use the background image to make it stretch or repeat.
+
+background-position-x, background-position-y in the element's style
+background-repeat in the element's style
+
+Example
+element
+<button id="myButton">
+    Text here
+</button>
+
+Style
+#myButton {
+    background-image: url('your_image.png');
+    background-size: contain;
+}
+
+Example 2
+To make the image appear stretched, set background-position-x to 50% and background-position-y to 50% and use background-size: 100%;.
+
+#myButton {
+    background-image: url('your_image.png');
+    background-position-x: 50%;
+    background-position-y: 50%;
+    background-size: 100%;
+}
+
+Reference
+http://www.w3.org/TR/CSS21/colors.html#propdef-background-size
+http://www.w3.org/TR/CSS21/syndata.html#length-units
+http://www.w3.org/TR/CSS21/background.html#background-position
+
+A:
+
+Try background-size: contain;, this will keep the button the size of the image, as it is right now.
+Also, it's just one line if you want the button to have rounded corners, like a square box, you can use this, instead of using a .css file.
+-webkit-border-radius: 20px;
+-moz-border-radius: 20px;
+border-radius: 20px;
+
+Try this code.
+.button {
+  background-image: url("http://s.cdpn.io/79/sprite-steps.png");
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+  width: 20px;
+  height: 20px;
+  margin: 20px 0px;
+  cursor: pointer;
+}
+
+Here's a fiddle
+
+Edit:
+Make sure you have the following css rules for the button:
+button {
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}
+
+Hope this helps.
+JSFiddle: http://jsfiddle.net/rZN8b/3/
+
+Explanation:
+By default, button has display: inline-block;, which basically means it will always render in 1 line, that's why I used width and height to give it a size.
+However, the image is too big and wouldn't fit in one line without a negative margin, that's why I have margin: 20px 0px;, which makes the width 20px (the size of the image) and the height 40px (the height of the button) which makes the button rounded. 
+The negative margin doesn't really round the corners but makes sure the entire image is in the viewport (visible in the web browser window).
+If you don't want the button to be rounded but have a square box, use this css instead of the previous one. 
+I also changed the height and width to 10px, so the image is now 10x10 pixels.
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+
+I also made the button a background color, to make sure you know when the user is clicking the button.
+.button {
+     background-color: red;
+}
+
+</div></body></html><!-- 2022-07-17 11:29:34 

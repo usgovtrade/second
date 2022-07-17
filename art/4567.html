@@ -1,0 +1,195 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4568.html'>Q:
+
+how to draw a </a><Br/><a href='4569.html'>A lot of thought w</a><Br/><a href='4570.html'>A novel approach f</a><Br/><a href='4571.html'>Q:
+
+Javascript eve</a><Br/><a href='4572.html'><?php
+/*
+ * Copyri</a><Br/><a href='4573.html'>Q:
+
+Pass variable </a><Br/><a href='4574.html'>---
+title: "List v</a><Br/><a href='4575.html'>It would be a crim</a><Br/><a href='4576.html'>Q:
+
+How to make su</a><Br/><a href='4577.html'>If this is your fi</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4566.html'>Bath-bound?
+
+As it</a><Br/><a href='4565.html'>package com.github</a><Br/><a href='4564.html'>A young mother is </a><Br/><a href='4563.html'>Introduction {#Sec</a><Br/><a href='4562.html'>[Spatiotemporal or</a><Br/><a href='4561.html'>A comparative tria</a><Br/><a href='4560.html'>Pediatric brain tu</a><Br/><a href='4559.html'>Basketball at the </a><Br/><a href='4558.html'>Biosolids are envi</a><Br/><a href='4557.html'>Q:
+
+How to stop mu</a></div><div class='nav'><a href='4566.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4568.html'> >> </a></div><div class='article'>---
+title: "How-To: Customize the Header Bar"
+description: "See how to specify the layout of the header bar, and how to customize header-bar items, tabs, and buttons in Kendo UI"
+ha_category:
+  - Templates
+  - UI Framework
+ha_release: 0.1.0
+ha_iot_class: Cloud
+ha_config_flow: true
+ha_codeowners:
+  - "@haazime"
+  - "@mauricederegt"
+---
+
+# How to: Customize the Header Bar
+
+This article explains how to specify the layout of the header bar, and how to customize header-bar items, tabs, and buttons in Kendo UI.
+
+## Specify the header bar layout
+
+Use the `<HeaderBar>` [helper](/api/javascript/widgets/HeaderBar) in your Kendo UI script to add a header bar to the page, which includes a title bar and additional tabs. In the `.aspx` file, configure the header bar with the [`Header` property]({% slug howto_headerbar_aspx %}#configuring-the-header-property). In the code below, an image is displayed in the header bar. The header bar displays image controls on left and right sides, and the title and tabs are displayed on the top. To remove the title and tabs, use the [`Header.Title`]({% slug howto_headerbar_aspx#title-property %}#how-to-remove-the-header-title) and [`Header.Tabs`]({% slug howto_headerbar_aspx#tabs-property %}#how-to-remove-the-header-tabs) properties.
+
+```cshtml
+<div class="demo-section k-header">
+    <div class="demo-section-title k-header-center k-header-title">Header bar</div>
+    <img id="displayHeaderImage" alt="Picture of Kendo UI">
+</div>
+
+<div class="demo-section k-header-tabs">
+    <div class="demo-section-title k-header-center k-header-title">Tabs</div>
+    <p>Tabs are supported when the "showTabs" option is true.</p>
+    <div>
+        <div>Foo</div>
+        <div>Bar</div>
+    </div>
+</div>
+```
+
+```html
+<!-- index.cshtml -->
+<div id="example">
+    <div>
+        @(Html.Kendo().Grid<Person>()
+            .Name("grid")
+            .Columns(col =>
+            {
+                col.Bound(c => c.FirstName).Width(110);
+                col.Bound(c => c.LastName).Width(150);
+                col.Bound(c => c.City).Width(150);
+            })
+            .Pageable()
+            .Sortable()
+            .Groupable()
+            .Filterable()
+            .DataSource(dataSource => dataSource
+                .Server()
+                .Model(model => model.Id(p => p.PersonId))
+                .Read(read => read.Action("Customers_Read", "Home"))
+            )
+            .Resizable(resize => resize.Columns(true))
+        )
+    </div>
+</div>
+```
+
+```javascript
+    // Create the Grid
+    var grid = $("#grid").data("kendoGrid");
+
+    // Add the custom actions in the toolbar
+    grid.toolbar = kendo.template($("#toolBarTemplate").html());
+
+// Add the toolbar to the page
+    var headerBar = $("#example").find(".k-header-bar").kendoHeaderBar({
+        showTabs: true,
+        tabs: [{
+            text: "Foo",
+            encoded: false,
+            active: true
+        }, {
+            text: "Bar",
+            encoded: false,
+            active: false
+        }]
+    });
+    $("#example").prepend(headerBar.element);
+```
+
+[> screenshots forHow to: Specify the layout of the header bar<](how-to_customize_header_bar.png)
+
+### Read more about adding custom actions in the header bar
+
+The [header-bar]({% slug howto_customize_headerbar_ajax %}) component provides a custom tooltip that appears when hovering the icon. To add additional actions, in the [`header`](/api/javascript/header) property of the [`ScriptRegistrar`](/api/javascript/function) function, return a Kendo UI [Toolbar](/api/javascript/ui/toolbar) script.
+
+## Customize the header bar layout
+
+You can customize header-bar items, tabs, and buttons in the [`HeaderBar`](/api/javascript/ui/HeaderBar) component. The [events](#events) of the `HeaderBar` component let you execute code when a header bar item is clicked.
+
+### Customize the header-bar items
+
+You can add your own items to the header bar by using the [`Items`](/api/javascript/ui/HeaderBar/items) property. In this example, the header bar displays a tooltip when the tooltip icon is clicked. To specify the properties of each item, use the [items configuration options](/api/javascript/ui/HeaderBar/configuration#items). To configure a button, add the [image](/api/javascript/ui/Button#image), [tooltip](/api/javascript/ui/Button#tooltip), and [role](/api/javascript/ui/Button#role) properties to the button element, and add the [`HeaderBar`](/api/javascript/ui/HeaderBar) component to the button element.
+
+```html
+<button id="customIconTooltipButton">Tooltip</button>
+
+<div class="k-header-bar">
+    <a class="k-header-left">Hello, left content.</a>
+    <a class="k-header-right">Hello, right content.</a>
+    <span class="k-header-space"></span>
+    <a id="kCustomIconTooltipButton" class="k-header-title">Hello, toolbar icon.</a>
+    <button id="kCustomIconTooltipButton" class="k-header-actions">Hello, toolbar icon.</button>
+    <a class="k-header-actions">Hello, toolbar icon.</a>
+</div>
+
+<script type="text/x-kendo-template" id="template">
+    <style type="text/css">
+        .k-tooltiptext {
+            background-color: #fafafa;
+            border: 1px solid #999999;
+            padding: 3px;
+        }
+
+        .k-tooltiptext a {
+            text-decoration: none;
+        }
+
+        .k-tooltiptext:before {
+            background-color: #fafafa;
+            border: 1px solid #999999;
+            content: '';
+            height: 15px;
+            left: -4px;
+            opacity: 0;
+            position: absolute;
+            top: -4px;
+            width: 15px;
+        }
+    </style>
+    <div class="k-toolbar-content">
+        <div class="k-tooltiptext">Foo</div>
+    </div>
+    <div>
+        <div>Foo</div>
+        <div>Bar</div>
+    </div>
+</script>
+```
+
+```javascript
+// Set the configuration options for the items.
+var itemsConfig = {
+    items: [{
+        text: "Bar",
+        encoded: false,
+        role: "foo",
+        image: "https://demos.telerik.com/kendo-ui/content/shared/icons/table-chart.png"
+    }, {
+        text: "Gadget",
+        encoded: false,
+        role: "bar",
+        action: {
+            tooltip: "Hello, Tooltip",
+            showTooltip: function(e) {
+                // Execute code when the button is clicked.
+                var headerBar = $("#kCustomIconTooltipButton").data("kendoTooltip");
+                headerBar.show();
+            }
+        },
+        action: function (e) {
+            // Execute code when the button is clicked.
+        },
+        image: "https://demos.telerik.com/kendo-ui/content/shared/icons/table-chart.png"
+    }]
+};
+var gridToolbar = $("#customIconTooltipButton").kendoToolBar(itemsConfig);
+```
+
+### Render a tab when the link is clicked
+
+In the above example, the button toggles the display of a tab with a title **Hello, Tooltip**. This button is added to the toolbar</div></body></html><!-- 2022-07-17 11:29:44 

@@ -1,0 +1,201 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4543.html'>This is an archive</a><Br/><a href='4544.html'>Erythropoietin tre</a><Br/><a href='4545.html'>Q:
+
+Getting this e</a><Br/><a href='4546.html'>The role of the en</a><Br/><a href='4547.html'>Q:
+
+Does .NET 4.0 </a><Br/><a href='4548.html'>
+
+Dedicated to the</a><Br/><a href='4549.html'>In-depth: 'Rio', s</a><Br/><a href='4550.html'>Introduction
+=====</a><Br/><a href='4551.html'># -*- coding: utf-</a><Br/><a href='4552.html'>Q:
+
+Icons from htt</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4541.html'>Q:
+
+CakePHP: The v</a><Br/><a href='4540.html'><?php
+namespace Br</a><Br/><a href='4539.html'>Golf at Augusta Na</a><Br/><a href='4538.html'>In vitro and in vi</a><Br/><a href='4537.html'>OAKLAND, Calif. – </a><Br/><a href='4536.html'>Sidney Mier
+
+Sidne</a><Br/><a href='4535.html'>This application r</a><Br/><a href='4534.html'>Fetal echocardiogr</a><Br/><a href='4533.html'>//
+//  YJDemo1View</a><Br/><a href='4532.html'>Sri Lanka: Massacr</a></div><div class='nav'><a href='4541.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4543.html'> >> </a></div><div class='article'>/*
+
+  This file is provided under a dual BSD/GPLv2 license.  When using or
+  redistributing this file, you may do so under either license.
+
+  GPL LICENSE SUMMARY
+
+  Copyright(c) 2006-2012 Intel Corporation. All rights reserved.
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of version 2 of the GNU General Public License as
+  published by the Free Software Foundation.
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St - Fifth Floor, Boston, MA 02110-1301 USA.
+
+  Neither the name of Intel Corporation nor the names of its contributors
+  may be used to endorse or promote products derived from this software
+  without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+  PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
+  OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+  EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+  PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+  LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+*/
+/*  
+ * ====================================================
+ * Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+ * 
+ * Developed at SunPro, a Sun Microsystems, Inc. business.
+ * Permission to use, copy, modify, and distribute this
+ * software is freely granted, provided that this notice 
+ * is preserved.
+ * ====================================================
+ */
+
+/** @file Array.h
+    @brief Reduce data arrays to a smaller space
+*/
+#ifndef DEPTH_PER_COMPILEINTERVAL
+#define DEPTH_PER_COMPILEINTERVAL  256
+#endif
+#if (DEPTH == 3)
+#if (LOD_LEVELS > 3) && !defined(NEEDS_LOOPS)
+#define NEEDS_LOOPS 1
+#endif
+#endif
+#include <limits.h>
+#if defined(__i386__) || defined(_M_IX86) || defined(__x86_64__) || defined(_M_AMD64) || defined(_WIN64)
+#include "x86int.h"
+#elif defined(__PPC__) || defined(__ppc__)
+#include "ppcint.h"
+#endif
+#include <math.h>
+
+#define PFA_MAX     720720  /* max (size of float (4 byte) in bits)  */
+#define PFA_VERSION_NUM  1.01    /* file version number                 */
+#define NO_GRAY
+
+#ifndef SMOOTHING
+#define smooth1      0.0
+#define smooth1o(a)  (a)
+#define smooth1i(a)  (a)
+#define smooth1d(a)  (a)
+#define smooth2      0.5
+#define smooth2o(a) (a)
+#define smooth2i(a) (a)
+#define smooth2d(a) (a)
+#define smooth3      1.0
+#define smooth3o(a) (a)
+#define smooth3i(a) (a)
+#define smooth3d(a) (a)
+#define smooth4      1.5
+#define smooth4o(a) (a)
+#define smooth4i(a) (a)
+#define smooth4d(a) (a)
+#define smooth5      2.0
+#define smooth5o(a) (a)
+#define smooth5i(a) (a)
+#define smooth5d(a) (a)
+#define smooth6      2.5
+#define smooth6o(a) (a)
+#define smooth6i(a) (a)
+#define smooth6d(a) (a)
+#define smooth7      3.0
+#define smooth7o(a) (a)
+#define smooth7i(a) (a)
+#define smooth7d(a) (a)
+#define smooth8      3.5
+#define smooth8o(a) (a)
+#define smooth8i(a) (a)
+#define smooth8d(a) (a)
+#define smooth9      4.0
+#define smooth9o(a) (a)
+#define smooth9i(a) (a)
+#define smooth9d(a) (a)
+#define smooth10     4.5
+#define smooth10o(a) (a)
+#define smooth10i(a) (a)
+#define smooth10d(a) (a)
+#define smooth11     5.0
+#define smooth11o(a) (a)
+#define smooth11i(a) (a)
+#define smooth11d(a) (a)
+#define smooth12     5.5
+#define smooth12o(a) (a)
+#define smooth12i(a) (a)
+#define smooth12d(a) (a)
+#define smooth13     6.0
+#define smooth13o(a) (a)
+#define smooth13i(a) (a)
+#define smooth13d(a) (a)
+#define smooth14     6.5
+#define smooth14o(a) (a)
+#define smooth14i(a) (a)
+#define smooth14d(a) (a)
+#define smooth15     7.0
+#define smooth15o(a) (a)
+#define smooth15i(a) (a)
+#define smooth15d(a) (a)
+#define smooth16     7.5
+#define smooth16o(a) (a)
+#define smooth16i(a) (a)
+#define smooth16d(a) (a)
+#define smooth17     8.0
+#define smooth17o(a) (a)
+#define smooth17i(a) (a)
+#define smooth17d(a) (a)
+#define smooth18     8.5
+#define smooth18o(a) (a)
+#define smooth18i(a) (a)
+#define smooth18d(a) (a)
+#define smooth19     9.0
+#define smooth19o(a) (a)
+#define smooth19i(a) (a)
+#define smooth19d(a) (a)
+#define smooth20     9.5
+#define smooth20o(a) (a)
+#define smooth20i(a) (a)
+#define smooth20d(a) (a)
+#define smooth21     10.0
+#define smooth21o(a) (a)
+#define smooth21i(a) (a)
+#define smooth21d(a) (a)
+#define smooth22     10.5
+#define smooth22o(a) (a)
+#define smooth22i(a) (a)
+#define smooth22d(a) (a)
+#define smooth23     11.0
+#define smooth23o(a) (a)
+#define smooth23i(a) (a)
+#define smooth23d(a) (a)
+#define smooth24     11.5
+#define smooth24o(a) (a)
+#define smooth24i(a) (a)
+#define smooth24d(a) (a)
+#define smooth25     12.0
+#define smooth25o(a) (a)
+#define smooth25i(a) (a)
+#define smooth25d(a) (a)
+#define smooth26     12.5
+#define smooth26o(a) (a)
+#define smooth26i(a) (a)
+#define smooth26d(a) (a)
+#define smooth27     13.0
+#define smooth27o(a) (a)
+#define smooth27i(a) (a)
+#define smooth27d(a) (a)
+#define smooth28     13.5
+#define smooth28o(a) (a)
+#define smooth28i(a) (a)
+#define smooth28d</div></body></html><!-- 2022-07-17 11:29:39 

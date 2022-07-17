@@ -1,0 +1,212 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4569.html'>A lot of thought w</a><Br/><a href='4570.html'>A novel approach f</a><Br/><a href='4571.html'>Q:
+
+Javascript eve</a><Br/><a href='4572.html'><?php
+/*
+ * Copyri</a><Br/><a href='4573.html'>Q:
+
+Pass variable </a><Br/><a href='4574.html'>---
+title: "List v</a><Br/><a href='4575.html'>It would be a crim</a><Br/><a href='4576.html'>Q:
+
+How to make su</a><Br/><a href='4577.html'>If this is your fi</a><Br/><a href='4578.html'>A major and possib</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4567.html'>---
+title: "How-To</a><Br/><a href='4566.html'>Bath-bound?
+
+As it</a><Br/><a href='4565.html'>package com.github</a><Br/><a href='4564.html'>A young mother is </a><Br/><a href='4563.html'>Introduction {#Sec</a><Br/><a href='4562.html'>[Spatiotemporal or</a><Br/><a href='4561.html'>A comparative tria</a><Br/><a href='4560.html'>Pediatric brain tu</a><Br/><a href='4559.html'>Basketball at the </a><Br/><a href='4558.html'>Biosolids are envi</a></div><div class='nav'><a href='4567.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4569.html'> >> </a></div><div class='article'>Q:
+
+how to draw a rect on image using finger touch event for finger direction in android
+
+i have this problem about user interaction. I want to make a application like the iphone photo.
+It show the user where he/she is touch at the time the user touch the screen. It will be like this example:
+
+Any idea? Thanks in advance!
+
+A:
+
+Try this code. Add this class in your project.
+public class ImageTouchExample extends Activity {
+  private static int screenX, screenY;
+  private ImageView image;
+  /** Called when the activity is first created. */
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.main);
+
+    image = (ImageView) findViewById(R.id.image);
+    image.setOnTouchListener(new View.OnTouchListener() {
+        public boolean onTouch(View v, MotionEvent event) {
+            int action = event.getAction();
+            switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                screenX = (int) event.getX();
+                screenY = (int) event.getY();
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            }
+            image.setImageBitmap(null);
+            return true;
+        }
+    });
+ }
+}
+
+and add this xml file on your res folder.
+
+    
+    
+<ImageView android:id="@+id/image"
+    android:layout_width="fill_parent" android:layout_height="fill_parent" 
+    android:background="@android:color/black" android:src="@drawable/ic_launcher" >
+</ImageView>
+
+</RelativeLayout>
+
+A:
+
+try this out:
+
+Create a DrawingView in your activity. You have to define all the drawing stuff like how many objects and what color. (this is necessary. if not u'll get empty drawings).
+public class DrawingView extends View {
+
+private Bitmap mBitmap;
+private Canvas mCanvas;
+private Path mPath;
+private Paint mBitmapPaint;
+private Paint mPaint;
+private GestureDetector gestureScanner;
+
+private int currentX;
+private int currentY;
+private int currentDownX;
+private int currentDownY;
+private static final int TOUCH_TOLERANCE = 4;
+
+private Bitmap buttonBitmap1;
+private Bitmap buttonBitmap2;
+
+public DrawingView(Context context) {
+    super(context);
+
+    this.setFocusable(true);
+
+    mPath = new Path();
+    mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+    buttonBitmap1 = BitmapFactory.decodeResource(getResources(), R.drawable.img_btn1);
+    buttonBitmap2 = BitmapFactory.decodeResource(getResources(), R.drawable.img_btn2);
+    mPaint = new Paint();
+    mPaint.setAntiAlias(true);
+    mPaint.setDither(true);
+    mPaint.setColor(Color.BLACK);
+    mPaint.setStyle(Paint.Style.STROKE);
+    mPaint.setStrokeJoin(Paint.Join.ROUND);
+    mPaint.setStrokeCap(Paint.Cap.ROUND);
+    mPaint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+    mBitmapPaint.setColor(Color.parseColor("#40000000"));
+    mBitmapPaint.setAlpha(0xFF);
+    mPaint.setColor(Color.parseColor("#ffffff"));
+    mBitmap = Bitmap.createBitmap(buttonBitmap1.getWidth(),
+            buttonBitmap1.getHeight(), Config.ARGB_8888);
+    mCanvas = new Canvas(mBitmap);
+    mPath.reset();
+    mBitmapPaint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+    mBitmapPaint.setAlpha(0xFF);
+}
+
+@Override
+protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    super.onSizeChanged(w, h, oldw, oldh);
+}
+
+@Override
+protected void onDraw(Canvas canvas) {
+    canvas.drawColor(Color.parseColor("#c1c1c1"));
+
+    canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
+    canvas.drawPath(mPath, mPaint);
+
+}
+
+private float mX, mY;
+private static final float TOUCH_TOLERANCE = 4;
+
+private void touch_start(float x, float y) {
+    mPath.reset();
+    mPath.moveTo(x, y);
+    mX = x;
+    mY = y;
+}
+
+private void touch_move(float x, float y) {
+    float dx = Math.abs(x - mX);
+    float dy = Math.abs(y - mY);
+    if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+        mPath.quadTo(mX, mY, (x + mX) / 2, (y + mY) / 2);
+        mX = x;
+        mY = y;
+    }
+}
+
+private void touch_up() {
+    mPath.lineTo(mX, mY);
+    // commit the path to our offscreen
+    mCanvas.drawPath(mPath, mPaint);
+    // kill this so we don't double draw
+    mPath.reset();
+}
+
+@Override
+public boolean onTouchEvent(MotionEvent event) {
+    float x = event.getX();
+    float y = event.getY();
+
+    switch (event.getAction()) {
+        case MotionEvent.ACTION_DOWN:
+            touch_start(x, y);
+            invalidate();
+            break;
+        case MotionEvent.ACTION_MOVE:
+            touch_move(x, y);
+            invalidate();
+            break;
+        case MotionEvent.ACTION_UP:
+            touch_up();
+            invalidate();
+            break;
+    }
+    return true;
+}
+}
+
+then create a touch listener for the view and set the listener to the view. and you can use canvas for drawing stuff. 
+
+A:
+
+One way to do it with android drawables is to draw line on every touch event and detect if the line intersects with a rectangle or not. If so, then you know what direction the touch was. 
+If you have a bitmap (such as buttons), you can create a matrix and translate the bitmap so that you can draw the bitmap into another location (on screen).
+Here is my rough code. You need to add the code in onDraw of a canvas (or any view you would like). I'll leave that part up to you. Also the color variable is what you are going to use in the onDraw() method for drawing the bitmap.
+public class MainActivity extends Activity {
+
+    private boolean flagDrawBitmap;
+    private float tX, tY;
+
+    private boolean flagDrawLine;
+    private float tX2, tY2;
+
+    public Bitmap screen;
+    public Paint paint;
+
+    public float current_x, current_y;
+    public float current_down_x, current_down_y;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        screen = Bitmap.createBitmap(display.getWidth(), display.getHeight(), Bitmap.Config.ARGB_8888);
+        screen = Bitmap.createScaledBitmap(screen, display.getWidth(), display.getHeight(), false);
+
+        if (screen != null) {
+            // Create a new matrix for</div></body></html><!-- 2022-07-17 11:29:44 

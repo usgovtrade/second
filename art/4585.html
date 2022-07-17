@@ -1,0 +1,145 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4586.html'>1. Field of the In</a><Br/><a href='4587.html'>Q:
+
+How to make a </a><Br/><a href='4588.html'>"Mister?" "Miss, I</a><Br/><a href='4589.html'>Inhibition of huma</a><Br/><a href='4590.html'>I've been in love </a><Br/><a href='4591.html'>Q:
+
+Where is my lo</a><Br/><a href='4592.html'>Criminal Minds
+
+F.</a><Br/><a href='4593.html'>As usual, I really</a><Br/><a href='4594.html'>Amy and Michael we</a><Br/><a href='4595.html'>Asking the Right Q</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4584.html'>There is considera</a><Br/><a href='4583.html'>Q:
+
+PHP : array is</a><Br/><a href='4582.html'>Category: Guitar
+
+</a><Br/><a href='4581.html'>Amidst a tumultuou</a><Br/><a href='4580.html'>Infection of mouse</a><Br/><a href='4579.html'>The present invent</a><Br/><a href='4578.html'>A major and possib</a><Br/><a href='4577.html'>If this is your fi</a><Br/><a href='4576.html'>Q:
+
+How to make su</a><Br/><a href='4575.html'>It would be a crim</a></div><div class='nav'><a href='4584.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4586.html'> >> </a></div><div class='article'>Q:
+
+How to use variables as strings in jquery
+
+In short:
+Why does this string not find the right div?
+var myURL = 'index2.php?pid=' + $(this).parent().find('.parentdiv').attr('id');
+$(myURL).load(function(){
+    var somecontent = $(myURL);
+    $('.childdiv').html(somecontent);
+});
+
+I'm using jquery.
+(this).parent().find('.parentdiv').attr('id'); will be always different for every single row in the table.
+What's in index2.php?pid= is the same as parentdiv1, parentdiv2, parentdiv3 etc.
+So how do I do this?
+Please help me, I would be very grateful.
+Thank you in advance!
+EDIT:
+I would like to be able to take myURL, place it into an object and then load it into a different div.
+
+A:
+
+You can use 
+$('#output').load('myurl/');
+
+or 
+$('#output').load('/myurl/');
+
+To load it to an specific id. And also, you should not use parent(this).parent().find('.parentdiv') in every row. That will cause a problem.
+
+Try this:
+HTML
+<div class="parentdiv" id="parentdiv1">
+    <div class="childdiv"></div>
+</div>
+<div class="parentdiv" id="parentdiv2">
+    <div class="childdiv"></div>
+</div>
+
+<br><br>
+
+<div class="parentdiv" id="parentdiv3">
+    <div class="childdiv"></div>
+</div>
+
+<br><br>
+
+<div id="output"></div>
+
+JS
+$('#output').load('/get.php?p=1'); //to just show 1st result (random value)
+
+function loadURL(element) {
+
+    var p = element.parent().find('.parentdiv').attr('id');
+
+    //var newPath = 'get.php?p=' + p;
+    var newPath = '/get.php?p=' + p;
+
+    $(newPath).load(function () {
+        $('#output').load(newPath);
+    });
+}
+
+$(".parentdiv").on("click", function () {
+    var row = $(this).parent().index();
+    loadURL(row);
+});
+
+check working example in this fiddle.
+
+Another way, I think this is also suitable to your situation:
+JQuery
+$(function () {
+    var base = '/get.php?pid=';
+
+    $('a.edit_link').click(function () {
+        var link = $(this).attr('href');
+        var pid = link.substring(link.indexOf('=') + 1, link.indexOf('&'));
+        //pid = link.substring(link.indexOf('=') + 1, link.indexOf('&') + 1);
+
+        $(base + pid).load(function () {
+            $(this).load('/page_action.php');
+        });
+
+        return false;
+    });
+});
+
+check this fiddle.
+
+A:
+
+Using PHP:
+<?php
+    // Assuming you have a list of all of your items, like this
+    // item 1
+    echo '<li><a class="edit_link" href="index.php?pid=1">Edit this item</a></li>';
+
+    // item 2
+    echo '<li><a class="edit_link" href="index.php?pid=2">Edit this item</a></li>';
+?>
+
+Then in jQuery you would simply look for the <a> tag and not worry about a specific ID in the li. For example, if you wanted to find the item with a pid of 1:
+$(function () {
+    $("a.edit_link").live("click", function () {
+        var link = $(this);
+        var pid = link.attr("href").replace("pid=1", "");
+
+        var somecontent = $(pid);
+        $("#somewhere-else").html(somecontent);
+    });
+});
+
+Check out the jQuery Event Documentation
+
+A:
+
+jQuery is really for manipulating and inserting data, not simply displaying data.
+Javascript has native ajax functionality, which would be my suggestion:
+http://api.jquery.com/jQuery.ajax/
+
+Example:
+function data(pid) {
+  return '/get.php?pid=' + pid;
+}
+
+function loadData(target) {
+  target.load(data(pid));
+}
+
+</div></body></html><!-- 2022-07-17 11:29:48 

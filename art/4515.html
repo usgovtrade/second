@@ -1,0 +1,162 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4516.html'>The present invent</a><Br/><a href='4517.html'>1. Field of the In</a><Br/><a href='4518.html'>Q:
+
+Is there a way</a><Br/><a href='4519.html'>1. Field of the In</a><Br/><a href='4520.html'>Q:
+
+When and how s</a><Br/><a href='4521.html'>The present invent</a><Br/><a href='4522.html'>Gastric mucosal pH</a><Br/><a href='4523.html'>[Tumors of the med</a><Br/><a href='4524.html'>Q:
+
+Add to cart bu</a><Br/><a href='4525.html'>Rome was once the </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4514.html'>// ---------------</a><Br/><a href='4513.html'>Q:
+
+How to create </a><Br/><a href='4512.html'>/**
+ * (C) Copyrig</a><Br/><a href='4511.html'>Inhibition of huma</a><Br/><a href='4510.html'>// Licensed to Ela</a><Br/><a href='4509.html'>//****************</a><Br/><a href='4508.html'>Mucins of the norm</a><Br/><a href='4507.html'>Vincent J. Fuller
+</a><Br/><a href='4506.html'>Q:
+
+Why I can't ge</a><Br/><a href='4505.html'>In a communication</a></div><div class='nav'><a href='4514.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4516.html'> >> </a></div><div class='article'>Q:
+
+How can I insert a data value to a specific position in a binary file in C#
+
+I have a binary file data like this
+
+What I want to do is that when I store this value in the "position: 6th" (for example), the data should look like this
+0000000000000011
+But as you know, whenever I store a value to the "position: 6th" (or nth), this value becomes
+0000000000000010
+(when I insert n to position 6th)
+What should I do to achieve this?
+This is my code 
+private void bSave_Click(object sender, EventArgs e)
+    {
+        StringBuilder sb = new StringBuilder();
+
+        FileStream fs = new FileStream(@"C:\a.dat", FileMode.Create);
+
+        BinaryFormatter bf = new BinaryFormatter();
+
+        for (int i = 0; i < 9; i++)
+        {
+            bSave.Text = i.ToString();
+            if (bSave.Text == "6th")
+            {
+                bf.Serialize(fs, bSave.Text);
+            }
+        }
+
+        fs.Close();
+    }
+
+A:
+
+I think you should use StreamWriter instead of StreamReader for writing. The methods used in this answer create and store the file in the same place but the logic is different.
+
+A:
+
+BinaryReader can only read in data that follows the format of the data that has been written. You're reading your binary data as though it was just text and then applying your own rules on it. Try something like this:
+private void bSave_Click(object sender, EventArgs e)
+{
+    StringBuilder sb = new StringBuilder();
+    int count = 0;
+    int pos = 0;
+
+    FileStream fs = new FileStream(@"C:\a.dat", FileMode.Create);
+
+    BinaryFormatter bf = new BinaryFormatter();
+
+    for (int i = 0; i < 9; i++)
+    {
+        bSave.Text = i.ToString();
+
+        bf.Serialize(fs, bSave.Text);
+        if (bSave.Text == "6th")
+        {
+            fs.Position = pos;
+            count++;
+            // this only writes a byte
+            fs.WriteByte(count);
+        }
+    }
+
+    fs.Close();
+}
+
+You also have to be careful that your file doesn't have a newline in it as it was written.
+
+A:
+
+There are some issues in your question:
+
+Your BinaryFormatter is used as if it will read the data and then write it out again (which it can't do).
+Your for loop will write zeroes over and over again until i reaches 6.
+To check if the code is correct you would have to post more code or at least show a simplified version that shows the behaviour you are looking for.
+
+You have to consider the fact that you're converting the integer value (i) to a string and then using string comparison to find out whether i should be 6th. This means that a.dat would be a file with a 6th field that looks like this:
+
+000000010000000   instead of what you want which is 0000000000000011 (at position 6th).
+
+Additionally, if i reaches 9 (your loop ends) you are at position 9 in your file and thus write an extra 0 in the sixth position.
+To get the results you want I would do something like this:
+BinaryFormatter bf = new BinaryFormatter();
+
+using (FileStream fs = new FileStream(@"c:\a.dat", FileMode.Create))
+{
+    int count = 1;
+    for (int i = 0; i < 9; i++)
+    {
+        // You probably want to convert i to a string for some reason,
+        // but you don't have to.
+        if (i == 6)
+        {
+            count++;
+            bf.Serialize(fs, count.ToString());
+        }
+    }
+}
+
+I think that this is the behaviour you were looking for and that you can improve on it once you understand why your previous solution didn't work.
+
+If you want to understand why your solution doesn't work consider the following line:
+bf.Serialize(fs, bSave.Text);
+
+bf.Serialize is expecting to receive a byte[] and not a string. A byte[] is actually a binary representation of a string so you can send it any sequence of bytes without having to convert it to a string first.
+This means that bf.Serialize could be looking for "0" or for "6" and that the string it gets would determine how many bytes to write to the file.
+
+So your input line:
+bSave.Text = "0";
+
+When passed into bf.Serialize would send the following bytes:
+11111111 1111110000 00000000
+
+When the binary data contained "6" it would look like this:
+11111111 1111110000 00000000 00000110
+
+When it did not contain "6" it would look like this:
+11111111 1111110000 00000000 00000100
+
+The first of these isn't valid and you get the wrong number of bytes.
+If you want to keep using your code then instead of calling bf.Serialize(fs, bSave.Text); you could write:
+byte[] bfBytes = Encoding.ASCII.GetBytes(bSave.Text);
+fs.Write(bfBytes, 0, bfBytes.Length);
+
+which will write the right number of bytes.
+
+Using your approach you could write:
+private void bSave_Click(object sender, EventArgs e)
+{
+    BinaryFormatter bf = new BinaryFormatter();
+    using (FileStream fs = new FileStream(@"C:\a.dat", FileMode.Create))
+    {
+        int count = 0;
+        for (int i = 0; i < 9; i++)
+        {
+            int position = 6;
+
+            bSave.Text = i.ToString();
+            if (bSave.Text == "6th")
+            {
+                bf.Serialize(fs, count++);
+            }
+        }
+    }
+}
+
+To answer your question, in general when reading a file you can't reliably determine the number of bytes in it or the position of the first byte in it. This is why there are many APIs that have a FileStream.ReadByte and a FileStream.Seek method. Using the APIs in the question, the file is first read using the BinaryFormatter. Deserialize takes a byte[] and you can pass it a byte[] from File.ReadAllBytes or Stream.ReadAllBytes so the data can be read first.
+
+</div></body></html><!-- 2022-07-17 11:29:35 

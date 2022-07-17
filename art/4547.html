@@ -1,0 +1,214 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4548.html'>
+
+Dedicated to the</a><Br/><a href='4549.html'>In-depth: 'Rio', s</a><Br/><a href='4550.html'>Introduction
+=====</a><Br/><a href='4551.html'># -*- coding: utf-</a><Br/><a href='4552.html'>Q:
+
+Icons from htt</a><Br/><a href='4553.html'>
+
+How to Make Mone</a><Br/><a href='4554.html'>#
+# OpenSSL/crypto</a><Br/><a href='4555.html'>On May 12, the Oba</a><Br/><a href='4556.html'>This invention rel</a><Br/><a href='4557.html'>Q:
+
+How to stop mu</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4546.html'>The role of the en</a><Br/><a href='4545.html'>Q:
+
+Getting this e</a><Br/><a href='4544.html'>Erythropoietin tre</a><Br/><a href='4543.html'>This is an archive</a><Br/><a href='4542.html'>/*
+
+  This file is</a><Br/><a href='4541.html'>Q:
+
+CakePHP: The v</a><Br/><a href='4540.html'><?php
+namespace Br</a><Br/><a href='4539.html'>Golf at Augusta Na</a><Br/><a href='4538.html'>In vitro and in vi</a><Br/><a href='4537.html'>OAKLAND, Calif. – </a></div><div class='nav'><a href='4546.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4548.html'> >> </a></div><div class='article'>Q:
+
+Does .NET 4.0 use its own implementation of MD5?
+
+Just out of curiosity, I was wondering if the implementation of .NET 4.0 of the MD5 hashing algorithm is different from the implementation used in Java or PHP.  In a nutshell, can anyone point me to the .NET 4.0 implementation?
+Thanks,
+
+A:
+
+I wrote the following VB.NET code to test the behaviour of System.Cryptography.MD5Managed versus the standard md5 algorithm.  It works as expected for:
+MD5Hash(System.String)
+
+but not for:
+MD5Hash(Byte())
+
+In other words, to ensure the behaviour matches Java and PHP you need to explicitly provide a string, e.g.
+System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(Password, System.Security.Cryptography.MD5.Create())
+
+Which requires the first argument to be a string. I haven't investigated why. 
+(The following is just a test harness).
+Imports System
+Imports System.Security.Cryptography
+Imports System.Text
+
+Public Class Test
+
+    Public Shared Sub Main()
+
+        Dim MyMd5 As New MD5Managed
+        Dim sha As New SHA1Managed
+
+        Dim Data1 As String = "Test"
+
+        Dim Signed1 As String = MyMd5.ComputeHash(Data1)
+
+        Dim MyMD5String As String = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(Signed1, MyMd5)
+
+        Console.WriteLine("MD5: " & Signed1)
+        Console.WriteLine("MD5: " & MyMD5String)
+
+        Dim Data2 As Byte() = System.Text.Encoding.UTF8.GetBytes(Data1)
+        Console.WriteLine("MD5: " & Signed1)
+        Console.WriteLine("MD5: " & MyMd5.ComputeHash(Data2))
+
+    End Sub
+
+End Class
+
+EDIT: the reason for the difference is because System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile expects a string and MD5 does not natively accept strings, but it is capable of accepting any array of bytes (via MD5(bytes, 0) ), although System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile will default to SHA1 if you give it an array of bytes. You can override this default by passing in the optional 3rd parameter (the algorithm you want to use) to the ComputeHash method.
+EDIT2: so here's what I did. I created two new MD5 implementations, which you could copy into your own project and import using Imports ... MyMd5Lib instead of using System.Security.Cryptography.
+
+MD5HashString
+MD5HashByte
+
+They look pretty much the same. In my testing, MD5HashString and SHA1 are 100% identical. MD5HashByte is the same as MD5Managed but without the SHA1 portion, which is what is supplied by .NET 4.
+using System.Security.Cryptography;
+
+public class MD5HashString : MD5
+{
+    public MD5HashString()
+    {
+    }
+
+    public MD5HashString(System.String s)
+    {
+        this.Hash = ComputeHash(s);
+    }
+
+    public override string ComputeHash(System.String s)
+    {
+        return Convert.ToBase64String(Hash);
+    }
+
+    protected override byte[] HashData(byte[] data)
+    {
+        return null;
+    }
+
+    protected override void HashCore(byte[] array, int ibStart, int cbSize)
+    {
+        HashArray(array);
+    }
+
+    protected override int HashSize
+    {
+        get { return 16; }
+    }
+
+    protected override void HashFinalBlock()
+    {
+        StringBuilder sb = new StringBuilder(Hash);
+        sb.Replace(',', '.');
+        string s = sb.ToString();
+        Byte[] bytes = System.Text.Encoding.UTF8.GetBytes(s);
+        HashArray(bytes);
+    }
+
+    protected byte[] HashArray(byte[] array)
+    {
+        Byte[] bytes = new Byte[array.Length * 32];
+        MD5Managed MD5Managed = new MD5Managed();
+        MD5Managed.Initialize();
+        MD5Managed.TransformBlock(array, 0, array.Length, bytes, 0);
+        return bytes;
+    }
+}
+
+The MD5HashString base class creates a string hash (which will always have to be computed on the .NET side in my tests). The MD5HashByte class contains only the MD5 implementation.
+Here's the code in VB.NET.
+Imports System.Security.Cryptography
+
+Public Class MD5HashString
+    Inherits MD5
+
+    Public Overrides Function ComputeHash(s As String) As String
+        Return Convert.ToBase64String(ComputeHash(s))
+    End Function
+
+    Protected Overrides Function HashData(data As Byte()) As Byte()
+        Return Nothing
+    End Function
+
+    Protected Overrides Sub HashCore(ByRef data As Byte())
+        HashData(data)
+    End Sub
+
+    Protected Overrides Function HashSize() As Integer
+        Return 16
+    End Function
+
+    Protected Overrides Sub HashFinalBlock()
+        Dim sb As New StringBuilder(Hash)
+        sb.Replace(CChar(","), CChar("."))
+        Dim s As String = sb.ToString
+        Dim bytes() As Byte = System.Text.Encoding.UTF8.GetBytes(s)
+        HashData(bytes)
+    End Function
+
+    Protected Overrides Sub HashArray(ByRef data() As Byte)
+        HashCore(data, 0, data.Length)
+    End Sub
+
+    Protected Overrides Sub HashFinalBlock(ByRef data As Byte())
+        'StringBuilder sb = new StringBuilder(Hash);
+        'sb.Replace(',', '.');
+        'string s = sb.ToString();
+        'Byte[] bytes = System.Text.Encoding.UTF8.GetBytes(s);
+        'HashArray(bytes);
+    End Sub
+End Class
+
+Public NotInheritable Class MD5HashByte
+    Inherits MD5
+
+    Public Shared Sub New()
+    End Sub
+
+    Public Shared Function ComputeHash(s As String) As String
+        Return System.Convert.ToBase64String(ComputeHash(s))
+    End Function
+
+    Protected Overrides Function HashData(data As Byte()) As Byte()
+        Return Nothing
+    End Function
+
+    Protected Overrides Function HashCore(ByRef data As Byte()) As Byte()
+        HashData(data)
+    End Function
+
+    Protected Overrides Function HashSize() As Integer
+        Return 16
+    End Function
+
+    Protected Overrides Sub HashFinalBlock()
+        StringBuilder sb = New StringBuilder(Hash)
+        sb.Replace(CChar(","), CChar("."))
+        Dim s As String = sb.ToString
+        Dim bytes() As Byte = System.Text.Encoding.UTF8.GetBytes(s)
+        HashData(bytes)
+    End Function
+
+    Protected Overrides Sub HashArray(ByRef data() As Byte)
+        HashCore(data, 0, data.Length)
+    End Sub
+
+    Protected Overrides Sub HashFinalBlock(ByRef data As Byte())
+        'StringBuilder sb = new StringBuilder(Hash);
+        'sb.Replace(',', '.');
+        'string s = sb.ToString();
+        'Byte[] bytes = System.Text.Encoding.UTF8.GetBytes(s);
+        'HashArray(bytes);
+    End Sub
+End Class
+
+I hope this helps anyone who was wondering why the .NET MD5 implementation didn't match the other implementations. You might even want to check out if the implementation is the same in ASP.NET 4.0.
+
+</div></body></html><!-- 2022-07-17 11:29:40 

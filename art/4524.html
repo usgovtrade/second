@@ -1,0 +1,116 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4525.html'>Rome was once the </a><Br/><a href='4526.html'>NBA commissioner A</a><Br/><a href='4527.html'>/*
+ * Driver for S</a><Br/><a href='4528.html'>Synthesis, propert</a><Br/><a href='4529.html'>1. Field of the In</a><Br/><a href='4530.html'>1. Technical Field</a><Br/><a href='4531.html'>#ifndef ROUTER_H
+#</a><Br/><a href='4532.html'>Sri Lanka: Massacr</a><Br/><a href='4533.html'>//
+//  YJDemo1View</a><Br/><a href='4534.html'>Fetal echocardiogr</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4523.html'>[Tumors of the med</a><Br/><a href='4522.html'>Gastric mucosal pH</a><Br/><a href='4521.html'>The present invent</a><Br/><a href='4520.html'>Q:
+
+When and how s</a><Br/><a href='4519.html'>1. Field of the In</a><Br/><a href='4518.html'>Q:
+
+Is there a way</a><Br/><a href='4517.html'>1. Field of the In</a><Br/><a href='4516.html'>The present invent</a><Br/><a href='4515.html'>Q:
+
+How can I inse</a><Br/><a href='4514.html'>// ---------------</a></div><div class='nav'><a href='4523.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4525.html'> >> </a></div><div class='article'>Q:
+
+Add to cart button with jQuery
+
+I'm not sure if this is possible but what i need is to have the add to cart button in an AJAX form.
+$(function() {
+    var $container = $('#container');
+    $container.on("click", ".add-to-cart", function(e) {
+        var $this = $(this);
+        var product_id = $this.attr('data-id');
+        $this.closest('.button').html('Adding...');
+
+        $.ajax({
+            url: '<?=base_url();?>products/ajax/add-to-cart/' + product_id,
+            type: 'post',
+            data: $this.closest('.button').find('input[name]').serialize(),
+            success: function(response) {
+                $this.closest('.button').html('Add to Cart');
+            }
+        });
+    });
+});
+
+So what i want to do is to change the button by its id and keep the data-id. How do i do that? What should i write in the 'Add to Cart' part. Because as you can see, the code is just changing the button html. But it has no id so it can't grab the data-id. Any ideas?
+
+A:
+
+<div class="button">
+   <button type="submit" name="addtocart" value="<?=$this->name;?>" id="product<?= $this->name; ?>" class="add-to-cart" <?=($this->id == '') ? 'style="display: none;"':''?> >Add to Cart</button>
+</div>
+
+and then you have to change your ajax function like below
+$(function() {
+    var $container = $('#container');
+    $container.on("click", ".add-to-cart", function(e) {
+        var $this = $(this);
+        var product_id = $this.attr('data-id');
+        $this.closest('.button').html('Adding...');
+
+        $.ajax({
+            url: '<?=base_url();?>products/ajax/add-to-cart/' + product_id,
+            type: 'post',
+            data: $this.closest('.button').find('input[name]').serialize(),
+            success: function(response) {
+                var addtocartbutton = $("#product"+product_id);
+                addtocartbutton.html('Add to Cart');
+            }
+        });
+    });
+});
+
+and in you php do what you want according to product id you are sending
+
+A:
+
+You can do it like:
+success: function(response) {
+                var addtocartbutton = $this.closest('.button').find('input[name]').attr('id');
+                addtocartbutton.remove();
+                var newProduct = $('#addtocart').val(response);
+                $(newProduct).closest('.button').html('Add to Cart');
+            }
+
+$(function() {
+    var $container = $('#container');
+    $container.on("click", ".add-to-cart", function(e) {
+        var $this = $(this);
+        var product_id = $this.attr('data-id');
+        $this.closest('.button').html('Adding...');
+
+        $.ajax({
+            url: '<?=base_url();?>products/ajax/add-to-cart/' + product_id,
+            type: 'post',
+            data: $this.closest('.button').find('input[name]').serialize(),
+            success: function(response) {
+                var addtocartbutton = $this.closest('.button').find('input[name]').attr('id');
+                addtocartbutton.remove();
+                var newProduct = $('#addtocart').val(response);
+                $(newProduct).closest('.button').html('Add to Cart');
+            }
+        });
+    });
+});
+
+Here is the DEMO. 
+
+A:
+
+you can do like:
+$.ajax({
+        url: '<?=base_url();?>products/ajax/add-to-cart/' + product_id,
+        type: 'post',
+        data: $this.closest('.button').find('input[name]').serialize(),
+        success: function(response) {
+            $this.closest('.button').html('Add to Cart');
+            var id=$(this).parent().find('input[name="product_id"]').val();
+        }
+    });
+
+And  id var will be:
+$this.closest('.button').parent().find('input[name="product_id"]').val();
+
+Hope help.
+
+Working Demo
+
+</div></body></html><!-- 2022-07-17 11:29:36 

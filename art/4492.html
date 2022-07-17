@@ -1,0 +1,145 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4493.html'>Gmina Bukowina Tat</a><Br/><a href='4494.html'>New Yorkers Agains</a><Br/><a href='4495.html'>The present invent</a><Br/><a href='4496.html'>Electric power pro</a><Br/><a href='4497.html'>Efficient producti</a><Br/><a href='4498.html'><?php
+/*
+ * Copyri</a><Br/><a href='4499.html'>Effect of dietary </a><Br/><a href='4500.html'>The present invent</a><Br/><a href='4501.html'>All posts by Mika </a><Br/><a href='4502.html'>Biosensor for meas</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4491.html'>/*
+ * Licensed und</a><Br/><a href='4490.html'>Q:
+
+PHP/MySQL - Ho</a><Br/><a href='4489.html'>Sacred Heart Schoo</a><Br/><a href='4488.html'>/**
+ * Licensed to</a><Br/><a href='4487.html'>WILT is a digital </a><Br/><a href='4486.html'>Phenomenon and cli</a><Br/><a href='4485.html'>What do you think?</a><Br/><a href='4484.html'>When I read about </a><Br/><a href='4483.html'>Category: Internet</a><Br/><a href='4482.html'>Q:
+
+In what order </a></div><div class='nav'><a href='4491.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4493.html'> >> </a></div><div class='article'>Q:
+
+How to avoid redundant information in a many-to-many relationship
+
+I have the following ERD.
+I have a table of items in a many to many relationship.
+ITEMS
+-----
+ID    NAME
+ 1    Item1
+ 2    Item2
+
+ITEMS_TAGS_RELATIONSHIP_TABLE
+--------------------
+ITEM_ID   TAG_ID
+ 1         3
+ 1         5
+ 2         5
+ 2         6
+
+So, i have a many to many relationship between the items. But, with the TAG_ID, is it possible to get a list of the ITEMS that has the specific TAG_ID in its TAG_ID field? For example, i need all the items that has the tag 5, or items that have both the tag 5 and 6 in its TAG_ID field.
+Can this be done with SQL? If yes, how? If no, how to do it in code?
+
+A:
+
+If your relation table uses an artificial primary key, say (itemid, tagid) the query is very simple:
+select 
+    * 
+from 
+    items i
+where 
+    i.id in (select itemid from tags_relationship_table where tagid = 5)
+    and 
+    i.id in (select itemid from tags_relationship_table where tagid = 6)
+
+If you do not have an artificial primary key on the relation table you could use group by to get the same result.
+To execute this on more than one tag you can use the in statement.
+(Also consider changing items_relationship to tags_relationship_table, because I think this table should be called "tags")
+
+A:
+
+Use a GROUP BY and HAVING clause in the SQL query.
+Something like:
+SELECT i.name, COUNT(DISTINCT t.id) AS tagCount
+FROM ITEMS i
+JOIN ITEMS_TAGS_RELATIONSHIP_TABLE t ON i.id = t.itemid
+WHERE t.tagid = 5
+GROUP BY i.name
+HAVING tagCount = 2 --<-- Only display items with a tag count of two
+
+The HAVING clause ensures that the two items you are selecting only have a matching tag id, and you can count the number of tag ids in the results returned from this query to ensure you are displaying only items that have both a tag 5 and 6 associated with them.
+
+A:
+
+This example is using the data posted in the SQL Fiddle of your first question.
+;with allitems (id,name) as
+(
+    select id,name from items_tags_relationship_table
+),
+uniqueitems(id,name) as
+(
+    select distinct itemid,name from items_tags_relationship_table
+)
+select i.name, COUNT(*) AS cnt, 'tag5,tag6' as tags
+from allitems i
+inner join uniqueitems u
+    on i.itemid=u.itemid and i.name = 'ITem1'
+group by i.name, u.name
+having COUNT(*) > 1
+
+Since this is tagged SQL Server, let me add another answer here using some T-SQL functions that should work equally well in SQL Server and in MySQL, as you requested in your last comment.
+select itemid
+from items_tags_relationship_table a
+where tagid in (5, 6)
+group by itemid
+having count(*) > 1
+
+and
+select itemid
+from items_tags_relationship_table a
+where tagid in (5)
+group by itemid
+having count(*) > 1
+
+Will work in either SQL Server or MySQL, as shown below.
+
+Using this, you can modify your original to only show items that have either both tags 5 and 6 or just tag 5
+SELECT i.name, COUNT(*) AS cnt, 'tag5,tag6' as tags
+FROM allitems i
+inner join items_tags_relationship_table a
+    on i.itemid=a.itemid
+where tagid in (5, 6)
+GROUP BY i.name, a.tagid
+HAVING COUNT(*) > 1
+UNION
+SELECT i.name, COUNT(*) AS cnt, 'tag5' as tags
+FROM allitems i
+inner join items_tags_relationship_table a
+    on i.itemid=a.itemid
+where tagid in (5)
+GROUP BY i.name, a.tagid
+HAVING COUNT(*) > 1
+
+SQL Fiddle
+
+The above two SQL Fiddles were used for testing.
+
+This SQL Fiddle also shows it in action.
+
+Here's another solution which is more performant:
+SELECT i.name, COUNT(*) AS cnt, 'tag5,tag6' as tags
+FROM allitems i
+inner join items_tags_relationship_table a
+    on i.itemid=a.itemid
+GROUP BY i.name, a.tagid
+HAVING COUNT(*) > 1
+UNION ALL
+SELECT i.name, COUNT(*) AS cnt, 'tag5' as tags
+FROM allitems i
+inner join items_tags_relationship_table a
+    on i.itemid=a.itemid
+GROUP BY i.name, a.tagid
+HAVING COUNT(*) > 1
+
+And here is another version that should be slightly faster as it eliminates the need for an extra select subquery:
+SELECT 
+    *, 
+    COUNT(*) OVER (PARTITION BY i.name) - COUNT(*) OVER (PARTITION BY i.name, a.tagid)
+    AS cnt, 
+    CASE WHEN a.tagid = 5 THEN 'tag5'
+         WHEN a.tagid = 6 THEN 'tag5,tag6'
+         ELSE 'tag5' END as tags
+FROM items_tags_relationship_table a
+JOIN items i
+    ON i.id = a.itemid
+
+</div></body></html><!-- 2022-07-17 11:29:31 

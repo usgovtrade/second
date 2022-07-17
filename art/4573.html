@@ -1,0 +1,196 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4574.html'>---
+title: "List v</a><Br/><a href='4575.html'>It would be a crim</a><Br/><a href='4576.html'>Q:
+
+How to make su</a><Br/><a href='4577.html'>If this is your fi</a><Br/><a href='4578.html'>A major and possib</a><Br/><a href='4579.html'>The present invent</a><Br/><a href='4580.html'>Infection of mouse</a><Br/><a href='4581.html'>Amidst a tumultuou</a><Br/><a href='4582.html'>Category: Guitar
+
+</a><Br/><a href='4583.html'>Q:
+
+PHP : array is</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4572.html'><?php
+/*
+ * Copyri</a><Br/><a href='4571.html'>Q:
+
+Javascript eve</a><Br/><a href='4570.html'>A novel approach f</a><Br/><a href='4569.html'>A lot of thought w</a><Br/><a href='4568.html'>Q:
+
+how to draw a </a><Br/><a href='4567.html'>---
+title: "How-To</a><Br/><a href='4566.html'>Bath-bound?
+
+As it</a><Br/><a href='4565.html'>package com.github</a><Br/><a href='4564.html'>A young mother is </a><Br/><a href='4563.html'>Introduction {#Sec</a></div><div class='nav'><a href='4572.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4574.html'> >> </a></div><div class='article'>Q:
+
+Pass variable into a constructor of sub type without copy
+
+I have a simple use case where I want to subclass a vector type, having an extra function (method), and pass some extra values to the constructor. This would also add the new method to all subclasses of the base type.
+Here is a simple example code (not working, just used to describe the use case).
+#include <typeinfo>
+
+class Test {};
+class Test2 {};
+
+class TestContainer {
+public:
+    TestContainer() : type(), member() {}
+    ~TestContainer() {}
+
+    template <class T>
+    void register_type() {
+        auto ptr = dynamic_cast<TestContainer *>(&type);
+
+        if (!ptr) {
+            ptr = new T();
+
+            type.reset(ptr);
+        }
+    }
+
+    Test * get_member() { return &member; }
+
+private:
+    std::unique_ptr<Test> type;
+    std::unique_ptr<Test> member;
+};
+
+class Test2Container : public TestContainer {
+public:
+    Test2Container() {}
+    ~Test2Container() {}
+
+    void execute_method() {
+        std::cout << "Calling method" << std::endl;
+    }
+};
+
+class Test3Container : public TestContainer {
+public:
+    Test3Container() {}
+    ~Test3Container() {}
+
+    void execute_method() {
+        std::cout << "Calling method" << std::endl;
+    }
+};
+
+int main() {
+
+    TestContainer base;
+
+    TestContainer test1 = base;
+    base.register_type<Test>();
+
+    TestContainer test2 = base;
+    base.register_type<Test2>();
+
+    TestContainer test3 = base;
+    base.register_type<Test3>();
+
+    // print type: works fine
+    std::cout << typeid(base).name() << std::endl;
+
+    base.get_member()->execute_method(); // works fine
+
+    test1.get_member()->execute_method(); // works fine
+    test2.get_member()->execute_method(); // works fine
+    test3.get_member()->execute_method(); // compile error: 'error: use of deleted function 'std::unique_ptr<_Tp, _Tp *>::unique_ptr(const std::unique_ptr<_Tp, _Tp *>::unique_ptr &)'
+    //  [with _Tp = Test3, _Tp * = std::unique_ptr<Test3>]
+    // 'std::unique_ptr<_Tp, _Tp *>::unique_ptr(const std::unique_ptr<_Tp, _Tp *>::unique_ptr &)' is implicitly deleted because the default definition would cause a use-declared move assignment operator
+
+    base.get_member()->execute_method(); // works fine
+
+    test1.get_member()->execute_method(); // works fine
+    test2.get_member()->execute_method(); // works fine
+    test3.get_member()->execute_method(); // compile error: 'error: use of deleted function 'std::unique_ptr<_Tp, _Tp *>::unique_ptr(const std::unique_ptr<_Tp, _Tp *>::unique_ptr &)'
+    // 'std::unique_ptr<_Tp, _Tp *>::unique_ptr(const std::unique_ptr<_Tp, _Tp *>::unique_ptr &)' is implicitly deleted because the default definition would cause a use-declared move assignment operator
+
+    base.get_member()->execute_method(); // works fine
+
+    test1.get_member()->execute_method(); // compile error: 'error: use of deleted function 'std::unique_ptr<_Tp, _Tp *>::unique_ptr(const std::unique_ptr<_Tp, _Tp *>::unique_ptr &)'
+    // [with _Tp = Test1, _Tp * = std::unique_ptr<Test1>]
+    // 'std::unique_ptr<_Tp, _Tp *>::unique_ptr(const std::unique_ptr<_Tp, _Tp *>::unique_ptr &)' is implicitly deleted because the default definition would cause a use-declared move assignment operator
+
+}
+
+As can be seen the class TestContainer is a base class. It has a function get_member that returns a pointer to a member member. This member holds a pointer to another member.
+There are several subclasses of the base class, all using the base as a template parameter, all adding the new method execute_method() to the base. And each subclass is registered with a respective type like "Test1" or "Test2" and "Test3" like the example below shows:
+TestContainer test1 = base;
+base.register_type<Test>();
+TestContainer test2 = base;
+base.register_type<Test2>();
+TestContainer test3 = base;
+base.register_type<Test3>();
+
+So far so good. The subclasses have their own member, and get_member returns the pointer to member, so it is not surprising that everything is working as it should.
+As I want to have static data in a subclasses I wanted to create a base constructor with some initial values.
+In the example code a new Test3 class is added that also inherits from the TestContainer. It adds a method execute_method(), so the example code looks like this:
+TestContainer test3 = base;
+base.register_type<Test3>();
+
+This however, brings me to my questions:
+How can I add the data of the Test3 class to the subclasses? The idea is to not use pointers, and since the pointers of the subclasses are not allowed to be created, this is what I am trying to avoid. Here are my first attempts:
+As the line base.get_member()->execute_method() makes clear, I thought that a new instance of a subclass would create a new instance of the Test class. Therefore I thought that one would need to create the object as well. But I also thought that having the member static would be enough, and there is a function for that in the library: unique_ptr<T>::make_unique(). Unfortunately it is not clear to me, how to add values to a static object. And why there is a function make_unique(). So it seems that the Test3 class is not a new instance of Test, but just another instance with the same values. And now I am stuck and wonder what is the way to go?
+Can the member be filled using one of the constructors of the Test3 class? But if so, why is it not possible to do with the other subclasses? Maybe someone can shed some light on what is going on and maybe even give an example that works and that shows that a new object is created.
+Thank you
+
+A:
+
+I finally found a way that makes sense for my use case. Basically a new class has to inherit from a class and in the constructor add a data member of the base class to the object it creates. The problem I had with the solution above was that each class had its own data member so the values where different. In my case it would mean one object for Test3 which has its own method execute_method(), which would mean that one object can only process data of one task. So I made another base class TestBase which contains an execute_method() function and an abstract function execute(). All other classes inherit from TestBase and call execute() instead of execute_method(). It might not be the most elegant solution, but it works. So here is the new solution:
+#include <typeinfo>
+
+class Test {};
+class Test2 {};
+
+class TestContainer {
+public:
+    TestContainer() : type(), member() {}
+    ~TestContainer() {}
+
+    template <class T>
+    void register_type() {
+        auto ptr = dynamic_cast<TestContainer *>(&type);
+
+        if (!ptr) {
+            ptr = new T();
+
+            type.reset(ptr);
+        }
+    }
+
+    Test * get_member() { return &member; }
+
+private:
+    std::unique_ptr<Test> type;
+    std::unique_ptr<Test> member;
+};
+
+class TestBase {
+public:
+    virtual void execute() = 0;
+    virtual ~TestBase() = default;
+};
+
+class Test3 : public TestBase {
+public:
+    void execute_method() {
+        std::cout << "Calling method" << std::endl;
+    }
+
+    Test3() {
+        // TODO: Fill data member member;
+    }
+};
+
+class Test2 : public TestBase {
+public:
+    void execute_method() {
+        std::cout << "Calling method" << std::endl;
+    }
+
+    Test2() {
+        // TODO: Fill data member member;
+    }
+};
+
+class TestContainer : public TestBase {
+public:
+    TestContainer() {
+        // TODO: Fill data member member;
+    }
+
+    void execute()</div></body></html><!-- 2022-07-17 11:29:45 

@@ -1,0 +1,192 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4588.html'>"Mister?" "Miss, I</a><Br/><a href='4589.html'>Inhibition of huma</a><Br/><a href='4590.html'>I've been in love </a><Br/><a href='4591.html'>Q:
+
+Where is my lo</a><Br/><a href='4592.html'>Criminal Minds
+
+F.</a><Br/><a href='4593.html'>As usual, I really</a><Br/><a href='4594.html'>Amy and Michael we</a><Br/><a href='4595.html'>Asking the Right Q</a><Br/><a href='4596.html'>In a small, low-ce</a><Br/><a href='4597.html'>Tunable nanodisper</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4586.html'>1. Field of the In</a><Br/><a href='4585.html'>Q:
+
+How to use var</a><Br/><a href='4584.html'>There is considera</a><Br/><a href='4583.html'>Q:
+
+PHP : array is</a><Br/><a href='4582.html'>Category: Guitar
+
+</a><Br/><a href='4581.html'>Amidst a tumultuou</a><Br/><a href='4580.html'>Infection of mouse</a><Br/><a href='4579.html'>The present invent</a><Br/><a href='4578.html'>A major and possib</a><Br/><a href='4577.html'>If this is your fi</a></div><div class='nav'><a href='4586.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4588.html'> >> </a></div><div class='article'>Q:
+
+How to make a div appear over another?
+
+I have a div with a click event to call another function. What I would like to do is to make a div with a higher z-index to show over the other div. Any ideas on how to make it?
+I would like to make a div that can be hidden when the link is clicked and then made to show when a page is reloaded.
+The problem is that the div which is hidden only disappears from the page and I cannot figure out how to make it so that it stays visible when reloading the page.
+<div id="page_footer">
+    <div id="footer_links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="terms.html">Terms</a>
+    </div>
+</div>
+
+.footer-link{
+    background-color: transparent;
+    border-radius: 0;
+    color: white;
+    display: block;
+    float: right;
+    font-size: 15px;
+    height: 48px;
+    margin-top: -1.5%;
+    text-align: right;
+    vertical-align: top;
+    width: 35%;
+}
+
+#footer_links {
+    clear: both;
+    height: 6.0em;
+    text-align: center;
+}
+
+#footer_links a {
+    background-color: #333;
+    border-radius: 0px;
+    color: #fff;
+    display: inline-block;
+    height: 100%;
+    padding: 1.0em;
+    text-decoration: none;
+    transition-duration: 0.5s;
+}
+
+#footer_links a:hover {
+    background-color: #fff;
+    color: #333;
+}
+
+A:
+
+You can try this:
+.footer-link{
+background-color: transparent;
+border-radius: 0;
+color: white;
+display: block;
+float: right;
+font-size: 15px;
+height: 48px;
+margin-top: -1.5%;
+text-align: right;
+vertical-align: top;
+width: 35%;
+}
+
+.inactive_div {
+  display: none;
+}
+.active_div {
+  display: block !important;
+}
+
+<div class="inactive_div">
+<a href="about.html" onclick="this.parentElement.style.display='none'">About</a>
+<a href="contact.html" onclick="this.parentElement.style.display='none'">Contact</a>
+<a href="terms.html" onclick="this.parentElement.style.display='none'">Terms</a>
+</div>
+
+<div class="active_div">
+ <a href="about.html" onclick="this.parentElement.style.display='block'">About</a>
+<a href="contact.html" onclick="this.parentElement.style.display='block'">Contact</a>
+<a href="terms.html" onclick="this.parentElement.style.display='block'">Terms</a>
+</div>
+
+In jQuery you can write a similar code:
+$(function() {
+$('.active_div a').click(function(e) {
+    e.preventDefault();
+    $(this).parent().addClass('inactive_div');
+    $(this).parent().removeClass('active_div');
+});
+});
+
+$('.inactive_div').click(function(e) {
+    e.preventDefault();
+    $(this).parent().addClass('active_div');
+    $(this).parent().removeClass('inactive_div');
+});
+
+Note that you can use the same style elements above into your document.
+
+Edit: Based on your comment, I'll recommend you another approach that uses CSS.
+Note that in your example, you are using absolute positioning, so I'll keep it like that.
+However, it's better to use the float CSS property.
+Let's see your code:
+.footer-link{
+background-color: transparent;
+border-radius: 0;
+color: white;
+display: block;
+float: right;
+font-size: 15px;
+height: 48px;
+margin-top: -1.5%;
+text-align: right;
+vertical-align: top;
+width: 35%;
+}
+
+.inactive_div {
+  display: none;
+}
+.active_div {
+  display: block !important;
+}
+
+So let's change it to this:
+.footer-link{
+background-color: transparent;
+border-radius: 0;
+color: white;
+float: right;
+font-size: 15px;
+height: 48px;
+margin-top: -1.5%;
+text-align: right;
+vertical-align: top;
+width: 35%;
+}
+
+.inactive_div {
+  display: none;
+}
+.active_div {
+  display: block !important;
+}
+
+And this is the HTML part:
+<div id="footer_links">
+<div id="links_link_1" class="inactive_div"><a href="about.html">About</a></div>
+<div id="links_link_2" class="inactive_div"><a href="contact.html">Contact</a></div>
+<div id="links_link_3" class="inactive_div"><a href="terms.html">Terms</a></div>
+</div>
+
+And this is the jQuery part:
+$(function() {
+$('.active_div a').click(function(e) {
+    e.preventDefault();
+    $(this).parent().addClass('inactive_div');
+    $(this).parent().removeClass('active_div');
+});
+});
+
+$('.inactive_div').click(function(e) {
+    e.preventDefault();
+    $(this).parent().addClass('active_div');
+    $(this).parent().removeClass('inactive_div');
+});
+
+And a working version in jsfiddle: https://jsfiddle.net/b5x6hrs1/
+If you want to remove the position, you can do this by CSS:
+.footer-link {
+    position: absolute;
+    top: 100px;
+}
+
+I'll edit the jsfiddle, if you want.
+
+</div></body></html><!-- 2022-07-17 11:29:48 

@@ -1,0 +1,224 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4566.html'>Bath-bound?
+
+As it</a><Br/><a href='4567.html'>---
+title: "How-To</a><Br/><a href='4568.html'>Q:
+
+how to draw a </a><Br/><a href='4569.html'>A lot of thought w</a><Br/><a href='4570.html'>A novel approach f</a><Br/><a href='4571.html'>Q:
+
+Javascript eve</a><Br/><a href='4572.html'><?php
+/*
+ * Copyri</a><Br/><a href='4573.html'>Q:
+
+Pass variable </a><Br/><a href='4574.html'>---
+title: "List v</a><Br/><a href='4575.html'>It would be a crim</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4564.html'>A young mother is </a><Br/><a href='4563.html'>Introduction {#Sec</a><Br/><a href='4562.html'>[Spatiotemporal or</a><Br/><a href='4561.html'>A comparative tria</a><Br/><a href='4560.html'>Pediatric brain tu</a><Br/><a href='4559.html'>Basketball at the </a><Br/><a href='4558.html'>Biosolids are envi</a><Br/><a href='4557.html'>Q:
+
+How to stop mu</a><Br/><a href='4556.html'>This invention rel</a><Br/><a href='4555.html'>On May 12, the Oba</a></div><div class='nav'><a href='4564.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4566.html'> >> </a></div><div class='article'>package com.github.zuihou.tenant.controller;
+
+import com.github.zuihou.base.R;
+import com.github.zuihou.component.model.AdminModel;
+import com.github.zuihou.tenant.enumeration.TenantType;
+import com.github.zuihou.tenant.entity.Tenant;
+import com.github.zuihou.tenant.service.TenantService;
+import com.google.common.collect.Lists;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
+
+/**
+ * <p>
+ * 系统模块: 员工
+ * 含义： 系统内部用户角色的管理
+ * </p>
+ *
+ * @author zuihou
+ * @date 2019-10-22
+ */
+@Slf4j
+@Controller
+@Api(tags = "TenantController")
+@RequestMapping("/Tenant")
+public class TenantController {
+
+    private final TenantService tenantService;
+
+    @Autowired
+    public TenantController(TenantService tenantService) {
+        this.tenantService = tenantService;
+    }
+
+    /**
+     * 登录
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "登录", notes = "登录请求的信息")
+    @GetMapping
+    @PreAuthorize(value = "hasAnyRole('admin','superUser')")
+    public TenantResponse login() {
+        return tenantService.getAdmin();
+    }
+
+    /**
+     * 编辑
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "编辑", notes = "编辑请求的信息")
+    @GetMapping(value = "/modify", produces = "application/json;charset=UTF-8")
+    @PreAuthorize(value = "hasAnyRole('admin','superUser')")
+    public TenantResponse modify() {
+        return tenantService.modify();
+    }
+
+    /**
+     * 删除
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "删除", notes = "删除请求的信息")
+    @PreAuthorize(value = "hasAnyRole('admin')")
+    @DeleteMapping(value = "/destroy")
+    public TenantResponse destroy() {
+        return tenantService.destroy();
+    }
+
+    /**
+     * 创建
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "创建", notes = "创建请求的信息")
+    @GetMapping(value = "/create")
+    public TenantResponse create() {
+        return tenantService.create();
+    }
+
+    /**
+     * 查询列表
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "查询列表", notes = "查询列表")
+    @GetMapping(value = "/list", produces = "application/json;charset=UTF-8")
+    @PreAuthorize(value = "hasAnyRole('admin','superUser')")
+    public TenantResponse list(@Sort @ApiImplicitParams(sortParam = "sort") Sort sort) {
+        return tenantService.list(sort);
+    }
+
+    /**
+     * 分页列表
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "分页列表", notes = "分页列表")
+    @GetMapping(value = "/list", produces = "application/json;charset=UTF-8")
+    @PreAuthorize(value = "hasAnyRole('admin','superUser')")
+    public TenantResponse list(@Pageable @ApiImplicitParams(pageableParam = "pageable") Pageable pageable) {
+        return tenantService.list(pageable);
+    }
+
+    /**
+     * 添加
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "添加", notes = "添加请求的信息")
+    @PostMapping
+    @PreAuthorize(value = "hasRole('admin')")
+    public TenantResponse add(Tenant tenant) {
+        return tenantService.add(tenant);
+    }
+
+    /**
+     * 新增
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "新增", notes = "新增请求的信息")
+    @PreAuthorize(value = "hasAnyRole('admin')")
+    @PostMapping(value = "/create")
+    public TenantResponse create() {
+        return tenantService.create();
+    }
+
+    /**
+     * 修改
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "修改", notes = "修改请求的信息")
+    @PreAuthorize(value = "hasAnyRole('admin','superUser')")
+    @PutMapping(value = "/update")
+    public TenantResponse update(Tenant tenant) {
+        return tenantService.update(tenant);
+    }
+
+    /**
+     * 更新角色
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "更新角色", notes = "更新角色请求的信息")
+    @PreAuthorize(value = "hasAnyRole('admin','superUser')")
+    @PutMapping(value = "/update-role")
+    public TenantResponse updateRole(@RequestParam String roleId) {
+        return tenantService.updateRole(roleId);
+    }
+
+    /**
+     * 查询资源列表
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "查询资源列表", notes = "查询资源列表")
+    @PostMapping
+    @PreAuthorize(value = "hasAnyRole('admin')")
+    public TenantResponse listResources() {
+        return tenantService.listResources();
+    }
+
+    /**
+     * 增加数据库权限
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "增加数据库权限", notes = "增加数据库权限请求的信息")
+    @PreAuthorize(value = "hasAnyRole('admin')")
+    @PostMapping(value = "/create-role")
+    public TenantResponse addRole() {
+        return tenantService.addRole();
+    }
+
+    /**
+     * 查询机器信息
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "查询机器信息", notes = "查询机器信息")
+    @PreAuthorize(value = "hasAnyRole('admin')")
+    @PostMapping(value = "/get-machine")
+    public TenantResponse getMachine() {
+        return tenantService.getMachine();
+    }
+
+    /**
+     * 查询机器列表
+     *
+     * @return {@link TenantResponse}
+     */
+    @ApiOperation(value = "查询机器列表", notes = "查询机器列表")
+    @PreAuthorize(value = "hasAnyRole('admin')")
+    @PostMapping(value = "/get-machines")
+    public TenantResponse get</div></body></html><!-- 2022-07-17 11:29:44 

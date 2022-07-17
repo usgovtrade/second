@@ -1,0 +1,98 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4519.html'>1. Field of the In</a><Br/><a href='4520.html'>Q:
+
+When and how s</a><Br/><a href='4521.html'>The present invent</a><Br/><a href='4522.html'>Gastric mucosal pH</a><Br/><a href='4523.html'>[Tumors of the med</a><Br/><a href='4524.html'>Q:
+
+Add to cart bu</a><Br/><a href='4525.html'>Rome was once the </a><Br/><a href='4526.html'>NBA commissioner A</a><Br/><a href='4527.html'>/*
+ * Driver for S</a><Br/><a href='4528.html'>Synthesis, propert</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4517.html'>1. Field of the In</a><Br/><a href='4516.html'>The present invent</a><Br/><a href='4515.html'>Q:
+
+How can I inse</a><Br/><a href='4514.html'>// ---------------</a><Br/><a href='4513.html'>Q:
+
+How to create </a><Br/><a href='4512.html'>/**
+ * (C) Copyrig</a><Br/><a href='4511.html'>Inhibition of huma</a><Br/><a href='4510.html'>// Licensed to Ela</a><Br/><a href='4509.html'>//****************</a><Br/><a href='4508.html'>Mucins of the norm</a></div><div class='nav'><a href='4517.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4519.html'> >> </a></div><div class='article'>Q:
+
+Is there a way to set the text of an EditText from another class in Android Studio?
+
+I would like to set the text of an EditText element from another class, however, the text is not being updated, it is still the original text.  I have looked on Stackoverflow and Google for the answer and it seems that the solution to this is using intents.  I have seen this being used but it doesn't appear to work for me and only sets the text when the intent is being received.
+Below is what I am trying to do in Main.java:
+ public void setText(String str) {
+    mTextView.setText(str);
+}
+
+Below is the code from the intent that is triggering the function:
+Intent myIntent = new Intent(this, Main.class);
+    myIntent.putExtra("stringToPass", "testing");
+    this.startActivity(myIntent);
+
+Below is the code from where I am trying to get the intent to work (Main.java) but it is not changing the text:
+Intent intent = getIntent();
+intent.getStringExtra("stringToPass");
+mTextView.setText(intent.getStringExtra("stringToPass"));
+
+A:
+
+It looks like you might have the parameters backwards in the Intent to Main.java.  It looks like you have the second Intent in Main.java while your actual Intent call is the first.  Take a look at: Android docs - Intents.
+
+For example, to share a string with the other application, the Intent includes an extra value of type String. The other application must use this extra value to retrieve the string.
+
+Android Documentation - Intent Intents
+
+The activity or broadcast receiver handling the Intent should specify one or more fields in the Intent that contain values the activity can use. For example, the activity could include an integer extra named EXTRA_MESSAGE that contains the text to display. The receiving component should retrieve the EXTRA_MESSAGE value in onCreate or similar and then set the text view with it.
+
+It's also important to take a look at the Activity Lifecycle for android as well as how you would pass data between activities. 
+http://developer.android.com/training/basics/activity-lifecycle/index.html
+
+The activity lifecycle. Every time an activity is brought to the foreground, it is recreated. Similarly, every time an activity comes to the foreground, it might be destroyed and then recreated. As a result, the state of a given activity, such as the user’s current position in a document or the list position of a list item, will be lost during the time the activity is destroyed. When an activity is destroyed, you lose access to anything you had to store there — any fields or member variables — and you also lose any data that the activity cached in memory, such as the contents of a database, since those get cleared by the operating system when an application finishes.
+
+The only solution I can think of is if you would like to pass data between Activities of different Activities that are only within the same application. You would first need to set the text view in one of the Activity's in your app. Then call Intent.putExtras to pass in an Intent to the Activity that you would like to set the EditText TextView. It's important to take a look at setting variables withing Activities because you can cause the application to crash if you try to pass a local variable to a different Activity, even if you never use it. Below is a code sample of passing information between Activities.
+Intent myIntent = new Intent(this, Main.class);
+myIntent.putExtra("stringToPass", "testing");
+startActivity(myIntent);
+
+In Main.java:
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    mTextView = (EditText) findViewById(R.id.mytext);
+    Intent intent = getIntent();
+    String str = intent.getStringExtra("stringToPass");
+    mTextView.setText(str);
+}
+
+More information on passing data between Activities.
+https://developer.android.com/training/basics/intents/result
+
+Intent results can contain extra information about the result. For example, when the user presses a button, the activity may include information about the button press in the result. To pass this extra information into another activity, use an intent extra:
+
+For example, if you want to pass a string value into another Activity when the user presses a button, you could call startActivityForResult and pass the string into the Intent extra. Then, in your second Activity's onCreate method, you could use the Intent's getExtras() method to retrieve the string.
+
+http://developer.android.com/guide/components/intents-filters.html#ResultCodes
+
+This is just a small list of what I came up with for your question. For example, if you wanted to have a string that gets updated by an int variable, you could do:
+//This would increment the first number, then return the new number in string format
+int i = 0;
+String str = "My number is " + i;
+
+You can make it however you want it. The link I sent you should help you get your answer though.
+https://developer.android.com/training/basics/intents/result
+
+A:
+
+You don't need to use an Intent to do that.
+To get the value of your string, pass it to Main's setText() method:
+TextView yourEditTextView = (TextView)findViewById(R.id.yourEditTextView);
+yourEditTextView.setText(getIntent().getStringExtra("stringToPass"));
+
+or in your xml, pass your string to your editText
+android:text="@string/yourString"
+
+As for your code, the way to pass intent to another Activity is :
+Intent intent = new Intent(this, Main.class);
+intent.putExtra("stringToPass", "testing");
+startActivity(intent);
+
+Then in Main :
+Intent intent = getIntent();
+String s = intent.getStringExtra("stringToPass");
+EditText yourEditTextView = (EditText) findViewById(R.id.yourEditTextView);
+yourEditTextView.setText(s);</div></body></html><!-- 2022-07-17 11:29:35 

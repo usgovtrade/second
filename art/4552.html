@@ -1,0 +1,185 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4553.html'>
+
+How to Make Mone</a><Br/><a href='4554.html'>#
+# OpenSSL/crypto</a><Br/><a href='4555.html'>On May 12, the Oba</a><Br/><a href='4556.html'>This invention rel</a><Br/><a href='4557.html'>Q:
+
+How to stop mu</a><Br/><a href='4558.html'>Biosolids are envi</a><Br/><a href='4559.html'>Basketball at the </a><Br/><a href='4560.html'>Pediatric brain tu</a><Br/><a href='4561.html'>A comparative tria</a><Br/><a href='4562.html'>[Spatiotemporal or</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4551.html'># -*- coding: utf-</a><Br/><a href='4550.html'>Introduction
+=====</a><Br/><a href='4549.html'>In-depth: 'Rio', s</a><Br/><a href='4548.html'>
+
+Dedicated to the</a><Br/><a href='4547.html'>Q:
+
+Does .NET 4.0 </a><Br/><a href='4546.html'>The role of the en</a><Br/><a href='4545.html'>Q:
+
+Getting this e</a><Br/><a href='4544.html'>Erythropoietin tre</a><Br/><a href='4543.html'>This is an archive</a><Br/><a href='4542.html'>/*
+
+  This file is</a></div><div class='nav'><a href='4551.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4553.html'> >> </a></div><div class='article'>Q:
+
+Icons from http://materialicons.com/icon/search don't work on website with Polymer-Dart
+
+I have a project using Polymer 1.0 and Polymer Dart.
+I want to use the icon-search from materialicons.com (https://material.io/icons/#ic_search), but they don't work.
+
+I tried putting it in my site folder. I tried adding it as an icon in the material.svg.
+The browser console gives me this error:
+
+GET http://localhost:40484/icon-search.svg 404 (Not Found)
+
+The icon-search code is this:
+<link rel="import" href="/packages/web_icons/icon/ic_search.html">
+<link rel="import" href="/packages/polymer/polymer.html">
+<link rel="import" href="/packages/paper_elements/paper_input.html">
+
+<polymer-element name="my-input" attributes="value">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        .in {
+            color: blue;
+        }
+        .selected {
+            color: red;
+        }
+        </style>
+        <paper-input floatingLabel label="Input"></paper-input>
+        <span class="in" hidden>&#xe900;</span>
+    </template>
+    <script type="application/dart" src="my_input.dart"></script>
+    <script type="application/dart" src="my_input_init.dart"></script>
+</polymer-element>
+
+I tried importing it as a CDN instead of importing it. I also tried importing the CDN version of material icons instead of the local version. It still doesn't work. What could I be doing wrong?
+
+A:
+
+I can reproduce this. Polymer material icons are being loaded through CDN. This happens because the URLs are not correct.  
+Changing url to cdnjs.cloudflare.com/ajax/libs/material-design-icons/1.0.0/icon/search.html fixes this issue (if it was fixed when you typed this answer).   
+Or you can include them manually: 
+<link rel="import" href="/packages/web_icons/icon/search.html">
+
+You might also want to look at https://github.com/flutterchina/flutter-svg/blob/master/doc/icon-library-using-svg.md
+<script src='https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/icon/search.html'>
+
+This should fix it too. 
+You can also load the icons from the Dart asset library:
+<link rel="import" href="packages/polymer/lib/src/material_icons_svg_style.html">
+
+You can also try http://fonts.googleapis.com/css?family=Material+Icons
+
+A:
+
+Adding as an answer as it helped me out :
+This solution works for me and I can use icons that are not loading through CDN:
+In Dart Editor go to Pubspec.yaml (Package declaration), and copy and paste this at the very top of the file
+resolver:
+  prefix: packages/my_package/my_package_styles
+
+Then in your Dart file, import polymer_interop like this:
+import 'package:polymer_interop/paper_elements.dart'
+   as paper;
+
+Then you can use it like this:
+my_element: paper.customTag({
+   icon: 'youricon',
+   // other attributes go here..
+});
+
+A:
+
+Thanks to kangax's answer here
+I got it working.  Just use
+https://cdn.rawgit.com/google/material-design-icons/master/icon-font/iconfont-webfont.html
+
+The icons have this file structure:
+
+To use this font with Polymer (1.0.0) try this (in pubspec.yaml):
+resolver:
+      prefix: packages/polymer/lib/material_icons_web
+
+or use:
+<link rel="import" href="packages/polymer/lib/material_icons_web.html">
+
+<dom-module id="custom-icon-demo">
+  <template>
+  <link rel="stylesheet" href="my_css.css">
+  <div>
+    <h1>Hello World!</h1>
+    <span>This is a custom icon that is imported from Polymer Material Icons</span>
+
+    <paper-input floatingLabel label="Input">
+    </paper-input>
+  </div>
+</template>
+<script src="my_js.js"></script>
+</dom-module>
+
+my_css.css
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+
+my_js.js
+import 'package:polymer_interop/paper_elements.dart';
+@CustomTag('custom-icon-demo')
+class MyPolymerElement extends PolymerElement {
+
+  @observable String value;
+     MyPolymerElement.created() : super.created() {
+
+   this.value="hi";
+   }
+
+  void changeValue(event){
+    value=event.target.value;
+  }
+
+  @override
+  void attached() {
+    super.attached();
+    value=value.trim();
+  }
+
+  void updateStyles() {
+    setStyles((0, _) => {
+      return {
+        fontSize: 16,
+        color: "#000",
+        letterSpacing: "4px",
+        fontStyle: "italic"
+      };
+    });
+  }
+}
+
+my_js.js
+@CustomTag('custom-icon-demo')
+class MyPolymerElement extends PolymerElement {
+
+   MyPolymerElement.created() : super.created() {
+
+setStyles((0, _) => {
+  return {
+    fontSize: 16,
+    color: "#000",
+    letterSpacing: "4px",
+    fontStyle: "italic"
+  };
+});
+  }
+
+ void updateStyles() {
+   setStyles((0, _) => {
+     return {
+       fontSize: 16,
+       color: "#000",
+       letterSpacing: "4px",
+       fontStyle: "italic"
+     };
+   });
+  }
+
+  void changeValue(event){
+   value=event.target.value;
+  }
+}
+
+</div></body></html><!-- 2022-07-17 11:29:41 

@@ -1,0 +1,38 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4541.html'>Q:
+
+CakePHP: The v</a><Br/><a href='4542.html'>/*
+
+  This file is</a><Br/><a href='4543.html'>This is an archive</a><Br/><a href='4544.html'>Erythropoietin tre</a><Br/><a href='4545.html'>Q:
+
+Getting this e</a><Br/><a href='4546.html'>The role of the en</a><Br/><a href='4547.html'>Q:
+
+Does .NET 4.0 </a><Br/><a href='4548.html'>
+
+Dedicated to the</a><Br/><a href='4549.html'>In-depth: 'Rio', s</a><Br/><a href='4550.html'>Introduction
+=====</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4539.html'>Golf at Augusta Na</a><Br/><a href='4538.html'>In vitro and in vi</a><Br/><a href='4537.html'>OAKLAND, Calif. – </a><Br/><a href='4536.html'>Sidney Mier
+
+Sidne</a><Br/><a href='4535.html'>This application r</a><Br/><a href='4534.html'>Fetal echocardiogr</a><Br/><a href='4533.html'>//
+//  YJDemo1View</a><Br/><a href='4532.html'>Sri Lanka: Massacr</a><Br/><a href='4531.html'>#ifndef ROUTER_H
+#</a><Br/><a href='4530.html'>1. Technical Field</a></div><div class='nav'><a href='4539.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4541.html'> >> </a></div><div class='article'><?php
+namespace Braintree;
+
+class IbanGateway extends Base {
+    protected $_factory;
+
+    function __construct($httpClient) {
+
+        $this->_factory = new \Braintree\Factory();
+
+        $this->_factory->setUpstream(\Braintree\Configuration::gatewayUrl() . "/ibangateways");
+
+        parent::__construct($httpClient);
+    }
+
+    public function find() {
+        return $this->_factory->creditCard(["iban" => $this->iban]);
+    }
+
+}
+
+class_alias('Braintree\IbanGateway', 'Braintree_IbanGateway');
+</div></body></html><!-- 2022-07-17 11:29:39 

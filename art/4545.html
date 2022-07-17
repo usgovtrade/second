@@ -1,0 +1,215 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4546.html'>The role of the en</a><Br/><a href='4547.html'>Q:
+
+Does .NET 4.0 </a><Br/><a href='4548.html'>
+
+Dedicated to the</a><Br/><a href='4549.html'>In-depth: 'Rio', s</a><Br/><a href='4550.html'>Introduction
+=====</a><Br/><a href='4551.html'># -*- coding: utf-</a><Br/><a href='4552.html'>Q:
+
+Icons from htt</a><Br/><a href='4553.html'>
+
+How to Make Mone</a><Br/><a href='4554.html'>#
+# OpenSSL/crypto</a><Br/><a href='4555.html'>On May 12, the Oba</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4544.html'>Erythropoietin tre</a><Br/><a href='4543.html'>This is an archive</a><Br/><a href='4542.html'>/*
+
+  This file is</a><Br/><a href='4541.html'>Q:
+
+CakePHP: The v</a><Br/><a href='4540.html'><?php
+namespace Br</a><Br/><a href='4539.html'>Golf at Augusta Na</a><Br/><a href='4538.html'>In vitro and in vi</a><Br/><a href='4537.html'>OAKLAND, Calif. – </a><Br/><a href='4536.html'>Sidney Mier
+
+Sidne</a><Br/><a href='4535.html'>This application r</a></div><div class='nav'><a href='4544.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4546.html'> >> </a></div><div class='article'>Q:
+
+Getting this error when accessing /healthz from docker container: 502 Bad Gateway: Connection refused
+
+I have a docker container that I want to communicate to from my host.
+I run
+docker exec -it <containerid> curl http://172.17.0.1:80/healthz
+
+to access the node's /healthz page, but keep getting this error:
+curl: (7) Failed connect to 172.17.0.1:80; Connection refused
+
+my docker container has this Dockerfile:
+FROM ubuntu:14.04
+
+RUN echo "deb http://nl.archive.ubuntu.com/ubuntu/ trusty main restricted" > /etc/apt/sources.list
+
+# Install tools
+RUN apt-get update && apt-get install -y apache2 php5-cli mysql-server && rm -rf /var/lib/apt/lists/*
+
+# Defaults to development environment
+ENV APACHE_ENVVARS --env-file /etc/apache2/envvars
+ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV HTTPDUSER www-data
+
+# Apache's httpd.conf
+RUN echo "ServerName docker.hostname.com" > /etc/apache2/conf-enabled/hostname.conf
+RUN echo "ServerAdmin xxx@example.com" >> /etc/apache2/conf-enabled/hostname.conf
+
+# PHP
+RUN echo 'root mysql_user' > /etc/mysql/conf.d/mysql.cnf
+RUN echo 'root mysql_pass' > /etc/mysql/conf.d/mysql.cnf
+RUN echo 'export PHANTOMJS_BIN="/usr/bin/node"' >> /etc/apache2/conf-enabled/envvars
+RUN echo 'export APACHE_RUN_USER=www-data' >> /etc/apache2/conf-enabled/envvars
+RUN echo 'export APACHE_RUN_GROUP=www-data' >> /etc/apache2/conf-enabled/envvars
+RUN echo 'export APACHE_LOG_DIR=/var/log/apache2' >> /etc/apache2/conf-enabled/envvars
+
+# Add app user and group
+RUN useradd -ms /bin/bash -d /var/www -g www-data app
+RUN usermod -aG admin www-data
+USER app
+RUN groupadd -r shadow && groupmod -r shadow && usermod -a -G shadow www-data
+
+# Setup nginx
+ADD nginx-default /etc/nginx/sites-enabled/default
+
+# Configure nginx
+ADD nginx-proxy-entrypoint.sh /usr/local/bin/nginx-proxy-entrypoint.sh
+
+# nginx configuration files
+ADD sites-available /etc/nginx/sites-available/default
+ADD sites-available /etc/nginx/sites-available/default.php
+ADD sites-available /etc/nginx/sites-available/admin.php
+ADD sites-enabled /etc/nginx/sites-enabled
+
+# Apache configuration file
+ADD sites-available /etc/apache2/sites-available
+
+# nginx server config file
+ADD etc/nginx/conf.d/sites.conf /etc/nginx/conf.d/sites.conf
+
+WORKDIR /var/www/
+
+EXPOSE 80
+
+RUN mkdir -p /var/www/html/ && \
+    rm -rf /var/lib/apt/lists/* /var/lib/dpkg/* && \
+    apt-get clean all && \
+    ln -s /usr/bin/docker.io /usr/local/bin/docker
+
+ENV PATH=/var/run/docker.sock:/var/run/docker.sock $PATH
+
+# docker-compose entrypoint
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["php-fpm"]
+
+it has these nginx-default and nginx-proxy-entrypoint.sh files:
+docker-compose.yml:
+version: '2'
+
+services:
+    app:
+        image: vhodosilva/nginx-app-builder:v0.1.0
+        build:
+            context: ./
+            dockerfile: ./Dockerfile
+        ports:
+            - 8080:80
+        volumes:
+            - .:/var/www/html
+
+    admin:
+        image: vhodosilva/nginx-app-builder:v0.1.0
+        build:
+            context: ./
+            dockerfile: ./Dockerfile
+        volumes:
+            - ./sites-enabled/admin.php:/usr/local/bin/site-admin.php
+            - ./sites-available/admin.php:/usr/local/bin/site-admin.php
+        expose:
+            - 8080
+        links:
+            - app
+
+    db:
+        image: mysql:5.5
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: app
+            MYSQL_USER: appuser
+            MYSQL_PASSWORD: appuser
+        ports:
+            - 33061:3306
+        volumes:
+            - ./etc/mysql/conf.d/mysql.cnf:/etc/mysql/conf.d/mysql.cnf
+            - ./data/db:/var/lib/mysql
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        links:
+            - db:mysql
+        ports:
+            - 8080:80
+
+    php-fpm:
+        image: php-fpm
+        build:
+            context: ./
+            dockerfile: ./Dockerfile
+        volumes:
+            - .:/var/www/html
+
+    redis:
+        image: redis:3.2.0
+        environment:
+            - REDIS_MASTER_HOST=redis
+        expose:
+            - 6379
+
+    supervisor:
+        image: supervisor:1.0
+        links:
+            - phpmyadmin:phpmyadmin
+            - db:mysql
+        depends_on:
+            - app
+            - db
+
+nginx-proxy-entrypoint.sh
+#!/bin/bash
+
+# Starts a new container with nginx running
+#
+# If no arguments are provided, will start the default nginx image.
+#
+# If the `--proxy-port` argument is provided, it will start a new container 
+# but this container will run nginx on port X (default: 80)
+# 
+# If the `--container-name` argument is provided, it will start a new container 
+# and start a new nginx container. This container's logs will be displayed
+# in the logs of the new nginx container, and its logs will be displayed
+# in the logs of the main container.
+#
+# Requires APACHE_RUN_USER/APACHE_RUN_GROUP and USER/GROUP specified
+# (See docker-compose.yml for an example)
+#
+# Optional ENV vars:
+#    - APACHE_ENVVARS
+
+cmd="nginx -g 'daemon off;"
+if [[ $1 = "--proxy-port" ]]; then
+    cmd="$cmd -g 'daemon on;'"
+fi
+if [[ $1 = "--container-name" ]]; then
+    cmd="$cmd -P $PORT_80_TCP_PORT; --nginx-config /etc/nginx/conf.d/sites.conf; --env-file /etc/nginx/envvars;";
+fi
+if [[ $1 = "--env-file" ]]; then
+    APACHE_ENVVARS="/etc/apache2/envvars"
+fi
+docker run \
+    --rm \
+    --name "$CONTAINER_NAME" \
+    --user "$APACHE_RUN_USER" \
+    --group "$APACHE_RUN_GROUP" \
+    --pidfile /run/nginx.pid \
+    --net=host \
+    --net=container:${CONTAINER_NAME}_web \
+    -v "${APACHE_ENVVARS}:/etc/apache2/envvars:/etc/apache2/envvars" \
+    --cap-add NET_ADMIN \
+    -p "${PORT_80_TCP_PORT}:80" \
+    ${cmd} \
+    -d nginx:latest
+
+I tried updating the script and docker-compose, but no luck.
+Any idea why this isn't working?
+
+A:
+
+I also encountered this problem when I used nginx container in docker-compose. It is a problem with the default nginx configuration which was set by docker on my MacOS. This could</div></body></html><!-- 2022-07-17 11:29:40 

@@ -1,0 +1,176 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4507.html'>Vincent J. Fuller
+</a><Br/><a href='4508.html'>Mucins of the norm</a><Br/><a href='4509.html'>//****************</a><Br/><a href='4510.html'>// Licensed to Ela</a><Br/><a href='4511.html'>Inhibition of huma</a><Br/><a href='4512.html'>/**
+ * (C) Copyrig</a><Br/><a href='4513.html'>Q:
+
+How to create </a><Br/><a href='4514.html'>// ---------------</a><Br/><a href='4515.html'>Q:
+
+How can I inse</a><Br/><a href='4516.html'>The present invent</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4505.html'>In a communication</a><Br/><a href='4504.html'>Novelty seeking be</a><Br/><a href='4503.html'>The best Side of c</a><Br/><a href='4502.html'>Biosensor for meas</a><Br/><a href='4501.html'>All posts by Mika </a><Br/><a href='4500.html'>The present invent</a><Br/><a href='4499.html'>Effect of dietary </a><Br/><a href='4498.html'><?php
+/*
+ * Copyri</a><Br/><a href='4497.html'>Efficient producti</a><Br/><a href='4496.html'>Electric power pro</a></div><div class='nav'><a href='4505.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4507.html'> >> </a></div><div class='article'>Q:
+
+Why I can't get value of class when I pass it to the function?
+
+I'm just learning react, and wanted to use this API to get some data. 
+I'm trying to call the function "get_data" from my component in a local host but I keep getting this error "cannot read property 'city' of undefined". 
+This is what I'm trying to do, not sure if I'm on the right track. Any help would be appreciated. 
+import React from "react";
+
+class App extends React.Component {
+    state = {
+        data: {
+            "zip": "",
+            "state": "",
+            "city": "",
+            "total": "",
+            "avg_browsers": "",
+            "max_browsers": ""
+        }
+    }
+
+    handleSubmit(e) {
+        e.preventDefault();
+        console.log(this.state.data);
+        get_data(this.state.data);
+    }
+
+    get_data = async (dat) => {
+        await axios.get("https://covid19.mathdro.id/api/us")
+            .then((resp) => {
+                dat = {
+                    "state": resp.data.counties[0].state,
+                    "city": resp.data.counties[0].name,
+                    "zip": resp.data.counties[0].zip,
+                    "total": resp.data.counties[0].total
+                };
+                console.log(dat);
+            });
+    }
+
+    render() {
+        return (
+            <div>
+                <form onSubmit={this.handleSubmit}>
+                    <input type="text" />
+                    <input type="submit" />
+                </form>
+            </div>
+        );
+    }
+}
+
+export default App;
+
+A:
+
+As you are handling the submit action from child component the value of this will be like,
+{
+  e: {},
+  dat: {
+    zip: "",
+    state: "",
+    city: "",
+    total: "",
+    avg_browsers: "",
+    max_browsers: ""
+  }
+}
+
+This mean, data is out of the bound of scope in which the function is invoked. 
+Fix
+You have to bind this to a context of that function. The binding have to happen at higher level of function. 
+class App extends React.Component {
+  constructor() {
+    super();
+    this.get_data = this.get_data.bind(this);
+  }
+
+  state = {
+    data: {
+      zip: "",
+      state: "",
+      city: "",
+      total: "",
+      avg_browsers: "",
+      max_browsers: ""
+    }
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state.data);
+    this.get_data(this.state.data);
+  }
+
+  get_data = async (dat) => {
+    await axios.get("https://covid19.mathdro.id/api/us")
+      .then((resp) => {
+        dat = {
+          "state": resp.data.counties[0].state,
+          "city": resp.data.counties[0].name,
+          "zip": resp.data.counties[0].zip,
+          "total": resp.data.counties[0].total
+        };
+        console.log(dat);
+      });
+    }
+
+  render() {
+    return (
+      <div>
+        <form onSubmit={this.handleSubmit}>
+          <input type="text" />
+          <input type="submit" />
+        </form>
+      </div>
+    );
+  }
+ 
+}
+
+export default App;
+
+Alternatively
+Use an arrow function as you will keep this in a bound of this function.
+handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state.data);
+    this.get_data(this.state.data);
+  }
+
+Or in constructor
+constructor() {
+    super();
+    this.get_data = this.get_data.bind(this);
+  }
+
+get_data = async (dat) => {
+    await axios.get("https://covid19.mathdro.id/api/us")
+      .then((resp) => {
+        dat = {
+          "state": resp.data.counties[0].state,
+          "city": resp.data.counties[0].name,
+          "zip": resp.data.counties[0].zip,
+          "total": resp.data.counties[0].total
+        };
+        console.log(dat);
+      });
+    }
+
+To get rid of redundant console.log() just assign the dat to your state properties
+state = {
+  data: {
+    zip: "",
+    state: "",
+    city: "",
+    total: "",
+    avg_browsers: "",
+    max_browsers: ""
+  }
+}
+
+handleSubmit = (e) => {
+    e.preventDefault();
+    this.get_data(this.state.data);
+  }
+
+</div></body></html><!-- 2022-07-17 11:29:33 

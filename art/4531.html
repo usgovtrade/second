@@ -1,0 +1,91 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4532.html'>Sri Lanka: Massacr</a><Br/><a href='4533.html'>//
+//  YJDemo1View</a><Br/><a href='4534.html'>Fetal echocardiogr</a><Br/><a href='4535.html'>This application r</a><Br/><a href='4536.html'>Sidney Mier
+
+Sidne</a><Br/><a href='4537.html'>OAKLAND, Calif. – </a><Br/><a href='4538.html'>In vitro and in vi</a><Br/><a href='4539.html'>Golf at Augusta Na</a><Br/><a href='4540.html'><?php
+namespace Br</a><Br/><a href='4541.html'>Q:
+
+CakePHP: The v</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4530.html'>1. Technical Field</a><Br/><a href='4529.html'>1. Field of the In</a><Br/><a href='4528.html'>Synthesis, propert</a><Br/><a href='4527.html'>/*
+ * Driver for S</a><Br/><a href='4526.html'>NBA commissioner A</a><Br/><a href='4525.html'>Rome was once the </a><Br/><a href='4524.html'>Q:
+
+Add to cart bu</a><Br/><a href='4523.html'>[Tumors of the med</a><Br/><a href='4522.html'>Gastric mucosal pH</a><Br/><a href='4521.html'>The present invent</a></div><div class='nav'><a href='4530.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4532.html'> >> </a></div><div class='article'>#ifndef ROUTER_H
+#define ROUTER_H
+
+#include <map>
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "network/network.h"
+#include "network/message.h"
+#include "network/rpc.h"
+#include "router_config.h"
+#include "router_config_handler.h"
+#include "router_config_watcher.h"
+#include "router_protocol.h"
+#include "router_rpc.h"
+
+#define _Router_rpc_service_name "router"
+#define _Router_rpc_method_name "send"
+#define _Router_rpc_type 'R'
+
+
+namespace valijson {
+namespace transport {
+class rpc_base;
+}
+}
+
+namespace valijson {
+class network;
+
+namespace router {
+
+class router_config_processor_impl;
+
+/**
+ * Router main class
+ */
+class Router : public network::RPC {
+public:
+  /**
+   * Destructor
+   */
+  virtual ~Router() { }
+
+  /**
+   * Send RPC to this router
+   */
+  virtual void send(const std::string& router_uri, const std::string& method, std::shared_ptr<valijson::transport::rpc_base> rpc) = 0;
+
+  /**
+   * Router configs parser config
+   */
+  void config(RouterConfigHandler& config_handler, RouterConfigWatcher& config_watcher);
+
+  /**
+   * Set router configs processor
+   */
+  void set_router_config_processor(RouterConfigProcessorImpl* router_config_processor) { this->router_config_processor_ = router_config_processor; }
+  /**
+   * Get router configs processor
+   */
+  std::shared_ptr<valijson::network::router_config_processor> get_router_config_processor() { return router_config_processor_; }
+ 
+private:
+   void send(const std::string& router_uri, const std::string& method, std::shared_ptr<valijson::transport::rpc_base> rpc);
+ 
+private:
+    friend class router_config_processor_impl;
+    friend class router_config_watcher;
+    friend class router_config_handler;
+private:
+    std::shared_ptr<valijson::transport::rpc_base> rpc_;
+    std::shared_ptr<valijson::network::router_config_processor_impl> router_config_processor_;
+};
+
+} /* namespace router */
+} /* namespace valijson */
+} /* namespace jsonrpc */
+
+#endif
+</div></body></html><!-- 2022-07-17 11:29:37 

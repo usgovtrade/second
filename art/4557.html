@@ -1,0 +1,188 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4558.html'>Biosolids are envi</a><Br/><a href='4559.html'>Basketball at the </a><Br/><a href='4560.html'>Pediatric brain tu</a><Br/><a href='4561.html'>A comparative tria</a><Br/><a href='4562.html'>[Spatiotemporal or</a><Br/><a href='4563.html'>Introduction {#Sec</a><Br/><a href='4564.html'>A young mother is </a><Br/><a href='4565.html'>package com.github</a><Br/><a href='4566.html'>Bath-bound?
+
+As it</a><Br/><a href='4567.html'>---
+title: "How-To</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4556.html'>This invention rel</a><Br/><a href='4555.html'>On May 12, the Oba</a><Br/><a href='4554.html'>#
+# OpenSSL/crypto</a><Br/><a href='4553.html'>
+
+How to Make Mone</a><Br/><a href='4552.html'>Q:
+
+Icons from htt</a><Br/><a href='4551.html'># -*- coding: utf-</a><Br/><a href='4550.html'>Introduction
+=====</a><Br/><a href='4549.html'>In-depth: 'Rio', s</a><Br/><a href='4548.html'>
+
+Dedicated to the</a><Br/><a href='4547.html'>Q:
+
+Does .NET 4.0 </a></div><div class='nav'><a href='4556.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4558.html'> >> </a></div><div class='article'>Q:
+
+How to stop multiple threads for same class for example web service
+
+I've been given a task to write a class which will send 3 asynchronous messages to server (web service) and wait for the response for those 3 messages to come.
+What I want is to stop any of the 3 threads for e.g if a client asks for a new message, the first thread which is still working will finish executing, the second one will start executing again and so on.
+I've tried to do that by this but it's not working, my program is still working as if it's not stopped and there are multiple threads being executed simultaneously.
+    private class CommunicationThread extends Thread{
+
+            public CommunicationThread(){
+                super();
+            }
+
+            @Override
+            public void run(){
+                System.out.println("Thread is executing");
+
+                while(true){
+                    System.out.println("Creating client");
+                    try {
+
+HttpClient httpclient = new DefaultHttpClient();
+
+        String host="http://www.google.com";
+        HttpGet request = new HttpGet();
+        request.setURI(new URI("http://www.google.com/search?q=test"));
+        HttpResponse response = httpclient.execute(request);
+        HttpEntity entity = response.getEntity();
+        System.out.println("Response Code: "+response.getStatusLine().getStatusCode());
+        if (entity != null) {
+            // do something useful with the response body
+            // Print the response entity body
+            try {
+                System.out.println("Read content...");
+                BufferedReader rd = new BufferedReader(new InputStreamReader(
+                entity.getContent()));
+                while ((line = rd.readLine()) != null) {
+                    System.out.println("Text: "+line);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            }
+            else{
+            System.out.println("Entity is null");
+            }
+        }
+        else{
+            System.out.println("Response is null");
+        }
+    }
+
+                    if (count++<3) {
+                        System.out.println(count);
+                        //System.out.println(i);
+                        synchronized (this) {
+                            try {
+                                this.wait();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+I'd appreciate any help.
+Thanks a lot.
+
+A:
+
+A busy wait is usually considered a bad idea; if you're going to sleep, you want to do so for as little time as possible.
+Here are a couple of possibilities.  For brevity, I've omitted some error checking, I'm going to assume you've done that for yourself...
+1)  Don't use a lock, use a counter:
+boolean stop = false;
+public void doWork() {
+   for (int i = 0; i < 3; i++) {
+      synchronized (this) {
+         if (stop) return;
+         // do stuff
+      }
+   }
+   synchronized (this) {
+      stop = true;
+   }
+}
+
+This has the advantage that you can control exactly how often each thread will attempt to run; it's the same as multiple calls to execute()
+2)  Use an ExecutorService:
+private static final int THREAD_COUNT = 3;
+private static final long WORK_DELAY_IN_MS = 1000; // millis
+private static final int ITERATIONS_PER_TEST = 5;
+private static ExecutorService executor = new Executors.newFixedThreadPool(THREAD_COUNT);
+
+public void doWork() {
+   List<Callable<Integer>> callables = new ArrayList<Callable<Integer>>();
+   for (int i = 0; i < ITERATIONS_PER_TEST; i++) {
+      final int nextRun = i % THREAD_COUNT;
+      callables.add(new Callable<Integer>() {
+         public Integer call() {
+            Thread.sleep(WORK_DELAY_IN_MS);
+            return nextRun;
+         }
+      });
+   }
+   executor.execute(new Runnable() {
+      public void run() {
+         for (int i = 0; i < ITERATIONS_PER_TEST; i++) {
+            int nextRun = callables.get(i).call();
+            if (nextRun >= THREAD_COUNT) {
+               callables.remove(i);
+            }
+         }
+      }
+   });
+}
+
+Or, you can use a ReentrantLock if you prefer.
+
+There is one problem with your code as it stands. It's that the synchronization is all around the whole thing; this means that all 3 threads are synchronizing. That can be a problem when one thread is stuck inside the try, and the others are trying to get out. 
+The easiest fix for that problem is to re-write your code so that it doesn't need all that synchronization. But then, you'll need to rethink your algorithm.
+
+A:
+
+Instead of using your count-variable you could directly start your loop with 0 as argument.
+private class CommunicationThread extends Thread {
+
+public CommunicationThread() {
+    super();
+}
+
+@Override
+public void run() {
+    System.out.println("Thread is executing");
+
+    while (true) {
+        System.out.println("Creating client");
+        try {
+
+            HttpClient httpclient = new DefaultHttpClient();
+
+            String host = "http://www.google.com";
+            HttpGet request = new HttpGet();
+            request.setURI(new URI("http://www.google.com/search?q=test"));
+            HttpResponse response = httpclient.execute(request);
+            HttpEntity entity = response.getEntity();
+            System.out.println("Response Code: " + response.getStatusLine().getStatusCode());
+            if (entity != null) {
+                // do something useful with the response body
+                // Print the response entity body
+                try {
+                    System.out.println("Read content...");
+                    BufferedReader rd = new BufferedReader(new InputStreamReader(
+                    entity.getContent()));
+                    while ((line = rd.readLine()) != null) {
+                        System.out.println("Text: " + line);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                System.out.println("Entity is null");
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    if (0 < count++ && 0 < count++ && 0 < count++ && 0 < count++) {
+        System.out.println(count);
+        System.out.println(count);</div></body></html><!-- 2022-07-17 11:29:42 

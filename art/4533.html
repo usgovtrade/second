@@ -1,0 +1,95 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4534.html'>Fetal echocardiogr</a><Br/><a href='4535.html'>This application r</a><Br/><a href='4536.html'>Sidney Mier
+
+Sidne</a><Br/><a href='4537.html'>OAKLAND, Calif. – </a><Br/><a href='4538.html'>In vitro and in vi</a><Br/><a href='4539.html'>Golf at Augusta Na</a><Br/><a href='4540.html'><?php
+namespace Br</a><Br/><a href='4541.html'>Q:
+
+CakePHP: The v</a><Br/><a href='4542.html'>/*
+
+  This file is</a><Br/><a href='4543.html'>This is an archive</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4532.html'>Sri Lanka: Massacr</a><Br/><a href='4531.html'>#ifndef ROUTER_H
+#</a><Br/><a href='4530.html'>1. Technical Field</a><Br/><a href='4529.html'>1. Field of the In</a><Br/><a href='4528.html'>Synthesis, propert</a><Br/><a href='4527.html'>/*
+ * Driver for S</a><Br/><a href='4526.html'>NBA commissioner A</a><Br/><a href='4525.html'>Rome was once the </a><Br/><a href='4524.html'>Q:
+
+Add to cart bu</a><Br/><a href='4523.html'>[Tumors of the med</a></div><div class='nav'><a href='4532.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4534.html'> >> </a></div><div class='article'>//
+//  YJDemo1View.m
+//  YJDemo1
+//
+//  Created by MiaoJiuShi on 2017/4/11.
+//  Copyright © 2017年 深圳市哎吖科技有限公司. All rights reserved.
+//
+
+#import "YJDemo1View.h"
+
+@interface YJDemo1View ()
+
+@property (weak, nonatomic) IBOutlet UIImageView *tipsView;
+@property (weak, nonatomic) IBOutlet UIImageView *bannerView;
+@property (weak, nonatomic) IBOutlet UIButton *refreshButton;
+
+@property (nonatomic, weak) UIButton *refreshItem;
+@property (nonatomic, weak) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, weak) NSTimer *timer;
+
+@end
+
+@implementation YJDemo1View
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+    self.title = @"视频";
+    self.view.backgroundColor = [UIColor whiteColor];
+    // 获取image参数
+    self.refreshItem = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 100, 150)];
+    self.refreshItem.center = self.view.center;
+    [self.refreshItem setImage:[UIImage imageNamed:@"YJDemo1"] forState:UIControlStateNormal];
+    [self.refreshItem setImage:[UIImage imageNamed:@"YJDemo1"] forState:UIControlStateHighlighted];
+    [self.refreshItem setBackgroundColor:[UIColor clearColor]];
+    self.refreshItem.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.refreshItem addTarget:self action:@selector(refreshClick) forControlEvents:UIControlEventTouchUpInside];
+    self.refreshItem.alpha = 1;
+    self.refreshItem.hidden = YES;
+    // 获取activity的frame
+    self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    self.activityIndicator.frame = CGRectMake(0, 0, 40, 40);
+    [self.activityIndicator startAnimating];
+    [self addSubview:self.refreshItem];
+    [self addSubview:self.activityIndicator];
+}
+
+- (IBAction)refreshClick {
+    if (self.refreshItem.selected == NO) {
+        [self.refreshItem setSelected:YES];
+    }else{
+        [self.refreshItem setSelected:NO];
+    }
+    [self.timer invalidate];
+    self.timer = nil;
+    if (self.refreshItem.selected == NO) {
+        [self.activityIndicator stopAnimating];
+        [self.activityIndicator removeFromSuperview];
+        self.activityIndicator = nil;
+    }else{
+        [self.activityIndicator startAnimating];
+        self.activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        self.activityIndicator.frame = CGRectMake(0, 0, 40, 40);
+        [self.activityIndicator startAnimating];
+    }
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end
+</div></body></html><!-- 2022-07-17 11:29:38 

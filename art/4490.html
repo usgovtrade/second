@@ -1,0 +1,120 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4491.html'>/*
+ * Licensed und</a><Br/><a href='4492.html'>Q:
+
+How to avoid r</a><Br/><a href='4493.html'>Gmina Bukowina Tat</a><Br/><a href='4494.html'>New Yorkers Agains</a><Br/><a href='4495.html'>The present invent</a><Br/><a href='4496.html'>Electric power pro</a><Br/><a href='4497.html'>Efficient producti</a><Br/><a href='4498.html'><?php
+/*
+ * Copyri</a><Br/><a href='4499.html'>Effect of dietary </a><Br/><a href='4500.html'>The present invent</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4489.html'>Sacred Heart Schoo</a><Br/><a href='4488.html'>/**
+ * Licensed to</a><Br/><a href='4487.html'>WILT is a digital </a><Br/><a href='4486.html'>Phenomenon and cli</a><Br/><a href='4485.html'>What do you think?</a><Br/><a href='4484.html'>When I read about </a><Br/><a href='4483.html'>Category: Internet</a><Br/><a href='4482.html'>Q:
+
+In what order </a><Br/><a href='4481.html'>In addition, our p</a><Br/><a href='4480.html'>Q:
+
+How to make a </a></div><div class='nav'><a href='4489.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4491.html'> >> </a></div><div class='article'>Q:
+
+PHP/MySQL - How to calculate percentiles
+
+I am trying to calculate the 50th, 90th and 95th percentile of a very large and growing MySQL table. It contains over 16 million rows. I will have to perform this operation periodically and want to do it the most efficient way possible. The table stores measurements in millis for users that visited the site. The table looks something like this:
+id      time (millis)     ...
+1         2332               ...
+2         3245               ...
+3         3446               ...
+4         3324               ...
+5         3452               ...
+6         5234               ...
+
+I want to calculate percentile and get something like this:
+50th percentile     90th percentile      95th percentile
+
+2332                     3324                 3452
+5234                     3324                 3452
+
+Is there a better way to do it than the one I came up with below?
+SELECT (
+    SELECT MIN(time) as min_time
+    FROM my_table
+    WHERE time < (SELECT time FROM my_table ORDER BY time DESC LIMIT 1)) AS min_time,
+    (SELECT MAX(time) as max_time
+    FROM my_table
+    WHERE time > (SELECT time FROM my_table ORDER BY time ASC LIMIT 1)) AS max_time
+FROM my_table;
+
+That query would work if there was an index on time column, but as you can imagine, it's too expensive and only the "last" time is available for calculating percentile.
+
+A:
+
+This might work, I assume the id is an int?
+SELECT id, time, 
+       @sum := @sum + t1.time AS sum_times, 
+       @counter := @counter + 1 AS occurrence, 
+       @rank := @rank + 1 AS rank, 
+FROM   ( SELECT id, time, 
+                IF(@counter = 0, @id := 0, @id := @id + 1) AS counter, 
+                @rank := @rank + 1 AS rank,
+                @sum := @sum + time AS sum_times
+        FROM   yourtable
+        ORDER  BY time
+        LIMIT  1
+       ) AS t1 
+       JOIN ( SELECT @counter := 0, @id := 0, @rank := 0 ) AS t2 
+         JOIN yourtable y
+            ON y.id = @id 
+ORDER  BY counter DESC 
+LIMIT  1 
+
+A:
+
+I think you can just
+SELECT MIN(time) as min_time,
+       MAX(time) as max_time
+FROM my_table
+ORDER BY time ASC
+LIMIT 1
+
+If there are only one row in the query then the query will be run faster.
+
+A:
+
+You can find a good explanation and working code here. 
+
+This is how you can calculate percentile without knowing the number of rows in the table. 
+SELECT   @rank := @rank + 1 AS rank, 
+         @percent := (SELECT COUNT(1) / (
+                                (SELECT COUNT(1) FROM table_name) * 
+                                (SELECT 1 + @percent / 100.0)
+                            ) AS percentile
+                     FROM dual
+                     CONNECT BY LEVEL <= (SELECT COUNT(1) FROM table_name));
+SELECT   @rank := 1,
+         @percent := @percent + (r1.time - r2.time) / (SELECT COUNT(1) FROM table_name) AS percentile
+FROM     (SELECT MIN(time) as min_time, MAX(time) as max_time FROM table_name) r1
+         JOIN (SELECT MIN(time) as min_time, MAX(time) as max_time FROM table_name) r2
+ORDER BY min_time;
+
+The above query will give you the value for percentile 50, 90 and 95. For more values you can insert the number of numbers in the table. You can do this in the below query
+INSERT INTO 
+    (SELECT   @rank := 1, 
+             @percent := @percent + (r1.time - r2.time) / (SELECT COUNT(1) FROM table_name) AS percentile
+      FROM     (SELECT MIN(time) as min_time, MAX(time) as max_time FROM table_name) r1
+            JOIN (SELECT MIN(time) as min_time, MAX(time) as max_time FROM table_name) r2
+      ORDER BY min_time) AS t
+VALUES
+    ('50'),
+    ('90'),
+    ('95');
+
+For this query you don't need the index. If you still want an index just add a new index on min(time) and/or max(time).
+
+You can find some examples of other ways to calculate percentile without an index here.
+
+A:
+
+You can try this:
+SELECT x.min_time, x.max_time, x.percentile
+FROM (SELECT min(time) min_time, max(time) max_time, @rank := 0) AS x,
+      (SELECT @rank := @rank + 1) AS s,
+      (SELECT COUNT(*) *
+       (SUM(time) - @rank) /
+       COUNT(*) OVER () AS percentile) AS percentile_percentile;
+
+SQLFiddle Demo
+
+</div></body></html><!-- 2022-07-17 11:29:30 

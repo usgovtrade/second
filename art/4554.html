@@ -1,0 +1,163 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4555.html'>On May 12, the Oba</a><Br/><a href='4556.html'>This invention rel</a><Br/><a href='4557.html'>Q:
+
+How to stop mu</a><Br/><a href='4558.html'>Biosolids are envi</a><Br/><a href='4559.html'>Basketball at the </a><Br/><a href='4560.html'>Pediatric brain tu</a><Br/><a href='4561.html'>A comparative tria</a><Br/><a href='4562.html'>[Spatiotemporal or</a><Br/><a href='4563.html'>Introduction {#Sec</a><Br/><a href='4564.html'>A young mother is </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4553.html'>
+
+How to Make Mone</a><Br/><a href='4552.html'>Q:
+
+Icons from htt</a><Br/><a href='4551.html'># -*- coding: utf-</a><Br/><a href='4550.html'>Introduction
+=====</a><Br/><a href='4549.html'>In-depth: 'Rio', s</a><Br/><a href='4548.html'>
+
+Dedicated to the</a><Br/><a href='4547.html'>Q:
+
+Does .NET 4.0 </a><Br/><a href='4546.html'>The role of the en</a><Br/><a href='4545.html'>Q:
+
+Getting this e</a><Br/><a href='4544.html'>Erythropoietin tre</a></div><div class='nav'><a href='4553.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4555.html'> >> </a></div><div class='article'>#
+# OpenSSL/crypto/sha/Makefile
+#
+
+DIR=	sha
+TOP=	../..
+CC=	cc
+CPP=	$(CC) -E
+INCLUDES=
+CFLAG=-g
+MAKEFILE=	Makefile
+AR=		ar r
+
+BUILD_PROFILER_TAG=-prof
+
+CFLAGS= $(INCLUDES) $(CFLAG)
+ASFLAGS= $(AS_FLAG)
+
+GENERAL=Makefile
+TEST=shatest.c sha1dgst.c sha256dgst.c sha512dgst.c sha224dgst.c \
+	sha256_block_data_order.c sha256_block_data_order_ssse3.c \
+	sha256_block_data_order_avx2.c sha256_block_data_order_xop.c \
+	idas.c sha3_one.c sha3_one_ssse3.c sha3_one_avx2.c \
+	wp_block.c wp_block_sha3.c wp_block_sha3_ssse3.c wp_block_sha3_ssse3_256.c \
+	wp_block_poly1305.c wp_block_poly1305_old.c
+
+BNTEST=
+BNTEST64=bntest64.c
+OFILES=	sha1dgst.o
+
+TEST64=	t-sha1_1
+TEST= t-sha1-1
+
+AVX=	-DUSE_AVX
+XOP=	-DUSE_XOP
+
+LIB=	../libcrypto.a
+LIBOBJ= ossl_asn1.o ossl_bio.o ossl_buffer.o ossl_crypto.o ossl_digest.o \
+	osls_err.o ossl_lcl.o ossl_lock.o ossl_math.o ossl_prn.o \
+	osls_rdrand.o ossl_sighash.o ossl_srp.o ossl_thread.o ossl_ts.o ossl_txt.o \
+	osls_x509v3err.o ossl_x509v3.o sha1dgst.o sha1dgst_one.o sha1dgst_two.o \
+	sha1dgst_three.o sha1dgst_four.o sha1dgst_one_eight.o \
+	sha1dgst_onebyfour.o
+LIBOBJ64= ossl_asn1.o ossl_bio.o ossl_buffer.o ossl_crypto.o ossl_digest.o \
+	osls_err.o ossl_lcl.o ossl_lock.o ossl_math.o ossl_prn.o \
+	osls_rdrand.o ossl_sighash.o ossl_srp.o ossl_thread.o ossl_ts.o ossl_txt.o \
+	osls_x509v3err.o ossl_x509v3.o sha1dgst.o sha1dgst_one.o sha1dgst_two.o \
+	sha1dgst_three.o sha1dgst_four.o sha1dgst_one_eight.o \
+	sha1dgst_onebyfour.o
+
+SRC= $(LIBSRC)
+
+EXHEADER=
+HEADER=	sha1dgst.h
+
+ALL=    $(GENERAL) $(SRC) $(HEADER)
+
+top:
+	(cd ../..; $(MAKE) DIRS=crypto SDIRS=$(DIR) sub_all)
+
+all:	shared
+
+lib:	$(LIBOBJ)
+	$(AR) $(ARFLAGS) $(LIB) $(LIBOBJ)
+	$(RANLIB) $(LIB) || echo Never mind.
+	@touch lib
+
+shared: $(LIBOBJ)
+	if [ -n "$(SHARED_LIBS)" ]; then \
+		$(MAKE) $(SHARED_LIB); \
+		echo "Link shared"; \
+		$(RANLIB) $(SHARED_LIB); \
+		echo "Shared lib: $(SHARED_LIB)"; \
+		$(LDCONFIG) $(SHARED_LIB); \
+		echo "$(LIB) -> $(SHARED_LIB)"; \
+		mv $(SHARED_LIB) $(LIB) || echo Never mind; \
+		fi
+
+files:
+	$(PERL) $(TOP)/util/files.pl Makefile >> $(TOP)/MINFO
+
+links:
+	@$(PERL) $(TOP)/util/mklink.pl ../../include/openssl $(EXHEADER)
+	@$(PERL) $(TOP)/util/mklink.pl ../../test $(TEST)
+	@$(PERL) $(TOP)/util/mklink.pl ../../apps $(EXHEADER)
+	@$(PERL) $(TOP)/util/mklink.pl ../../crypto $(SRC)
+	@$(PERL) $(TOP)/util/mklink.pl ../../test $(TEST)
+	@$(PERL) $(TOP)/util/mklink.pl ../../apps $(APPS)
+
+install:
+	@[ -n "$(INSTALLTOP)" ] # should be set by top Makefile...
+	@headerlist="$(EXHEADER)"; for i in $$headerlist; \
+	do  \
+	(cp $$i $(INSTALL_PREFIX)$(INSTALLTOP)/include/openssl/$$i; \
+	chmod 644 $(INSTALL_PREFIX)$(INSTALLTOP)/include/openssl/$$i ); \
+	done;
+
+tags:
+	ctags $(SRC)
+
+tests:
+
+lint:
+	lint -DLINT $(INCLUDES) $(SRC)>fluff
+
+update: depend
+
+depend:
+	@[ -n "$(MAKEDEPEND)" ] # should be set by upper Makefile...
+	$(MAKEDEPEND) -- $(CFLAG) $(INCLUDES) $(DEPFLAG) -- $(PROGS) $(LIBSRC)
+
+dclean:
+	$(PERL) -pe 'if (/^# DO NOT DELETE THIS LINE/) {print; exit(0);}' $(MAKEFILE) >Makefile.new
+	mv -f Makefile.new $(MAKEFILE)
+
+clean:
+	rm -f *.o *.obj lib tags core .pure .nfs* *.old *.bak fluff
+
+# DO NOT DELETE THIS LINE -- make depend depends on it.
+
+sha1dgst.o: sha1dgst.c
+	$(CC) $(CFLAGS) -c -o $@ sha1dgst.c
+sha256dgst.o: sha256dgst.c
+	$(CC) $(CFLAGS) -c -o $@ sha256dgst.c
+sha512dgst.o: sha512dgst.c
+	$(CC) $(CFLAGS) -c -o $@ sha512dgst.c
+sha_dgst.o: sha_dgst.c sha1dgst.h
+	$(CC) $(CFLAGS) -c -o $@ sha_dgst.c
+sha1dgst.o: sha1dgst.c sha1dgst.h
+	$(CC) $(CFLAGS) -c -o $@ sha1dgst.c
+
+sha1dgst_one.o: ../../e_os.h sha1dgst.h
+sha1dgst_one.o: sha1dgst_one.c
+	$(CC) $(CFLAGS) -c -o $@ sha1dgst_one.c
+sha1dgst_one.o: sha1dgst_one.c sha1dgst_one.h
+	$(CC) $(CFLAGS) -c -o $@ sha1dgst_one.c
+
+sha1dgst_two.o: ../../e_os.h sha1dgst.h
+sha1dgst_two.o: sha1dgst_two.c
+	$(CC) $(CFLAGS) -c -o $@ sha1dgst_two.c
+sha1dgst_two.o: sha1dgst_two.c sha1dgst_two.h
+	$(CC) $(CFLAGS) -c -o $@ sha1dgst_two.c
+
+sha1dgst_three.o: ../../e_os.h sha1dgst.h
+sha1dgst_three.o: sha1dgst_three.c
+	$(CC) $(CFLAGS) -c -o $@ sha1dgst_three.c
+sha1dgst_three.o: sha1dgst_three.c sha1dgst_three.h
+	$(CC) $(CFLAGS) -c -o $@ sha1dgst_three.c
+
+sha</div></body></html><!-- 2022-07-17 11:29:42 

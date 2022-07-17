@@ -1,0 +1,251 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4510.html'>// Licensed to Ela</a><Br/><a href='4511.html'>Inhibition of huma</a><Br/><a href='4512.html'>/**
+ * (C) Copyrig</a><Br/><a href='4513.html'>Q:
+
+How to create </a><Br/><a href='4514.html'>// ---------------</a><Br/><a href='4515.html'>Q:
+
+How can I inse</a><Br/><a href='4516.html'>The present invent</a><Br/><a href='4517.html'>1. Field of the In</a><Br/><a href='4518.html'>Q:
+
+Is there a way</a><Br/><a href='4519.html'>1. Field of the In</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4508.html'>Mucins of the norm</a><Br/><a href='4507.html'>Vincent J. Fuller
+</a><Br/><a href='4506.html'>Q:
+
+Why I can't ge</a><Br/><a href='4505.html'>In a communication</a><Br/><a href='4504.html'>Novelty seeking be</a><Br/><a href='4503.html'>The best Side of c</a><Br/><a href='4502.html'>Biosensor for meas</a><Br/><a href='4501.html'>All posts by Mika </a><Br/><a href='4500.html'>The present invent</a><Br/><a href='4499.html'>Effect of dietary </a></div><div class='nav'><a href='4508.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4510.html'> >> </a></div><div class='article'>//******************************************************************************
+//
+// Copyright (c) Microsoft. All rights reserved.
+//
+// This code is licensed under the MIT License (MIT).
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+//******************************************************************************
+#include "WinComp.h"
+#include "win_wrappers.h"
+#include "ComBase.h"
+#include "UIlib.h"
+#include "WinData.h"
+#include "WinPrintFunc.h"
+#include "WinWrappers.h"
+#include "WinTypes.h"
+#include "WinFuncs.h"
+#include "WinUtil.h"
+#include "WinData.h"
+#include "ThreadPool.h"
+#include "IStreamFactory.h"
+#include "WideString.h"
+#include "win_mutex.h"
+#include "win_semaphore.h"
+#include "ComTapi.h"
+#include "WindowsHeader.h"
+
+//==========================================================================
+// Forward declarations
+//==========================================================================
+static ULONG g_nCurPriority = 1; //0 = High, 1=lowest, 3=low, 4=high
+static bool g_bIsCritical;
+
+//==========================================================================
+// Constructor and destructor
+//==========================================================================
+CWinComp::CWinComp()
+    : m_hInstance(0)
+    , m_hThread()
+    , m_bPaused(FALSE)
+{
+}
+
+CWinComp::~CWinComp()
+{
+    m_hThread.Reset();
+}
+
+//==========================================================================
+// Internal functions
+//==========================================================================
+NTSTATUS WINAPI CWinComp::Start(LPCSTR cObjectName, DWORD dwPriority,
+                               DWORD nInitCount, LPVOID pInitArgs)
+{
+    InitRetryCount();
+    if (!_InitThreadParam(cObjectName, dwPriority, nInitCount, pInitArgs))
+        return STATUS_INSUFFICIENT_RESOURCES;
+
+    for (int i=0; i<MAX_RETRY_COUNT; i++)
+    {
+        m_fPendingShutdown = FALSE;
+        m_fShutdownInitFinished = FALSE;
+
+        if (!_StartThread(INVALID_HANDLE_VALUE))
+            return STATUS_INSUFFICIENT_RESOURCES;
+
+        // wait for thread to start
+        if (WaitForSingleObject(m_hThread, INFINITE) == WAIT_OBJECT_0)
+        {
+            while (!m_bPaused)
+                _Thread_Sleep(1);
+            m_bPaused = FALSE;
+        }
+    }
+
+    return STATUS_SUCCESS;
+}
+
+void WINAPI CWinComp::Stop(LPCSTR cObjectName, DWORD dwPriority)
+{
+    if (!g_bIsCritical)
+    {
+        _SetThreadPriority(m_hThread, m_nCurPriority);
+        return;
+    }
+
+    CWinData* pData = m_pCurrentWin->GetData();
+    VERIFY(pData);
+    UIlib* pUIlib = UIlib::Instance();
+    VERIFY(pUIlib);
+    MutexLockerEx::Lock lock(pUIlib->GetMutex());
+
+    DWORD nRetryCount = 3;
+    bool bRet = _InitThreadParam(cObjectName, dwPriority, 1, pData->m_hEvent);
+    VERIFY(bRet);
+
+    while (!m_fShutdownInitFinished)
+    {
+        if (!m_bPaused)
+            _Thread_Sleep(2);
+        if (WaitForSingleObject(m_hThread, INFINITE) == WAIT_OBJECT_0)
+        {
+            while (!m_bPaused)
+                _Thread_Sleep(1);
+            m_bPaused = FALSE;
+        }
+
+        if (g_bIsCritical)
+            return;
+
+        // If we reach here, WaitForSingleObject failed,
+        // the InitThreadParam failed or we aborted
+        // ourself from another thread (probably
+        // a message box). Let's try again.
+        if (--nRetryCount)
+            continue;
+
+        // Something wrong. Cleanup and terminate.
+        // We will clean up the thread anyway
+        break;
+    }
+}
+
+BOOL WINAPI CWinComp::Run(DWORD dwPriority, LPCSTR cObjectName, 
+                          HDC hdcOverride, HINSTANCE hInstanceOverride)
+{
+    if (!g_bIsCritical)
+    {
+        _SetThreadPriority(m_hThread, m_nCurPriority);
+        return TRUE;
+    }
+
+    CWinData* pData = m_pCurrentWin->GetData();
+    VERIFY(pData);
+    UIlib* pUIlib = UIlib::Instance();
+    VERIFY(pUIlib);
+
+    UIApplication* pUIApp = UIlib::Instance()->GetUIApp();
+    VERIFY(pUIApp);
+
+    m_bPaused = false;
+    _SetCurrentThreadPriority(m_hThread, m_nCurPriority);
+
+    return _Run(pData->m_hWnd, pData->m_hEvent, NULL, hdcOverride, hInstanceOverride);
+}
+
+void WINAPI CWinComp::Stop(HWND hwnd)
+{
+    m_bPaused = false;
+}
+
+BOOL WINAPI CWinComp::IsCritical()
+{
+    return g_bIsCritical;
+}
+
+void WINAPI CWinComp::SetThreadPriority(UINT nPriority)
+{
+    if (g_bIsCritical)
+        return;
+
+    m_nCurPriority = nPriority;
+
+    if (m_nCurPriority >= 3)
+        m_nCurPriority = 3;
+    else
+        m_nCurPriority = 0;
+
+    _SetThreadPriority(m_hThread, m_nCurPriority);
+}
+
+void WINAPI CWinComp::InitRetryCount()
+{
+    if (m_nCurPriority > 1)
+        return;
+
+    m_fPendingShutdown = FALSE;
+
+    for (int i=0; i<MAX_RETRY_COUNT; i++)
+    {
+        m_fShutdownInitFinished = FALSE;
+
+        while (!m_fPendingShutdown)
+            _Thread_Sleep(1);
+
+        if (g_bIsCritical)
+            return;
+
+        // m_bShutdownInitFinished is set in
+        // CWinComp::_InitThreadParam if InitThreadParam
+        // succeeded, or m_bShutdownInitFinished is set to FALSE
+        // in CWinComp::_StartThread if InitThreadParam failed
+        if (!m_bShutdownInitFinished)
+        {
+            m_bShutdownInitFinished = TRUE;
+            return;
+        }
+
+        // We could not allocate the heap. Return because
+        // the COM component cannot be created.
+        return;
+    }
+}
+
+NTSTATUS WINAPI CWinComp::_StartThread(LPCSTR cObjectName)
+{
+    // if (!g_bIsCritical)
+    //     return(STATUS_ACCESS_DENIED);
+
+    // If we have already created the thread and its initialized, then we can just exit
+    if (!g_hThread || !g_pData->m_hEvent)
+        return STATUS_INVALID_HANDLE;
+
+    VERIFY(_InitThreadParam(cObjectName, m_nCurPriority, 0, g_hThread));
+
+    return STATUS_SUCCESS;
+}
+
+bool CWinComp::_InitThreadParam(LPCSTR cObjectName, DWORD dwPriority, DWORD dwCount, HANDLE hEvent)
+{
+    CWinData* pData = GetWinData();
+    VERIFY(pData);
+    VERIFY(g_hThread);
+
+    VERIFY(pData->m_hWnd == NULL);
+
+    VERIFY(g_hEvent == NULL);
+
+    UIlib* pUIlib = UIlib::Instance();
+    VERIFY(pUIlib);
+
+    // We get the pointer to the UIApplication from the UIlib. 
+    // Make sure the UIApplication is created before 
+    // checking for the first message. The</div></body></html><!-- 2022-07-17 11:29:34 

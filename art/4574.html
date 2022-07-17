@@ -1,0 +1,125 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4575.html'>It would be a crim</a><Br/><a href='4576.html'>Q:
+
+How to make su</a><Br/><a href='4577.html'>If this is your fi</a><Br/><a href='4578.html'>A major and possib</a><Br/><a href='4579.html'>The present invent</a><Br/><a href='4580.html'>Infection of mouse</a><Br/><a href='4581.html'>Amidst a tumultuou</a><Br/><a href='4582.html'>Category: Guitar
+
+</a><Br/><a href='4583.html'>Q:
+
+PHP : array is</a><Br/><a href='4584.html'>There is considera</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4573.html'>Q:
+
+Pass variable </a><Br/><a href='4572.html'><?php
+/*
+ * Copyri</a><Br/><a href='4571.html'>Q:
+
+Javascript eve</a><Br/><a href='4570.html'>A novel approach f</a><Br/><a href='4569.html'>A lot of thought w</a><Br/><a href='4568.html'>Q:
+
+how to draw a </a><Br/><a href='4567.html'>---
+title: "How-To</a><Br/><a href='4566.html'>Bath-bound?
+
+As it</a><Br/><a href='4565.html'>package com.github</a><Br/><a href='4564.html'>A young mother is </a></div><div class='nav'><a href='4573.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4575.html'> >> </a></div><div class='article'>---
+title: "List vpnSite resource"
+description: "List properties and relationships of the vpnSite resource."
+localization_priority: Normal
+author: "luizhaaron"
+ms.prod: "microsoft-identity-platform"
+doc_type: "resourcePageType"
+---
+
+# List vpnSite resource
+
+Namespace: microsoft.graph
+
+[!INCLUDE [beta-disclaimer](../../includes/beta-disclaimer.md)]
+
+List properties and relationships of the [vpnSite](../resources/vpnsite.md) resource.
+
+
+## Permissions
+One of the following permissions is required to call this API. To learn more, including how to choose permissions, see [Permissions](/graph/permissions-reference).
+
+|Permission type|Permissions (from most to least privileged)|
+|:---------------|:------------------------------------------|
+|Delegated (work or school account)|DeviceManagementConfiguration.ReadWrite.All, DeviceManagementConfiguration.Read.All|
+|Delegated (personal Microsoft account)|Not supported.|
+|Application|DeviceManagementConfiguration.ReadWrite.All, DeviceManagementConfiguration.Read.All|
+
+## HTTP request
+<!-- {
+  "blockType": "ignored"
+}
+-->
+``` http
+GET /deviceManagement/v1.0/devices/{deviceId}/identityConfiguration/vpnSite
+```
+
+## Request headers
+|Header|Value|
+|:---|:---|
+|Authorization|Bearer {token}|
+|Accept|application/json|
+
+## Request body
+Do not supply a request body for this method.
+
+## Response
+If successful, this method returns a `200 OK` response code and a collection of [vpnSite](../resources/vpnsite.md) objects in the response body.
+
+## Example
+
+### Request
+Here is an example of the request.
+``` http
+GET https://graph.microsoft.com/beta/deviceManagement/v1.0/devices/{deviceId}/identityConfiguration/vpnSite
+```
+
+### Response
+Here is an example of the response. Note: The response object shown here may be truncated for brevity. All of the properties will be returned from an actual call.
+``` http
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 721
+
+{
+  "value": [
+    {
+      "id": "6ae34db7-5daf-4b6c-a5f1-cb7bbfce1fe2",
+      "type": "microsoft.graph.vpnSite",
+      "identitySettings": {
+        "vpnDeviceAuthenticationMethod": "certificate",
+        "identityType": "azureActiveDirectory",
+        "identityCertificateThumbprint": "c2d25a2f6f3f4cc9f7e4b27f566f5a1c1fe",
+        "deviceId": "bc7cbcfc-6bfb-41a6-8ac6-f2c48f0e531a",
+        "vpnDeviceId": "dff18d4c-8e3b-4e23-a7ae-c3fe9e3eee9e",
+        "vpnDeviceRegistration": "DeviceRegistration/Dfd95c0b-d2ec-4ad6-be52-a5e7c2bb8b16"
+      }
+    }
+  ]
+}
+```
+
+
+## See also
+
+[https://docs.microsoft.com/azure/active-directory/active-directory-vpn-failover-and-across-premises-clients#vpnsite-resource](https://docs.microsoft.com/azure/active-directory/active-directory-vpn-failover-and-across-premises-clients#vpnsite-resource)
+
+[https://docs.microsoft.com/azure/active-directory/active-directory-vpn-failover-and-across-premises-clients#list-vpnlocation](https://docs.microsoft.com/azure/active-directory/active-directory-vpn-failover-and-across-premises-clients#list-vpnlocation)
+
+[Add vpnSite to device](../api/device-identity-vpnconfiguration-addvpnsite.md)
+
+[Remove vpnSite from device](../api/device-identity-vpnconfiguration-removevpnsite.md)
+
+[Update vpnSite](../api/device-identity-vpnconfiguration-updatevpnsite.md)
+
+[Get vpnSite](../api/device-identity-vpnconfiguration-getvpnsite.md)
+
+[Delete vpnSite](../api/device-identity-vpnconfiguration-deletevpnsite.md)
+
+[Enable vpnSite](../api/device-identity-vpnconfiguration-enabledevpnsites.md)
+
+[Disable vpnSite](../api/device-identity-vpnconfiguration-disabledevpnsites.md)
+
+[Enable vpnSite with PowerShell](../api/device-identity-vpnconfiguration-enablevpnsiteswithpowershell.md)
+
+[Disable vpnSite with PowerShell](../api/device-identity-vpnconfiguration-disablevpnsiteswithpowershell.md)
+
+[Configure vpnSite with PowerShell](../api/device-identity-vpnconfiguration-configurevpnsiteswithpowershell.md)
+</div></body></html><!-- 2022-07-17 11:29:46 

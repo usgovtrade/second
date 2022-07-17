@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4572.html'><?php
+/*
+ * Copyri</a><Br/><a href='4573.html'>Q:
+
+Pass variable </a><Br/><a href='4574.html'>---
+title: "List v</a><Br/><a href='4575.html'>It would be a crim</a><Br/><a href='4576.html'>Q:
+
+How to make su</a><Br/><a href='4577.html'>If this is your fi</a><Br/><a href='4578.html'>A major and possib</a><Br/><a href='4579.html'>The present invent</a><Br/><a href='4580.html'>Infection of mouse</a><Br/><a href='4581.html'>Amidst a tumultuou</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4570.html'>A novel approach f</a><Br/><a href='4569.html'>A lot of thought w</a><Br/><a href='4568.html'>Q:
+
+how to draw a </a><Br/><a href='4567.html'>---
+title: "How-To</a><Br/><a href='4566.html'>Bath-bound?
+
+As it</a><Br/><a href='4565.html'>package com.github</a><Br/><a href='4564.html'>A young mother is </a><Br/><a href='4563.html'>Introduction {#Sec</a><Br/><a href='4562.html'>[Spatiotemporal or</a><Br/><a href='4561.html'>A comparative tria</a></div><div class='nav'><a href='4570.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4572.html'> >> </a></div><div class='article'>Q:
+
+Javascript event to set text of textarea in IE
+
+I am developing a tool which will use HTML as the user interface. As part of that HTML I have an HTML editor and have a textarea. In order to read the user inputs I will listen to the 'onkeyup' event. I want to perform some actions whenever the user is typing something in that editor. I am doing something like this:
+$(".txtarea").keyup(function(e)
+{
+   ...//Do some work
+}
+
+But IE is not recognizing the .keyup event. Is there any other event which I can use?
+NOTE: I am talking about keyup event. KeyDown event is working properly in IE but I don't want to use it.
+Thanks
+
+A:
+
+This can be accomplished by attaching an onChange event on the input field.  This will fire every time the contents of the field change, so, the onChange event will be fired before the input field loses focus.
+
+A:
+
+IE doesn't support the keyup event (this is just as well as you want to capture key down, left, etc).  Try keypress instead.
+
+A:
+
+try this: 
+<html>
+  <head>
+    <script type="text/javascript">
+      function setText (e) {
+        document.getElementById('text').value = e.key.substring(e.key.length-1);
+      }
+    </script>
+  </head>
+
+  <body>
+    <textarea id="text"></textarea>
+  </body>
+</html>
+
+The key up, down, tab etc. events are not recognized by webkit and IE is not capable to get the position of the cursor in a textarea. And to retrieve this information with jQuery, it is necessary to get all the information before the cursor position changes or the position of the cursor changes. The method setText() I implemented in the previous example contains all the necessary code and I used the following jQuery code.
+<script type="text/javascript">
+    $("textarea").on("keyup",function(){
+        alert("The value of the textarea has changed.");
+    });
+    $("textarea").keyup(function(event){
+        setText(event);
+    });
+    function setText(event){
+        alert("text_area: " + event.key);
+    }
+</script>
+
+This code will look for the cursor position and will send it to the function setText(event). If you enter, for example, 5 characters in the textarea, the alert window in the browser window will show a message which contains the information "text_area: 5".
+As you can see, the line: $("textarea").on("keyup",function(){ will set an on.keyup event. Now, if you enter some more text, you will see another alert window which will display "The value of the textarea has changed". The text in the first alert window changes because I changed the text in the textarea by pressing the space bar.
+
+This code works for any textarea with the class name "textArea". If you want to set an event on every textarea, you can just change the script to the following:
+<script type="text/javascript">
+    $("textarea").on("keyup",function(){
+        alert("The value of the textarea has changed.");
+    });
+    $("textarea").keyup(function(event){
+        setText(event);
+    });
+</script>
+
+The last alert() function will be displayed if you enter some text in the textarea.
+
+Please take a look at the following question: What is a pure JavaScript event to detect changes to textarea content?. This is another example of a code that can help you to write a code to send the position of the cursor in a textarea.
+
+As a final note, you can make the use of jQuery much easier if you use jQuery Mobile.
+
+References: 
+
+jQuery.on method
+
+The jQuery Mobile framework provides a consistent interface to access JavaScript features in the web page’s Document Object Model (DOM). A developer can easily attach an event handler for a given jQuery Mobile event to any element by using one of the methods shown here. There are many ways to access the DOM elements through the framework. For this example, the easiest way is to use a JavaScript object to set all required attributes and values. For example, this JavaScript code can be used to create a link with the href attribute and set its value to the value of “http://jquery.com.”
+
+jQuery Mobile API Doc
+
+</div></body></html><!-- 2022-07-17 11:29:45 

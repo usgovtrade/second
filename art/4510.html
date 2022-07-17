@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4511.html'>Inhibition of huma</a><Br/><a href='4512.html'>/**
+ * (C) Copyrig</a><Br/><a href='4513.html'>Q:
+
+How to create </a><Br/><a href='4514.html'>// ---------------</a><Br/><a href='4515.html'>Q:
+
+How can I inse</a><Br/><a href='4516.html'>The present invent</a><Br/><a href='4517.html'>1. Field of the In</a><Br/><a href='4518.html'>Q:
+
+Is there a way</a><Br/><a href='4519.html'>1. Field of the In</a><Br/><a href='4520.html'>Q:
+
+When and how s</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4509.html'>//****************</a><Br/><a href='4508.html'>Mucins of the norm</a><Br/><a href='4507.html'>Vincent J. Fuller
+</a><Br/><a href='4506.html'>Q:
+
+Why I can't ge</a><Br/><a href='4505.html'>In a communication</a><Br/><a href='4504.html'>Novelty seeking be</a><Br/><a href='4503.html'>The best Side of c</a><Br/><a href='4502.html'>Biosensor for meas</a><Br/><a href='4501.html'>All posts by Mika </a><Br/><a href='4500.html'>The present invent</a></div><div class='nav'><a href='4509.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4511.html'> >> </a></div><div class='article'>// Licensed to Elasticsearch B.V under one or more agreements.
+// Elasticsearch B.V licenses this file to you under the Apache 2.0 License.
+// See the LICENSE file in the project root for more information
+
+using Elastic.Elasticsearch.Xunit.XunitPlumbing;
+using Nest;
+using System.Linq;
+
+namespace Examples.QueryDsl.QuerySuggesters
+{
+	public class TermQuerySingleFieldsArrayTests : ExampleBase
+	{
+		[U(Skip = "Example not implemented")]
+		[Description("query term query single fields array")]
+		public void Simple()
+		{
+			// tag::simple[]
+			var result = await _client.Search<object>(s => s
+				.Query(q => q.Terms(f => f.Terms("f1", "f2")
+					.Field(f1 => f1.Title(f2 => f2.Text("Some Term")).Default(""))))
+				.Sort(ss => ss.Field(f => f.Title).Descending())
+				.Skip(100).Take(50));
+			// end::simple[]
+
+			result.Documents.Count.Should().Be(2);
+			result.Hits.Count.Should().Be(2);
+			result.Hits.Hits[0].Id.Should().Be("s1");
+			result.Hits.Hits[0].Source.Title.Should().Be("Simple Example");
+			result.Hits.Hits[1].Id.Should().Be("s2");
+			result.Hits.Hits[1].Source.Title.Should().Be("Simple Example2");
+
+			var sub = result.Hits.Hits[0].Source;
+			sub.Name.Should().Be("A");
+			sub.Text.Should().Be("Simple Example");
+		}
+	}
+}
+</div></body></html><!-- 2022-07-17 11:29:34 

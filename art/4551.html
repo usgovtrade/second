@@ -1,0 +1,201 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4552.html'>Q:
+
+Icons from htt</a><Br/><a href='4553.html'>
+
+How to Make Mone</a><Br/><a href='4554.html'>#
+# OpenSSL/crypto</a><Br/><a href='4555.html'>On May 12, the Oba</a><Br/><a href='4556.html'>This invention rel</a><Br/><a href='4557.html'>Q:
+
+How to stop mu</a><Br/><a href='4558.html'>Biosolids are envi</a><Br/><a href='4559.html'>Basketball at the </a><Br/><a href='4560.html'>Pediatric brain tu</a><Br/><a href='4561.html'>A comparative tria</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4550.html'>Introduction
+=====</a><Br/><a href='4549.html'>In-depth: 'Rio', s</a><Br/><a href='4548.html'>
+
+Dedicated to the</a><Br/><a href='4547.html'>Q:
+
+Does .NET 4.0 </a><Br/><a href='4546.html'>The role of the en</a><Br/><a href='4545.html'>Q:
+
+Getting this e</a><Br/><a href='4544.html'>Erythropoietin tre</a><Br/><a href='4543.html'>This is an archive</a><Br/><a href='4542.html'>/*
+
+  This file is</a><Br/><a href='4541.html'>Q:
+
+CakePHP: The v</a></div><div class='nav'><a href='4550.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4552.html'> >> </a></div><div class='article'># -*- coding: utf-8 -*-
+# Copyright (c) 2017, 2020, Oracle and/or its affiliates. All rights reserved.
+# This code is licensed under the GPL v2.0 license, available at
+# http://www.eclipse.org/legal/epl-2.0/
+#
+#  Use, modification and distribution are subject to the terms of the GNU
+#  General Public License Version 2 as published by the Free Software
+#  Foundation.  See the LICENSE file for details.
+#
+#  This program is also distributed with certain software (including
+#  but not limited to OpenSSL) that is licensed under separate terms,
+#  as designated in a particular file or component or in included license
+#  documentation.  The authors of MySQL hereby grant you an additional
+#  permission to link the program and your derivative works with the
+#  separately licensed software that they have included with MySQL.
+#
+#  Without limiting anything contained in the foregoing, this file,
+# which is part of MySQL Connector/Python, may be distributed under the
+# GNU General Public License, with a modification that is described
+# in the MySQL Connector/Python README file.
+#
+
+import unittest
+import pyodbc
+
+from myodbc import MyODBC
+from myodbc.connectors import DriverConnection, DriverParameters, Pool
+from myodbc.type_api import SQL_DATE, DOUBLE, TEXT
+from myodbc.typed_result import NUMBER_POOL, DATE_POOL, TEXT_POOL
+from myodbc.tests.base import BaseTest
+
+
+class TestMyODBC(unittest.TestCase):
+    def test_connect(self):
+        my_sql = "SELECT 'test'"
+
+        params = {'port':1234}
+
+        with DriverParameters(params) as my_params:
+            conn = DriverConnection(my_sql, my_params)
+
+        self.assertEqual(my_params['port'], conn.get_server_port())
+
+        # Test that the "current database" property gets set to our default.
+        if my_params['port'] != None:
+            self.assertEqual(my_params['port'], conn.get_current_database())
+
+        if my_params['server'] == None:
+            # No default server supplied, no server params are supplied either.
+            self.assertEqual("", conn.get_server())
+
+        # Test that the server name gets properly overridden
+        if my_params['port'] == None:
+            self.assertEqual("MySQL Server", conn.get_server())
+            self.assertEqual("localhost", conn.get_server_name())
+
+        if my_params['port'] != None:
+            self.assertEqual(my_params['port'], conn.get_server_port())
+            self.assertEqual(my_params['server'], conn.get_server())
+
+        if my_params['server'] != None:
+            self.assertEqual(my_params['server'], conn.get_current_database())
+
+    def test_connect_with_options(self):
+        my_sql = "SELECT 'test'"
+
+        params = {'port':1234}
+
+        options = {'server': "host:port"}
+
+        with DriverParameters(params, options) as my_params:
+            conn = DriverConnection(my_sql, my_params, **options)
+
+        self.assertEqual(my_params['port'], conn.get_server_port())
+        self.assertEqual("host:port", conn.get_current_database())
+        self.assertEqual(my_params['server'], conn.get_server())
+        self.assertEqual(my_params['port'], conn.get_server_port())
+        self.assertEqual(my_params['database'], conn.get_current_database())
+
+    def test_setter_calls(self):
+        my_sql = "SELECT 'test'"
+        params = {'port':1234}
+
+        with DriverParameters(params) as my_params:
+            conn = DriverConnection(my_sql, my_params)
+
+        self.assertIsNotNone(conn.get_current_database())
+        self.assertEqual("test", conn.get_current_database())
+
+        self.assertEqual("", conn.get_current_database())
+        self.assertIsNotNone(conn.get_server())
+        self.assertEqual("", conn.get_server())
+        self.assertIsNotNone(conn.get_server_name())
+        self.assertEqual("", conn.get_server_name())
+        self.assertIsNotNone(conn.get_current_database())
+        self.assertEqual("test", conn.get_current_database())
+        self.assertIsNotNone(conn.get_server())
+        self.assertEqual("", conn.get_server())
+        self.assertIsNotNone(conn.get_server_name())
+        self.assertEqual("test", conn.get_current_database())
+
+        self.assertIsNotNone(conn.get_current_database())
+        self.assertEqual("test", conn.get_current_database())
+
+        # Test that driver parameter calls work
+        my_params['port'] = 3456
+        my_params['server'] = "myServer"
+        my_params['database'] = "myDb"
+        my_params['date'] = datetime.datetime(2013, 1, 1, 0, 0, 0)
+
+        conn.get_server_name = lambda: my_params['server']
+        conn.get_server = lambda: my_params['server']
+        conn.get_current_database = lambda: my_params['database']
+
+        self.assertIsNotNone(conn.get_server())
+        self.assertIsNotNone(conn.get_server_name())
+        self.assertIsNotNone(conn.get_current_database())
+        self.assertTrue(my_params['server'] == conn.get_server())
+        self.assertTrue(my_params['server'] == conn.get_server_name())
+        self.assertTrue(my_params['database'] == conn.get_current_database())
+
+    def test_replication(self):
+        my_sql = "SELECT 'test'"
+
+        params = {'port':1234}
+
+        with DriverParameters(params) as my_params:
+            conn = DriverConnection(my_sql, my_params)
+
+        self.assertEqual("", conn.get_current_database())
+
+        self.assertEqual("", conn.get_current_database())
+        self.assertEqual(my_params['port'], conn.get_server_port())
+        self.assertEqual("test", conn.get_server_name())
+        self.assertEqual("", conn.get_server())
+
+        self.assertEqual(my_params['port'], conn.get_server_port())
+        self.assertEqual("test", conn.get_server_name())
+        self.assertEqual("", conn.get_server())
+
+        self.assertEqual("", conn.get_current_database())
+
+        # set replication variables
+        params["replication"] = True
+
+        with DriverParameters(params) as my_params:
+            conn = DriverConnection(my_sql, my_params)
+            self.assertTrue(my_params['replication'])
+
+        with DriverParameters(params, replication=False):
+            conn = DriverConnection(my_sql, my_params)
+            self.assertFalse(my_params['replication'])
+
+    def test_parameters_call_with_params(self):
+        my_sql = "SELECT 'test'"
+
+        params = {'port':1234}
+
+        with DriverParameters(params) as my_params:
+            conn = DriverConnection(my_sql, my_params)
+
+        self.assertEqual("", conn.get_current_database())
+        self.assertEqual("", conn.get_current_database())
+        self.assertEqual("", conn.get_current_database())
+        self.assertEqual("", conn.get_current_database())
+        self.assertEqual("", conn.get_current_database())
+
+        self.assertEqual("", conn.get_current_database())
+        self.assertEqual("", conn.get_current_database())
+
+        # Test that driver parameter calls work
+        params["server"] = "myServer"
+        params["port"] = 3456
+        params["db"] = "myDb"
+        params["date"] = datetime.datetime(2013, 1, 1, 0, 0, 0)
+
+        self.assertIsNotNone(conn.get_server())
+        self.assertIsNotNone(conn.get_server_name())
+        self.assertIsNotNone(conn.get_current_database())
+
+        self.assertIsNotNone(conn.get_server())
+        self.assertIsNotNone(conn.get_server_name())
+        self.assertIsNotNone(conn.get_</div></body></html><!-- 2022-07-17 11:29:41 
