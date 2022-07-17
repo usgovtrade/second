@@ -1,0 +1,73 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4787.html'>Introduction
+=====</a><Br/><a href='4788.html'>
+
+Ask HN: Who has </a><Br/><a href='4789.html'>Q:
+
+Creating an An</a><Br/><a href='4790.html'>The invention is c</a><Br/><a href='4791.html'>Phoenix (Ariz.) Un</a><Br/><a href='4792.html'>// Copyright 2013 </a><Br/><a href='4793.html'>Introduction {#s1}</a><Br/><a href='4794.html'>Q:
+
+Python convert</a><Br/><a href='4795.html'>As the number of c</a><Br/><a href='4796.html'>Category Archives:</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4785.html'>Q:
+
+When is the nu</a><Br/><a href='4784.html'>You are here
+
+Jazz</a><Br/><a href='4783.html'>Therapeutic effect</a><Br/><a href='4782.html'>Woolly monkeys, in</a><Br/><a href='4781.html'>An analysis of the</a><Br/><a href='4780.html'>YouTube user Dr. D</a><Br/><a href='4779.html'>Introduction
+=====</a><Br/><a href='4778.html'>Introduction {#Sec</a><Br/><a href='4777.html'>Q:
+
+Proving for $E</a><Br/><a href='4776.html'>Q:
+
+How to prevent</a></div><div class='nav'><a href='4785.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4787.html'> >> </a></div><div class='article'>Q:
+
+Does the order matter for variables in java?
+
+I was wondering if this would produce different results:
+int[] array= {4,8,6,3};
+System.out.println(array[0] * (array[1] - array[0]));
+
+VS
+System.out.println(array[0] * (array[1] - array[0]))
+
+When I test this I get 9 as the output
+
+A:
+
+In java it doesn't have to care about order. This is one of the reason we have functions like min, max and sort in array because we know that java arrays are zero-indexed.
+
+A:
+
+No, array indices are not compared alphabetically.
+They can be compared, but they are only equal to each other if and only if their elements are equal to each other.
+
+A:
+
+No, it does not.
+The two examples have the same output. That is because Java is an Object-Oriented Language, so arrays in Java are objects like all other objects.
+
+A:
+
+In java, [0] is the same as saying 0 because the array index is zero-based.
+
+I suppose you're asking if the order of operations matters in this case. Yes, the order does matter. The order of the multiplication is the same for each line, but the order of the subtraction is not.
+
+The order of operation matters in java because:
+
+the expression is a variable and the variable is assigned using a value of another expression which might be evaluated in different order. For example in these two lines of code:
+int a = f(b);
+int b = f(a);
+
+the order of evaluation of a and b can be either a to b or b to a. Because the variable names have no syntactic meaning on their own, this is ambiguous.
+
+A:
+
+No. They are syntactically equivalent and will produce the same result. The compiler is allowed to evaluate the expression in any order and use that result to perform the assignment.
+
+Does the order matter? No. It does not matter because arrays are objects in Java. They do not have a natural order like that of numerical arrays and it is allowed for expressions and assignment to have any order.
+
+What happens if I change the order of operations to
+System.out.println((array[0] - array[1]) * array[0]);
+
+Is it guaranteed that it will still produce the same result? No. Different order of operations will produce a different result. It's allowed for the compiler to produce different results, though.
+
+Is it less-efficient than the other? Yes, if you are thinking about efficiency.
+
+Is it a good programming style? No, because it leads to brittle code with unintended consequences. It may be appropriate when used as a temporary hack to get something working, but usually the best solution is to not even write such code in the first place.
+
+</div></body></html><!-- 2022-07-17 11:30:23 

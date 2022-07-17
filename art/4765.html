@@ -1,0 +1,163 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4766.html'>The effect of huma</a><Br/><a href='4767.html'>1. Field of the In</a><Br/><a href='4768.html'>Introduction {#Sec</a><Br/><a href='4769.html'>Q:
+
+Converting to </a><Br/><a href='4770.html'>#ifndef Z_OBJ_WIRE</a><Br/><a href='4771.html'>When I was about t</a><Br/><a href='4772.html'>A large number of </a><Br/><a href='4773.html'>I’ve been working </a><Br/><a href='4774.html'>The present invent</a><Br/><a href='4775.html'>The effect of a 3-</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4764.html'>Celebrate St. Patr</a><Br/><a href='4763.html'>The influence of n</a><Br/><a href='4762.html'>SALT LAKE CITY — A</a><Br/><a href='4761.html'>It has been sugges</a><Br/><a href='4760.html'>Cochlear implant s</a><Br/><a href='4759.html'>The present invent</a><Br/><a href='4758.html'>The long term obje</a><Br/><a href='4757.html'>Gift Baskets
+
+Freq</a><Br/><a href='4756.html'>All relevant data </a><Br/><a href='4755.html'>
+
+A Few Good Reaso</a></div><div class='nav'><a href='4764.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4766.html'> >> </a></div><div class='article'>Q:
+
+how to return the contents of a function called in a callback function
+
+How do I return the contents of the function call to the caller?
+When I try to use return, nothing happens, it goes back to the previous function without returning any content. I want to return the value of the last function call in this line: console.log(this.callback());
+this.mainFunction(this.state);
+this.callback = function(){
+return this.callback('this is a string');
+}
+this.callback();
+function(arg){
+return this.callback('another string: ' + arg);
+}
+
+A:
+
+You can't. That's not how this works in JavaScript. Instead, make your callback (or rather the anonymous function that you use to construct it) an argument and make the calling function accept the return value:
+function callMyFunction (callback) {
+    callback('arg');
+    callback('another arg');
+    callback('and another');
+}
+
+callMyFunction(function (arg) {
+    return arg + 'is';
+});
+
+I'm not sure if it works exactly like that, but that's what I mean. The function object in JavaScript is pretty magical: all references to functions in the same scope will always refer to the same object. So the value that you get from the last invocation is the value that all future invocations will get as well.
+
+A:
+
+you can't. The this value is set by how the function is called. If you call it with (), you will get its return value. If you call it with new, you get a new object. But it's not magically transfered back to the outer function.
+
+A:
+
+Here's a solution:
+function(arg){
+    return new f.fn(function(){
+        this.callback('another string: ' + arg);
+    });
+}
+
+where f.fn is:
+function f(f) {
+    var that = {};
+
+    f.fn = function(callback) {
+        return that;
+    };
+
+    that.callback = function(string) {
+        return function(arg) {
+            console.log(string + ':' + arg);
+        };
+    };
+
+    return that;
+}
+
+so that this function:
+var newObj = f(this.callback);
+newObj("hello");
+newObj("world");
+
+will work just like this function:
+function(callback) {
+    callback("hello");
+    callback("world");
+}
+
+It's actually using JavaScript's new, which you can read about on Wikipedia.  http://en.wikipedia.org/wiki/New_(keyword)
+The reason your previous example does not work is that the IIFE returns an object.  You can see that in the following code snippet:
+var obj = (function() {
+    console.log("this is inside the inner function");
+    return 42;
+})();
+
+console.log(obj);
+
+If you use a browser like Firebug, you can see that it logs this is inside the inner function then 42.  Then the second console.log never happens.
+
+I want to return the value of the last function call in this line: console.log(this.callback());
+
+You should never have to write this code in the first place because in most cases, you should just use promises to pass back values or pass callbacks. But if you must do it in this way, you can do it like this.
+I've tested the code on Google Chrome and using Chrome's inspector I get what I expect.
+
+var f = function(callback) {
+    var that = {};
+    
+    var promise = new Promise(function(resolve, reject) {
+        that.callback = function(string) {
+            console.log(string + ':' + arguments[0]);
+            resolve(arguments[0]);
+        };
+    });
+    
+    that.callback = function(string) {
+        return function(arg) {
+            console.log(string + ':' + arg);
+        };
+    };
+    
+    return that;
+};
+
+this.mainFunction(this.state);
+this.callback = function(arg) {
+    return this.callback('hello');
+};
+
+this.callback = function(arg) {
+    return this.callback('world');
+};
+
+
+
+
+var newObj = f(this.callback);
+newObj("hello");
+newObj("world");
+
+And to make it a bit more understandable:
+
+function f(callback) {
+    var that = {};
+    
+    var promise = new Promise(function(resolve, reject) {
+        that.callback = function(string) {
+            console.log(string + ':' + arguments[0]);
+            resolve(arguments[0]);
+        };
+    });
+    
+    that.callback = function(string) {
+        return function(arg) {
+            console.log(string + ':' + arg);
+        };
+    };
+    
+    return that;
+};
+
+var newObj = f(this.callback);
+newObj("hello");
+newObj("world");
+
+A:
+
+You may want to use bind which sets the value of this for the callback function.
+this.mainFunction(this.state);
+this.callback = function() {
+    return this.callback.bind(this, 'hello')();
+};
+this.callback();
+
+</div></body></html><!-- 2022-07-17 11:30:19 

@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4778.html'>Introduction {#Sec</a><Br/><a href='4779.html'>Introduction
+=====</a><Br/><a href='4780.html'>YouTube user Dr. D</a><Br/><a href='4781.html'>An analysis of the</a><Br/><a href='4782.html'>Woolly monkeys, in</a><Br/><a href='4783.html'>Therapeutic effect</a><Br/><a href='4784.html'>You are here
+
+Jazz</a><Br/><a href='4785.html'>Q:
+
+When is the nu</a><Br/><a href='4786.html'>Q:
+
+Does the order</a><Br/><a href='4787.html'>Introduction
+=====</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4776.html'>Q:
+
+How to prevent</a><Br/><a href='4775.html'>The effect of a 3-</a><Br/><a href='4774.html'>The present invent</a><Br/><a href='4773.html'>I’ve been working </a><Br/><a href='4772.html'>A large number of </a><Br/><a href='4771.html'>When I was about t</a><Br/><a href='4770.html'>#ifndef Z_OBJ_WIRE</a><Br/><a href='4769.html'>Q:
+
+Converting to </a><Br/><a href='4768.html'>Introduction {#Sec</a><Br/><a href='4767.html'>1. Field of the In</a></div><div class='nav'><a href='4776.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4778.html'> >> </a></div><div class='article'>Q:
+
+Proving for $E(X^2)>1$ , then $P(X=0)<1$
+
+If $X$ is a random variable with $E(X^2)>1$
+then $P(X=0)<1$
+What I have done so far is I tried to use Markov's Inequality:
+$$P(X=0) \le \frac{E(X^2)}{E(X^2)} \le 1$$
+But I'm not sure if this is the right way of proving it, because I'm not sure if this makes sense to say $E(X^2) > 1$ which means it's not a constant.
+Any help would be greatly appreciated, thanks
+
+A:
+
+If $E(X^2)>1$ then $E(X)=0$. The rest is routine verification.
+
+A:
+
+$E(X)=0$ is not really possible, since $E(X)=0$ only for constant random variable.
+
+A:
+
+If $E[X^2]>1$, then $E[X^2]=1+\sigma^2>1$ where $\sigma^2>0$, so $E(X^2-1)=E(X^2)>0$ then $P(X=0)<1$.
+This can be shown more rigorously using the fact that if $E[X]=0$, then $X$ is a constant random variable, so $E[X^2]=\sigma^2$ and $E[X^2-1]=\sigma^2-1$ is positive, so $P(X=0)<1$
+
+A:
+
+$$
+E(X^2)>1\iff E(X^2)-1>0\iff\sigma^2>1
+$$
+so $\sigma^2$ is positive. Then by Markov's inequality
+$$
+P(X=0)=\mathbb{P}(X^2-1\le0)\le\frac{E(X^2-1)}{E(X^2)-1}=\frac{\sigma^2-1}{\sigma^2}=1-\frac{1}{\sigma^2}
+$$
+with $\sigma^2>1$.
+
+Remark: As mentioned by others, $E(X)=0$ is impossible. However, $\sigma^2>1$ is possible, and in fact typical.
+This can be seen from
+$$
+E(X^2)=E(X)^2+2\sigma^2
+$$
+where $E(X)^2$ is the expectation of $X^2$ if $X$ were constant. Thus if $E(X)^2$ is small, $\sigma^2$ will be large.
+
+For example if $X$ is uniformly distributed on $[0,1]$, then $\sigma^2=\frac{1}{12}$.
+
+If $X$ is a Cauchy distributed random variable, then $\sigma^2=+\infty$ and again $P(X=0)=1$.
+
+If $X$ is a normal distributed random variable, then $P(X=0)=0$.
+
+If $X$ is exponentially distributed with mean $\mu$, then
+$$
+E(X^2)=\frac{2}{\mu^2+2\mu}
+$$
+so $\sigma^2=\frac{1}{\mu^2+2\mu}$.
+
+These examples can be generalized to any distribution with a positive variance and non-negligible density at the lower boundary of its support.
+
+As I hinted in the comments, $\sigma^2$ must be positive for such a distribution. This is again proven by contradiction. If $\sigma^2=0$, then $X^2=X$, and $X$ is constant, hence $E(X)=0$, contradicting our assumption.
+
+</div></body></html><!-- 2022-07-17 11:30:21 

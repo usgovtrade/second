@@ -1,0 +1,158 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4751.html'>Q:
+
+JUnit Test cas</a><Br/><a href='4752.html'>What to know about</a><Br/><a href='4753.html'>Q:
+
+Android how to</a><Br/><a href='4754.html'>If you’re looking </a><Br/><a href='4755.html'>
+
+A Few Good Reaso</a><Br/><a href='4756.html'>All relevant data </a><Br/><a href='4757.html'>Gift Baskets
+
+Freq</a><Br/><a href='4758.html'>The long term obje</a><Br/><a href='4759.html'>The present invent</a><Br/><a href='4760.html'>Cochlear implant s</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4749.html'>MILAN - Italy's an</a><Br/><a href='4748.html'>Lymph nodes in the</a><Br/><a href='4747.html'>Bisphenol A and lo</a><Br/><a href='4746.html'>Q:
+
+How to use ng-</a><Br/><a href='4745.html'>The goal of this p</a><Br/><a href='4744.html'>The present invent</a><Br/><a href='4743.html'>Mozilla has been t</a><Br/><a href='4742.html'>The new year has b</a><Br/><a href='4741.html'>The invention rela</a><Br/><a href='4740.html'>Terry is known for</a></div><div class='nav'><a href='4749.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4751.html'> >> </a></div><div class='article'>/**
+ * Copyright 2018 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+import { fakeTimings } from '../helpers';
+
+/** @type {number} */
+const kBaseDelay = 25;
+
+/**
+ * Injects network and CPU delay values into |timings|.  CPU delay is constant
+ * while network delay increases linearly as the simulated connection speed
+ * changes.
+ *
+ * @param {number} minDelay
+ * @param {number} maxDelay
+ * @param {number} delayBuffer The number of samples to buffer.
+ * @returns {!Object} A copy of |timings| with additional fields populated.
+ */
+export function addNetworkAndCPUDelay(
+    minDelay,
+    maxDelay,
+    delayBuffer) {
+  let currentDelay = 0;
+
+  const start = fakeTimings.getTime();
+
+  for (let i = 0; i < delayBuffer; ++i) {
+    const delta = (
+        (i - delayBuffer / 2) * (maxDelay - minDelay) + minDelay);
+
+    timings.setConnectionTiming.connect(i, start + kBaseDelay);
+    timings.setDownloadTiming.download(i, start + kBaseDelay);
+    timings.setUploadTiming.upload(i, start + kBaseDelay);
+
+    // TODO(cais): Network delays might better be modeled as
+    // gaussian distribution where all samples are above zero. This
+    // needs to be evaluated.
+    timings.setConnectTiming.connect(i, start + delta);
+    timings.setTransferTiming.upload(i, start + delta);
+    timings.setTransferTiming.download(i, start + delta);
+
+    timings.setNetworkTiming.connect(i, start + delta);
+    timings.setRTTTiming.connect(i, start + delta);
+
+    // Set some "interesting" timings for visualization
+    if (i == delayBuffer) {
+      timings.setConnectTiming.connectEnd();
+      timings.setDownloadTiming.downloadEnd();
+      timings.setUploadTiming.uploadEnd();
+      timings.setNetworkTiming.transferBegin();
+      timings.setNetworkTiming.transferEnd();
+      timings.setRTTTiming.receiveEnd();
+      timings.setRTTTiming.receiveBegin();
+    } else {
+      timings.setConnectTiming.connectBegin();
+      timings.setDownloadTiming.downloadBegin();
+      timings.setUploadTiming.uploadBegin();
+    }
+
+    currentDelay = delta;
+  }
+
+  return timings;
+}
+
+/**
+ * Injects a network delay into |timings| based on a min and max delay.
+ *
+ * @param {number} minDelay The minimum delay that |timings| can have.
+ * @param {number} maxDelay The maximum delay that |timings| can have.
+ * @param {number} delayBuffer The number of samples to buffer.
+ * @returns {!Object} A copy of |timings| with additional fields populated.
+ */
+export function addNetworkDelay(
+    minDelay,
+    maxDelay,
+    delayBuffer) {
+  return addNetworkAndCPUDelay(minDelay, maxDelay, delayBuffer);
+}
+
+/**
+ * Injects a network delay into |timings| based on a min and max delay.
+ *
+ * @param {number} minDelay The minimum delay that |timings| can have.
+ * @param {number} maxDelay The maximum delay that |timings| can have.
+ * @param {number} maxDelay Samples are buffered if they are larger than
+ *     |maxDelay|.
+ * @returns {!Object} A copy of |timings| with additional fields populated.
+ */
+export function addNetworkDelay(
+    minDelay,
+    maxDelay,
+    maxDelay) {
+  return addNetworkAndCPUDelay(minDelay, maxDelay, maxDelay);
+}
+
+/**
+ * Injects a network delay into |timings| based on a min and max delay.
+ *
+ * @param {number} minDelay The minimum delay that |timings| can have.
+ * @param {number} maxDelay The maximum delay that |timings| can have.
+ * @returns {!Object} A copy of |timings| with additional fields populated.
+ */
+export function addNetworkDelay(minDelay, maxDelay) {
+  return addNetworkAndCPUDelay(minDelay, maxDelay, 1);
+}
+
+/**
+ * Computes timings from given |timings| and delays.
+ *
+ * @param {number} timings
+ * @param {!Object} offsets
+ * @param {number=} opt_maxDelay The maximum delay to use.
+ * @returns {!Object} A copy of |timings| with additional fields populated.
+ */
+export function normalize(timings, offsets, opt_maxDelay) {
+  const maxDelay = (opt_maxDelay || kBaseDelay);
+  const maxTiming = maxDelay - kBaseDelay;
+  const minDelay = 0 - maxDelay;
+  const timeStamp = new Date().getTime();
+  const elapsed = (timeStamp - timings.connectEnd) / 1000.0;
+
+  timings.connectionTiming = {
+    connectionStart: timeStamp + elapsed,
+    connect: timeStamp + elapsed,
+    connectEnd: timeStamp + elapsed,
+    domainLookup: timeStamp + elapsed,
+    domLoading: timeStamp + elapsed,
+    domInteractive: timeStamp + elapsed,
+    domContentLoadedEventEnd: timeStamp + elapsed,
+    requestStart: timeStamp + elapsed,
+    loadEventStart: timeStamp + elapsed,
+    styleLoadEventStart: timeStamp + elapsed,
+    cssRuleLoadEventStart: timeStamp + elapsed,
+    connectEndDelay: elapsed,
+    dnsStart: timeSt</div></body></html><!-- 2022-07-17 11:30:17 

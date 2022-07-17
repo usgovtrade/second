@@ -1,0 +1,152 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4710.html'>The first two week</a><Br/><a href='4711.html'>Dilta acuminata
+
+D</a><Br/><a href='4712.html'># Tenko parser aut</a><Br/><a href='4713.html'>The first of these</a><Br/><a href='4714.html'>LONDON - British p</a><Br/><a href='4715.html'>All about the art,</a><Br/><a href='4716.html'>1. Field of the In</a><Br/><a href='4717.html'>Q:
+
+In which order</a><Br/><a href='4718.html'>Q:
+
+What is the or</a><Br/><a href='4719.html'>It’s that time of </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4708.html'>A comparison of tw</a><Br/><a href='4707.html'>C-reactive protein</a><Br/><a href='4706.html'>The effect of a no</a><Br/><a href='4705.html'>1. Field of the In</a><Br/><a href='4704.html'>Independent associ</a><Br/><a href='4703.html'>A prospective stud</a><Br/><a href='4702.html'>Korean Film Archiv</a><Br/><a href='4701.html'>The present invent</a><Br/><a href='4700.html'>The purpose of thi</a><Br/><a href='4699.html'>Boeing CEO Dennis </a></div><div class='nav'><a href='4708.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4710.html'> >> </a></div><div class='article'>Q:
+
+How to access an object outside its Class?
+
+I'm writing a class, where i have 2 instances of another class, which are in the same file, and in a different class. The instance is the "player1" variable.
+How can i access a variable of this class in another class ? (e.g. when another function is called, that variable needs to be updated)
+class mainPage(Frame):
+    def __init__(self, master):
+        #self.parent = Frame()
+
+        Frame.__init__(self, master)
+        self.grid()
+
+        self.action = Button(self, text="Start", command=lambda: self.game())
+        self.action.grid(row=2, column=0)
+        self.create_widgets()
+
+    def create_widgets(self):
+        grid = self.pack(fill="both", expand=True)
+        self.player1 = Player(grid, "black")
+        self.player2 = Player(grid, "blue")
+
+if __name__ == "__main__":
+    import sys
+    if sys.platform == "win32":
+        import os
+        app = mainPage(None)
+        app.mainloop()
+    else:
+        from Tkinter import *
+        app = mainPage(None)
+        app.mainloop()
+
+EDIT:
+This is my attempt to solve my issue:
+class mainPage(Frame):
+
+    def __init__(self, master):
+        #self.parent = Frame()
+
+        Frame.__init__(self, master)
+        self.grid()
+
+        self.action = Button(self, text="Start", command=lambda: self.game())
+        self.action.grid(row=2, column=0)
+
+        self.update = Button(self, text="UpDate", command=self.update.update)
+        self.update.grid(row=1, column=1)
+
+    def update(self):
+        print(self.player1.player1_name)
+
+The error message is:
+AttributeError: 'tkapp' object has no attribute 'player1'
+
+A:
+
+First and foremost, when you have a lot of work to do, break it down into small steps. You'll be happy you did. So instead of looking for the code that does everything, I suggest you create a main function that does a few things:
+
+initialize the GUI
+create a Game class
+initialize the game as a Game object
+start the game
+return to the GUI
+
+Then create an update function for the game:
+def update(self):
+    print(self.player1.player1_name)
+
+This way, you will be able to see the problem before anything else and you'll be able to resolve it in a matter of minutes. Also, the way you initialize game was using lambda, which can be inefficient and make things more complicated. You could do the same with
+game = Game(self.player1, self.player2)
+
+In summary, this is how you would rewrite your code (see comments):
+class mainPage(Frame):
+    def __init__(self, master):
+        # initialize the game with values obtained from previous controls
+        self.game = Game(self.player1, self.player2)
+        self.game.start()
+
+        Frame.__init__(self, master)
+        self.grid()
+
+        self.action = Button(self, text="Start", command=self.game.start)
+        self.action.grid(row=2, column=0)
+
+        self.update = Button(self, text="UpDate", command=self.game.update)
+        self.update.grid(row=1, column=1)
+
+    def update(self):
+        print(self.game.player1.player1_name)
+
+class Game:
+    def __init__(self, player1, player2):
+        self.player1 = player1
+        self.player2 = player2
+
+    def update(self):
+        self.player1.player1_name = "New Value"
+
+if __name__ == "__main__":
+    import sys
+    if sys.platform == "win32":
+        import os
+        app = mainPage(None)
+        app.mainloop()
+
+Now all you need to do is start the game in mainPage. As for updating the GUI, you'll have to figure that one out yourself.
+(btw, your code is really missing docstrings that explain what each variable is doing. For a start, I would change self.player1 to player1 since that's the name of the variable, and instead of creating new variables like player1_name, you can store player1 in a different variable (e.g. self.player1.name) so you can easily change it later, if needed.)
+
+A:
+
+In your question, you mention this line:
+self.player1 = Player(grid, "black")
+
+So, you need to take a look at Player class, and create a method in it that returns the score to self.player1 object.
+class Player:
+    ...
+    def addPoints(self):
+        self.score += 10
+        self.player2_name = "black"
+        self.player2_score = 10
+    ...
+
+You need to create such a method in every class that is dependent on player1 object. For example, let's say this is a class where you need to call addPoints method.
+class PointCalculator:
+    ...
+    def updateScore(self):
+        self.player1_score += self.player1.addPoints()
+        print(self.player1_score)
+
+Also, you may want to include Player class and updateScore method in another class (let's say GameController), then use self.player1.addPoints() method.
+
+You mentioned self.player1_name = "a" method. So, you need to store "a" string value in a different variable. Also, this "a" string must be accessible to player2 object (so that a second player can see it). You could, for example, create a class variable called player1_name, and access it like this:
+class mainPage(Frame):
+    def __init__(self, master):
+        self.player1_name = "player1"
+        self.player2_name = "player2"
+
+        Frame.__init__(self, master)
+        self.grid()
+
+        self.action = Button(self, text="Start", command=lambda: self.game())
+        self.action.grid(row=2, column=0)
+
+        self.update = Button(self, text="UpDate", command=self.update.update)
+        self.</div></body></html><!-- 2022-07-17 11:30:10 

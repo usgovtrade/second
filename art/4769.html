@@ -1,0 +1,123 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4770.html'>#ifndef Z_OBJ_WIRE</a><Br/><a href='4771.html'>When I was about t</a><Br/><a href='4772.html'>A large number of </a><Br/><a href='4773.html'>I’ve been working </a><Br/><a href='4774.html'>The present invent</a><Br/><a href='4775.html'>The effect of a 3-</a><Br/><a href='4776.html'>Q:
+
+How to prevent</a><Br/><a href='4777.html'>Q:
+
+Proving for $E</a><Br/><a href='4778.html'>Introduction {#Sec</a><Br/><a href='4779.html'>Introduction
+=====</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4768.html'>Introduction {#Sec</a><Br/><a href='4767.html'>1. Field of the In</a><Br/><a href='4766.html'>The effect of huma</a><Br/><a href='4765.html'>Q:
+
+how to return </a><Br/><a href='4764.html'>Celebrate St. Patr</a><Br/><a href='4763.html'>The influence of n</a><Br/><a href='4762.html'>SALT LAKE CITY — A</a><Br/><a href='4761.html'>It has been sugges</a><Br/><a href='4760.html'>Cochlear implant s</a><Br/><a href='4759.html'>The present invent</a></div><div class='nav'><a href='4768.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4770.html'> >> </a></div><div class='article'>Q:
+
+Converting to a new line character in php from mySQL
+
+I'm trying to convert a string in to a new line in php from a mySQL database
+I think it is something to do with it being a varchar column and the default is being like this with spaces instead of a /n: 
+I tried doing this:
+$sql="SELECT id, username, name, status FROM friends WHERE username='$usern'";
+$result = $mysqli->query($sql);
+while($row=$result->fetch_assoc()){
+$userinfo=$row["name"];
+print $userinfo;
+}
+
+This is the output:
+
+I would like it to look like this:
+Username
+Username2
+
+Any ideas?
+
+A:
+
+You can use nl2br to add newlines:
+$sql="SELECT id, username, name, status FROM friends WHERE username='$usern'";
+$result = $mysqli->query($sql);
+while($row=$result->fetch_assoc()){
+   $userinfo=$row["name"];
+   print nl2br($userinfo);
+}
+
+Demo: http://codepad.viper-7.com/g0wZqV
+
+A:
+
+I did this:
+$sql="SELECT id, username, name, status FROM friends WHERE username='$usern'";
+$result = $mysqli->query($sql);
+$result = $result->fetch_assoc();
+print nl2br($result["name"]);
+
+Thanks for the help guys!
+
+A:
+
+It is not the problem with your database, but with the output, because in your case the php output mode is not set to html.
+You should add the PHP header for outputting the HTML document and set the proper php mode
+for instance if you are using the browser 
+$userinfo = nl2br($row["name"]);
+header('Content-Type: text/html; charset=utf-8');
+echo $userinfo;
+
+(if you have other file extensions in the userinfo string, change the content type, you can read a complete list here)
+If you are in the middle of a php document and you need to output an html document, add this:
+echo "<html>";
+echo "<head>";
+echo "  <title>Hello</title>";
+echo "</head>";
+echo "<body>";
+echo $userinfo;
+echo "</body>";
+echo "</html>";
+
+The output will be like this:
+<html>
+<head>
+  <title>Hello</title>
+</head>
+<body>
+  <p>User</p>
+  <p>User2</p>
+</body>
+</html>
+
+(I know I can use PHP to output the HTML directly from the DB, but this will add php elements inside the HTML, which is bad, I believe).
+If you are in the middle of a php document and you need to output an html document, add this:
+echo "<html>";
+echo "<head>";
+echo "  <title>Hello</title>";
+echo "</head>";
+echo "<body>";
+echo "<p>User</p><p>User2</p>";
+echo "</body>";
+echo "</html>";
+
+The output will be like this:
+<html>
+<head>
+  <title>Hello</title>
+</head>
+<body>
+  <p>User</p>
+  <p>User2</p>
+</body>
+</html>
+
+So if you are using a browser you should add a header like this:
+<?php
+
+    header("Content-type: text/html; charset=utf-8");
+
+?>
+
+If you are using a file, change the header at the beginning
+<?php
+
+    header('Content-type: text/html; charset=utf-8');
+
+?>
+
+You can find more information about the use of headers here
+
+Note: php headers should be added before the output of anything other than a blank line. otherwise it wont work.
+
+</div></body></html><!-- 2022-07-17 11:30:20 

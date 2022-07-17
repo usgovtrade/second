@@ -1,0 +1,146 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4747.html'>Bisphenol A and lo</a><Br/><a href='4748.html'>Lymph nodes in the</a><Br/><a href='4749.html'>MILAN - Italy's an</a><Br/><a href='4750.html'>/**
+ * Copyright 2</a><Br/><a href='4751.html'>Q:
+
+JUnit Test cas</a><Br/><a href='4752.html'>What to know about</a><Br/><a href='4753.html'>Q:
+
+Android how to</a><Br/><a href='4754.html'>If you’re looking </a><Br/><a href='4755.html'>
+
+A Few Good Reaso</a><Br/><a href='4756.html'>All relevant data </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4745.html'>The goal of this p</a><Br/><a href='4744.html'>The present invent</a><Br/><a href='4743.html'>Mozilla has been t</a><Br/><a href='4742.html'>The new year has b</a><Br/><a href='4741.html'>The invention rela</a><Br/><a href='4740.html'>Terry is known for</a><Br/><a href='4739.html'>How do New Yorkers</a><Br/><a href='4738.html'>In the new issue o</a><Br/><a href='4737.html'>//  (C) Copyright </a><Br/><a href='4736.html'>Souls on Ice
+
+Soul</a></div><div class='nav'><a href='4745.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4747.html'> >> </a></div><div class='article'>Q:
+
+How to use ng-click in the same element?
+
+For example, I have such template code:
+<button ng-click="a()" ng-disabled="b">Click</button>
+<button ng-click="c()">Click</button>
+
+After compilation, the HTML page should looks like this:
+<button ng-click="a() ng-disabled="b">Click</button>
+<button ng-click="c()">Click</button>
+
+How can I do it without using nested ng-clicks?
+EDIT: I know that there are some workarounds. For example, I can insert ng-init attribute and write something in it:
+<button ng-click="init();" ng-disabled="b">Click</button>
+
+function init() { this.ngClick.a() this.ngClick.ngDisabled("b") }
+
+And I can do it in JavaScript. But is there any possible way to do it in HTML?
+
+A:
+
+If I understand correctly, this does not work since the outer click is going to call a() in the scope of the inner click handler.  If I put a function in a scope, it is called in the same scope.  You can use an array or a factory or something similar for this.  Here's a factory that does it.  You can pass in the first and second elements of the array as optional arguments and it returns the function you can use to link.
+You can extend the syntax to accept whatever parameters you need to use with these functions.  I've made the example pass in a string for an identifier.
+angular.module('ng').factory('linkFunction', [function () {
+  var funcs = [];
+  var linkFunctionFactory = {};
+  var addLinkFunction = function (func, args) {
+    funcs.push(func);
+    var argStrings = func.toString().split(/\W+/g);
+    var argNames = argStrings.filter(function (item, index, array) {
+     return item.indexOf('$') === -1;
+    });
+    funcs[0](argNames[0], args[0]);
+    if (argStrings.length > 1) {
+     funcs[1](argStrings[1], args[1]);
+    }
+ };
+  linkFunctionFactory.linkFunction = function (selector, firstArg, secondArg) {
+  // create function from $scope.one arg, $scope.two arg, $scope.three arg and make a wrapper
+   return function (newArg1, newArg2, newArg3) {
+     linkFunctionFactory.linkFunction(funcs[0], firstArg, newArg1);
+     linkFunctionFactory.linkFunction(funcs[1], newArg2, newArg3);
+   };
+ };
+  linkFunctionFactory.linkFunction(funcs[0], undefined, null);
+  return linkFunctionFactory.linkFunction;
+}]);
+
+In your case:
+<button ng-click="linkFunction('a', 'b', 'c')('some', 'arguments', 'here')">Click</button>
+
+Demo
+Working demo
+
+A:
+
+I had this problem once too. You cannot bind an event on elements dynamically. What you need to do is wrap them in a directive, and then assign the ng-click within the directive's link function.
+In this example, I used an array called $actions to store the actions to be done. It contains an id and a function to call. If you want a function with different arguments or you need to change them, they can be added as a separate argument to the action array. For example: <button ng-click="actions[0].fn('arg1', 'arg2')">Click</button> 
+var app = angular.module('app', []);
+
+app.directive('myDirective', function() {
+    return {
+        restrict: 'A',
+        priority: 1,
+        link: function(scope, element) {
+            scope.actions = [];
+            element.on('click', function() {
+                scope.$eval(scope.actions[0].fn, {});
+            });
+
+        }
+    }
+});
+
+app.controller('TestController', function($scope, $timeout, $compile) {
+    $scope.actions = [{
+        fn: function(arg1, arg2) {
+            console.log(arg1);
+            console.log(arg2);
+        }
+    }];
+
+    $scope.clickMe = function() {
+        $compile("<my-directive></my-directive>")($scope);
+        $timeout(function() {
+            angular.element('#myElement').trigger('click');
+        }, 1);
+    };
+});
+
+Demo: https://jsfiddle.net/6hcz4Ls6/
+
+A:
+
+Angular v1.4.3
+The original version works if the function and/or the object which is called has no arguments.
+If you want to have more complex params:
+<div ng-click="myClick({c: 42, d: '42'})" ></div>
+
+$scope.myClick = function(a) { alert(a.c); }
+
+The above would be parsed like:
+<div ng-click="myClick({c: 42, d: '42'})" ></div>
+
+$scope.myClick = function() { alert(undefined); }
+
+This is due to how variables are passed to the inner scope.
+Angular v1.3.0
+I have this working in the version I'm using:
+<button ng-click="clickMyButton()">Click</button>
+
+$scope.clickMyButton = function() { alert(window.arguments.length); }
+
+The above would be parsed like:
+<button ng-click="clickMyButton()" class="ng-binding" ng-disabled="a">Click</button>
+
+$scope.clickMyButton = function(a) { alert(window.arguments.length); }
+
+However, this is undocumented, so not tested, and the version below should work.  The version below is more in line with the other solution:
+<div ng-click="myClick({c: 42, d: '42'})" class="ng-binding" ng-disabled="a">Click</div>
+
+$scope.myClick = function(a) { alert(window.arguments.length); }
+
+This would generate:
+<div ng-click="myClick({c: 42, d: '42'})" class="ng-binding" ng-disabled="a" style="">Click</div>
+
+$scope.myClick = function() { alert(window.arguments.length); }
+
+You could use Object.keys to clean this up:
+<div ng-click="myClick({c: 42, d: '42'})" class="ng-binding" ng-disabled="a" style="">Click</div>
+
+$scope.myClick = function() { alert(Object.keys(window.arguments).length); }
+
+This generates the same markup as the first example. 
+
+</div></body></html><!-- 2022-07-17 11:30:16 

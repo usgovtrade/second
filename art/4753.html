@@ -1,0 +1,219 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4754.html'>If you’re looking </a><Br/><a href='4755.html'>
+
+A Few Good Reaso</a><Br/><a href='4756.html'>All relevant data </a><Br/><a href='4757.html'>Gift Baskets
+
+Freq</a><Br/><a href='4758.html'>The long term obje</a><Br/><a href='4759.html'>The present invent</a><Br/><a href='4760.html'>Cochlear implant s</a><Br/><a href='4761.html'>It has been sugges</a><Br/><a href='4762.html'>SALT LAKE CITY — A</a><Br/><a href='4763.html'>The influence of n</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4752.html'>What to know about</a><Br/><a href='4751.html'>Q:
+
+JUnit Test cas</a><Br/><a href='4750.html'>/**
+ * Copyright 2</a><Br/><a href='4749.html'>MILAN - Italy's an</a><Br/><a href='4748.html'>Lymph nodes in the</a><Br/><a href='4747.html'>Bisphenol A and lo</a><Br/><a href='4746.html'>Q:
+
+How to use ng-</a><Br/><a href='4745.html'>The goal of this p</a><Br/><a href='4744.html'>The present invent</a><Br/><a href='4743.html'>Mozilla has been t</a></div><div class='nav'><a href='4752.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4754.html'> >> </a></div><div class='article'>Q:
+
+Android how to get the id value when click button?
+
+I have this class called AddEditProduct:
+public class AddEditProduct extends AppCompatActivity {
+
+    private EditText categoryName;
+    private EditText productName;
+    private EditText unitOfMeasure;
+    private EditText price;
+    private EditText stock;
+    private ImageButton button;
+    private long id;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_edit_product);
+        setTitle("Add Product");
+
+        categoryName = (EditText) findViewById(R.id.categoryName);
+        productName = (EditText) findViewById(R.id.productName);
+        unitOfMeasure = (EditText) findViewById(R.id.unitOfMeasure);
+        price = (EditText) findViewById(R.id.price);
+        stock = (EditText) findViewById(R.id.stock);
+        button = (ImageButton) findViewById(R.id.button);
+
+        id = 0;
+        Button b = (Button) findViewById(R.id.button2);
+
+        Intent intent = new Intent(AddEditProduct.this, AddEditProduct2.class);
+
+        Bundle b = new Bundle();
+        b.putInt("catid", id);
+        b.putString("name", categoryName.getText().toString());
+        b.putInt("num", id);
+        b.putInt("numofam", numOfProductName);
+        intent.putExtras(b);
+
+        intent.setClass(AddEditProduct.this, AddEditProduct2.class);
+        startActivity(intent);
+        Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
+        id = getIntent().getIntExtra("catid", 0);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                b.putInt("catid", id);
+                b.putString("name", categoryName.getText().toString());
+                b.putInt("num", id);
+                b.putInt("numofam", numOfProductName);
+                id = getIntent().getIntExtra("catid", 0);
+                Intent intent2 = new Intent(AddEditProduct.this, AddEditProduct3.class);
+                startActivity(intent2);
+            }
+        });
+
+    }
+
+In this class I try to get the ID value when I click button2 but I don't know how can I do that. I already tried with Intent.getIntExtra.
+AddEditProduct.xml:
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/categoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Add Category"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/productName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Add Product"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/unitOfMeasure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Add Unit of Measure"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Add Product Price"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Add Product Stock"
+        android:textSize="20sp" />
+</LinearLayout>
+
+AddEditProduct2.xml:
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/categoryName2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Category" />
+
+    <Button
+        android:id="@+id/productName2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Product" />
+
+    <Button
+        android:id="@+id/unitOfMeasure2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Unit of Measure" />
+
+    <Button
+        android:id="@+id/price2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Product Price" />
+
+    <Button
+        android:id="@+id/stock2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Product Stock" />
+</LinearLayout>
+
+AddEditProduct3.xml:
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/categoryName3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Category" />
+
+    <Button
+        android:id="@+id/productName3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Product" />
+
+    <Button
+        android:id="@+id/unitOfMeasure3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Unit of Measure" />
+
+    <Button
+        android:id="@+id/price3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Product Price" />
+
+    <Button
+        android:id="@+id/stock3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Add Product Stock" />
+</LinearLayout>
+
+And this is my MainActivity.java:
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new GetDataTask().execute();
+    </div></body></html><!-- 2022-07-17 11:30:17 

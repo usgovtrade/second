@@ -1,0 +1,133 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4696.html'>Aberdeen councillo</a><Br/><a href='4697.html'>Nevada Attorney Ge</a><Br/><a href='4698.html'>GABAergic interneu</a><Br/><a href='4699.html'>Boeing CEO Dennis </a><Br/><a href='4700.html'>The purpose of thi</a><Br/><a href='4701.html'>The present invent</a><Br/><a href='4702.html'>Korean Film Archiv</a><Br/><a href='4703.html'>A prospective stud</a><Br/><a href='4704.html'>Independent associ</a><Br/><a href='4705.html'>1. Field of the In</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4694.html'>Novel human protei</a><Br/><a href='4693.html'>/**
+ * The MIT Lic</a><Br/><a href='4692.html'>Recombinant murine</a><Br/><a href='4691.html'>The role of the Ph</a><Br/><a href='4690.html'>The role of protei</a><Br/><a href='4689.html'>Filed 4/10/13 (unm</a><Br/><a href='4688.html'>Effect of long-ter</a><Br/><a href='4687.html'>Ancient DNA analys</a><Br/><a href='4686.html'>---
+abstract: 'Giv</a><Br/><a href='4685.html'>New York State Dep</a></div><div class='nav'><a href='4694.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4696.html'> >> </a></div><div class='article'>Q:
+
+Difference between .h and .hpp files in C++
+
+I'm having trouble understanding the difference between .h and .hpp files in C++. I know that header files are used to hold the function prototypes. This might be a very silly question, but could someone please give me an example?
+
+A:
+
+A .hpp file (or header) is a header file for header-only libraries. .hpp is the common extension of header files for header-only libraries, but there is nothing stopping you from choosing a different extension and putting it in a project or shared library.
+I can understand how you got confused. Your confusion is similar to the confusion I saw (and later caused myself) when trying to understand differences between libraries and modules in C/C++.
+A header is a description of a function that is meant to be reusable. However, unlike in C, header files are not part of your program; they are meant to be used by other programs.
+In C and C++ the header is used with a .h file. You can think of a header file as a .hpp file and a .h file as an example of a header. The headers are used to define interfaces for functions and data structures that other programs can access and use, but those programs do not have to build that library as part of their own program, since the interface is already provided.
+header files are not usually included in a program. They are included by the linker when the program is built.
+A library is different in C than it is in C++. In C it is a library which is linked with your program. If you put it in /lib or /lib64 then the linker will look in /lib/ or /lib64/ when looking for libraries to include in your program. In C++ it can be any library you link with your program. I will assume that you mean the C++ header-only library in this question.
+You link your program with the library by adding a -llibname flag to your linker when compiling your program.
+With a header-only library it is normal for there to be no .lib file.
+
+A:
+
+In short, header files contain the declarations (the part of the code that doesn't perform any operation on its own, but rather declares how a program should be using the functions).
+.h is for the C language.
+.hpp is for C++ (i.e., C++11 and above).
+Consider the following:
+foo.h
+int foo();
+
+foo.cpp
+#include "foo.h"
+
+int foo() {
+   return 42;
+}
+
+and then suppose you want to compile it.
+You will have to do the following (assuming you are using gcc or g++):
+
+gcc -c foo.cpp to compile it to foo.o
+gcc -o foo foo.o to link it to the executable
+
+Both foo.cpp and foo.o will have the following symbols: foo.
+foo.cpp:2: int foo() {}
+foo.o:8: int foo() = 0;
+
+If you want to reuse this function, you should include foo.h in your source files, such that they would have:
+#include "foo.h"
+int main() {
+   foo();
+}
+
+That is, you need foo.h for that program to compile and run correctly.
+
+A:
+
+You have used the header files.  It is good practice to use a .h or a .hpp to contain your function declaration.  For example, if you want to make a function that does nothing but calculate the square root of whatever you pass to it:
+float doNothing(float number);
+
+It's good to keep that as a separate header file.  You will end up needing to import it in another header file:
+#include "func_sqr.h"
+void doNothing(float number);
+
+You can import many similar function declarations in the same header.  You do not want the other functions to need to include that header, which you don't want either, because that would include the definition.
+Now it gets trickier to define these functions in the header file because you need an implementation.  However, even with those functions declared in the same header file, each function can still have it's own implementation, even if they're practically doing the same thing. 
+Now imagine that you have many other headers that you want to include in a big header file, like so:
+#include "func_sqr.h"
+#include "func_sub.h"
+#include "func_cos.h"
+#include "func_pow.h"
+#include "func_log.h"
+
+And now you have a massive headache of having to use all these headers, even though some of them have the same functions declared and they all look like they do similar things. This gets really nasty when you get to classes because even though you don't have the implementation in the header files, you still have to use the class definitions in every header file that has them so that you don't get errors for multiple definition errors.
+So you get really screwed if you wanted to change the implementation of say, a class implementation in one header file (say for cos), then there is no way to remove the old one, without breaking the code that calls the class functions in all the other files that have that class. Or if you didn't include the header file that had the implementation of that function, there is no way for the compiler to generate the correct code when you call the class. In addition, most compiler projects don't have a feature to disable a function from getting overwritten, because it's an important feature of C++ that allows you to add things to the header file and if something is declared but not defined in the header, it will never get overwritten. So if you want to get rid of an implementation of func_x and replace it with func_y, and they are the same function, you can't just delete func_x from the code and replace it with func_y. However, this problem can be avoided by using inline functions, like so:
+#include "func_sqr.h"
+inline float doNothing(float number) {
+    return sqrt(number);
+}
+
+If you're working with a library like a math library, then this is good enough. If you're using this library to do something more complex, like graphing functions, then you should not rely on the fact that there will be an implementation, because sometimes the default implementation might not make sense for your use case. 
+This is why we have a convention of putting declarations of function in a header file, but implementations in a source file. C++ programs have so many errors because C++ does not enforce that these files need to be compiled separately and it's not good practice to use header files in the same source files either.
+
+A:
+
+The header file is the one holding the definitions, the cpp file is the one holding the implementation.
+You declare all of your functions, classes and types in the header. You write implementations in the cpp file.
+
+So which one do you put functions that are supposed to be used outside the cpp files?
+
+To put it another way, you put definitions in the header file, and implementations in the cpp file, thus separating them into two distinct files so that you can keep different source code files for different parts of your program using the same type, function or class without having to include the header file for that type, function or class.
+
+This might be a very silly question, but could someone please give me an example?
+
+Consider this:
+foo.hpp:
+// foo.hpp
+
+#pragma once
+
+#include "bar.h"
+
+#include <cstdio>
+
+std::size_t foo();
+
+foo.cpp:
+// foo.cpp
+
+#include "foo.hpp"
+#include <iostream>
+
+std::size_t foo() {
+    std::cout << "foo!\n";
+    return 42;
+}
+
+bar.hpp:
+// bar.hpp
+
+#pragma once
+
+#include "foo.hpp"
+
+extern std::size_t bar();
+
+bar.cpp:
+// bar.cpp
+
+#include "bar.hpp"
+
+std::size_t bar() {
+    std::cout << "bar!\n";
+    return 42;
+</div></body></html><!-- 2022-07-17 11:30:07 

@@ -1,0 +1,261 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4752.html'>What to know about</a><Br/><a href='4753.html'>Q:
+
+Android how to</a><Br/><a href='4754.html'>If you’re looking </a><Br/><a href='4755.html'>
+
+A Few Good Reaso</a><Br/><a href='4756.html'>All relevant data </a><Br/><a href='4757.html'>Gift Baskets
+
+Freq</a><Br/><a href='4758.html'>The long term obje</a><Br/><a href='4759.html'>The present invent</a><Br/><a href='4760.html'>Cochlear implant s</a><Br/><a href='4761.html'>It has been sugges</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4750.html'>/**
+ * Copyright 2</a><Br/><a href='4749.html'>MILAN - Italy's an</a><Br/><a href='4748.html'>Lymph nodes in the</a><Br/><a href='4747.html'>Bisphenol A and lo</a><Br/><a href='4746.html'>Q:
+
+How to use ng-</a><Br/><a href='4745.html'>The goal of this p</a><Br/><a href='4744.html'>The present invent</a><Br/><a href='4743.html'>Mozilla has been t</a><Br/><a href='4742.html'>The new year has b</a><Br/><a href='4741.html'>The invention rela</a></div><div class='nav'><a href='4750.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4752.html'> >> </a></div><div class='article'>Q:
+
+JUnit Test case for exception throwing
+
+I'm new to Java and JUnit. I have a class that contains a switch-case block. I want to test for all the cases possible error or failure exceptions are thrown. 
+public void testExceptions() {
+  // Call the method that throws exceptions
+  ClassUnderTest.test();
+  // Check the expected exceptions are thrown
+  List<String> exceptionMessages = TestUtil.checkExceptionThrown(ClassUnderTest.class);
+  assertEquals(true, exceptionMessages.size() > 0);
+}
+
+ClassUnderTest::test:
+@Override
+public String test() {
+    int status = Class1.status;
+    switch(status){
+    case 1: {
+        return "this is the exception";
+        break;
+    }
+    case 2: {
+        return "this is another exception";
+        break;
+    }
+    case 3: {
+        return "yet another exception";
+        break;
+    }
+    case 4: {
+        return "another one";
+        break;
+    }
+    case 5: {
+        return "this is an exception";
+        break;
+    }
+    }
+    throw new Class1Exception();
+}
+
+The expected is that in every case an exception is thrown and hence an exception is thrown. The assertion fails when there is no exception. What am I missing here?
+I tried it like below and it doesn't work. It still passes for me although I have tested for the expected exception being thrown.
+//I have used assertions
+@Test (expected=Class1Exception.class)
+public void test1() {
+    int status = Class1.status;
+    switch(status){
+    case 1: {
+        return "this is the exception";
+        break;
+    }
+    case 2: {
+        return "this is another exception";
+        break;
+    }
+    case 3: {
+        return "yet another exception";
+        break;
+    }
+    case 4: {
+        return "another one";
+        break;
+    }
+    case 5: {
+        return "this is an exception";
+        break;
+    }
+    }
+}
+
+Is the @Test (expected=Class1Exception.class) correct? I thought it is only going to check if the Expected exception is thrown or not. It checks if it's the same class. I want to make sure that for all the exceptions an exception is thrown. What am I missing here? How can I test this?
+I also tried using ExpectedException:
+@Test(expected=Class1Exception.class)
+public void test1() throws Class1Exception {
+    int status = Class1.status;
+    switch(status){
+    case 1: {
+        return "this is the exception";
+        break;
+    }
+    case 2: {
+        return "this is another exception";
+        break;
+    }
+    case 3: {
+        return "yet another exception";
+        break;
+    }
+    case 4: {
+        return "another one";
+        break;
+    }
+    case 5: {
+        return "this is an exception";
+        break;
+    }
+    }
+}
+
+But it still fails. I wonder why it doesn't work. Can anyone guide me about how I can write JUnit test case for this?
+
+A:
+
+Is the @Test (expected=Class1Exception.class) correct?
+
+Yes it's correct. You need to ensure the test method contains throws clause and that method will be wrapped into try/catch block in the method under test. 
+
+I want to make sure that for all the exceptions an exception is thrown.
+
+I would use @Rule with @Test(expected=...) for this case. There is one caveat in your case - you have no control which is thrown exception. The easiest way to get this work - use Exception:
+public class MyTest {
+
+  @Rule
+  public TestRule exceptionHandler = new TestRule() {
+    @Override
+    public Statement apply(final Statement base,final Description description) {
+      return new Statement() {
+        @Override
+        public void evaluate() throws Throwable {
+          try {
+            base.evaluate();
+          } catch (Exception e) {
+            throw new AssertionError("Expected exception", e);
+          }
+        }
+      };
+    }
+  };
+
+  @Test
+  public void test1() throws Class1Exception {
+    int status = Class1.status;
+    switch (status) {
+    case 1: {
+        return "this is the exception";
+        break;
+    }
+    case 2: {
+        return "this is another exception";
+        break;
+    }
+    case 3: {
+        return "yet another exception";
+        break;
+    }
+    case 4: {
+        return "another one";
+        break;
+    }
+    case 5: {
+        return "this is an exception";
+        break;
+    }
+    }
+ }
+  }
+
+UPDATED:
+I created a sample code that covers your case:
+@Test(expected=IllegalArgumentException.class)
+public void testSwithCase() throws Exception {
+
+    String test = null;
+
+    switch (test) {
+    case "1":
+        throw new IllegalArgumentException("this is the exception");
+    case "2":
+        throw new IllegalArgumentException("this is another exception");
+    case "3":
+        throw new IllegalArgumentException("yet another exception");
+    case "4":
+        throw new IllegalArgumentException("another one");
+    case "5":
+        throw new IllegalArgumentException("this is an exception");
+    }
+}
+
+public static class MyClass {
+
+    public void method() {
+        String test = null;
+
+        switch (test) {
+        case "1":
+            throw new IllegalArgumentException("this is the exception");
+        case "2":
+            throw new IllegalArgumentException("this is another exception");
+        case "3":
+            throw new IllegalArgumentException("yet another exception");
+        case "4":
+            throw new IllegalArgumentException("another one");
+        case "5":
+            throw new IllegalArgumentException("this is an exception");
+        }
+    }
+
+    public static void test(String param) throws IllegalArgumentException {
+        switch (param) {
+        case "1":
+            method();
+            break;
+        case "2":
+            method();
+            break;
+        case "3":
+            method();
+            break;
+        case "4":
+            method();
+            break;
+        case "5":
+            method();
+            break;
+        }
+    }
+}
+
+import org.junit.Test;
+import org.junit.Assert;
+
+import static org.junit.Assert.*;
+
+public class TestClass {
+
+    @Test
+    public void test() {
+        String test = "1";
+
+        Assert.assertNotNull(test);
+        Assert.assertTrue(test == "1" || test == null);
+
+        try {
+            MyClass.test(test);
+        } catch (IllegalArgumentException e) {
+            Assert.assertEquals(true, true);
+            Assert.assertEquals(e.getMessage(), test);
+        }
+    }
+
+    @Test
+    public void testShouldPass() throws Exception {
+        String test = "1";
+
+        // no throw
+        try {
+            MyClass.test(test);
+        } catch (IllegalArgumentException e) {
+            Assert.assertEquals(true, true);
+            Assert.assertEquals(e.</div></body></html><!-- 2022-07-17 11:30:17 

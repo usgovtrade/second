@@ -1,0 +1,140 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4718.html'>Q:
+
+What is the or</a><Br/><a href='4719.html'>It’s that time of </a><Br/><a href='4720.html'>As of Saturday, Ja</a><Br/><a href='4721.html'>Lack of associatio</a><Br/><a href='4722.html'>Samsung has always</a><Br/><a href='4723.html'>The present invent</a><Br/><a href='4724.html'>Pope Francis said </a><Br/><a href='4725.html'>/*
+ * This file is</a><Br/><a href='4726.html'>This page contains</a><Br/><a href='4727.html'>Q:
+
+How to create </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4716.html'>1. Field of the In</a><Br/><a href='4715.html'>All about the art,</a><Br/><a href='4714.html'>LONDON - British p</a><Br/><a href='4713.html'>The first of these</a><Br/><a href='4712.html'># Tenko parser aut</a><Br/><a href='4711.html'>Dilta acuminata
+
+D</a><Br/><a href='4710.html'>The first two week</a><Br/><a href='4709.html'>Q:
+
+How to access </a><Br/><a href='4708.html'>A comparison of tw</a><Br/><a href='4707.html'>C-reactive protein</a></div><div class='nav'><a href='4716.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4718.html'> >> </a></div><div class='article'>Q:
+
+In which order do the effects of `int x = 0;` and `int i = 0;` initialization occur?
+
+As per my understanding, in the following piece of code:
+#include <iostream>
+int main() {
+   int x = 0;
+   int i = 0;
+   return 0;
+}
+
+Initialization order of two objects of same type is unspecified. So how would you be able to write a generic definition for this case? Here, it is important to distinguish the initialization sequence between both objects.
+Is it possible to make such a distinction? The output of the program should be just 0.
+Note: The answer to this question is 0. To observe it, you can replace the above code snippet with the following.
+int x = 1;
+int i = 2;
+return 0;
+
+This is because we have two ways to initialize int object and both ways have same precedence. Thus, the outcome is zero. To be precise, the order of initialization is unspecified (ISO 14882:2011, C++11 5.3.3/1: The effects of initializations are sequenced before the first use of each variable (but any such sequence is constrained by the rules for sequencing of initialization locations expressed in §12.6.2.1).
+So, it is not possible to differentiate two objects as specified in the second example (0). 
+
+A:
+
+Order of initialization of objects of the same type is unspecified. If multiple scalar objects with initializer(s) are being initialized at the same time, they are initialized in an order defined by the lexical order of their declarators. So 
+int x = 0;
+int i = 0;
+
+is not allowed because there is no lexical order among the identifiers.
+Your proposed initialization:
+int x = 0;
+int i = 0;
+
+is equivalent to:
+int i = 0;
+int x = 0;
+
+It cannot be said which is initialized first, because both initialization expressions are equivalent to their equivalent.
+However, the order of initialization is unimportant, because the compiler already knows the values of i and x for the following reason.
+The only difference between the two cases in your example is that the first int x = 0 and the second int i = 0 is moved to a different line.
+Here is another example with a difference:
+int a, b;
+
+struct X {};
+X* x1 = new X;
+X* x2 = new X;
+
+a = b = 0;
+
+It is very important to note that no object is initialized. Both x1 and x2 are just uninitialized pointers. The compiler already knows which value of a or b will be used for initialization. For the two declarations above, it will initialize b first, and it will initialize a first for the following reason.
+Both a and b are initialized at once. It is always guaranteed that b will be initialized after a. Because both a and b has an initializer, we can see that the ordering is just: b(non-static data member), a(non-static data member), other objects, unnamed objects.
+We know the order of initialization is: b(non-static data member), a(non-static data member), other objects, unnamed objects, from §6.7/5:
+
+Each direct base class subobject is initialized (by calling its default constructor) before all the direct base class subobjects of that class are initialized.
+
+You cannot distinguish the two variables a and b in your question because the compiler knows the order and knows which variable to initialize first.
+
+So, it is not possible to differentiate two objects as specified in the second example (0).
+
+You don't even have to specify which object you want to distinguish. Just use:
+int x = 0, i = 0;
+
+int a = 0, b = 0;
+
+Here, the first set of variables are initialized together, and the second set of variables are initialized together.
+This is equivalent to 
+int x = 0;
+int a = 0;
+int i = 0;
+int b = 0;
+
+This is because the initialization expressions are equivalent and the compiler knows the value of x, a, and b.
+
+A:
+
+int x = 0; int i = 0;
+
+can be generalized to any type:
+struct A { int a; }; A b; a = b; // OK, a has been initialized
+A b = A(); b.a = 1; // a is initialized by the initializer, even if it is placed after the A
+A c; c.a = 1; // A() is used here, so it is initialized by the default constructor, so A is not fully initialized
+
+int a = 0; // a must be initialized by the constructor
+int b = 0; // b is already initialized to 0
+
+int x, y; // x is initialized before y
+x = y;
+x = 0;
+
+int a[10]; // the array is initialized by a global initialization or by 0
+a[0] = 1; // is there something between array element 0 and 1?
+
+int n;
+int a[n]; // the array elements have automatic storage duration. The global initializer isn't executed at this point. It is executed when n is defined (at the top level)
+
+int n = 5;
+int a[n]; // same as above
+
+int a = 10;
+int b = a; // b is initialized before a
+int c = a[1];
+int b = a[1]; // b must be initialized before a[1]
+
+// can a be an expression of one variable?
+int a, b;
+(a = b) = 0; // this only works for the same type, because the type of the return value depends on how a is initialized
+
+int x = 10;
+int a = 20;
+int b = x = 20;
+
+int a[x]; // a is fully initialized, as long as the expression x has been evaluated
+a[0] = 30;
+
+int x = 10;
+int a[x]; // is x fully initialized, as long as the expression x has been evaluated
+a[0] = 30;
+
+int a = x; // A a is initialized with the value of x, even if x is not fully initialized
+
+int i[x]; // here x is undefined
+i[0] = 0; // the assignment has to fail, because x is undefined
+
+int a = 0;
+int i[a]; // is i fully initialized?
+i[0] = a; // a[0] is partially initialized
+
+int a = 0;
+int i = x + a; // i is initialized with the value of x + a, even if x is not fully initialized
+
+</div></body></html><!-- 2022-07-17 11:30:11 

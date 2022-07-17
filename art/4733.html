@@ -1,0 +1,203 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4734.html'>You don’t have to </a><Br/><a href='4735.html'>Category: Blogging</a><Br/><a href='4736.html'>Souls on Ice
+
+Soul</a><Br/><a href='4737.html'>//  (C) Copyright </a><Br/><a href='4738.html'>In the new issue o</a><Br/><a href='4739.html'>How do New Yorkers</a><Br/><a href='4740.html'>Terry is known for</a><Br/><a href='4741.html'>The invention rela</a><Br/><a href='4742.html'>The new year has b</a><Br/><a href='4743.html'>Mozilla has been t</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4732.html'>[Influence of high</a><Br/><a href='4731.html'>Safety
+
+The Office</a><Br/><a href='4730.html'>A high school stud</a><Br/><a href='4729.html'>Influence of the n</a><Br/><a href='4728.html'>Hirschsprung disea</a><Br/><a href='4727.html'>Q:
+
+How to create </a><Br/><a href='4726.html'>This page contains</a><Br/><a href='4725.html'>/*
+ * This file is</a><Br/><a href='4724.html'>Pope Francis said </a><Br/><a href='4723.html'>The present invent</a></div><div class='nav'><a href='4732.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4734.html'> >> </a></div><div class='article'>Q:
+
+Difference between 'using' and 'import' keyword in php?
+
+I want to know the difference between using and import keyword in php.
+
+A:
+
+That is completely up to you.
+It will import the variable $foo from that file to the current scope, like if it were a real function:
+function foo()
+{
+    return 42;
+}
+
+function bar()
+{
+    return foo();
+}
+
+bar(); // outputs 42
+
+If you want to use a class from another file, you can do that too, same as above:
+class foo{}
+class bar{}
+
+// in bar.php
+include('baz.php');
+
+class Baz{}
+$baz = new Baz(); // now we can use $baz in bar.php
+bar(); // works now, because we included baz.php which brings baz into the current scope
+
+Of course, this is a trivial example, but it shows the power and capabilities of importing:
+// in a.php
+include('b.php');
+
+class Bar
+{
+    // b.php does not have a definition for this class
+    protected $baz;
+
+    function getBaz()
+    {
+        return $this->baz;
+    }
+}
+
+$bar = new Bar();
+echo $bar->getBaz(); // outputs 'bar'
+
+I hope this is a good example how you can import an entire class from another file.
+
+A:
+
+using imports a local scope:
+function hello() {
+
+    $a = 5;
+
+    function show() {
+
+        return $a;
+    }
+
+    return show();
+}
+
+$b = hello();
+
+    print_r($b); // "5"
+    echo $b(); // 6
+
+if you want to use a class that isn't globally available you can import:
+<?php
+
+namespace {
+
+    $bar = new Baz;
+
+    return $bar->bar();
+}
+
+class FooBar {
+
+    function bar() {
+
+        return 5;
+    }
+}
+
+namespace {
+
+    use FooBar;
+
+    $foo = new FooBar;
+
+    $value = $foo->bar();
+
+    print_r($value); // 5
+
+}
+
+class Foo {
+
+    protected $baz;
+
+    public function show() {
+
+        $this->baz = 3;
+        return $this->baz;
+    }
+}
+
+$x = new Foo;
+$x->show(); // 3
+
+use statements allow you to use specific classes, objects, interfaces, or traits that you normally can't access in the current scope.
+using imports a class from another namespace. 
+It doesn't have to be in a file, this is also called an include.
+
+A:
+
+Well, using just import the class to the current scope (your script). 
+If you want to use it within a function (or class) you have to specify the namespace.
+For example:
+// This way your will use it on the current scope.
+use Namespace\Folder\ClassName;
+
+// Or by specifying the name space and the specific folder.
+use Folder\ClassName;
+
+// Now, you can use it like you would if you were in the scope.
+echo $object->method();
+
+// Or, if you don't use the variable before, you can do it inside the method.
+class MyClass {
+    function method() {
+        // This will print the hello message.
+        echo $this->message();
+    }
+
+    // For exemple, $this->message will be $object->message().
+    public function __construct() {
+        $this->message = "hello";
+    }
+}
+
+echo $object->message(); // Prints "hello".
+
+Now, you know how to import a class. Let's learn how to create one. This is super simple.
+class User {
+    public function display() {
+        return "GoodBye World!";
+    }
+}
+
+function doUserStuff() {
+    return new User;
+}
+
+echo doUserStuff()->display(); // "GoodBye World!".
+
+You can include it in another one to use it (import).
+class PostController extends \BaseController {
+
+    public function index() {
+        return new User; // Import.
+    }
+
+    public function create() {
+        return new User; // Import.
+    }
+}
+
+Good luck!
+
+See the official documentation about namespaces.
+
+Namespace resolution and importing
+In the PHP grammar, namespaces are introduced using the keyword
+  namespace followed by a namespace name, optionally followed by
+  namespace aliases (not shown above). As namespaces may contain the
+  same name as a class, function or constant, the parser looks for the
+  name as it would in a regular class name. That is, an unqualified
+  class name must be a fully qualified class name and contain the
+  fully qualified class name within a namespace (and the same is true
+  for functions, classes and constants). In the sample below, no names
+  are declared in the root namespace. Therefore, since Foo is not found
+  as a global in the root namespace, the file is treated as a module.
+As you can see in the above examples, the use keyword is used to bring
+  namespaces into a current scope.
+
+namespace Foo;
+class Bar {
+    function __construct()</div></body></html><!-- 2022-07-17 11:30:14 

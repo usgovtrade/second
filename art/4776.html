@@ -1,0 +1,129 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4777.html'>Q:
+
+Proving for $E</a><Br/><a href='4778.html'>Introduction {#Sec</a><Br/><a href='4779.html'>Introduction
+=====</a><Br/><a href='4780.html'>YouTube user Dr. D</a><Br/><a href='4781.html'>An analysis of the</a><Br/><a href='4782.html'>Woolly monkeys, in</a><Br/><a href='4783.html'>Therapeutic effect</a><Br/><a href='4784.html'>You are here
+
+Jazz</a><Br/><a href='4785.html'>Q:
+
+When is the nu</a><Br/><a href='4786.html'>Q:
+
+Does the order</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4775.html'>The effect of a 3-</a><Br/><a href='4774.html'>The present invent</a><Br/><a href='4773.html'>I’ve been working </a><Br/><a href='4772.html'>A large number of </a><Br/><a href='4771.html'>When I was about t</a><Br/><a href='4770.html'>#ifndef Z_OBJ_WIRE</a><Br/><a href='4769.html'>Q:
+
+Converting to </a><Br/><a href='4768.html'>Introduction {#Sec</a><Br/><a href='4767.html'>1. Field of the In</a><Br/><a href='4766.html'>The effect of huma</a></div><div class='nav'><a href='4775.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4777.html'> >> </a></div><div class='article'>Q:
+
+How to prevent default on anchor click
+
+I have a div I want to be clickable, however it also acts as a link. I need to prevent the default behaviour. For instance if I go to http://www.google.com and click my div the page still goes to google.com
+my div:
+<div class="map"><a href="http://www.bing.com">A link</a></div>
+
+In my css I have:
+.map {
+    position:absolute;
+    z-index:99;
+}
+
+.map a {
+    position:relative;
+}
+
+Currently if I click anywhere in the div, it acts as a link and the page still goes to google.com. Is there a way to prevent this default behaviour?
+If the user clicks elsewhere and THEN clicks the div, the function I need to execute will be called.
+
+A:
+
+One method is to make the event propagate to the parent:
+$(document).click(function(e) {
+   // Do your stuff
+   e.stopPropagation();
+});
+
+http://api.jquery.com/event.stopPropagation/
+
+A:
+
+Just add return false;
+ <div class="map"><a href="http://www.bing.com" onclick="return false">A link</a></div>
+
+For more info - Javascript - return false on onclick
+
+A:
+
+To prevent the default behavior you can return false in the on-click handler. This is a native event handler and has access to the event object (and any other variables it may need), so you can get any information you need from the element from the event object.
+
+$('.map a').click(function(event){
+   event.preventDefault();
+   //do something else;
+})
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<div class="map"><a href="http://www.bing.com">A link</a></div>
+
+To stop the click event from bubbling up, set the click-event on the child to be handled by its parent.
+
+$('.map a').click(function(event){
+   event.stopPropagation();
+   //do something else;
+})
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<div class="map"><a href="http://www.bing.com">A link</a></div>
+
+Note, the stopPropagation is part of the W3C DOM Level 2 Events and is only supported by IE11 and not by the other browser versions.
+Also, it's worth noting that return false; is the same as calling event.preventDefault(); and event.stopPropagation() in order to handle a click.
+
+<div class="map"><a href="http://www.bing.com">A link</a></div>
+
+$('.map a').click(function(event){
+  console.log("in listener");
+  event.preventDefault();
+  //do something else;
+})
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<div class="map"><a href="http://www.bing.com">A link</a></div>
+
+Alternatively, if you wish to stop the event bubbling to the parent you can do something like this (and here's a really interesting article on this method). 
+<div class="map"><a href="http://www.bing.com">A link</a></div>
+<div style="display:none;">
+    <span class="stop" style="display:none;">Stop</span>
+</div>
+
+$('.map a').click(function(event){
+   event.stopPropagation();
+   //do something else;
+})
+
+<div class="map"><a href="http://www.bing.com">A link</a></div>
+<div style="display:none;">
+    <span class="stop" style="display:none;">Stop</span>
+</div>
+
+$('.map a').click(function(event){
+    if(event.target.getAttribute('href') == "http://www.bing.com"){
+        $('.stop').show();
+        event.stopPropagation();
+        //do something else;
+    }
+})
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<div class="map"><a href="http://www.bing.com">A link</a></div>
+<div style="display:none;">
+    <span class="stop" style="display:none;">Stop</span>
+</div>
+
+It seems this method relies on something called event bubbling, so if someone clicks out of the element, it still gets to the handler; I think this is because you are setting the event.target. You can read more about it here and here
+
+A:
+
+You could also solve the problem with only css, using pointer-events: none;
+.map {
+    position:absolute;
+    z-index:99;
+}
+
+.map a {
+    pointer-events:none;
+    position:relative;
+}
+
+This way the click event will not be triggered on .map if the cursor is over the link a. If you want to be able to click on a while hovering the link, just add a normal click handler on the parent container of .map.
+
+</div></body></html><!-- 2022-07-17 11:30:21 
