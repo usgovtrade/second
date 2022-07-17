@@ -1,0 +1,222 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4638.html'>Wendell Pierce Cas</a><Br/><a href='4639.html'>Q:
+
+Does the exist</a><Br/><a href='4640.html'>The effects of the</a><Br/><a href='4641.html'>Q:
+
+What is the di</a><Br/><a href='4642.html'>This book brings t</a><Br/><a href='4643.html'>The present invent</a><Br/><a href='4644.html'>Bush's Brain: The </a><Br/><a href='4645.html'>All relevant data </a><Br/><a href='4646.html'>Re: [Qemu-devel] [</a><Br/><a href='4647.html'>It’s the kind of s</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4636.html'>Birth asphyxia: ex</a><Br/><a href='4635.html'>The invention rela</a><Br/><a href='4634.html'>1. Introduction {#</a><Br/><a href='4633.html'>Introduction {#sec</a><Br/><a href='4632.html'>#!/bin/bash
+######</a><Br/><a href='4631.html'>The European Commi</a><Br/><a href='4630.html'>/*
+ * Copyright (C</a><Br/><a href='4629.html'>Gastroesophageal r</a><Br/><a href='4628.html'>Aquaculture in Eur</a><Br/><a href='4627.html'>Q:
+
+How to check i</a></div><div class='nav'><a href='4636.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4638.html'> >> </a></div><div class='article'>/*------------------------------------------------------------------------------
+
+   Copyright (c) 2000 Tyrell Corporation. All rights reserved.
+
+   Tyrell DarkIce
+
+   File     : LameEncoder.h
+   Version  : $Revision$
+   Author   : $Author$
+   Location : $Source$
+   
+
+   Copyright notice:
+
+    This program is free software; you can redistribute it and/or
+    modify it under the terms of the GNU General Public License  
+    as published by the Free Software Foundation; either version 2
+    of the License, or (at your option) any later version.
+   
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of 
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+    GNU General Public License for more details.
+   
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
+------------------------------------------------------------------------------*/
+#ifndef LAME_LAME_ENCODER_H
+#define LAME_LAME_ENCODER_H
+
+#ifndef __cplusplus
+#error This is a C++ include file
+#endif
+
+
+/* ============================================================ include files */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#ifdef HAVE_STDINT_H
+#include <stdint.h>
+#elif defined(_MSC_VER)
+#include <stdint.h>
+#else
+#error need int32_t
+#endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
+#error need string.h
+#endif
+
+#include <time.h>
+#include <assert.h>
+#include <stdio.h>
+
+#include "Reporter.h"
+#include "Sink.h"
+#include "TcpSocket.h"
+#include "TcpConnection.h"
+#include "Socket.h"
+#include "Util.h"
+#include "IceCast.h"
+#include "FileSink.h"
+#include "DSAPacket.h"
+
+#include "LameEncoder.h"
+
+
+/* ================================================================ constants */
+
+
+/* =================================================================== macros */
+
+
+/* =============================================================== data types */
+
+/**
+ *  An Lame internal object.
+ *
+ *  @author  $Author$
+ *  @version $Revision$
+ */
+class LameEncoder : public NamedObject {
+    private:
+
+        /**
+         *  Value/string container for a set of DSP capabilities.
+         */
+        struct lame_global_flags {
+            LameGlobalFlags long_settings;
+            LameGlobalFlags short_settings;
+        };
+        
+        /**
+         * The sample rate converter object used to convert samples in
+         * the encoder's floating point buffer.
+         */
+        SampleRateConverter * converter;
+
+        /**
+         * Controls the volume of the output (currently implemented as
+         * an OpenSL ES parameter).
+         */
+        int output_volume;
+
+        /**
+         * The total number of input samples read from the encoder's
+         * input file.  This is only a valid field after reporting().
+         */
+        lame_global_flags const * input_samples;
+
+        /**
+         * An integer representing a state of the library.
+         */
+        int state;
+
+        /**
+         * The current peak amplitude
+         */
+        double peak;
+
+        /**
+         * For PCM input: output buffer
+         */
+        float * buffer;
+
+        /**
+         * For PCM input: size of the output buffer
+         */
+        size_t bufferSize;
+
+        /**
+         * For PCM input: current read position in the output buffer
+         */
+        size_t bufferReadPos;
+
+        /**
+         * Describes a channel.
+         */
+        struct lame_internal_flags {
+            unsigned int header; /* 0 = no header, 1 = with header */
+            unsigned int copyright; /* 0 = no copyright bit, 1 = with copyright bit */
+            unsigned int original; /* 0 = no original bit, 1 = with original bit */
+            unsigned int encoding; /* encoding bit */
+            unsigned int CRC; /* CRC disabled, 1 = with CRC bit */
+            unsigned int pcm_lw; /* 1 = PCM data in Little-Endian format */
+            unsigned int raw; /* 1 = original RAW pcm data (not encoded) */
+            unsigned int mp3lame; /* encoding for MPEG Layer-3 */
+            unsigned int mp3rsv; /* MPEG R.S.V. bit, one bit only */
+            unsigned int mp3log; /* if non-zero, use MPEG Layer-3, otherwise use MPEG-2 */
+            unsigned int filter_options; /* any combination of the following: */
+                /*   0 = A psychoacoustic model is not being used (see initialization, below) */
+                /*   1 = A joint stereo psychoacoustic model is being used */
+                /*   2 = A fast M/S mode is being used */
+                /*   3 = The mid/side encoder is being used */
+                /*   4 = A different bitrate is being used for the mid/side coding */
+            unsigned int copyright_protected; /* if 1, only a copy of the original bitstream is allowed */
+            unsigned int error_protection; /* 1 = Error Protection (crc) */
+            unsigned int copyright_file_name; /* Author's name and real name */
+            unsigned int encoder_delay; /* if 1, encoder delay is used */
+            unsigned int encoder_padding; /* if 1, encoder padding is used */
+            unsigned int bitrate_index; /* if 0, encoder uses average bitrate */
+            unsigned int CRC_bits; /* if 1, calculates CRCs */
+            unsigned int extension; /* one extension bit only available if there are no CRC bits */
+            unsigned int VBR_bitrate; /* the computed bitrate (VBR/ABR), in bits/sec */
+            unsigned int quality; /* encoding quality, between -1 and 10, inclusive */
+            unsigned int bitrate; /* target bitrate, in bits/sec */
+            unsigned int samplerate; /* sample rate, in Hz */
+            unsigned int lowpass; /* frequency of the lowpass filter */
+            unsigned int highpass; /* frequency of the highpass filter */
+            unsigned int highpass_frequency; /* deprecated, use highpass */
+            unsigned int lowpass_frequency; /* deprecated, use lowpass */
+            unsigned int sample_rate; /* the input sample rate, in Hz */
+            unsigned int channels; /* the number of interleaved channels */
+            unsigned int max_nspsytune; /* the number of allowed PCM-coded nspsytune frames */
+            unsigned int  stereo_mode; /* For joint-stereo encodings, this is the joint-stereo mode, see ISO/IEC 14496-3, Annex G*/
+            unsigned int   input_samplerate_index; /* the bitrate of the input samples in bits/sec (1 - 31) */
+            unsigned int   scale_num; /* scale to this many input channels (1 - 4) */
+            unsigned int   scale_den; /* scale from this many input channels (1 - 4) */
+            unsigned int   write_lame_tag; /* this lame tag is written into the bitstream */
+            unsigned int   disable_reservoir; /* reservoir is disabled */
+            unsigned int   noise_shaping; /* 1 = enable noise shaping */
+            unsigned int   athaa_encoding; /* 1 = enable adaptive ATH encoding */
+            unsigned int   vbr_abr; /* vbr, abr bitrate, in bits/sec (ABR brate is always <= VBR bitrate)*/
+            unsigned int   extended_ms; /* 1 = enable extended model */
+            unsigned int   experimental; /* 0 = enable all features, 1 = enable some, 2 = disable all (obsolete) */
+        } gfp;
+
+        /**
+         * The number of samples in the buffer, in the range 8...32767.
+         */
+        int numSamples;
+
+        /**
+         * The target maximum number of bytes per packet.
+         */
+        int max_packet_size;
+
+        /**
+         * Flag, set to 1, if we get 1 packet from input, or more than one.
+         */
+        int got_packet;
+
+        /**
+         * Flag, set to 1, when we get a packet without having enough space
+         * in the output buffer to store all of it.  Thus, after having
+         * received a packet for which write_stream_size is too small, we will
+         * check for this condition here, and call flush_stream (if necessary</div></body></html><!-- 2022-07-17 11:29:57 

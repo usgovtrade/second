@@ -1,0 +1,153 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4654.html'>Q:
+
+Are there know</a><Br/><a href='4655.html'>Dallas County Cler</a><Br/><a href='4656.html'>A new method of es</a><Br/><a href='4657.html'>/*
+ *  Copyright (</a><Br/><a href='4658.html'>/*
+Bullet Continu</a><Br/><a href='4659.html'>What if our world </a><Br/><a href='4660.html'>Orofacial and soma</a><Br/><a href='4661.html'>The present invent</a><Br/><a href='4662.html'>"And let's hear th</a><Br/><a href='4663.html'>In the past year, </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4652.html'>The long-term obje</a><Br/><a href='4651.html'>A new paradigm for</a><Br/><a href='4650.html'>The present invent</a><Br/><a href='4649.html'>Benzos
+
+Benzos may</a><Br/><a href='4648.html'>Rugby sevens at th</a><Br/><a href='4647.html'>It’s the kind of s</a><Br/><a href='4646.html'>Re: [Qemu-devel] [</a><Br/><a href='4645.html'>All relevant data </a><Br/><a href='4644.html'>Bush's Brain: The </a><Br/><a href='4643.html'>The present invent</a></div><div class='nav'><a href='4652.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4654.html'> >> </a></div><div class='article'>Q:
+
+Jaxb2-maven-plugin not working with jaxb:bindings, when it comes to unmarshal. Is there a work around?
+
+First time posting here. It's been really helpful so far but I hit a wall.
+I have a project which has a lot of dependencies and is structured like so.  
+myProject/
+|--src/
+|    |--main/
+|    |    |--java/
+|    |    |--resources/
+|    |    |    |--binding.xml
+|    |    |--webapp/
+|    |        |--js/
+|    |        |--css/
+|    |--test/
+
+The binding.xml looks like so:
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings version="1.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:annox="http://annox.dev.java.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+    <jaxb:bindings schemaLocation="schema/dss.xsd">
+        <jaxb:bindings node="//xsd:complexType[@name='DSSFile']">
+            <jaxb:class name="DSSFile"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xsd:complexType[@name='DSS']">
+            <jaxb:class name="DSS"/>
+        </jaxb:bindings>
+    </jaxb:bindings>
+
+</jaxb:bindings>
+
+Here's the test I'm trying to use to make sure it's working:
+    @Test
+    public void testUnmarshalBinding() throws Exception {
+        File file = new File("src/main/webapp/resources/js/sitemap.js");
+        JAXBContext ctx = JAXBContext.newInstance(DSS.class);
+        DSS dss = (DSS) ctx.createUnmarshaller().unmarshal(file);
+        log.info("returning dss object");
+        assertNotNull(dss);
+    }
+
+It returns null.  I've tried messing around with maven-jaxb2-plugin and all kinds of JAXB binding plugins and I always get the same results, namely nothing is returned from the unmarshal. I'm a bit stumped at this point as I've followed every single guide I've found online. 
+If I point it to an xsd I write out in a separate test it works fine, so it's something to do with that file. I haven't changed the DSS class in any way.
+Thanks.
+Edit: I've changed the test to use the location in which the file exists instead of pointing directly at the JAXBContext. The exact same behavior is exhibited. The xsd file looks like this:
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://MyProjectName.com/project" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
+
+    <xs:element name="DSS" type="DSS"/>
+
+    <xs:complexType name="DSS">
+        <xs:sequence>
+            <xs:element name="DSSFile" type="DSSFile" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DSSFile">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="contents">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
+
+A:
+
+I managed to get this to work by changing the binding.xml file as follows:
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings version="1.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" xmlns:annox="http://annox.dev.java.net" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <jaxb:bindings schemaLocation="schema/dss.xsd">
+        <jaxb:bindings node="//xsd:complexType[@name='DSSFile']">
+            <jaxb:class name="DSSFile"/>
+        </jaxb:bindings>
+
+        <jaxb:bindings node="//xsd:complexType[@name='DSS']">
+            <jaxb:class name="DSS"/>
+        </jaxb:bindings>
+    </jaxb:bindings>
+</jaxb:bindings>
+
+I got that working by using this xsd:
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+    targetNamespace="http://MyProjectName.com/project" version="1.0">
+
+    <xs:element name="DSS" type="DSS"/>
+
+    <xs:complexType name="DSS">
+        <xs:sequence>
+            <xs:element name="DSSFile" type="DSSFile" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="DSSFile">
+        <xs:sequence>
+            <xs:element name="id" type="xs:string"/>
+            <xs:element name="contents">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:any minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
+
+I changed the name of the test to match the name in my original binding.xml which I had done for the sake of changing things around for the rest of the program.
+
+A:
+
+It sounds like there is something special about the class paths for your JAXB plugins.   
+JAXB's xjc:unmarshalling has its own configurable options to point at JAXB's lib folder where JAXB can find all the tools and other files needed to build it's libraries.
+I suggest adding an entry in your Maven POM's dependency element to add the JAXB jars to your classpath as well as an option to add the xjc jars to your classpath.  
+If the test compiles but your application runs into issues, I'd check to make sure the maven-jaxb2-plugin is configured to correctly handle your binding files and classpaths.  
+Lastly, if you provide your pom.xml, I can update this answer to include this info.
+Here's a sample plugin configuration that worked for me when I did this last.
+<plugin>
+   <groupId>org.codehaus.mojo</groupId>
+   <artifactId>jaxb2-maven-plugin</artifactId>
+   <version>2.3.1</version>
+   <executions>
+      <execution>
+         <id>xjc-generate-sources</id>
+         <goals>
+            <goal>xjc</goal>
+         </goals>
+         <configuration>
+            <arguments>
+               <argument>-B-Xprint:none</argument>
+               <argument>-Xinheritance</argument>
+               <argument>-extension</argument>
+               <argument>-b ${basedir}/src/main/resources/jaxb/test-binding.xml</argument>
+               <argument>-p ${project.build.directory}/classes/META-INF</argument>
+            </arguments>
+         </configuration</div></body></html><!-- 2022-07-17 11:30:00 

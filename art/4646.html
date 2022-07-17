@@ -1,0 +1,167 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4647.html'>It’s the kind of s</a><Br/><a href='4648.html'>Rugby sevens at th</a><Br/><a href='4649.html'>Benzos
+
+Benzos may</a><Br/><a href='4650.html'>The present invent</a><Br/><a href='4651.html'>A new paradigm for</a><Br/><a href='4652.html'>The long-term obje</a><Br/><a href='4653.html'>Q:
+
+Jaxb2-maven-pl</a><Br/><a href='4654.html'>Q:
+
+Are there know</a><Br/><a href='4655.html'>Dallas County Cler</a><Br/><a href='4656.html'>A new method of es</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4645.html'>All relevant data </a><Br/><a href='4644.html'>Bush's Brain: The </a><Br/><a href='4643.html'>The present invent</a><Br/><a href='4642.html'>This book brings t</a><Br/><a href='4641.html'>Q:
+
+What is the di</a><Br/><a href='4640.html'>The effects of the</a><Br/><a href='4639.html'>Q:
+
+Does the exist</a><Br/><a href='4638.html'>Wendell Pierce Cas</a><Br/><a href='4637.html'>/*----------------</a><Br/><a href='4636.html'>Birth asphyxia: ex</a></div><div class='nav'><a href='4645.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4647.html'> >> </a></div><div class='article'>Re: [Qemu-devel] [PATCHv2 00/13] qemu: make qtest a command
+
+On Thursday 09 July 2004 16:56, Paul Koning wrote:
+> On Thu, 9 Jul 2004 10:59:24 -0700, David Airlie wrote:
+> > ...
+> > I suppose that if 'qtest' isn't a QEMU command now, it should probably
+> > get one?
+>
+> A good point, this would most likely be acceptable to David since qtest
+> is a fairly niche feature. It is unlikely to ever become generally useful
+> outside of QEMU itself. On the other hand I think it would be useful for
+> other QEMU tools. This could still get in with David's review.
+>
+> -- Paul
+Yes I agree. The problem of putting the qtest in a 'utility' directory is
+that the QEMU binary itself is built with this utility and have all the
+utility as its dependency. This would lead to very awkward situations
+since qtest is more and more useful and becoming the standard QEMU testing
+framework.
+Regards,
+Thierry.
+
+On Friday 10 July 2004 05:59, Paul Koning wrote:
+> On Thu, 9 Jul 2004 10:59:24 -0700, David Airlie wrote:
+> > ...
+> > I suppose that if 'qtest' isn't a QEMU command now, it should probably
+> > get one?
+>
+> A good point, this would most likely be acceptable to David since qtest
+> is a fairly niche feature. It is unlikely to ever become generally useful
+> outside of QEMU itself. On the other hand I think it would be useful for
+> other QEMU tools. This could still get in with David's review.
+>
+> -- Paul
+Okay then, it seems to be a consensus :-)
+Regards,
+Thierry.
+
+On Friday 10 July 2004 06:48, Thierry Orozco wrote:
+> On Thursday 09 July 2004 16:56, Paul Koning wrote:
+> > On Thu, 9 Jul 2004 10:59:24 -0700, David Airlie wrote:
+> > > ...
+> > > I suppose that if 'qtest' isn't a QEMU command now, it should probably
+> > > get one?
+> >
+> > A good point, this would most likely be acceptable to David since qtest
+> > is a fairly niche feature. It is unlikely to ever become generally useful
+> > outside of QEMU itself. On the other hand I think it would be useful for
+> > other QEMU tools. This could still get in with David's review.
+> >
+> > -- Paul
+>
+> Okay then, it seems to be a consensus :-)
+Actually not, since I noticed that the qtest command already exists in
+QEMU's utilities, and I think that would be okay to leave it like that.
+And also since I just added a few useful features like -m and -s.
+Thierry.
+
+On Thursday 16 July 2004 02:00, Thierry Orozco wrote:
+> On Thursday 09 July 2004 16:56, Paul Koning wrote:
+> > On Thu, 9 Jul 2004 10:59:24 -0700, David Airlie wrote:
+> > > ...
+> > > I suppose that if 'qtest' isn't a QEMU command now, it should probably
+> > > get one?
+> >
+> > A good point, this would most likely be acceptable to David since qtest
+> > is a fairly niche feature. It is unlikely to ever become generally useful
+> > outside of QEMU itself. On the other hand I think it would be useful for
+> > other QEMU tools. This could still get in with David's review.
+> >
+> > -- Paul
+>
+> Okay then, it seems to be a consensus :-)
+Actually not, since I noticed that the qtest command already exists in
+QEMU's utilities, and I think that would be okay to leave it like that.
+And also since I just added a few useful features like -m and -s.
+Thierry.
+
+On Saturday 11 July 2004 01:56, Thierry Orozco wrote:
+> On Friday 10 July 2004 06:48, Thierry Orozco wrote:
+> > On Thursday 09 July 2004 16:56, Paul Koning wrote:
+> > > On Thu, 9 Jul 2004 10:59:24 -0700, David Airlie wrote:
+> > > > ...
+> > > > I suppose that if 'qtest' isn't a QEMU command now, it should probably
+> > > > get one?
+> > >
+> > > A good point, this would most likely be acceptable to David since qtest
+> > > is a fairly niche feature. It is unlikely to ever become generally useful
+> > > outside of QEMU itself. On the other hand I think it would be useful for
+> > > other QEMU tools. This could still get in with David's review.
+> > >
+> > > -- Paul
+> >
+> > Okay then, it seems to be a consensus :-)
+> Actually not, since I noticed that the qtest command already exists in
+> QEMU's utilities, and I think that would be okay to leave it like that.
+> And also since I just added a few useful features like -m and -s.
+Okay, I agree. I guess that would be fine.
+Thanks for your contribution!
+Thierry.
+
+On Saturday 11 July 2004 03:49, Paul Koning wrote:
+> On Thursday 16 July 2004 02:00, Thierry Orozco wrote:
+> > On Thursday 09 July 2004 16:56, Paul Koning wrote:
+> > > On Thu, 9 Jul 2004 10:59:24 -0700, David Airlie wrote:
+> > > > ...
+> > > > I suppose that if 'qtest' isn't a QEMU command now, it should probably
+> > > > get one?
+> > >
+> > > A good point, this would most likely be acceptable to David since qtest
+> > > is a fairly niche feature. It is unlikely to ever become generally useful
+> > > outside of QEMU itself. On the other hand I think it would be useful for
+> > > other QEMU tools. This could still get in with David's review.
+> > >
+> > > -- Paul
+> >
+> > Okay then, it seems to be a consensus :-)
+> > Actually not, since I noticed that the qtest command already exists in
+> > QEMU's utilities, and I think that would be okay to leave it like that.
+> > And also since I just added a few useful features like -m and -s.
+>
+> Okay, I agree. I guess that would be fine.
+>
+> Thanks for your contribution!
+> Thierry.
+I'm really glad that you don't oppose too much on my changes :-)
+I also wrote to some minor improvements and fixed some typo.
+On Sunday, I fixed all the file/dir names so they don't mix up with
+QEMU's file/dir names.
+The main features left is adding all the tests provided by test_*.c and
+adding a main loop in qtest.
+--
+Paul Koning <paul.koning@gmail.com>
+qtest: An advanced user-space regression testing framework
+http://www.open-iscsi.org/wiki/QEMU
+
+On Sunday, July 25, 2004 at 09:16:59AM +0000, Paul Koning wrote:
+> Thierry Orozco wrote:
+> > On Friday 10 July 2004 06:48, Thierry Orozco wrote:
+> > > On Thursday 09 July 2004 16:56, Paul Koning wrote:
+> > > > On Thu, 9 Jul 2004 10:59:24 -0700, David Airlie wrote:
+> > > > > ...
+> > > > > I suppose that if 'qtest' isn't a QEMU command now, it should probably
+> > > > > get one?
+> > > >
+> > > > A good point, this would most likely be acceptable to David since qtest
+> > > > is a fairly niche feature. It is unlikely to ever become generally useful
+> > > > outside of QEMU itself. On the other hand I think it would be useful for
+> > > > other QEMU tools. This could still get in with David's review.
+> > > >
+> > > > -- Paul
+> > >
+> > > Okay then, it seems to be a consensus :-)
+> > Actually not, since I noticed that the qtest command already exists in
+> > QEMU's utilities, and I think that would be okay to leave it like that.
+> > And also since I just added a few useful features like -m and -s.
+> Okay</div></body></html><!-- 2022-07-17 11:29:59 

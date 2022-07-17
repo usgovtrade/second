@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4627.html'>Q:
+
+How to check i</a><Br/><a href='4628.html'>Aquaculture in Eur</a><Br/><a href='4629.html'>Gastroesophageal r</a><Br/><a href='4630.html'>/*
+ * Copyright (C</a><Br/><a href='4631.html'>The European Commi</a><Br/><a href='4632.html'>#!/bin/bash
+######</a><Br/><a href='4633.html'>Introduction {#sec</a><Br/><a href='4634.html'>1. Introduction {#</a><Br/><a href='4635.html'>The invention rela</a><Br/><a href='4636.html'>Birth asphyxia: ex</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4625.html'>Hillary Clinton is</a><Br/><a href='4624.html'>Q:
+
+How to find th</a><Br/><a href='4623.html'>1. Technical Field</a><Br/><a href='4622.html'>The present invent</a><Br/><a href='4621.html'>It’s a familiar si</a><Br/><a href='4620.html'>Q:
+
+how to fix err</a><Br/><a href='4619.html'>"That was a great </a><Br/><a href='4618.html'>#ifndef __NVKM_DIS</a><Br/><a href='4617.html'>We all know that w</a><Br/><a href='4616.html'>A small band of Ne</a></div><div class='nav'><a href='4625.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4627.html'> >> </a></div><div class='article'>Q:
+
+Does the number of times a sequence repeats in a row influence its probability?
+
+Let's say I want to know what is the chance of a certain sequence of events occurring.
+For example I want to know the chance that the following four events will occur in a row: A - B - C - A
+After calculating the chance of A, then I would multiply the result with the chance of B (in case that A happened) and multiply the result with the chance of C (in case that A and B happened).
+My question is: if the four events happen many times in a row does the chance of their occurring increase or decrease?
+Say for example that we have 100 A's in a row, then would the chance of 100 B's afterwards be 100 times the chance of an A?
+
+A:
+
+If you don't expect your experiment to be biased, you can just consider each event separately and their occurrence probability can be taken as the product of the corresponding occurrence probabilities:
+For instance, if you want to know the probability that a dice rolls 4 heads in a row, you can try a dice (each event will have the same probability $\frac12$ since you can choose any of the 6 faces to start from) and see what is the probability of getting 4 heads in a row. Since a die will have at least one face, the chance of getting 4 heads is just the chance of getting at least one heads (you cannot have no heads nor tails), so it will be $\frac56$.
+In the other hand, if you want to know the probability of $4$ dice that have been rolled $100$ times in a row, all of them with different faces, then you need to sum (in the sense of event) all the possible ways to get $4$ heads (since each dice will contribute with the same probability $\frac12$ to the probability, and there will be $\binom42$ different ways to get exactly $4$ heads). This means that the chance of getting $4$ heads will be equal to
+$$
+\frac{\binom42}6=2
+$$
+
+A:
+
+The way the question is framed, a certain sequence of events occurring means exactly one sequence. So, in the example, the chance of B being the next event after any particular A is $1\over3$.
+The situation you describe could occur if, say, the chance of B occurring is $1/2$ after A and $1/2$ after not A. In that case the chance of A happening twice is $\frac12\times\frac12= \frac14$, then followed by B being the next event, so the chance of B happening twice is
+$$1\over3\times \frac14=\frac1{12}$$
+Similarly, if the chance of B occurring is $1/3$ after A and $1/3$ after not A, the chance of A being followed by B is $1\over3\times \frac13=\frac1{9}$.
+
+A:
+
+If the occurrence probabilities are independent of each other, then the chance that the sequence ABCA occurs is simply the product of the probability of getting each one: $$\mathrm{Prob}(A) \times \mathrm{Prob}(B) \times \mathrm{Prob}(C) \times \mathrm{Prob}(A)$$
+However, if they are not independent of each other, then the probability is more complicated and depends upon the joint probabilities of getting both A and then B and then C.
+If you knew the entire joint probabilities, then you could just multiply them all together to get the exact answer for the probability of that specific sequence.
+Let's see what happens if we use the naive (or "uniform") model for these joint probabilities. Suppose that all the event $A,B,C$ are equally likely. Then $\mathrm{Prob}(A) = \mathrm{Prob}(B) = \mathrm{Prob}(C) = 1/3$.
+Then, what is the chance of getting each of the sequences in question:
+
+$A, B, A$: If we get $A$ at some point in the sequence, we are guaranteed to get either $B$ or $C$ and so $A,B,A$ occurs. If we don't get $A$ at all, then the sequence is guaranteed to end in $A$, but since the first three events are disjoint, there's no chance of going from $A$ to $C$. So then the only sequence that can occur is $A,B,A$. This gives the probability of $1/3 \times 1/2 \times 1/3 = 1/18$.
+$B,C,A$: Similarly, this has probability $1/18$.
+$B,A,B$: This also has probability $1/18$.
+
+Finally, there are $\binom{3}{2} = 3$ different sequences of $A, B, A$ that can be formed from the three events. Since they are all equally likely, the probability of getting $A,B,A$ exactly once is then $$1/18 \times 3 = 1/6$$
+so the probability of having A repeated is $1/6$ and the probability of having either $A,B,A$ or $B,C,A$ is $2/18$.
+
+Let's now see what happens if we consider the true joint probabilities of the events.
+Let's write out all possible combinations of occurrences of $A,B,C$ that could make it into a sequence like $A,B,C,A$:
+$$
+\begin{array}{c|cccccc}
+&A&B&C&A&B&C\\
+\hline
+A&1/18&0&1/18&0&0&1/18\\
+B&0&1/18&0&1/18&1/18&0\\
+C&1/18&0&1/18&0&0&1/18\\
+A&0&1/18&0&1/18&0&1/18\\
+B&1/18&0&1/18&1/18&1/18&0\\
+C&0&1/18&0&1/18&0&1/18
+\end{array}
+$$
+From this, it's possible to work out that the actual probabilities of sequences like $A,B,C,A$ are
+$$
+\begin{array}{c|cccccc}
+&A&B&C&A&B&C\\
+\hline
+A&1/6&1/6&1/6&1/6&1/6&1/6\\
+B&1/6&0&1/6&0&1/6&1/6\\
+C&1/6&1/6&0&0&0&1/6\\
+A&0&0&0&0&0&0\\
+B&0&0&0&0&0&0\\
+C&0&0&0&0&0&0
+\end{array}
+$$
+so we can indeed get a probability of $1/6$ for all three sequences.
+
+</div></body></html><!-- 2022-07-17 11:29:55 

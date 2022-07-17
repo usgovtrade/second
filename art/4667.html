@@ -1,0 +1,78 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4668.html'>Mixed results from</a><Br/><a href='4669.html'>How to make a simp</a><Br/><a href='4670.html'>Hemoglobin content</a><Br/><a href='4671.html'>Growth and structu</a><Br/><a href='4672.html'>The goal of this r</a><Br/><a href='4673.html'>Amid all the talk </a><Br/><a href='4674.html'>Sickle cell diseas</a><Br/><a href='4675.html'>FORT WORTH — What </a><Br/><a href='4676.html'>Q:
+
+How to compare</a><Br/><a href='4677.html'>/**
+ *  @file oalp</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4666.html'>The University of </a><Br/><a href='4665.html'>This is an archive</a><Br/><a href='4664.html'>Q:
+
+Why does one n</a><Br/><a href='4663.html'>In the past year, </a><Br/><a href='4662.html'>"And let's hear th</a><Br/><a href='4661.html'>The present invent</a><Br/><a href='4660.html'>Orofacial and soma</a><Br/><a href='4659.html'>What if our world </a><Br/><a href='4658.html'>/*
+Bullet Continu</a><Br/><a href='4657.html'>/*
+ *  Copyright (</a></div><div class='nav'><a href='4666.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4668.html'> >> </a></div><div class='article'>Q:
+
+Xcode: Build Failed on Archive
+
+What I am trying to archive is a build that works fine on device and simulator. My Xcode log is:
+>=== BUILD TARGET CoreDataPersistence OF PROJECT CoreDataPersistenceWithLiveTemperature 
+>    WITH CONFIGURATION Debug ===
+
+Check dependencies
+
+warning: no rule to process file 'libsqlite3.tbd' of type architecture armv7 for architecture armv7 clang: error: linker command failed with exit code 1 (use -v to see invocation)
+
+... lots more of that
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/lipo -info /Users/Nataliia/Library/Developer/Xcode/DerivedData/CoreDataPersistence-euvqjzvhwlphuohksmzldtcmgqgk/Build/Products/Debug-iphonesimulator/libsqlite3.tbd -o /Users/Nataliia/Library/Developer/Xcode/DerivedData/CoreDataPersistence-euvqjzvhwlphuohksmzldtcmgqgk/Build/Products/Debug-iphonesimulator/libsqlite3.tbd
+
+Apple LLVM version 7.0.0 (clang-700.0.72) Target: x86_64-apple-darwin13.3.0 Thread model: posix
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld: warning: directory not found for option '-F"/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.4.sdk/System/Library/Frameworks"'"'
+
+note: /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.4.sdk/System/Library/Frameworks exists
+
+note: using user supplied custom toolchain path: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain
+
+clang: error: cannot specify -o when generating multiple output files
+
+Command /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang failed with exit code 254
+
+A:
+
+The compiler toolchain error that you get is basically telling you that Xcode doesn't have the right version of the compiler installed.  You're doing a "build archive", so that can only work if the compiler is installed on the host machine, not in the simulator. If you click the little blue arrow next to the word "Compile Sources" it will tell you which compile command Xcode is trying to use. I expect that its something like
+gcc -mmacosx-version-min=10.6 -arch armv7 -arch armv7s -arch arm64  -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator8.4.sdk  -lz -o app/build/Build/Products/Debug-iphonesimulator/libapp.a -ObjC libapp.a -F/Users/Nataliia/Library/Developer/Xcode/DerivedData/CoreDataPersistence-euvqjzvhwlphuohksmzldtcmgqgk/Build/Products/Debug-iphonesimulator
+
+My guess is that it is trying to compile your iOS project on your host machine and trying to create the archive from that. You can get around this by creating the archive from Xcode (the archive tab of the build settings). This will allow Xcode to package up all the files and write a binary, which is what you want. 
+I suggest that you try reverting to the default toolchain. As long as your version of the compiler is the same as the host OS (i.e. Mac OS X) then that should do the trick. You can probably get away with using the default toolchain as long as the iOS stuff is turned off, although you should definitely check to see if your compilation settings have changed. 
+
+A:
+
+Make sure that your simulator architecture is the same as the architecture in the project. I had it set to simulator (armv7, armv7s, and arm64) when my project was set for deployment target of iPhone 5.0.
+
+A:
+
+This is quite frustrating and misleading. 
+Xcode 8.1 has no way to check for this, yet is a must-have on any iOS project.
+The problem is that Xcode 8.1 generates a build archive to put on TestFlight.
+In the build setting of "iOS App Target" > "Build Setting > Archive" > "Archive without validation" and add any valid value.
+This allows you to create a build archive and Xcode 8.1 will check if it is correct. You can also archive on Xcode 8.1 and then transfer this archive to the application to your mac and then Xcode 8.1 won't allow you to archive if the archive is not OK.
+
+A:
+
+I found the solution is deleting all the references in the project to the libraries that I need (the ones that has no problem with the archive) and rebuild the project. 
+
+Go to Build Settings: 
+
+In the Linking section in the "Other Linker Flags", add the libraries that can not be build (that cause the error Xcode shows). Go to Build Phases and delete them.
+Go to Build Settings:
+
+Add all the libraries that have problems building in the "Other Linker Flags" section and also add in this section a valid value for the "Library Search Path" for each of them.
+
+And you are done. Xcode will build your project successfully. 
+
+I hope this will help somebody
+
+PS: I found this solution from this link 
+https://forums.developer.apple.com/message/163357
+EDIT:  
+As explained here
+https://developer.apple.com/library/content/qa/qa1887/_index.html 
+"Apps that are developed and tested only for simulator devices will not compile to the device unless both the simulator and device support the same architecture. For example, if you target a device running iOS 8.3 and set the "Base SDK" to the previous iOS 8.2 and the "iOS Deployment Target" to iOS 8.0, you will get a build error. To correct the error, change the "Base SDK" to the 8.3 or set the "iOS Deployment Target" to iOS 8.3."
+
+</div></body></html><!-- 2022-07-17 11:30:02 

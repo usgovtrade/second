@@ -1,0 +1,120 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4600.html'>Allah has said: "T</a><Br/><a href='4601.html'>Amino acid metabol</a><Br/><a href='4602.html'>A recent article i</a><Br/><a href='4603.html'>{
+  "version": "1.</a><Br/><a href='4604.html'>Nintendo Direct E3</a><Br/><a href='4605.html'>The Dinosauria is </a><Br/><a href='4606.html'>Q:
+
+Is there a way</a><Br/><a href='4607.html'>Q:
+
+Google Calenda</a><Br/><a href='4608.html'>Effect of nonylphe</a><Br/><a href='4609.html'>// ===============</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4598.html'>Become part of I.R</a><Br/><a href='4597.html'>Tunable nanodisper</a><Br/><a href='4596.html'>In a small, low-ce</a><Br/><a href='4595.html'>Asking the Right Q</a><Br/><a href='4594.html'>Amy and Michael we</a><Br/><a href='4593.html'>As usual, I really</a><Br/><a href='4592.html'>Criminal Minds
+
+F.</a><Br/><a href='4591.html'>Q:
+
+Where is my lo</a><Br/><a href='4590.html'>I've been in love </a><Br/><a href='4589.html'>Inhibition of huma</a></div><div class='nav'><a href='4598.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4600.html'> >> </a></div><div class='article'>Q:
+
+How to add a new class to a div which is already styled with classes?
+
+I have a div which looks like:
+<div class="product-tile">
+  <div class="col-sm-4 col-md-2 text-center product-image" style="margin-bottom:10px">
+    <div class="single-product-item">
+        <a href="#"><img src="/images/store/single_images/1_thumb.jpg" class="img-responsive" /></a>
+    </div>
+  </div>
+  <div class="col-sm-8 col-md-5 text-center product-title" style="margin-top:7px">Samsung Galaxy S6</div>
+  <div class="col-sm-2 col-md-2 text-center product-price" style="margin-top:7px">1250</div>
+</div>
+
+I want to add a new class to this <div> which is the product-tile. What should I do?
+I am attaching the image of how I want the div to be styled.
+
+A:
+
+This can be done using ng-class directive.
+For example:
+<div class="product-tile" ng-class="{red: true, blue: false}">
+    <div class="col-sm-4 col-md-2 text-center product-image" style="margin-bottom:10px">
+        <div class="single-product-item">
+            <a href="#"><img src="/images/store/single_images/1_thumb.jpg" class="img-responsive" /></a>
+        </div>
+    </div>
+    <div class="col-sm-8 col-md-5 text-center product-title" style="margin-top:7px">Samsung Galaxy S6</div>
+    <div class="col-sm-2 col-md-2 text-center product-price" style="margin-top:7px">1250</div>
+</div>
+
+This code will add the class red when $scope.red is set to true and the class blue when $scope.blue is set to true. So you should set the boolean value for class in your controller. 
+For more information about ng-class, check out here
+
+A:
+
+Try to add another class name.
+<div class="product-tile myClass">
+
+and in css, you can control it using myClass class.
+
+A:
+
+To specify an element to add multiple classes you need to use the classList API, the API of which is very similar to jQuery.
+For example:
+<div class="product-tile" classList="divClass"></div>
+
+with CSS:
+.divClass {
+    color: blue;
+}
+
+See the demo below, note how the content in the box is blue:
+
+angular.module('App', [])
+  .controller('Ctrl', function() {
+    
+  });
+.product-tile {
+  width: 250px;
+  height: 200px;
+  background-color: red;
+  margin: 10px;
+}
+
+.divClass {
+    color: blue;
+}
+<!DOCTYPE html>
+<html ng-app="App">
+
+  <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-touch.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.23/angular-aria.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.6/angular-material.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.3/ui-bootstrap-tpls.js"></script>
+    <script src="app.js"></script>
+  </head>
+
+  <body ng-controller="Ctrl">
+    
+      <div class="product-tile" classList="divClass">
+          <div class="col-sm-4 col-md-2 text-center product-image" style="margin-bottom:10px">
+              <div class="single-product-item">
+                  <a href="#"><img src="/images/store/single_images/1_thumb.jpg" class="img-responsive" /></a>
+              </div>
+          </div>
+          <div class="col-sm-8 col-md-5 text-center product-title" style="margin-top:7px">Samsung Galaxy S6</div>
+          <div class="col-sm-2 col-md-2 text-center product-price" style="margin-top:7px">1250</div>
+      </div>
+    
+ </body>
+ 
+ 
+ 
+ 
+</html>
+
+Here's the plunker to see it in action:
+https://plnkr.co/edit/uRK2DbrWI8tPwS3fJ8A9?p=preview
+
+Please check angularjs documentation about it:
+https://docs.angularjs.org/api/ng/directive/ngClass
+https://docs.angularjs.org/api/ng/type/ngClass
+
+</div></body></html><!-- 2022-07-17 11:29:50 

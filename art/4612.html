@@ -1,0 +1,85 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4613.html'>A former executive</a><Br/><a href='4614.html'>The present invent</a><Br/><a href='4615.html'>Q:
+
+How do I get t</a><Br/><a href='4616.html'>A small band of Ne</a><Br/><a href='4617.html'>We all know that w</a><Br/><a href='4618.html'>#ifndef __NVKM_DIS</a><Br/><a href='4619.html'>"That was a great </a><Br/><a href='4620.html'>Q:
+
+how to fix err</a><Br/><a href='4621.html'>It’s a familiar si</a><Br/><a href='4622.html'>The present invent</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4611.html'>Q:
+
+How to set an </a><Br/><a href='4610.html'>Adenanthos microph</a><Br/><a href='4609.html'>// ===============</a><Br/><a href='4608.html'>Effect of nonylphe</a><Br/><a href='4607.html'>Q:
+
+Google Calenda</a><Br/><a href='4606.html'>Q:
+
+Is there a way</a><Br/><a href='4605.html'>The Dinosauria is </a><Br/><a href='4604.html'>Nintendo Direct E3</a><Br/><a href='4603.html'>{
+  "version": "1.</a><Br/><a href='4602.html'>A recent article i</a></div><div class='nav'><a href='4611.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4613.html'> >> </a></div><div class='article'>Q:
+
+How do I remove the trailing slash from a subdirectory in .htaccess?
+
+I'm currently working on a custom Wordpress theme for a client. I've got it mostly complete, but I'm running into a few small issues I can't seem to fix. I've searched, found, read and messed with the following code a few times and have never been able to get this to work. Essentially, I need to remove the trailing slash after my subdirectory name for all files in that directory:
+# This is used to redirect everything for the specific subdirectory
+RewriteEngine On
+RewriteRule ^([^/]+)$ /subdirectory/$1/ [R=301,L]
+
+# If the file or directory is not found
+ErrorDocument 404 /404.php
+
+This code is being used to handle pretty much everything under the root directory, so it would also be nice if there was a way to redirect all files and folders to the root directory, without the trailing slash. I've been messing around with it for the past few hours and it still doesn't work. I'm hoping it's a very simple solution that I just haven't found yet, because I can't figure it out.
+The site currently redirects to my root directory with a trailing slash instead of the subdirectory: http://gigastring.com/subdirectory/ instead of http://gigastring.com/subdirectory/.
+Hopefully somebody can help me out. Thanks!
+
+A:
+
+The last part of the rule is a relative URI, and if you want to match http://example.com/subdir/index.html, you will need to use RewriteRule ^/?subdir(/.*)?$ - [L]. Note that I have moved the last . to be the part of the RewriteRule regex, since it is not inside a capturing group.
+When you do that, your target URL becomes http://gigastring.com/subdirectory/ instead of http://gigastring.com/subdirectory/, and the rewrite will match the index.html.
+If you just want to redirect to the root directory, just add a RewriteCond statement checking REQUEST_URI to ensure it's not /subdirectory/:
+RewriteCond %{REQUEST_URI} !^/subdirectory/
+RewriteRule ^/?subdir(/.*)?$ - [L]
+
+If it is in a .htaccess file in the /subdirectory/ directory, then you do not need to do any path reversing to get the root directory, so you could just do:
+RewriteRule ^(.+)$ - [L]
+
+The (.+)$ captures all the URL after the /subdirectory/ directory, so the last / in that directory name becomes part of the path. That would work in an htaccess file in the /subdirectory/ directory.
+
+In the end, to simplify the configuration file you can put all these together in a single rule, which will work on a non-root directory.
+RewriteEngine On
+
+# If the file or directory is not found
+ErrorDocument 404 /404.php
+
+RewriteCond %{REQUEST_URI} !^/subdirectory/
+RewriteRule ^(.+)$ - [L]
+
+# This is used to redirect everything for the specific subdirectory
+RewriteRule ^([^/]+)$ /subdirectory/$1/ [R=301,L]
+
+# If the file or directory is not found
+ErrorDocument 404 /404.php
+
+Since the above rules are in an htaccess file in the /subdirectory/ directory, you should be able to add a / to the requested URL:
+RewriteRule ^([^/]+)$ /subdirectory/$1/ [R=301,L]
+
+If you're trying to remove the trailing / for a page served directly by Apache (like http://gigastring.com/subdirectory/something.html), then it is probably better to use mod_rewrite instead of Apache's mod_dir. With mod_rewrite you have more control of the process.
+The mod_dir documentation has the details:
+
+Apache Module mod_dir makes sure that URLs requested by the server match URLs in the server configuration. It is typically used to remove the slash from URLs that are in conflict with the filesystem. For example, it automatically redirects http://example.com/foo/ to http://example.com/foo.html when you do not have access to the directory, or it removes index.html from http://example.com/ when DirectoryIndex is enabled. mod_rewrite must be enabled for the same base or root directory, and it requires that both the URL-path and a filepath (for example, a path to an index file) to be provided for the URL-path (note: it would be too complicated to get the necessary information from a URL, so the filepath is also required).
+
+These directives should help you do what you want:
+# To remove the trailing slash, set this option to On
+RewriteOptions Inherit
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*)/$ /$1 [R=302,L]
+
+# To serve files with a trailing slash, use this:
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+?)/$ $1.html [L]
+
+# To avoid looping issues when using an expression that
+# captures a variable, you can wrap the full rewrite in a
+# pair of parentheses.
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.*)/$ /$1 [R=302,L]
+
+# Set an empty path so it will be removed in the index file
+RewriteRule ^ /$0/ [L]
+
+Those rules are tested, so you might need to adjust them a little (if the syntax is different on your platform).
+
+</div></body></html><!-- 2022-07-17 11:29:53 

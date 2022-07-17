@@ -1,0 +1,127 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4607.html'>Q:
+
+Google Calenda</a><Br/><a href='4608.html'>Effect of nonylphe</a><Br/><a href='4609.html'>// ===============</a><Br/><a href='4610.html'>Adenanthos microph</a><Br/><a href='4611.html'>Q:
+
+How to set an </a><Br/><a href='4612.html'>Q:
+
+How do I remov</a><Br/><a href='4613.html'>A former executive</a><Br/><a href='4614.html'>The present invent</a><Br/><a href='4615.html'>Q:
+
+How do I get t</a><Br/><a href='4616.html'>A small band of Ne</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4605.html'>The Dinosauria is </a><Br/><a href='4604.html'>Nintendo Direct E3</a><Br/><a href='4603.html'>{
+  "version": "1.</a><Br/><a href='4602.html'>A recent article i</a><Br/><a href='4601.html'>Amino acid metabol</a><Br/><a href='4600.html'>Allah has said: "T</a><Br/><a href='4599.html'>Q:
+
+How to add a n</a><Br/><a href='4598.html'>Become part of I.R</a><Br/><a href='4597.html'>Tunable nanodisper</a><Br/><a href='4596.html'>In a small, low-ce</a></div><div class='nav'><a href='4605.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4607.html'> >> </a></div><div class='article'>Q:
+
+Is there a way to control the number of characters a field has?
+
+I'm making a search engine and would like to know if there is a way to set the maximum number of characters a field has? For example, if the user searches for this sentence: hello guys this is me then I would like only "hello guys" to be shown with an asterisk. Thanks for your time and support!
+Here is my html form code:
+<form action="/search/" method="post" >
+    <input type="text" name="query">
+    <input type="submit" value="Find">
+</form>
+
+here is my code for the search engine. It is a bit more complex than this but what I have is the problem area:
+$query = (isset($_POST['query'])) ? $_POST['query'] : ' ';
+
+$search = "SELECT Name FROM Users WHERE Name LIKE '%$query%' LIMIT 5";
+
+Here is my php code:
+if (!empty($_POST['query'])) {
+    $search = "SELECT Name FROM Users WHERE Name LIKE '%$query%' LIMIT 5";
+} else {
+    $search = "SELECT * FROM Users LIMIT 10";
+}
+
+$query = (isset($_POST['query'])) ? $_POST['query'] : ' ';
+$search = "SELECT Name FROM Users WHERE Name LIKE '%$query%' LIMIT 5";
+
+//Check if this is the first search, if it is reset the search
+if (empty($_POST['previousSearch'])) {
+
+    //set first limit
+    if ($_GET['limit'] == '') {
+        $limit = 10;
+    } else {
+        $limit = $_GET['limit'];
+    }
+
+    $previousQuery = $_POST['previousSearch'];
+
+    //get the data from the database
+    $rows = $database->getRecordset($search, $limit, $previousQuery);
+
+    $data['rows'] = $rows;
+
+    //store the data into the array
+    $data['query'] = $_POST['query'];
+    $data['previousQuery'] = $_POST['previousSearch'];
+
+} else {
+
+    //else increment the search by 1
+    $search = "SELECT Name FROM Users WHERE Name LIKE '%$query%' LIMIT 5";
+}
+
+A:
+
+This sounds like something you want mysql to do for you.  If you want it to look for specific matches in an alphanumeric string that is being searched against, it's going to be a lot more complex than just a simple LIKE on a varchar column.
+Instead, use fulltext search.
+Here's an example.
+http://www.php.net/manual/en/class.ft.php
+
+A:
+
+If you are allowed to restrict to only letters then it is fairly simple.
+You can then use substr to get the first N characters of the field:
+SELECT LEFT(Name,5) as SearchFor FROM Users WHERE Name LIKE '%$query%' LIMIT 5
+
+That will leave you with the first 5 letters.
+
+A:
+
+I think this is pretty simple.  Use substring to get the first 5 letters.  I can't think of a simpler way to search without using some kind of index or similar..
+$string = 'hello guys this is me';
+$search_string = substr($string, 0, 5);
+
+$query = $search_string."*";
+
+$sql = "SELECT * FROM Users WHERE Name LIKE '%$query%' LIMIT 5";
+$result = mysql_query($sql);
+
+To avoid showing a list of possible search results to choose from, maybe put the following at the top of the code you've provided. It will basically show only the result of the query, which is based on the user's search. 
+if ($result->num_rows == 0) {
+   echo 'No results found';
+} else {
+   while($row = mysql_fetch_array($result)) {
+       // display your result here
+   }
+}
+
+I guess it is also possible to skip this if-statement, since that could mean that the user didn't give a search criteria (which you don't want).
+
+Another idea (and also a very elegant solution) would be to have a function that would do the necessary processing:
+function getSearchResults($string) {
+  $search_string = substr($string, 0, 5);
+  $query = $search_string."*";
+
+  $sql = "SELECT * FROM Users WHERE Name LIKE '%$query%' LIMIT 5";
+  $result = mysql_query($sql);
+
+  if ($result->num_rows == 0) {
+    return;
+  } else {
+    $data = $result->fetch_assoc();
+    return $data;
+  }
+}
+
+Use this function where you call for your search, and you can keep the ugly if-statement above. You might have to use require_once to include your function.
+
+$string = 'hello guys this is me';
+$search_string = substr($string, 0, 5);
+$result = getSearchResults($search_string);
+if (!empty($result)) {
+    // your code for retrieving results here...
+}
+
+</div></body></html><!-- 2022-07-17 11:29:52 

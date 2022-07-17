@@ -1,0 +1,172 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4658.html'>/*
+Bullet Continu</a><Br/><a href='4659.html'>What if our world </a><Br/><a href='4660.html'>Orofacial and soma</a><Br/><a href='4661.html'>The present invent</a><Br/><a href='4662.html'>"And let's hear th</a><Br/><a href='4663.html'>In the past year, </a><Br/><a href='4664.html'>Q:
+
+Why does one n</a><Br/><a href='4665.html'>This is an archive</a><Br/><a href='4666.html'>The University of </a><Br/><a href='4667.html'>Q:
+
+Xcode: Build F</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4656.html'>A new method of es</a><Br/><a href='4655.html'>Dallas County Cler</a><Br/><a href='4654.html'>Q:
+
+Are there know</a><Br/><a href='4653.html'>Q:
+
+Jaxb2-maven-pl</a><Br/><a href='4652.html'>The long-term obje</a><Br/><a href='4651.html'>A new paradigm for</a><Br/><a href='4650.html'>The present invent</a><Br/><a href='4649.html'>Benzos
+
+Benzos may</a><Br/><a href='4648.html'>Rugby sevens at th</a><Br/><a href='4647.html'>It’s the kind of s</a></div><div class='nav'><a href='4656.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4658.html'> >> </a></div><div class='article'>/*
+ *  Copyright (c) by Jaroslav Kysela <perex@perex.cz>
+ *  Routines for control of MPU-401 in UART mode
+ *
+ *   Modified for the Aureal Vortex based Soundcards
+ *   by Manuel Jander (mjande@embedded.cl).
+ *
+ *   Modified for ES1688 SoC in skibohan@maxia.com.
+ *   This file is put  under the GPL license.
+ *
+ * --
+ *
+ * Modified: 
+ *   01.04.2004 - created
+ *   15.10.2004 - pascal port init code like in gus-driver (SPC7110/40/20110714)
+ *                - added support for different MPU-401 compatible chips
+ *                          and revisions
+ *
+ */
+
+#include <linux/delay.h>
+#include <linux/init.h>
+#include <linux/interrupt.h>
+#include <linux/pci.h>
+#include <linux/slab.h>
+#include <linux/moduleparam.h>
+#include <sound/core.h>
+#include <sound/rawmidi.h>
+#include <sound/mpu401.h>
+#include <sound/initval.h>
+
+#define CARD_NAME "MPU401"
+
+static int index[SNDRV_CARDS] = SNDRV_DEFAULT_IDX;	/* Index 0-MAX */
+static char *id[SNDRV_CARDS] = SNDRV_DEFAULT_STR;	/* ID for this card */
+static bool enable[SNDRV_CARDS] = SNDRV_DEFAULT_ENABLE_PNP;	/* Enable this card */
+static long port[SNDRV_CARDS] = SNDRV_DEFAULT_PORT;	/* MPU-401 port */
+static long mpu_port[SNDRV_CARDS] = SNDRV_DEFAULT_PORT;	/* MPU-401 port */
+static int irq[SNDRV_CARDS] = SNDRV_DEFAULT_IRQ;	/* MPU-401 IRQ */
+static int mpu_irq[SNDRV_CARDS] = SNDRV_DEFAULT_IRQ;	/* MPU-401 IRQ */
+static int dma8[SNDRV_CARDS] = SNDRV_DEFAULT_DMA;	/* DMA 8 bits */
+
+module_param_array(index, int, NULL, 0444);
+MODULE_PARM_DESC(index, "Index value for MPU-401 device.");
+module_param_array(id, charp, NULL, 0444);
+MODULE_PARM_DESC(id, "ID string for MPU-401 device.");
+module_param_array(enable, bool, NULL, 0444);
+MODULE_PARM_DESC(enable, "Enable MPU-401 device.");
+module_param_array(port, long, NULL, 0444);
+MODULE_PARM_DESC(port, "Port # for MPU-401 device.");
+module_param_array(mpu_port, long, NULL, 0444);
+MODULE_PARM_DESC(mpu_port, "MPU-401 port # for MPU-401 device.");
+module_param_array(irq, int, NULL, 0444);
+MODULE_PARM_DESC(irq, "IRQ # for MPU-401 device.");
+module_param_array(mpu_irq, int, NULL, 0444);
+MODULE_PARM_DESC(mpu_irq, "MPU-401 IRQ # for MPU-401 device.");
+module_param_array(dma8, int, NULL, 0444);
+MODULE_PARM_DESC(dma8, "8-bit DMA # for MPU-401 device.");
+
+#define VORTEX_MPU401_DRIVER	"snd-vortex-midi"
+
+struct snd_vortex_midi {
+	/* MIDI device. */
+	struct snd_rawmidi *rmidi;
+
+	/* This allocates the rawmidi stream and its buffers. */
+	struct snd_rawmidi_str *rrawmidi;
+
+	/* MPU-401 UART(s). */
+	int nr_urbs;
+	struct urb **urbs;
+
+	/* Additionally, we have the current MPU-401 buffer. */
+	u8 *mpu_buffer;
+	int mpu_buffer_size;
+
+	/* Storage for driver private data related to this MIDI interface. */
+	void *private_data;
+
+	/* Something related to the mixer. */
+	int mixer_channels;
+	int mixer_vol[2];
+	int mixer_sfx[2]; /* OPL3/DT-X YMF7xx only. */
+	int mixer_from_virtual; /* Relayed from virtual UART. */
+	int midi_broken;
+	int enable_opl4;	/* If OPL4 is enabled at least for one port. */
+	int opl3_broken;
+};
+
+static int snd_vortex_midi_free(struct snd_rawmidi *rmidi)
+{
+	struct snd_vortex_midi *midi = rmidi->private_data;
+	midi->nr_urbs = 0;
+	return 0;
+}
+
+static void snd_vortex_midi_input_trigger(struct snd_rawmidi_substream *substream, int up)
+{
+	struct snd_vortex_midi *midi = substream->rmidi->private_data;
+	unsigned long flags;
+
+	spin_lock_irqsave(&midi->input_lock, flags);
+	if (up)
+		midi->mode[midi->current_midi_output_port] |=
+				MIDI_MODE_INPUT(midi->current_midi_output_port);
+	else
+		midi->mode[midi->current_midi_output_port] &=
+			~MIDI_MODE_INPUT(midi->current_midi_output_port);
+
+	if (midi->rmidi->use_internal_clock)
+		snd_vortex_enable_midi_interrupts(midi);
+	else
+		outb(midi->last_rom_received = inb(midi->basemem),
+		     midi->basemem);
+	spin_unlock_irqrestore(&midi->input_lock, flags);
+}
+
+static void snd_vortex_midi_output_timer(struct timer_list *t)
+{
+	struct snd_vortex_midi *midi = from_timer(midi, t, timer);
+	unsigned long flags;
+
+	spin_lock_irqsave(&midi->virtual, flags);
+	if (midi->mode[midi->last_midi_output_port] & MIDI_MODE_OUTPUT) {
+		long c = midi->virtual_timer[midi->last_midi_output_port];
+		if (c >= 0)
+			c = (c * (-1));
+		else
+			c = (-1);
+		if (c < 1)
+			c = 1;
+		while (c > 0) {
+			outb(midi->virtual_timer[midi->last_midi_output_port],
+			     midi->basemem + VORTEX_MIDI_DATA);
+			outb(midi->virtual_timer[midi->last_midi_output_port],
+			     midi->basemem + VORTEX_MIDI_CMD);
+			if (midi->rmidi->private_data)
+				if (midi->rmidi->private_data)
+					snd_rawmidi_transmit(midi->rmidi,
+							    midi->tx_begin_page, 4);
+			c--;
+			midi->last_midi_output_port = (c << 1) | midi->channel;
+		}
+	}
+	spin_unlock_irqrestore(&midi->virtual, flags);
+}
+
+static void snd_vortex_midi_enable_output(struct snd_rawmidi_substream *substream)
+{
+	struct snd_vortex_midi *midi = substream->rmidi->private_data;
+	midi->enable_virtual = 1;
+}
+
+static void snd_vortex_midi_disable_output(struct snd_rawmidi_substream *substream)
+{
+	struct snd_vortex_midi *midi = substream->rmidi->private_data;
+	midi->enable_virtual = 0;
+	midi->interrupt_disable(midi,midi->tx_enable);
+}
+
+static int snd_vortex</div></body></html><!-- 2022-07-17 11:30:01 

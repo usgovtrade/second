@@ -1,0 +1,82 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4621.html'>It’s a familiar si</a><Br/><a href='4622.html'>The present invent</a><Br/><a href='4623.html'>1. Technical Field</a><Br/><a href='4624.html'>Q:
+
+How to find th</a><Br/><a href='4625.html'>Hillary Clinton is</a><Br/><a href='4626.html'>Q:
+
+Does the numbe</a><Br/><a href='4627.html'>Q:
+
+How to check i</a><Br/><a href='4628.html'>Aquaculture in Eur</a><Br/><a href='4629.html'>Gastroesophageal r</a><Br/><a href='4630.html'>/*
+ * Copyright (C</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4619.html'>"That was a great </a><Br/><a href='4618.html'>#ifndef __NVKM_DIS</a><Br/><a href='4617.html'>We all know that w</a><Br/><a href='4616.html'>A small band of Ne</a><Br/><a href='4615.html'>Q:
+
+How do I get t</a><Br/><a href='4614.html'>The present invent</a><Br/><a href='4613.html'>A former executive</a><Br/><a href='4612.html'>Q:
+
+How do I remov</a><Br/><a href='4611.html'>Q:
+
+How to set an </a><Br/><a href='4610.html'>Adenanthos microph</a></div><div class='nav'><a href='4619.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4621.html'> >> </a></div><div class='article'>Q:
+
+how to fix error: Error 1 No resource found that matches the given name (at 'targetSdkVersion' with value '16') in SDK Manager
+
+I am trying to use the new ActionBar for my application, but since the SDK version of my device is not more than 8, I am getting the above error when I try to open the file MainActivity.java.
+How can I fix this error?
+EDIT:
+here is my error:
+
+A:
+
+Update your build.gradle with the following:
+android {
+   compileSdkVersion 16
+   buildToolsVersion '20.0.0'
+   defaultConfig {
+      minSdkVersion 9
+      targetSdkVersion 16
+      compileOptions {
+          sourceCompatibility JavaVersion.VERSION_1_7
+          targetCompatibility JavaVersion.VERSION_1_7
+      }
+   }
+
+}
+Edit: It should be noted that Google has started rolling out support libraries for Android 4.4 and 5.0.  For Android 4.4 you would want to use compileSdkVersion 18 and buildToolsVersion '19.0.1' as well as targetSdkVersion 20 or above.
+In the case of Eclipse, update the SDK in Project>Properties>Android>SDK Location.  In the case of IntelliJ, you would update the Java Compiler in the same screen.
+For more details on upgrading from Android 4.2 to Android 4.4, see the following questions:
+
+How to compile Android project with minimum API version 16?
+Android SDK (Android Studio) minimum API level
+
+A:
+
+Android Studio 0.8.2 has a new setting called Compile with Java 7. You can choose it as an answer to "Enable Project-wide Gradle settings" in Settings > Build, Execution, Deployment > Compiler.
+The compiler now uses Java 7 if your project is on Java 7 or higher and you can set the SDK version in your project properties (Project Structure > SDK Location).
+See this answer.
+
+A:
+
+To help someone else who may come across this:
+I had an issue with my project, which was that the version of buildtools, compileSdkVersion etc in my Project.app (build.gradle) was lower than the SDK level required by the minSDK in Project.java (AndroidManifest.xml). I was not able to fix it by changing the minimum SDK level in Project.android as I should have (I didn't even know that could be done in Android Studio/Eclipse).
+The issue was that my project is made by a team, and it was set to a different set of values for the Project.android properties, which my IDE picked up (which were not in the same date/time-zone, and a different JDK). If the date-time of the properties and Project were the same, my fix above would have worked.
+
+I found that on the Project properties page, under 'SDK location', the "JAVA_HOME" field is used for versioning. This is the place to set the JDK location. I also found that this should be set to the same JDK used in Project.android, as it will be used to compile and is not a separate setting. It may be useful to set Project.android.JAVA_HOME (but not necessary).
+
+In my case, the Project properties were set to Java SE 8 JDK, and this was not compatible with Android, which by default uses a Java 7 JDK.
+
+If Java 7 is used, the solution is to change the java build path used in Project.java as follows. Update your java_home in Project.java, which will change the versioned SDK you compile with. Note: You need to change both Project.java and Project.android.
+
+You should then be able to compile and run on your SDK with the same Project properties.
+
+For those using Intellij, you can change the Java Compiler used in Project.java here, in order to fix the version.
+I have no idea why Project was set to use a Java 7 JDK.
+
+Why did it happen?
+It is a mystery how this changed, as before, Project was using JDK 6, and was correctly using Project.android.JAVA_HOME to define the version. This is used for both the JDK used in compilation, and the JRE used to run the project (that is updated using Project.android.JRE_HOME) as described in this question
+
+Project.android.JAVA_HOME
+JAVA_HOME
+JAVA_HOME is used for versioning. It can be seen in Project Properties -> SDK Location.
+You should set it to the JRE your project was compiled with.
+JAVA_HOME refers to the JDK used to compile your project, and JRE_HOME refers to the JDK used to run your project.
+
+Note: I found a solution by accidently getting the IDE to pick up the Project.android properties again.
+
+Update 2020: When I tried to create a new project, I found that the project properties in Project > Properties did not seem to work. Changing the Project.android.JAVA_HOME to a valid JDK in Project > Properties > Java Build Path then gave me the expected behavior.
+
+</div></body></html><!-- 2022-07-17 11:29:54 

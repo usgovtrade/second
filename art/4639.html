@@ -1,0 +1,55 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4640.html'>The effects of the</a><Br/><a href='4641.html'>Q:
+
+What is the di</a><Br/><a href='4642.html'>This book brings t</a><Br/><a href='4643.html'>The present invent</a><Br/><a href='4644.html'>Bush's Brain: The </a><Br/><a href='4645.html'>All relevant data </a><Br/><a href='4646.html'>Re: [Qemu-devel] [</a><Br/><a href='4647.html'>It’s the kind of s</a><Br/><a href='4648.html'>Rugby sevens at th</a><Br/><a href='4649.html'>Benzos
+
+Benzos may</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4638.html'>Wendell Pierce Cas</a><Br/><a href='4637.html'>/*----------------</a><Br/><a href='4636.html'>Birth asphyxia: ex</a><Br/><a href='4635.html'>The invention rela</a><Br/><a href='4634.html'>1. Introduction {#</a><Br/><a href='4633.html'>Introduction {#sec</a><Br/><a href='4632.html'>#!/bin/bash
+######</a><Br/><a href='4631.html'>The European Commi</a><Br/><a href='4630.html'>/*
+ * Copyright (C</a><Br/><a href='4629.html'>Gastroesophageal r</a></div><div class='nav'><a href='4638.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4640.html'> >> </a></div><div class='article'>Q:
+
+Does the existence of the "Luxembourg method" imply that we can solve the halting problem for arbitrary finite automata?
+
+I have read an article about a "toy model" by which Halting problem is computable, known as "The Luxembourg method".
+The article is written in a very intuitive manner, but the author didn't mention what it is based on, so I wonder if that means the author really invented something new that enables one to solve the halting problem for arbitrary finite automata?
+Or, is it an already known and proved result?
+I've been trying to search for more information on it but failed.
+Could anyone kindly provide some information on this?
+Thanks in advance.
+
+A:
+
+This article presents a toy model that solves the halting problem for a restricted class of transition machines (see page 9 in PDF). This model is similar to Church-Turing thesis and the notion of a finite state machine but differs in that it only allows counting-machines-like transition, i.e. no input symbols or state. The model allows a different form of communication between different stages of the machine, namely reading a set of inputs to each stage (i.e. a subset of all inputs) but no transitions between input ports. 
+This kind of model does not allow arbitrary finite automata, because one of the requirements of such automata is that the set of inputs, to each transition, is infinite. 
+It can be shown that if an infinite language was accepted by a transition machine that counts on a counter to reach a particular configuration then the machine halts.
+
+A:
+
+It seems to me that this system is different from the normal Turing machine. Normally, each transition is determined by its current state and an input, and it does not matter how many times it was called.
+But this model allows some kind of 'internal memory', for example, which can remember states of other transitions in history. This memory could be represented by a set of pairs: first is state, second is number of next calling. When one can retrieve information from this set, it looks like a Turing machine. However, the function of these numbers is not just to represent the state: there is no input. It is 'counting'.
+In this case, an execution halt happens if some 'memory' reached the empty set of states. This would be the case for all input that has never been used, and it would not halt for other inputs. If it is a finite machine, then it only halts when there is no more input. It is not a problem for this model, because it is more limited than other Turing machines.
+This model is an improved version of an original machine that I made myself. I guess that it is similar to the so-called counter machine. If you want more details, please tell me in the comments.
+
+A:
+
+No, the Luxembourg method does not imply that the halting problem is decidable. The original paper (in French) appeared in the journal  of theoretical computer science.
+
+As already mentioned in a comment above, we can show that the problem is decidable on a specific class of machines, defined as follows:
+Let $M$ be a deterministic TM, let $n$ be the number of states of $M$, and let $c$ be the number of the counter in $M$. Define the language $L(M)$ as the set of finite binary strings $\sigma$ of length $n+c$ with the following property: for every $\sigma'$ in the binary extension of $L(M)$, there exists $\sigma''$ in $L(M)$ such that $|\sigma''|$ is an odd number and $\sigma''$ is a concatenation of $\sigma$, followed by an encoding of $\sigma'$.
+Theorem. The language $L(M)$ is decidable by the following counter machine:
+Input: a binary string $\sigma$ of length $n+c$
+Output: TRUE if and only if $\sigma$ belongs to $L(M)$.
+1. Set counter to $0$
+2. While counter is greater than $0$
+a. If $\sigma[i] = 0$, increment counter by $1$
+b. Else if $\sigma[i] = 1$, decrement counter by $1$
+3. Output FALSE
+
+Note that for every configuration of the constructed counter machine with input $\sigma$, there is a counter configuration of the original TM with input $\sigma$ that will correspond to the same accepting or rejecting configuration of the counter machine (and there is a transition between the two corresponding configurations).
+The above result implies that the halting problem is decidable for a class of machines larger than those from which  Luxembourg method can be used.
+To address your concern about the relationship between this method and the Turing machine, the author points out that the method can simulate Turing machines when the counters in the machines are not allowed to "overspill" (i.e., take arbitrary values).
+The algorithm used in this paper to prove that the halting problem for some TMs is decidable corresponds to "overwriting" one number with the next one from a counter machine that accepts only a single binary number (i.e., does not have a transition from the initial state). We can simulate a TM having a single input symbol and $n$ states using such a machine and the single-counter TM (each number in the single-counter TM can be thought of as a state for the TM).
+This approach still has some limitations: to simulate a TM that accepts an arbitrary number of inputs, we need an arbitrary-sized counter machine that does not accept inputs. Thus, it seems necessary to have some idea of the possible counter configurations. This can be handled by introducing an additional input state that can lead to non-halting configurations.
+
+This model is obviously non-trivial in that it uses the counter machine model. It seems to me that it also requires the output of another counter machine - although it is not necessary, as the results indicate.
+I haven't gone through the paper, so I may be missing some key concepts or relationships between them. In any case, I think the answer is that one of the results of this paper is a reduction of the halting problem for some machine to the halting problem for machines with counters that can only increase (with some limits on which counters can increase and which can decrease).
+
+</div></body></html><!-- 2022-07-17 11:29:58 

@@ -1,0 +1,137 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4665.html'>This is an archive</a><Br/><a href='4666.html'>The University of </a><Br/><a href='4667.html'>Q:
+
+Xcode: Build F</a><Br/><a href='4668.html'>Mixed results from</a><Br/><a href='4669.html'>How to make a simp</a><Br/><a href='4670.html'>Hemoglobin content</a><Br/><a href='4671.html'>Growth and structu</a><Br/><a href='4672.html'>The goal of this r</a><Br/><a href='4673.html'>Amid all the talk </a><Br/><a href='4674.html'>Sickle cell diseas</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4663.html'>In the past year, </a><Br/><a href='4662.html'>"And let's hear th</a><Br/><a href='4661.html'>The present invent</a><Br/><a href='4660.html'>Orofacial and soma</a><Br/><a href='4659.html'>What if our world </a><Br/><a href='4658.html'>/*
+Bullet Continu</a><Br/><a href='4657.html'>/*
+ *  Copyright (</a><Br/><a href='4656.html'>A new method of es</a><Br/><a href='4655.html'>Dallas County Cler</a><Br/><a href='4654.html'>Q:
+
+Are there know</a></div><div class='nav'><a href='4663.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4665.html'> >> </a></div><div class='article'>Q:
+
+Why does one need to use if/else statement for a do-while loop?
+
+I am studying "Do while loop in C", and I don't understand the need of a if/else statement in below code snippet. Why is if (num == 0) at the end needed for the do-while statement?
+int num = 1, m;
+do {
+    printf("Enter a number (0-9): ");
+    scanf("%d", &num);
+    m = num % 10;
+}
+while (m != 0);
+
+A:
+
+because you're not getting any input when it is equal to zero.
+if it was equal to any non-zero number then if (num == 0) will not execute. 
+
+A:
+
+There is no magic involved.
+It's like this:
+while (m != 0) {
+    printf("Enter a number (0-9): ");
+    scanf("%d", &num);
+    m = num % 10;
+}
+
+if(num == 0) {
+   printf("Input is 0");
+}
+
+So if it enters the body of the while loop, then it keeps going round and round. However, if it doesn't enter the body of the while loop, then the do while loop stops executing.
+However, if it enters the loop, then you check the condition m!=0, which works like the do while loop condition you gave in your question. If it's not 0, then go round again.
+
+A:
+
+This answer to a question by the OP has more details.
+It's very useful when doing math calculations like this. For example, the following code will calculate the sum of 1, 2 and 3.
+int main()
+{
+  int count = 0;
+  printf("Enter a number");
+  scanf("%d", &count);
+  while(count!=0) {
+      printf("%d + 1 = ", count);
+      printf("%d + 2 = ", count+1);
+      printf("%d + 3 = ", count+2);
+      count = count + 3;
+      printf("The value is: ");
+      scanf("%d", &count);
+
+  }
+  return 0;
+}
+
+Thanks to this, it's easy to correct any mistake. Let's change the 4 and 5 inputs to:
+1 + 6 = -3
+1 + 4 = 5
+1 + 5 = 6
+The value is: 4
+1 + 6 = -3
+1 + 4 = 5
+1 + 5 = 6
+The value is: 6
+1 + 6 = -3
+1 + 4 = 5
+1 + 5 = 6
+The value is: 7
+
+Because we have if() statements, it can be easily corrected.
+
+The above code won't work as expected if scanf() does not allow spaces to be inputted, for example:
+printf("Enter a number");
+scanf("%d", &num);
+
+This will result in a segmentation fault as num is not initialized.
+
+This works:
+printf("Enter a number");
+scanf("%d", &num);
+num = (num + '0');
+
+But this will fail if num is more than 9.
+
+In such cases, we have to test num >= 0 first:
+int num = 1, m;
+do {
+    printf("Enter a number (0-9): ");
+    scanf("%d", &num);
+    m = num % 10;
+}
+while (m != 0 && num >= 0);
+
+This can be more properly written with the && operator instead of the &&&.
+
+For completeness, here's an alternative:
+int num = 1, m;
+do {
+    printf("Enter a number (0-9): ");
+    scanf("%d", &num);
+    m = num % 10;
+}
+while (m != 0);
+
+/* check the number */
+if(num == 0)
+   printf("num == 0");
+
+if (m != 0)
+   printf("m != 0");
+
+if (num == 0 && m != 0)
+   printf("Both num == 0 and m != 0");
+
+if (num == 0)
+   printf("num == 0");
+
+if (m != 0)
+   printf("m != 0");
+
+if (num == 0 && m != 0)
+   printf("Both num == 0 and m != 0");
+
+if (num != 0)
+   printf("num != 0");
+
+if (m != 0)
+   printf("m != 0");
+
+</div></body></html><!-- 2022-07-17 11:30:02 

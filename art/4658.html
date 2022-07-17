@@ -1,0 +1,204 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4659.html'>What if our world </a><Br/><a href='4660.html'>Orofacial and soma</a><Br/><a href='4661.html'>The present invent</a><Br/><a href='4662.html'>"And let's hear th</a><Br/><a href='4663.html'>In the past year, </a><Br/><a href='4664.html'>Q:
+
+Why does one n</a><Br/><a href='4665.html'>This is an archive</a><Br/><a href='4666.html'>The University of </a><Br/><a href='4667.html'>Q:
+
+Xcode: Build F</a><Br/><a href='4668.html'>Mixed results from</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4657.html'>/*
+ *  Copyright (</a><Br/><a href='4656.html'>A new method of es</a><Br/><a href='4655.html'>Dallas County Cler</a><Br/><a href='4654.html'>Q:
+
+Are there know</a><Br/><a href='4653.html'>Q:
+
+Jaxb2-maven-pl</a><Br/><a href='4652.html'>The long-term obje</a><Br/><a href='4651.html'>A new paradigm for</a><Br/><a href='4650.html'>The present invent</a><Br/><a href='4649.html'>Benzos
+
+Benzos may</a><Br/><a href='4648.html'>Rugby sevens at th</a></div><div class='nav'><a href='4657.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4659.html'> >> </a></div><div class='article'>/*
+Bullet Continuous Collision Detection and Physics Library
+Copyright (c) 2003-2009 Erwin Coumans  http://bulletphysics.org
+
+This software is provided 'as-is', without any express or implied warranty.
+In no event will the authors be held liable for any damages arising from the use of this software.
+Permission is granted to anyone to use this software for any purpose, 
+including commercial applications, and to alter it and redistribute it freely, 
+subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+3. This notice may not be removed or altered from any source distribution.
+*/
+
+
+#ifndef BT_CONVEX_POINT_CLOUD_SHAPE_H
+#define BT_CONVEX_POINT_CLOUD_SHAPE_H
+
+#include "btPolyhedralConvexShape.h"
+#include "BulletCollision/BroadphaseCollision/btBroadphaseProxy.h" // for the types
+
+///The btConvexPointCloudShape implements an implicit convex hull of an array of points.
+///The btConvexPointCloudShape extends a btPolyhedralConvexAabbCachingShape.
+ATTRIBUTE_ALIGNED16(class) btConvexPointCloudShape : public btPolyhedralConvexAabbCachingShape
+{
+protected:
+	int m_numPoints;
+	const btVector3* m_points;
+
+protected:
+	btConvexPointCloudShape(const btVector3* points, int numPoints, const btVector3& localScaling);
+
+	virtual btVector3* getUnscaledPoints()
+	{
+		return 0;
+	}
+
+	//debugging
+	virtual const char* getName() const
+	{
+		return "ConvexPointCloud";
+	}
+
+public:
+	BT_DECLARE_ALIGNED_ALLOCATOR();
+
+	virtual ~btConvexPointCloudShape();
+
+	///virtual btVector3* getUnscaledPoints()
+	
+	virtual void getAabb(const btTransform& t, btVector3& aabbMin, btVector3& aabbMax) const;
+
+	void addPoint(const btVector3& pt, bool recalculateLocalAabb = true);
+
+	virtual void	setLocalScaling(const btVector3& scaling);
+
+	virtual void getAabb(btVector3& aabbMin, btVector3& aabbMax) const
+	{
+		btVector3 localAabbMin = m_unscaledPoints[0];
+		btVector3 localAabbMax = m_unscaledPoints[0];
+
+		for (int i = 1; i < m_numPoints; i++)
+			localAabbMin.setMin(localAabbMin);
+		localAabbMax.setMax(localAabbMax);
+
+		btVector3 localHalfExtents = (localAabbMax - localAabbMin) * btScalar(0.5);
+
+		btVector3 bvhAabbMin, bvhAabbMax;
+
+		m_bvhShape->getAabb(m_children[0],m_children[1],bvhAabbMin,bvhAabbMax);
+		aabbMin = bvhAabbMin * localHalfExtents;
+		aabbMax = bvhAabbMax * localHalfExtents;
+	}
+
+	virtual void	setLocalScaling(btScalar scaling)
+	{
+		m_localScaling = scaling;
+		recalculateLocalAabb();
+	}
+
+	virtual void	getLocalScaling(btScalar *scaling) const
+	{
+		if (scaling)
+			*scaling = m_localScaling;
+	}
+
+	virtual void	setMargin(btScalar margin)
+	{
+		m_collisionMargin = margin;
+	}
+
+	virtual btScalar getMargin() const
+	{
+		return m_collisionMargin;
+	}
+
+	virtual int getNumPreferredPenetrationDirections() const
+	{
+		return m_numPreferredPenetrationDirections;
+	}
+	
+	virtual void getPreferredPenetrationDirection(int index, btVector3& penetrationVector) const
+	{
+		calcPenVector(index,penetrationVector);
+	}
+
+	virtual void setNumPreferredPenetrationDirections(int numPairs)
+	{
+		m_numPreferredPenetrationDirections = numPairs;
+	}
+	
+	virtual void optimizePenetration(const btTransform& transA,const btTransform& transB);
+
+	
+	virtual	int	calculateSerializeBufferSize() const;
+
+	///fills the dataBuffer and returns the struct name (and 0 on failure)
+	virtual	const char* serialize(void* dataBuffer, btSerializer* serializer) const;
+
+
+};
+
+
+///do not change those serialization structures, it requires an updated sBulletDNAstr/sBulletDNAstr64
+struct	btConvexPointCloudShapeData
+{
+	btConvexShapeData	m_convexData;
+
+	int	m_numPoints;
+	float*	m_unscaledPointsFloat;
+	float*	m_pointsFloat;
+
+};
+
+
+///do not change those serialization structures, it requires an updated sBulletDNAstr/sBulletDNAstr64
+struct	btPointCloudShapeData
+{
+	btCollisionShapeData	m_convexShapeData;
+
+	float*	m_unscaledPointsFloat;
+	float*	m_pointsFloat;
+
+	int	m_numPoints;
+
+};
+
+
+
+SIMD_FORCE_INLINE	int	btConvexPointCloudShape::calculateSerializeBufferSize() const
+{
+	return sizeof(btConvexPointCloudShapeData);
+}
+
+
+
+
+#endif //BT_CONVEX_POINT_CLOUD_SHAPE_H
+
+#endif //__BT_CONVEX_POINT_CLOUD_SHAPE_H__
+//geomutliotte.cpp
+
+/*
+btTriangleMeshShapeX: X-Box (3 verts, 4 tris, triangle)
+https://en.wikipedia.org/wiki/X-Box
+Somewhat useful for testing
+*/
+
+class btBoxShapeX : public btTriangleMeshShape
+{
+
+
+
+public:
+
+	btBoxShapeX() : btTriangleMeshShape() {
+
+	}
+
+	btBoxShapeX(const btVector3& bmin, const btVector3& bmax) : btTriangleMeshShape(bmin,bmax) {
+
+	}
+
+
+	void	setLocalScaling(const btVector3& scaling)
+	{
+		m_tristructure.m_scale = scaling;
+	}
+
+	const btVector3& getLocalScaling() const
+	{
+		return m_tristructure</div></body></html><!-- 2022-07-17 11:30:01 

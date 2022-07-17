@@ -1,0 +1,149 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4628.html'>Aquaculture in Eur</a><Br/><a href='4629.html'>Gastroesophageal r</a><Br/><a href='4630.html'>/*
+ * Copyright (C</a><Br/><a href='4631.html'>The European Commi</a><Br/><a href='4632.html'>#!/bin/bash
+######</a><Br/><a href='4633.html'>Introduction {#sec</a><Br/><a href='4634.html'>1. Introduction {#</a><Br/><a href='4635.html'>The invention rela</a><Br/><a href='4636.html'>Birth asphyxia: ex</a><Br/><a href='4637.html'>/*----------------</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4626.html'>Q:
+
+Does the numbe</a><Br/><a href='4625.html'>Hillary Clinton is</a><Br/><a href='4624.html'>Q:
+
+How to find th</a><Br/><a href='4623.html'>1. Technical Field</a><Br/><a href='4622.html'>The present invent</a><Br/><a href='4621.html'>It’s a familiar si</a><Br/><a href='4620.html'>Q:
+
+how to fix err</a><Br/><a href='4619.html'>"That was a great </a><Br/><a href='4618.html'>#ifndef __NVKM_DIS</a><Br/><a href='4617.html'>We all know that w</a></div><div class='nav'><a href='4626.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4628.html'> >> </a></div><div class='article'>Q:
+
+How to check if two matrices are similar?
+
+If A is invertible, I can say that they are similar by using the equation A-inverse*B=identity matrix.
+However, what about the similar matrices A and B with non-invertible elements?
+How do I check this in MATLAB?
+
+A:
+
+Note: there are different definitions of similarity here and this is my answer based on my understanding of similarity.  If you're looking for other meanings, please see the following links:
+https://en.wikipedia.org/wiki/Similar_matrices
+Similar matrix transformation and the matrix determinant as well.
+
+According to the question, it seems that you're assuming that all non-invertible matrices are not similar, which is not true as stated in the Wikipedia page. The reason that I think you might be misunderstanding is because of the following example where determinant is 0 for all matrices (all non-invertible).
+A = [1, 2, 3];
+B = [1, 2, -3]
+% A similar to B
+[L, D] = size(A);
+M = sparse(L, L);
+M(L ~= 1, D) = B(L ~= 1, D);
+M(1, D) = B(1, D) - A(1, D);
+det(M) = 0;
+
+The above similarity is not valid. However, if you change all the non-invertible matrices to invertible ones and set the determinant to zero, you can make it valid as stated in the following example. 
+A = 1;
+B = -1;
+% A is similar to B
+[L, D] = size(A);
+M = sparse(L, L);
+M(L ~= 1, D) = B(L ~= 1, D);
+M(1, D) = B(1, D) - A(1, D);
+det(M) = 0;
+
+Here's a demo.
+
+% Some inputs
+A = [1 2 3];
+B = [1 2 -3];
+
+% Similar matrices should have a non-singular matrix
+fprintf('%s: is non-singular: %d \n', ...
+    'Valid', determinant(A));
+
+% Checked by Matlab: 0
+disp(['is non-singular: ' num2str(det(A) ~= 0)]);
+
+% Similar matrices should have the same determinant
+fprintf('%s: same determinant: %d \n', ...
+    'Valid', determinant(A));
+
+% Checked by Matlab: 1
+disp(['same determinant: ' num2str(det(A) == det(B))]);
+
+% Some non-invertible matrices which have the same determinant
+fprintf('%s: non-invertible matrices: %d \n', ...
+    'Invalid', determinant(B));
+
+% Checked by Matlab: 1
+disp(['is non-invertible: ' num2str(det(B) ~= 0)]);
+
+% Make it valid
+A = 1;
+B = -1;
+% Similar matrices should have a non-singular matrix
+fprintf('%s: is non-singular: %d \n', ...
+    'Valid', determinant(A));
+
+% Checked by Matlab: 0
+disp(['is non-singular: ' num2str(det(A) ~= 0)]);
+
+% Similar matrices should have the same determinant
+fprintf('%s: same determinant: %d \n', ...
+    'Valid', determinant(A));
+
+% Checked by Matlab: 1
+disp(['same determinant: ' num2str(det(A) == det(B))]);
+
+% Some non-invertible matrices which have the same determinant
+fprintf('%s: non-invertible matrices: %d \n', ...
+    'Invalid', determinant(B));
+
+% Checked by Matlab: 0
+disp(['is non-invertible: ' num2str(det(B) ~= 0)]);
+
+% Make it valid
+A = 1;
+B = -1;
+% Similar matrices should have a non-singular matrix
+fprintf('%s: is non-singular: %d \n', ...
+    'Valid', determinant(A));
+
+% Checked by Matlab: 0
+disp(['is non-singular: ' num2str(det(A) ~= 0)]);
+
+% Similar matrices should have the same determinant
+fprintf('%s: same determinant: %d \n', ...
+    'Valid', determinant(A));
+
+% Checked by Matlab: 1
+disp(['same determinant: ' num2str(det(A) == det(B))]);
+
+% Some non-invertible matrices which have the same determinant
+fprintf('%s: non-invertible matrices: %d \n', ...
+    'Invalid', determinant(B));
+
+% Checked by Matlab: 0
+disp(['is non-invertible: ' num2str(det(B) ~= 0)]);
+
+% Make it valid
+A = 1;
+B = -1;
+% Similar matrices should have a non-singular matrix
+fprintf('%s: is non-singular: %d \n', ...
+    'Valid', determinant(A));
+
+% Checked by Matlab: 0
+disp(['is non-singular: ' num2str(det(A) ~= 0)]);
+
+% Similar matrices should have the same determinant
+fprintf('%s: same determinant: %d \n', ...
+    'Valid', determinant(A));
+
+% Checked by Matlab: 1
+disp(['same determinant: ' num2str(det(A) == det(B))]);
+
+I think that the definition of a similarity matrix mentioned in Wikipedia page is not what most people think it is. However, since you're looking for an answer using this definition, my answer may not satisfy you. The above definitions are based on the discussion of similarities between matrices by @zhoraster from Stack Overflow https://math.stackexchange.com/questions/160948/similarity-of-two-matrices. It explains it well. Here's a quote from his answer, I have reproduced it as well.
+
+Similarity (also called congruence) between matrices means that one matrix can be obtained from another by linear congruence transformations. This is defined by the equality of determinants. 
+For example:
+$$\begin{pmatrix}a&b\\c&d\end{pmatrix} = \begin{pmatrix}u&v\\x&y\end{pmatrix}\begin{pmatrix}v&-u\\y&-x\end{pmatrix}$$
+(if the determinant of the left-hand side is different from zero). 
+
+A:
+
+There is a straightforward way to check if two matrices are similar. If the matrices are square, both invertible and their dimensions match, they are similar iff their characteristic polynomials are equal. If either of them is not square, then it can not be similar to a square matrix (its characteristic polynomial is not square-free). In that case, you could still check for similarity by transforming your matrices into the Jordan normal form (under some suitable transformation which, in the square case, can be achieved by a similarity transformation).
+
+A:
+
+Another idea is to represent all square matrices by the basis of $M(2,2)$ (or some equivalent matrices). If you are going to write down each element of the matrix by an ordered pair $(i,j)$ you have already made a choice to the basis. It means that the matrix is similar to an $A=f(a)$ where $f$ is a linear function and each element $a$ of $a$ is the element of the matrix. Hence you can write your matrix $A$ as a linear combination of matrices that are similar to your matrix $A$. You need to find such elements and check if there are enough of them to represent your matrix $A$ (in the same way as in linear algebra). The idea of representation is to solve a problem in an alternative and easier way. If your problem is not to find matrix elements, but the similar matrix you can have a look at representation theory.
+One of possible choices</div></body></html><!-- 2022-07-17 11:29:56 

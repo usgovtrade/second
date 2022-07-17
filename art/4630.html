@@ -1,0 +1,153 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4631.html'>The European Commi</a><Br/><a href='4632.html'>#!/bin/bash
+######</a><Br/><a href='4633.html'>Introduction {#sec</a><Br/><a href='4634.html'>1. Introduction {#</a><Br/><a href='4635.html'>The invention rela</a><Br/><a href='4636.html'>Birth asphyxia: ex</a><Br/><a href='4637.html'>/*----------------</a><Br/><a href='4638.html'>Wendell Pierce Cas</a><Br/><a href='4639.html'>Q:
+
+Does the exist</a><Br/><a href='4640.html'>The effects of the</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4629.html'>Gastroesophageal r</a><Br/><a href='4628.html'>Aquaculture in Eur</a><Br/><a href='4627.html'>Q:
+
+How to check i</a><Br/><a href='4626.html'>Q:
+
+Does the numbe</a><Br/><a href='4625.html'>Hillary Clinton is</a><Br/><a href='4624.html'>Q:
+
+How to find th</a><Br/><a href='4623.html'>1. Technical Field</a><Br/><a href='4622.html'>The present invent</a><Br/><a href='4621.html'>It’s a familiar si</a><Br/><a href='4620.html'>Q:
+
+how to fix err</a></div><div class='nav'><a href='4629.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4631.html'> >> </a></div><div class='article'>/*
+ * Copyright (C) 2018 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.android.launcher3.uioverrides;
+
+import android.os.Process;
+import android.util.Log;
+
+import com.android.launcher3.LauncherModel;
+import com.android.launcher3.util.Executors;
+
+import org.jbundle.util.os.Os;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Uses JNI to load system files from the given process directory, in order to determine
+ * if a specific system file is available for querying.
+ */
+public class UiOverrideFileLoader {
+
+    private final Process mProcess;
+
+    // This executor needs to be a member of the UiOverridesModuleLoader since it uses its
+    // method executeCommandLine().
+    private ExecutorService mExecutor;
+
+    public UiOverrideFileLoader(Process process) {
+        if (process == null) {
+            throw new IllegalArgumentException("process is null");
+        }
+
+        mProcess = process;
+        if (mProcess.isDestroyed()) {
+            throw new RuntimeException("process has been terminated");
+        }
+
+        mExecutor = Executors.newSingleThreadExecutor();
+    }
+
+    public boolean getOverrideExists() throws InterruptedException {
+        // Load the file and the check its status in the background
+        boolean exists = checkOverrideExists();
+
+        // If we don't want to notify for changes, we must disable the watchdog thread.
+        if (!mProcess.isRunningInBackground()) {
+            checkOverrideExists();
+        }
+
+        return exists;
+    }
+
+    public void setOverrides(final LauncherModel launcherModel) {
+        // The mExecutor thread won't terminate the process or exit. So it should be run as root.
+        Executors.getInstance().execute(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        setOverrides();
+                    }
+                }, "process");
+    }
+
+    public void setOverrides() {
+        // If process has been terminated already, it won't be created. So it's safe to run this
+        // as root.
+        Executors.getInstance().execute(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        UiOverrideFileLoader.this.setOverrides(launcherModel);
+                    }
+                }, "process");
+    }
+
+    private boolean checkOverrideExists() throws InterruptedException {
+        UiOverrideFileLoader.this.setOverrides(launcherModel);
+
+        // TODO(b/123714386): Don't always need to update system settings after each command.
+        // Should we update only in a UI thread?
+        Process.killProcess(Process.myPid());
+        boolean exists = false;
+
+        // Don't kill the process on last try. This call will return after the end of this method.
+        try {
+            final BufferedReader bufferedReader =
+                    new BufferedReader(new InputStreamReader(new UiOverrideFileLoader.UioFileGetter(
+                            mProcess).executeCommandLine(launcherModel, "settings"), "utf-8"));
+            final String s = bufferedReader.readLine();
+            if (s != null) {
+                exists = true;
+            } else {
+                final String s2 = bufferedReader.readLine();
+                if (s2 != null) {
+                    final int s2Length = s2.length();
+                    if (s2Length > 0) {
+                        final StringBuilder s3 = new StringBuilder(s2);
+                        s3.delete(0, s2Length - 1);
+                        exists = true;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            Log.e("Launcher", "setOverrides is interrupted");
+        }
+
+        return exists;
+    }
+
+    public static final class UioFileGetter implements Runnable {
+        private Process mProcess;
+        private String mPath;
+
+        public UioFileGetter(Process process) {
+            mProcess = process;
+            mPath = Process.myPid() + "/" + mProcess.getAppFile();
+        }
+
+        @Override
+        public void run() {
+            UiOverrideFileLoader.this.loadOverrides(mPath);
+        }
+    }
+}
+</div></body></html><!-- 2022-07-17 11:29:56 

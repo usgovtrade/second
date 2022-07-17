@@ -1,0 +1,108 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4670.html'>Hemoglobin content</a><Br/><a href='4671.html'>Growth and structu</a><Br/><a href='4672.html'>The goal of this r</a><Br/><a href='4673.html'>Amid all the talk </a><Br/><a href='4674.html'>Sickle cell diseas</a><Br/><a href='4675.html'>FORT WORTH — What </a><Br/><a href='4676.html'>Q:
+
+How to compare</a><Br/><a href='4677.html'>/**
+ *  @file oalp</a><Br/><a href='4678.html'># SPDX-License-Ide</a><Br/><a href='4679.html'>Opinion: The ‘New’</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4668.html'>Mixed results from</a><Br/><a href='4667.html'>Q:
+
+Xcode: Build F</a><Br/><a href='4666.html'>The University of </a><Br/><a href='4665.html'>This is an archive</a><Br/><a href='4664.html'>Q:
+
+Why does one n</a><Br/><a href='4663.html'>In the past year, </a><Br/><a href='4662.html'>"And let's hear th</a><Br/><a href='4661.html'>The present invent</a><Br/><a href='4660.html'>Orofacial and soma</a><Br/><a href='4659.html'>What if our world </a></div><div class='nav'><a href='4668.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4670.html'> >> </a></div><div class='article'>How to make a simple Raspberry Pi Camera
+
+This post is brought to you by the same group that make Raspberry Pi cameras so they have inside knowledge about their own cameras.
+
+If you’ve read the previous articles in this series, you’ll know about making a Raspberry Pi-based robot – or at least a controller board. Since that article, I’ve also written the following blog posts:
+
+In this post, I’m going to demonstrate a simple Raspberry Pi camera project. In the following post, we’ll actually put this camera to work, so we can control a robot through the camera.
+
+The build is similar to the other PiCam builds but we’ll be using my preferred hardware and it won’t need any soldering.
+
+Getting started
+
+We’ll start with the same kit that I used for my other PiCamera builds, so you can follow along easily if you haven’t done any of them already.
+
+This time I’m using a case from RS Components. That’s an item that isn’t available anymore but there are many similar cases available, just choose one with a hole in the middle so you can mount the Pi camera module.
+
+It’s made by RS Components and is item number:
+
+K7069A
+
+It’s the same case that I used for my first and third Raspberry Pi camera builds.
+
+The Raspberry Pi camera module, from what the vendor calls ‘Bayer Pattern’, is the main ingredient here. It has a 3.2mm x 3.2mm size.
+
+I bought mine from Amazon as item number: B008K3ZJT2 – I chose it because it has a wide field of view, which is what I want, and because it’s cheap – about £6 at the time of writing. It’s also the version 1 camera and I wanted to use the same camera as in the previous projects.
+
+This isn’t the cheapest camera you can buy but it’s much cheaper than buying a specialised USB-connected camera. I think this is because the USB controller is separate and you can get cheaper USB devices.
+
+You’ll also need the following:
+
+SD card or microSD card: you’ll need a 2GB or 4GB card. If you don’t have a card reader, it’s very easy to make one using a few household objects and a paper clip. You can see how to do it in another of my articles about programming with the Raspberry Pi, I mentioned a video, but it’s in the bottom of this page, right-hand column.
+
+Micro USB power supply: you’ll probably need one of these.
+
+Wired USB cable, as in Figure 1: you can get cheap ones or buy a more specialised wired USB cable.
+
+You don’t need an official power supply – you can get a simple one for a few pounds, even.
+
+Wiring up the Raspberry Pi
+
+Plug the camera module into the adapter board, with the black end first, and connect the wires as shown in the diagram below. The red/white and green/white wires are used for the power supply, with their mates in the right-hand port. We’ll make up some extension leads to use the other side of the power supply later.
+
+Figure 1: Raspberry Pi camera wiring
+
+I used a few extensions so I could easily remove them if I later decided that a shorter camera cable was sufficient.
+
+Once you’ve wired up the camera and the power supply, check that all the red or white wires in the diagram match up with their mates in the sockets.
+
+The blue and yellow wires on the left can be left unconnected or connected as we’ll see later.
+
+Make up some extension leads to use the power supply. I used the type of red/white and green/white extension leads that are commonly used for breadboarding. The two wires are marked in the diagram and are also shown below.
+
+Figure 2: Make extension leads to use the power supply
+
+You don’t have to make up any extension leads, or use wired USB connectors, as I did, but they are convenient when you’re putting the camera together for the first time. It’s easy to disconnect them later if you don’t need them.
+
+If you look at the socket labelled ‘Micro USB’, you can see where the power comes in to the adapter board – there’s a small hole where it connects. This is because we need to attach wires and we can’t use a cable with a connector at both ends.
+
+Now check the colours of the various cables that you’ll need. There’s a red wire, a blue and a yellow wire – in the diagram above – which have a white marking next to them. They’re for the left-hand part of the board – the one in the picture that doesn’t have a socket.
+
+Figure 3: Make sure all the cables are the right colours
+
+I’ve highlighted them on the image above – they’re the red wire, blue and yellow wire. Make sure they are all connected to the right colour of sockets – red/white, green/white or unconnected.
+
+Figure 4: Wiring up the left side of the Raspberry Pi
+
+Now we’ll do the same on the right side of the board. It’s essentially the same as the other side but we’ll need some red, blue and yellow wires. The sockets marked ‘DNC’, which is short for ‘Do Not Connect’, are where we need to put the red, blue and yellow wires.
+
+The red, blue and yellow wires should be connected to the right coloured sockets. These sockets are either red/white, green/white or unconnected. As in Figure 4, the ones marked with the red circle are the ones that should be connected to a red wire.
+
+Figure 5: Make sure all the wires on the right side of the board are connected to the right sockets
+
+We’ll do the same on the other side of the Raspberry Pi. The sockets on the right side have red, blue and yellow markings, as before, so they should all be connected to the red, blue and yellow wires.
+
+Figure 6: The connectors on the right side of the Raspberry Pi
+
+We’ve made it! We now have a working Raspberry Pi camera!
+
+It’s easy to check that you’ve wired everything up correctly, and if you’ve done everything correctly, you can see that this is a very basic camera board. It’s very simple.
+
+The cable doesn’t quite reach all the way from the camera module to the Raspberry Pi so you’ll need to be careful when putting the Raspberry Pi into the case or you’ll damage the Raspberry Pi.
+
+The camera module doesn’t have any switches or other controls so this isn’t something you need to worry about right now – you can control the camera using Python. For more advanced projects, you might want to put controls on the board, but that’s down to you.
+
+The case used here isn’t too robust and it’s easier to control the Raspberry Pi while it’s in a case with a lid, as we will be doing. This isn’t a problem with other cases and even a case without a lid will do fine for testing.
+
+Conclusion
+
+I’ve always liked Raspberry Pi cameras and there are quite a few different versions available. In this project, we’ve seen how to make your own.
+
+Remember to check the Raspberry Pi Camera webpage, I’m sure I’ll be adding a new post before too long. In that article, I’ll discuss how to add a case and mount it in the case.
+
+If you have any comments or suggestions, please add them to the comments below.
+
+This blog is brought to you by Raspberry Pi: Get the latest news and our recommendations on the best Raspberry Pi models.
+
+Raspberry Pi has recently released a new version of its popular Pi Zero W. This new model is a more powerful version of the Pi Zero W. This version can now be used to make headless Pi terminals, Raspberry Pi Kits and more. It is the model I use as my main PC in my home for any online activity. However, if you are looking for a cheap Raspberry Pi then you can’t beat the Model A+.
+
+In this video I am going to take a look at the new Raspberry Pi 3 Model B. I am also going to show you how you can make your own home theatre PC using a Raspberry Pi 3 Model B.
+
+There are 3 different versions of this model – A+, B+ and Pi 3. Each one has different specifications that make them better or worse for certain applications. The Pi 3 has the most capabilities and is better for general desktop and productivity applications. It is an improvement over previous versions because it</div></body></html><!-- 2022-07-17 11:30:03 

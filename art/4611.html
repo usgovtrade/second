@@ -1,0 +1,206 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4612.html'>Q:
+
+How do I remov</a><Br/><a href='4613.html'>A former executive</a><Br/><a href='4614.html'>The present invent</a><Br/><a href='4615.html'>Q:
+
+How do I get t</a><Br/><a href='4616.html'>A small band of Ne</a><Br/><a href='4617.html'>We all know that w</a><Br/><a href='4618.html'>#ifndef __NVKM_DIS</a><Br/><a href='4619.html'>"That was a great </a><Br/><a href='4620.html'>Q:
+
+how to fix err</a><Br/><a href='4621.html'>It’s a familiar si</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4610.html'>Adenanthos microph</a><Br/><a href='4609.html'>// ===============</a><Br/><a href='4608.html'>Effect of nonylphe</a><Br/><a href='4607.html'>Q:
+
+Google Calenda</a><Br/><a href='4606.html'>Q:
+
+Is there a way</a><Br/><a href='4605.html'>The Dinosauria is </a><Br/><a href='4604.html'>Nintendo Direct E3</a><Br/><a href='4603.html'>{
+  "version": "1.</a><Br/><a href='4602.html'>A recent article i</a><Br/><a href='4601.html'>Amino acid metabol</a></div><div class='nav'><a href='4610.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4612.html'> >> </a></div><div class='article'>Q:
+
+How to set an alarm for a specific day with NSDateComponents in Objective C?
+
+I am trying to set a specific alarm to a device in my app. I already did that but it is not working and I don't know what is wrong with my code.
+This is my code for setting an alarm :
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [calendar components:NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit fromDate:alarmDate];
+    [components setHour:11];
+    [components setMinute:42];
+    [components setSecond:45];
+    NSDate *date = [calendar dateFromComponents:components];
+    //Set Alarm!
+    UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+    localNotification.fireDate = date;
+    localNotification.alertBody = @"New Alarm!";
+    localNotification.timeZone = [NSTimeZone defaultTimeZone];
+    localNotification.soundName = UILocalNotificationDefaultSoundName;
+
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+
+I took this code from here. I tested the code, and it works. But when I try to set an alarm with the same date and the same components, it doesn't work. For example :
+First date (this one works):
+
+2015-08-30 00:00:00 +0000
+
+NSDateComponents:
+
+Calendar Year: 2015
+Calendar Week of Year: 35
+Calendar Weekday: Sunday
+Calendar Weekday Ordinal: 1
+Calendar Quarter: 3
+Calendar Month: 8
+Calendar Day: 30
+Hour: 0
+Minute: 0
+Second: 0
+Day: 1
+Month: 6
+Year: 1985
+
+Second date (this one doesn't work):
+
+2015-08-30 00:00:00 +0000
+
+NSDateComponents:
+
+Calendar Year: 2015
+Calendar Week of Year: 35
+Calendar Weekday: Sunday
+Calendar Weekday Ordinal: 1
+Calendar Quarter: 3
+Calendar Month: 8
+Calendar Day: 30
+Hour: 0
+Minute: 0
+Second: 0
+Day: 1
+Month: 6
+Year: 1985
+
+I really don't understand what is wrong with this. I have a few test devices (iPhone 4S and 5) and none of them worked with the second date. Maybe there is something I am missing. I hope you can help me solve this issue. Thank you for your time.
+EDIT :
+My question is not answered because the dates are not equal. I have edited the code so it's really clear what I am asking for. Thank you all for your answers, but you cannot answer my question.
+
+A:
+
+When you do a standard NSCalendar/NSDateComponents-based comparison (as you did with Calendar.dateFromComponents()), you should use Calendar.equal(to:) for testing:
+NSDate *date = [calendar dateFromComponents:components];
+
+NSCalendar *calendar = [NSCalendar currentCalendar];
+
+if([calendar compareDate:date 
+                 toDate:date 
+             options:0] == NSOrderedDescending)
+    NSLog(@"date1 < date2");
+else if([calendar compareDate:date 
+                 toDate:date 
+             options:0] == NSOrderedAscending)
+    NSLog(@"date1 > date2");
+else
+    NSLog(@"date1 = date2");
+
+Or equivalently:
+NSCalendar *calendar = [NSCalendar currentCalendar];
+
+NSDate *date = [calendar dateFromComponents:components];
+NSDateComponents *comps = [calendar components:NSHourCalendarUnit|NSMinuteCalendarUnit|NSSecondCalendarUnit
+                                     fromDate:date];
+[comps setHour:11];
+[comps setMinute:42];
+[comps setSecond:45];
+
+if([calendar compare:date
+               toDate:date
+           options:NSCalendarMatchDate|NSCalendarMatchNextTime|NSCalendarMatchNextWeek
+              data:comps] != NSOrderedDescending)
+    NSLog(@"date1 < date2");
+else if([calendar compare:date
+               toDate:date
+           options:NSCalendarMatchDate|NSCalendarMatchNextTime|NSCalendarMatchNextWeek
+              data:comps] != NSOrderedAscending)
+    NSLog(@"date1 > date2");
+else
+    NSLog(@"date1 = date2");
+
+(The first one will let the calendar do the work of trying to find the first match, while the second one will check whether you've found the first matching date.)
+The reason the calendar comparison returns false in your case is that you are comparing the different components of the dates:
+Calendar year: 2015
+Calendar week of year: 35
+Calendar weekday: Sunday
+Calendar weekday Ordinal: 1
+Calendar Quarter: 3
+Calendar Month: 8
+Calendar Day: 30
+Hour: 0
+Minute: 0
+Second: 0
+Day: 1
+Month: 6
+Year: 1985
+
+Calendar year: 2015
+Calendar week of year: 35
+Calendar weekday: Sunday
+Calendar weekday Ordinal: 1
+Calendar Quarter: 3
+Calendar Month: 8
+Calendar Day: 30
+Hour: 0
+Minute: 0
+Second: 0
+Day: 1
+Month: 6
+Year: 1985
+
+The Calendar is not concerned with the TimeZone. The time zone comes into play when you generate the dateComponents for your comparison.
+By only checking the calendar, you are only checking what day the date is in the calendar, rather than when it occurs in the Gregorian calendar. This is why, even if your 2 dates are the same calendar day, the 2 NSDateComponents will be different, because they will come from two different points in the date range.
+If you care about the time of day as well as the calendar date, you should use NSDateComponents directly and let the calendar do the calendar part for you.
+
+And, to answer your question directly:
+NSDateComponents *components = [NSDateComponents new];
+components.year = 2015;
+components.weekOfYear = 35;
+components.weekday = 1;
+components.quarterOfYear = 3;
+components.month = 8;
+components.day = 30;
+components.hour = 0;
+components.minute = 0;
+components.second = 0;
+components.yearForWeekOfYear = 2; // <-- Year is a weird one, it's not the same as Calendar year!
+
+NSDate *date = [calender dateFromComponents:components];
+
+UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+localNotification.fireDate = date;
+localNotification.alertBody = @"New Alarm!";
+localNotification.timeZone = [NSTimeZone defaultTimeZone];
+localNotification.soundName = UILocalNotificationDefaultSoundName;
+
+[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+
+Note that I adjusted the component values, because I noticed that "Calendar year" is not exactly the same as "Year" -- Calendar year is based on the Gregorian calendar year and is not the same as ISO year (which is what "Year" means in your example). 
+Or, with code similar to the above:
+NSDateComponents *components = [NSDateComponents new];
+components.yearForWeekOfYear = 2;
+components.weekOfYear = 35;
+components.weekday = 1;
+components.quarterOfYear = 3;
+components.month = 8;
+components.day = 30;
+components.hour = 0;
+components.minute = 0;
+components.second = 0;
+
+NSDate *date = [calender dateFromComponents:components];
+
+UILocalNotification* localNotification = [[UILocalNotification alloc] init];
+localNotification.fireDate = date;
+localNotification.alertBody = @"New Alarm!";
+localNotification.timeZone = [NSTimeZone defaultTimeZone];
+localNotification.soundName = UILocalNotificationDefaultSoundName;
+
+[[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+
+I'd recommend the first version as it's clearer and more self-descriptive. 
+You may want to be more explicit about your intentions if you're going to use Calendar.dateFromComponents(), though:
+NSCalendar *calendar = [NSCalendar currentCalendar];
+NSDateComponents *comps = [calendar components:NSDayCalendarUnit
+                                    fromDate:date];
+[comps setWeekOfYear:2];
+[comps setWeekOfMonth:35];
+[comps setWeekday</div></body></html><!-- 2022-07-17 11:29:53 

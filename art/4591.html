@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4592.html'>Criminal Minds
+
+F.</a><Br/><a href='4593.html'>As usual, I really</a><Br/><a href='4594.html'>Amy and Michael we</a><Br/><a href='4595.html'>Asking the Right Q</a><Br/><a href='4596.html'>In a small, low-ce</a><Br/><a href='4597.html'>Tunable nanodisper</a><Br/><a href='4598.html'>Become part of I.R</a><Br/><a href='4599.html'>Q:
+
+How to add a n</a><Br/><a href='4600.html'>Allah has said: "T</a><Br/><a href='4601.html'>Amino acid metabol</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4590.html'>I've been in love </a><Br/><a href='4589.html'>Inhibition of huma</a><Br/><a href='4588.html'>"Mister?" "Miss, I</a><Br/><a href='4587.html'>Q:
+
+How to make a </a><Br/><a href='4586.html'>1. Field of the In</a><Br/><a href='4585.html'>Q:
+
+How to use var</a><Br/><a href='4584.html'>There is considera</a><Br/><a href='4583.html'>Q:
+
+PHP : array is</a><Br/><a href='4582.html'>Category: Guitar
+
+</a><Br/><a href='4581.html'>Amidst a tumultuou</a></div><div class='nav'><a href='4590.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4592.html'> >> </a></div><div class='article'>Q:
+
+Where is my logon in the Windows Server 2012 Domain?
+
+I am working in an office of 20 computers.  There is an administrator that will sometimes leave and I do not have his password.  When I turn my computer on, I can not connect via remote desktop to some of my colleagues' computers to download our group's files.
+We had domain controller issues in the office last year and it has been a year since I have logged in this domain controller.  I am going to change the computer name when I log into my computer, but first I need to know where I should be logging in?  Should I change the computer name as if I were in a workgroup?  Where do I change the domain and computer name for my computer?
+I have a Windows Server 2012 running as a Domain controller, and that was the last of the workstations that were recently converted when we had the domain controller issues.  I can't find the login and password for my computer. 
+
+A:
+
+Try the link below to change your user information. It is all very well documented and should work for you.
+https://technet.microsoft.com/en-us/library/cc784048(v=ws.10).aspx
+
+On Windows 10, if you log on with a Microsoft account, the computer's name is
+  set to the email address that you used to sign in to Windows (for example,
+  "jdoe@contoso.com").
+If you're an administrator and you sign in to the computer with a domain
+  account, the computer's name is changed to the domain name. This name
+  includes a domain name or the NetBIOS name of the server that was joined
+  to the domain (for example, "WIN-1B3C4A8A27-CB3B-4301-849B-6B0D5D9BC6FE").
+When you sign in as a user, you are logged on with a user account and have no
+  ability to control the computer's computer name or domain name. However,
+  if you have local administrator privileges, you can control the computer
+  name.
+
+On Windows Server, 2012 the user name will be the Windows username on the 
+ computer. You may have to restart the server after you make the change. 
+
+On Windows Server, 2008, 2003, Windows XP, and Windows 2000, the user name
+  is your computer name.
+
+A:
+
+Try this Windows Guide on Changing the Computer Name
+https://support.microsoft.com/en-us/kb/303974
+If you have a Domain Administrator account, you should be able to change the computer name by going to Start > Administrative Tools > Computer Management. If you don’t have a Domain Administrator account, you’ll need to contact the network administrator who set up the domain in order to change the computer name.
+
+A:
+
+It looks like you already changed the computer name using this guide and it's still not working:
+https://support.microsoft.com/en-us/kb/303974
+Make sure to restart the computer after making the changes to see the changes take effect.
+
+When you create a new computer account for a domain-joined computer, the name that you create includes the domain name of the server on which the computer account was created. For example, if a server has the name JENKINS, the computer account created on that server would have the name JENKINS\ComputerName. This computer account is used for the user during authentication. This name is also used as the local computer name (in other words, this name is used in the computer name field in Network Neighborhood).
+
+There might be an issue with your Domain Administrator account or Active Directory. To fix it, you'll need to reset the password for the account and make sure to choose "Domain Administrator" for the role. Follow these steps:
+
+Open Active Directory Users and Computers.
+Right-click on the AD account and select Properties.
+Click on the Member Of tab.
+Choose to Change Password.
+Select which user (including domain or local machine) this account should be allowed to reset.
+Click OK.
+
+NOTE: To reset the password for the account, you'll need the old password, the old password's e-mail address and the Domain Administrator's e-mail address.
+After resetting the password, you need to wait until the AD account information is replicated to the other domain controllers. You can find more information about Active Directory replication and speed by checking the following KB:
+https://support.microsoft.com/en-us/kb/2819272
+
+EDIT: if the above information is not enough and you need an offline solution, you can also try to change the domain name and local computer name using ipconfig (which is usually installed with windows or available on the Windows installation disk) :
+
+Go to Start > Run.
+Type "ipconfig" (without the quotes) and hit Enter.
+Look for Computer name: section and replace it with the new computer name.
+
+To restart the computer after that, you'll have to shut down and restart it.
+
+</div></body></html><!-- 2022-07-17 11:29:49 

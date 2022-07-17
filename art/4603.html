@@ -1,0 +1,110 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4604.html'>Nintendo Direct E3</a><Br/><a href='4605.html'>The Dinosauria is </a><Br/><a href='4606.html'>Q:
+
+Is there a way</a><Br/><a href='4607.html'>Q:
+
+Google Calenda</a><Br/><a href='4608.html'>Effect of nonylphe</a><Br/><a href='4609.html'>// ===============</a><Br/><a href='4610.html'>Adenanthos microph</a><Br/><a href='4611.html'>Q:
+
+How to set an </a><Br/><a href='4612.html'>Q:
+
+How do I remov</a><Br/><a href='4613.html'>A former executive</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4602.html'>A recent article i</a><Br/><a href='4601.html'>Amino acid metabol</a><Br/><a href='4600.html'>Allah has said: "T</a><Br/><a href='4599.html'>Q:
+
+How to add a n</a><Br/><a href='4598.html'>Become part of I.R</a><Br/><a href='4597.html'>Tunable nanodisper</a><Br/><a href='4596.html'>In a small, low-ce</a><Br/><a href='4595.html'>Asking the Right Q</a><Br/><a href='4594.html'>Amy and Michael we</a><Br/><a href='4593.html'>As usual, I really</a></div><div class='nav'><a href='4602.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4604.html'> >> </a></div><div class='article'>{
+  "version": "1.0",
+  "examples": {
+  }
+}
+```
+
+---
+
+## Documentation
+ 
++ [Using the Service Builder](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-grok.html)
+ 
++ [Grok Syntax Documentation](https://github.com/danga/grok/blob/master/grok-reference.adoc)
+ 
++ [Using Grok With Logstash](https://github.com/danga/grok/blob/master/grok-logstash-configuration.md)
+ 
++ [Grok with Beats](https://www.elastic.co/guide/en/beats/current/grok-grok-pattern-beat.html)
+
+## Release 1.2
++ Added more examples (patterns)
++ Added support for more Grok patterns and tokens:
+  - `pattern`
+  - `tag`
+  - `match_phrase`
+  - `match_phrase_literal`
+  - `match_string`
+  - `match_string_nocase`
+  - `search`
+  - `remove_outer_double_quotes`
+  - `remove_outer_single_quotes`
+  - `remove_first_occurrence`
+  - `remove_last_occurrence`
+  - `space`
+  - `strip_ansi`
+  - `striptags`
+  - `to_lowercase`
+  - `to_uppercase`
+  - `trim`
++ Improvements in Grok patterns
++ Grok now works better with the new logstash syntax (version >=1.2.0)
+
+## Change Log
++ Release 1.2
+    + New: Add support for Grok patterns and tokens (version 1.2.0)
+    + New: Support for the new version of logstash (version > 1.1.0)
+    + New: New configuration example (logstash.yaml)
+    + Fix: Avoid throwing an exception when there are two or more patterns on one line
+    + Fix: Fix an issue where the last pattern was being omitted from the output
+    + Fix: Fix an issue with `logstash_tags` when there are two or more tags
++ Release 1.1
+    + New: Added more examples
+    + New: Grok pattern for Java stack trace (stacktrace)
+    + Fix: Fix a logic error with the `grok_useragent` filter and `grok_referer`
+    + Fix: Add default regex pattern for `grok_referer`
+    + Fix: Fixed an issue where empty matches were missing from the output
+    + Fix: Fixed an issue where tags were removed from the tokens
++ Release 1.0
+    + New: Added Grok filter
+    + New: `grok_useragent` filter
+    + New: `grok_request` filter
+    + New: `grok_referer` filter
+    + New: `grok_server` filter
+    + New: `grok_url` filter
+    + New: Grok patterns
+    + New: Grok default patterns for the `grok_useragent`, `grok_referer`, `grok_request`, and `grok_server` filters
+    + New: Support multiple grok filters in a single config file
+    + New: Support grok patterns in logstash files (logstash.yaml)
+    + New: Improved custom patterns, tokens, and regular expressions
+    + New: Updated translations to add missing languages
+    + New: Added Dutch translation
+    + New: Added Italian translation
+    + Fix: Fixed issue with grok filters not working correctly on Logstash 1.5
+    + Fix: Added missing documentation for `grok_match_phrase`
+    + Fix: Fixed a logic error with the grok filters (filter tags were omitted)
+    + Fix: Fixed an issue with the grok filters
+    + Fix: Fixed an issue with the grok filters (some tokens were not being translated properly)
+    + Fix: Fixed an issue with multiple patterns in a single file (they should be split on newlines)
+    + Fix: Fixed an issue where the `grok_host` filter was not working correctly
+    + Fix: Fixed an issue where patterns and tokens were missing from the output
+    + Fix: Fixed an issue where the `grok_referer` filter was returning `null`
+    + Fix: Fixed an issue with the `grok_referer` filter
+
+## Example
++ Example of using the Grok filter to parse log events:
+ 
+```
+grok{
+match => { "message" => "\[%{TIMESTAMP_ISO8601:timestamp}\] \[%{LOGLEVEL:level}\] (?<url>.*?) (?<status>[A-Z]{3})(?: (?<bytes>[0-9]+))? (?<referrer>.*) " }
+}
+```
+
++ Example of using the Grok filter to parse events:
+ 
+```
+grok{
+match => { "message" => "^%{TIMESTAMP_ISO8601:timestamp}(?<event>\S+)(?:%{NUMBER:count})(?:%{DATA:request}|-)(?:%{DATA:response}|-)" }
+}
+```
+</div></body></html><!-- 2022-07-17 11:29:51 

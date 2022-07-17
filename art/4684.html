@@ -1,0 +1,99 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4685.html'>New York State Dep</a><Br/><a href='4686.html'>---
+abstract: 'Giv</a><Br/><a href='4687.html'>Ancient DNA analys</a><Br/><a href='4688.html'>Effect of long-ter</a><Br/><a href='4689.html'>Filed 4/10/13 (unm</a><Br/><a href='4690.html'>The role of protei</a><Br/><a href='4691.html'>The role of the Ph</a><Br/><a href='4692.html'>Recombinant murine</a><Br/><a href='4693.html'>/**
+ * The MIT Lic</a><Br/><a href='4694.html'>Novel human protei</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4683.html'>The first image of</a><Br/><a href='4682.html'>The present invent</a><Br/><a href='4681.html'>This morning when </a><Br/><a href='4680.html'>On a weekend, when</a><Br/><a href='4679.html'>Opinion: The ‘New’</a><Br/><a href='4678.html'># SPDX-License-Ide</a><Br/><a href='4677.html'>/**
+ *  @file oalp</a><Br/><a href='4676.html'>Q:
+
+How to compare</a><Br/><a href='4675.html'>FORT WORTH — What </a><Br/><a href='4674.html'>Sickle cell diseas</a></div><div class='nav'><a href='4683.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4685.html'> >> </a></div><div class='article'>Q:
+
+How to get an input value in a button onclick
+
+I am trying to get the value from an input element when I click on the submit button. 
+<button type="submit" class="btn btn-success" onclick="update(this)">Update</button>
+
+<input id="username" value="kelly">
+
+What should the javascript function update() look like?
+
+A:
+
+Try this
+<script>
+function update(button){
+   var username=$('#username').val();
+   alert(username);
+}
+
+</script>
+
+The HTML code should be like:
+<button type="submit" class="btn btn-success" onclick="update(this);">Update</button>
+
+<input id="username" value="kelly">
+
+Hope it helps.
+
+A:
+
+Your button has an attribute called type so you should be using getAttribute method
+ <script>
+ function update(elem) {
+  alert(elem.getAttribute('value'));
+ }
+</script>
+
+If you want to use the element as a button then you need to use button element like this
+<button type="submit" class="btn btn-success" onclick="update(this);">Update</button>
+<input id="username" value="kelly">
+
+function update(element) {
+   var username = element.getAttribute('value');
+   alert(username);
+}
+
+Read more about button here.
+
+function update(elem) {
+    alert(elem.getAttribute('value'));
+}
+<button type="submit" class="btn btn-success" onclick="update(this);">Update</button>
+<input id="username" value="kelly">
+
+A:
+
+With the onclick attribute you get the clicked element. So do this:
+<button type="submit" class="btn btn-success" onclick="update(this.parentNode);">Update</button>
+
+The current element (where the event listener is assigned) is accessible through this inside the onclick function. Using parentNode you can access to the element directly under the button.
+If you want to read the value of a input element, use this code:
+<input type="text" id="myInput" />
+
+<button type="submit" class="btn btn-success" onclick="update(this);">Update</button>
+
+<script>
+  function update(button) {
+    var value = document.getElementById('myInput').value;
+    alert(value);
+  }
+</script>
+
+In your version with the input element:
+<button type="submit" class="btn btn-success" onclick="update(this);">Update</button>
+<input type="text" id="myInput" value="kelly" />
+
+<script>
+  function update(button) {
+    var value = button.parentNode.getElementsByTagName('input')[0].value;
+    alert(value);
+  }
+</script>
+
+So here button is the clicked element. Then using parentNode I get the parent element and the get the input. So the value is in value.
+Update with the second version of the script:
+<script>
+ function update(button) {
+    var value = button.parentNode.getElementsByTagName('input')[0].value;
+    alert(value);
+  }
+</script>
+
+</div></body></html><!-- 2022-07-17 11:30:05 

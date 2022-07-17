@@ -1,0 +1,67 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4625.html'>Hillary Clinton is</a><Br/><a href='4626.html'>Q:
+
+Does the numbe</a><Br/><a href='4627.html'>Q:
+
+How to check i</a><Br/><a href='4628.html'>Aquaculture in Eur</a><Br/><a href='4629.html'>Gastroesophageal r</a><Br/><a href='4630.html'>/*
+ * Copyright (C</a><Br/><a href='4631.html'>The European Commi</a><Br/><a href='4632.html'>#!/bin/bash
+######</a><Br/><a href='4633.html'>Introduction {#sec</a><Br/><a href='4634.html'>1. Introduction {#</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4623.html'>1. Technical Field</a><Br/><a href='4622.html'>The present invent</a><Br/><a href='4621.html'>It’s a familiar si</a><Br/><a href='4620.html'>Q:
+
+how to fix err</a><Br/><a href='4619.html'>"That was a great </a><Br/><a href='4618.html'>#ifndef __NVKM_DIS</a><Br/><a href='4617.html'>We all know that w</a><Br/><a href='4616.html'>A small band of Ne</a><Br/><a href='4615.html'>Q:
+
+How do I get t</a><Br/><a href='4614.html'>The present invent</a></div><div class='nav'><a href='4623.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4625.html'> >> </a></div><div class='article'>Q:
+
+How to find the sum of the coefficients of the product of two polynomials in $R[x]$?
+
+The following question was asked: "Consider the formal power series $\sum_{n\geq0}x^{3^{2n}-1}$ and $\sum_{n\geq0}x^{2^{2n}}$. Write their product as an expression in R[[x]] and find the sum of the coefficients". 
+I have found that the two formal power series can be written as $\prod_{n\geq1}\left(1-x^{3^n}\right)$ and $\prod_{n\geq1}\left(1-x^{2^n}\right)$ in the ring of power series. 
+Can anyone help me to find the sum of the coefficients?
+
+A:
+
+Let $A(x) = \prod_{n\geq 1} (1-x^n)^{3^{2n}-1}$ and $B(x) = \prod_{n\geq 1} (1-x^n)^{2^{2n}}$. It's easily verified that $A(x^3) = B(x^2)$. Since $A(x) = \sum_{i=1}^\infty \operatorname{coeff}(A;i) x^i$ and $B(x) = \sum_{i=1}^\infty \operatorname{coeff}(B;i) x^i$, you obtain the claim by comparing the coefficient of $x^i$ on both sides. 
+
+A:
+
+You can do it here.
+
+A:
+
+If you have no idea of abstract algebra, you can proceed this way:
+$$\begin{align*}&(1+x+x^2+...+x^{3^n-1})+(1+x+x^2+...+x^{2^n})\\
+=&1+x+x^2+...+x^{3^n-1}+x+x^2+...+x^{2^n-1}+x^{3^n+1}+x^{3^n}+x^{3^n-2}+...\\
+=&1+x+x^2+...+x^{3^n-1}+x^{3^n}+x^{2^n}+...+x^{3^{n-1}}+x+x^2+...+x^{2^n-1}+x^{2^{n+1}}+...\\
+=&(1+x+x^2+...+x^{2^{n-1}})+(1+x+x^2+...+x^{2^n})\\
+=&1+x+x^2+...+x^{2^n-1}+1+x+x^2+...+x^{2^n-1}\\
+=&1+x+x^2+...+x^{2^n-1}+x+x^2+...+x^{2^n-1}\\
+=&2(1+x+x^2+...+x^{2^n-1})
+\end{align*}$$
+So, what we have is $A(x)=1+x+x^2+...+x^{2^n-1}$, and $B(x)=2A(x)$. Now, you can apply any method you know to get the sum of the coefficients of $B(x)$ (without knowing algebra, that is).
+
+EDIT
+You can see here that, if you have two polynomials $A(x)$ and $B(x)$ defined over $\mathbb Z_m$, and such that $B(x)=2A(x)$, you have $\operatorname{coeff}(B,i)=\operatorname{coeff}(A,i)+2\operatorname{coeff}(A,i-1)$. In your case, $\operatorname{coeff}(B,i)=\operatorname{coeff}(A,i)+2\operatorname{coeff}(A,i-1)$.
+
+Now, to calculate the sum of the coefficients of $A(x)$, we have $\sum_{i=0}^n \operatorname{coeff}(A,i)=A(0)+A(1)+...+A(n)=1+1+...+1=n+1$. You can check the last identity as follows: $A(x)=1+x+x^2+...+x^{m-1}$ is a polynomial defined over $\mathbb Z_m$, and $A(0)=1$, $A(1)=1$, ..., $A(m-1)=1$.
+
+I don't know how to get the sum of the coefficients of $B(x)$ using only the formal manipulation of polynomials, but here is how it could be done.
+The coefficient of $x^{3^k-1}$ in $B(x)$ is just the coefficient of $x^{2^k}$ in $A(x)$, that is, $\operatorname{coeff}(B,3^k-1)=\operatorname{coeff}(A,2^k)$, or $\sum_{j=0}^{2^k}\operatorname{coeff}(B,j)=\sum_{j=0}^{2^k}\operatorname{coeff}(A,j)$. We can evaluate the left and right parts for any $k$:
+$$\begin{align*}&
+\sum_{j=0}^{2^k}\operatorname{coeff}(B,j)\\
+=&\sum_{j=0}^{2^k}\left[\operatorname{coeff}(A,j)+2\operatorname{coeff}(A,j-1)\right]\\
+=&\operatorname{coeff}(A,0)+2\operatorname{coeff}(A,0)+\operatorname{coeff}(A,1)+2\operatorname{coeff}(A,1)+...+\operatorname{coeff}(A,2^k)+\operatorname{coeff}(A,2^k)\\
+&\qquad\qquad-2\operatorname{coeff}(A,0)-2\operatorname{coeff}(A,1)-...-2\operatorname{coeff}(A,2^k)\\
+=&\operatorname{coeff}(A,0)+2\operatorname{coeff}(A,1)+2\operatorname{coeff}(A,2)+...+2\operatorname{coeff}(A,2^k)+2\operatorname{coeff}(A,2^k+1)\\
+&\qquad\qquad+\operatorname{coeff}(A,3^k-1)+\operatorname{coeff}(A,3^k-2)\\
+=&\operatorname{coeff}(A,0)+2\operatorname{coeff}(A,1)+2\operatorname{coeff}(A,2)+...+2\operatorname{coeff}(A,2^k)+2\operatorname{coeff}(A,2^k+1)\\
+&\qquad\qquad+\operatorname{coeff}(A,3^k-1)+\operatorname{coeff}(A,3^k-2)\\
+=&\sum_{j=0}^{2^{k+1}}\operatorname{coeff}(A,j)\\
+\end{align*}$$
+Since $k$ is any integer, you can get $\sum_{j=0}^{2^{2k}}\operatorname{coeff}(B,j)$ by induction. Now, we just have to evaluate $\sum_{j=0}^{2^{2k}}\operatorname{coeff}(A,j)$. You can prove by induction that $\operatorname{coeff}(A,j)=\frac{1}{2}(1+(-1)^j)$. In that case, we will have:
+$$\begin{align*}&\sum_{j=0}^{2^{2k}}\operatorname{coeff}(A,j)\\
+=&\frac{1}{2}\sum_{j=0}^{2^{2k}}(1+(-1)^j)\\
+=&\frac{1}{2}\left(\frac{1}{2}+(-1)^{2k}+\frac{1}{2}(-1)^{2k}\right)\\
+=&\frac{1}{2}\cdot2\\
+=&1
+\end{align*}$$
+Now, you can calculate the sum of the coefficients of $B(x)$ with no difficulties:
+$$\begin{align*}&
+\sum_{j=</div></body></html><!-- 2022-07-17 11:29:55 

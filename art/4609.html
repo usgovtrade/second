@@ -1,0 +1,122 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4610.html'>Adenanthos microph</a><Br/><a href='4611.html'>Q:
+
+How to set an </a><Br/><a href='4612.html'>Q:
+
+How do I remov</a><Br/><a href='4613.html'>A former executive</a><Br/><a href='4614.html'>The present invent</a><Br/><a href='4615.html'>Q:
+
+How do I get t</a><Br/><a href='4616.html'>A small band of Ne</a><Br/><a href='4617.html'>We all know that w</a><Br/><a href='4618.html'>#ifndef __NVKM_DIS</a><Br/><a href='4619.html'>"That was a great </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4608.html'>Effect of nonylphe</a><Br/><a href='4607.html'>Q:
+
+Google Calenda</a><Br/><a href='4606.html'>Q:
+
+Is there a way</a><Br/><a href='4605.html'>The Dinosauria is </a><Br/><a href='4604.html'>Nintendo Direct E3</a><Br/><a href='4603.html'>{
+  "version": "1.</a><Br/><a href='4602.html'>A recent article i</a><Br/><a href='4601.html'>Amino acid metabol</a><Br/><a href='4600.html'>Allah has said: "T</a><Br/><a href='4599.html'>Q:
+
+How to add a n</a></div><div class='nav'><a href='4608.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4610.html'> >> </a></div><div class='article'>// =============================================================================
+// Scilab ( http://www.scilab.org/ ) - This file is part of Scilab
+// Copyright (C) 2009-2010 - DIGITEO - Pierre MARECHAL <pierre.marechal@scilab.org>
+//
+//  This file is distributed under the same license as the Scilab package.
+// =============================================================================
+
+// <-- CLI SHELL MODE -->
+
+// <-- Non-regression test for bug 4064 -->
+//
+// <-- Bugzilla URL -->
+// http://bugzilla.scilab.org/show_bug.cgi?id=4064
+//
+// <-- Short Description -->
+//    IsXString() crashes with 2 matrices and inputs
+
+loadXcosLibs();
+
+ilib_verbose(0);
+
+
+function f = myf(x)
+    f = [x' y'];
+endfunction
+
+function myg = myg(x)
+    myg = [x' z'];
+endfunction
+
+function [x1, x2, x3] = myp(x)
+    x1 = x(1, 1);
+    x2 = x(2, 1);
+    x3 = x(3, 1);
+endfunction
+
+
+funcprot = ["GRAPHIC";"INTERP";"MyGate"];
+func = "myf";
+[x1, x2, x3] = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+assert_checkequal(x2, "5");
+assert_checkequal(x3, "5");
+x1 = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+
+funcprot = ["GRAPHIC";"INTERP";"MyGate"];
+func = "myg";
+[x1, x2, x3] = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+assert_checkequal(x2, "5");
+assert_checkequal(x3, "5");
+x1 = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+
+
+funcprot = ["GRAPHIC";"INTERP";"MyGate"];
+func = "myp";
+[x1, x2, x3] = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+assert_checkequal(x2, "5");
+assert_checkequal(x3, "5");
+x1 = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+
+funcprot = ["GRAPHIC";"INTERP";"MyGate"];
+func = "myf";
+[x1, x2, x3] = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+assert_checkequal(x2, "5");
+assert_checkequal(x3, "5");
+x1 = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+
+funcprot = ["GRAPHIC";"INTERP";"MyGate"];
+func = "myg";
+[x1, x2, x3] = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+assert_checkequal(x2, "5");
+assert_checkequal(x3, "5");
+x1 = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+
+funcprot = ["GRAPHIC";"INTERP";"MyGate"];
+func = "myp";
+[x1, x2, x3] = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+assert_checkequal(x2, "5");
+assert_checkequal(x3, "5");
+x1 = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+
+
+% =============================================================================
+// Test the error
+
+% This function uses %MAIN so should trigger a call
+
+funcprot = ["GRAPHIC";"INTERP";"MyGate"];
+func = "myp";
+[x1, x2, x3] = ScilabGraph(funcprot,func,[5 5],[],"c");
+assert_checkequal(x1, "5");
+assert_checkequal(x2, "5");
+assert_checkequal(x3, "5");
+assert_checkerror("x1 = ScilabGraph(funcprot,func,[5 5],[],"c");",...
+    "This function uses %MAIN which should be called only if compiling a module. Use the function 'myp' instead.");
+
+clear func prot funcprot x1 x2 x3;
+</div></body></html><!-- 2022-07-17 11:29:52 

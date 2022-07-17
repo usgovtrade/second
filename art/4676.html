@@ -1,0 +1,100 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4677.html'>/**
+ *  @file oalp</a><Br/><a href='4678.html'># SPDX-License-Ide</a><Br/><a href='4679.html'>Opinion: The ‘New’</a><Br/><a href='4680.html'>On a weekend, when</a><Br/><a href='4681.html'>This morning when </a><Br/><a href='4682.html'>The present invent</a><Br/><a href='4683.html'>The first image of</a><Br/><a href='4684.html'>Q:
+
+How to get an </a><Br/><a href='4685.html'>New York State Dep</a><Br/><a href='4686.html'>---
+abstract: 'Giv</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4675.html'>FORT WORTH — What </a><Br/><a href='4674.html'>Sickle cell diseas</a><Br/><a href='4673.html'>Amid all the talk </a><Br/><a href='4672.html'>The goal of this r</a><Br/><a href='4671.html'>Growth and structu</a><Br/><a href='4670.html'>Hemoglobin content</a><Br/><a href='4669.html'>How to make a simp</a><Br/><a href='4668.html'>Mixed results from</a><Br/><a href='4667.html'>Q:
+
+Xcode: Build F</a><Br/><a href='4666.html'>The University of </a></div><div class='nav'><a href='4675.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4677.html'> >> </a></div><div class='article'>Q:
+
+How to compare an element's attributes (such as width) to a value?
+
+I want to ask, how do I compare a value of an element's attribute (such as width) to a value of a variable in Javascript. 
+I tried to use JavaScript's 'if' function and then call its 'getElementById' method (for example) for HTML content:
+I tried it as: 
+if(document.getElementById("item").style.width == '50px'){//code}
+
+Also I tried it as:
+if(document.getElementById("item").getAttribute("style").width == 50)
+
+Both methods didn't work but I am looking forward to answers with alternative ways for comparing a value of the element's attribute to a variable's value and then to execute a code.
+
+A:
+
+In the first case, you need to use document.getElementById("item").style.width because style is a valid CSS attribute name.
+In the second case, you need to use getComputedStyle (MDN) or the non-standard getPropertyValue function (Mozilla) instead, as it looks like you're trying to access an inline style property.
+if(document.getElementById("item").getPropertyValue('width') == '50px') {
+    // this code...
+}
+
+For more information, see the DOM specs.
+
+Edit:
+As a further note, you can't really use a ternary in your second case, as the value in width isn't a number, which is what the ?: conditional operator can convert to.
+Instead, if you want to run code based on the width being the same as 50px, you can use the following:
+var itemWidth = document.getElementById("item").style.width;
+if(itemWidth == '50px') {
+    // code goes here
+}
+
+In your case, you'd probably want to extract the width number from the string, which is what the above is doing.
+
+Edit 2:
+It's not clear exactly what you're trying to achieve. If you want to do something based on the element being 50px wide, you'd need to add a listener for its resize event (MDN) and do something there. Something like:
+document.getElementById("item").addEventListener('resize', function() {
+    if(this.getBoundingClientRect().width == 50) {
+        // do stuff here
+    }
+});
+
+I've taken your question literally here, so you'd need to remove this. from the getBoundingClientRect part, and if you're trying to compare it to a variable, there's no need to use == '50px'.
+The event will fire each time the element changes size. If it's a frequent thing to check, you might want to look at CSS variables or changing the HTML of the element.
+
+Edit 3:
+With the final edit, I think I might be misreading your question.
+If you want to run code whenever the width of the item element changes, you can set up an event listener on that element and then check the width property of the event object. So, something like this:
+document.getElementById("item").addEventListener('resize', function() {
+    if(this.getBoundingClientRect().width == 50) {
+        // do stuff here
+    }
+});
+
+If you don't want the code to run whenever the element's width changes, but rather when the event is first fired, you can use event delegation. The following would run the code above for all elements with ID of item within the DOM, even if the event didn't happen on that element.
+// run for all IDs that start with 'item'
+document.addEventListener('resize', function(event) {
+    if(event.target.id.includes('item')) {
+        if(event.target.getBoundingClientRect().width == 50) {
+            // do stuff here
+        }
+    }
+}, false);
+
+I believe in this case, there's no reason to make the reference local to the function, but it can't hurt.
+
+Finally, if you're using jQuery, you can use its on function. For example:
+$('#item').on('resize', function() {
+    if(this.getBoundingClientRect().width == 50) {
+        // do stuff here
+    }
+});
+
+Edit 4:
+Based on the final edit, it looks like you want to execute a function when the event is triggered, rather than run a comparison to check the value of the attribute. In that case, you can just use a named function in the event handler:
+document.getElementById("item").addEventListener('resize', showValue, false);
+
+This will execute the function, given the name showValue within the addEventListener function.
+
+A:
+
+You can simply use this:
+document.getElementById("item").getAttribute("style").width = "50px";
+
+The getAttribute method can be used to fetch an attribute value from a DOM node.
+
+A:
+
+Here is one solution to the issue:
+if(document.getElementById("item").getBoundingClientRect().width == 50) {
+   alert('it\'s 50px wide');
+}
+
+</div></body></html><!-- 2022-07-17 11:30:04 

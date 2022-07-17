@@ -1,0 +1,89 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4616.html'>A small band of Ne</a><Br/><a href='4617.html'>We all know that w</a><Br/><a href='4618.html'>#ifndef __NVKM_DIS</a><Br/><a href='4619.html'>"That was a great </a><Br/><a href='4620.html'>Q:
+
+how to fix err</a><Br/><a href='4621.html'>It’s a familiar si</a><Br/><a href='4622.html'>The present invent</a><Br/><a href='4623.html'>1. Technical Field</a><Br/><a href='4624.html'>Q:
+
+How to find th</a><Br/><a href='4625.html'>Hillary Clinton is</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4614.html'>The present invent</a><Br/><a href='4613.html'>A former executive</a><Br/><a href='4612.html'>Q:
+
+How do I remov</a><Br/><a href='4611.html'>Q:
+
+How to set an </a><Br/><a href='4610.html'>Adenanthos microph</a><Br/><a href='4609.html'>// ===============</a><Br/><a href='4608.html'>Effect of nonylphe</a><Br/><a href='4607.html'>Q:
+
+Google Calenda</a><Br/><a href='4606.html'>Q:
+
+Is there a way</a><Br/><a href='4605.html'>The Dinosauria is </a></div><div class='nav'><a href='4614.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4616.html'> >> </a></div><div class='article'>Q:
+
+How do I get the result of a SELECT COUNT(*) into a variable?
+
+SELECT COUNT(*) INTO @cnt
+FROM sometable;
+
+doesn't work, apparently I have to declare a temp table, and then select * from that, which results in two queries. Is there a more efficient way to do this?
+
+A:
+
+There is, but beware:
+If you use a WHERE clause in the original SELECT statement (the one that's actually selecting data), this COUNT won't return an accurate count (it'll return a smaller number).
+SELECT @cnt = COUNT(*) FROM sometable WHERE somefield = @someValue;
+
+A:
+
+There is no way around SELECTing into a temporary table. In this example it could look something like this:
+DECLARE @tmp INT
+SELECT @tmp = COUNT(*) FROM sometable;
+IF (@tmp > 0) INSERT INTO @tmp (somefield, someotherfield, ...)
+
+A:
+
+DECLARE @result INTEGER;
+SELECT @result = COUNT(*) FROM @tablename;
+
+This is assuming you have a table called @tablename and you are selecting into that table rather than a variable (@result).
+
+If it's selecting into a variable, use this. 
+DECLARE @result INTEGER;
+SELECT @result = COUNT(*) FROM sometable;
+SELECT @result;
+
+The best way to read SQL is:
+
+First, take what you think is the end result of the query (a single column table containing a single value) and put the query in between "SELECT * FROM" and "AS"
+Next, take what you have in between "SELECT * FROM" and "AS" and assume that the previous table is now your new temporary table name
+
+Let me know if you have any questions about that one.
+
+UPDATE:
+This works the same for any SELECT query:
+DECLARE @result INTEGER;
+SELECT @result = someColumn FROM sometable;
+SELECT @result;
+
+...but to be clear, if the query selects more than one column and/or returns more than one result, you are not doing a SELECT INTO as far as I know.
+This last query doesn't actually do anything with @result unless you tell it to do so.
+
+SELECT @result;
+SELECT @result = 1 FROM sometable;
+
+Now it's still the same as this.
+
+UPDATE #2:
+If you want to return a 0 in the case that a record isn't found, simply do it like this:
+DECLARE @result INTEGER;
+SELECT @result = COUNT(*) FROM sometable;
+IF (@result > 0) SELECT @result;
+
+Or like this:
+DECLARE @result INTEGER;
+SELECT @result = COUNT(*) FROM sometable;
+IF (@result > 0) PRINT 'found';
+ELSE PRINT 'not found';
+
+I agree with the commenters that this is a horrible design pattern. When you find yourself implementing a counter variable like that, there's probably a better way to do what you are trying to do.
+
+If you are using mysql 5.5 or above, you could try out the system function COUNT_STAR.
+COUNT_STAR
+If you specify ALL as an argument, the function returns a count of rows in the table regardless of the value of any column in the result set. 
+
+So that query would look like this:
+SELECT COUNT_STAR(*) FROM sometable;
+
+</div></body></html><!-- 2022-07-17 11:29:53 
