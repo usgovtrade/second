@@ -1,0 +1,174 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4914.html'>{
+    "id": "afb8b</a><Br/><a href='4915.html'>The effects of met</a><Br/><a href='4916.html'>In the current stu</a><Br/><a href='4917.html'>Q:
+
+How to read a </a><Br/><a href='4918.html'>Effect of water st</a><Br/><a href='4919.html'>This disclosure re</a><Br/><a href='4920.html'>Nike Air Jordan 6 </a><Br/><a href='4921.html'>
+NO. 07-05-0441-CR</a><Br/><a href='4922.html'>The use of a "Birm</a><Br/><a href='4923.html'>Q:
+
+What's the qui</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4912.html'>The new "Star Wars</a><Br/><a href='4911.html'>Q:
+
+Get error whil</a><Br/><a href='4910.html'>Q:
+
+What should ha</a><Br/><a href='4909.html'>What is JotForm?
+J</a><Br/><a href='4908.html'>Nutritional factor</a><Br/><a href='4907.html'>Cruciate ligaments</a><Br/><a href='4906.html'>I went from my loc</a><Br/><a href='4905.html'>Q:
+
+MongoDB: Selec</a><Br/><a href='4904.html'>A few months ago, </a><Br/><a href='4903.html'>Miguel López
+
+Migu</a></div><div class='nav'><a href='4912.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4914.html'> >> </a></div><div class='article'>Q:
+
+Doubly Linked List in C
+
+I am getting struck in implementing doubly linked list in C , i am given a function which takes a list as a parameter and returns the element in that list but i am not able to understand how to write the function i am given the following code 
+1  #define MALLOC_OBJECT_T(type) ((type **)calloc(1, sizeof(type *)))
+2
+3 static char *str1 = "Hello world\n";
+4
+5 #include <stdlib.h>
+6 #include <string.h>
+7
+8 #define STR(str) str
+9 #define S1(ptr) (ptr->str1)
+10 #define S2(ptr) (ptr->next->str1)
+11 #define N(ptr) (ptr)
+12 #define IS_EMPTY(ptr) (ptr->prev == 0 && ptr->next == 0)
+13 #define NEXT(ptr) ((ptr)->next)
+14 #define PREV(ptr) ((ptr)->prev)
+15 #define DEALLOCATE(ptr) (ptr = 0)
+16 #define NULL_POINTER 0
+17 #define SUCCESS 0
+18 #define ERROR 1
+19 #define EOF (-1)
+20
+21 #define NIL ((struct node *)0)
+22 struct node *list = NIL;
+23
+24 int create_list(list, val)
+25 int val;
+26 {
+27 char *s1;
+28 s1 = NIL;
+29 N(list);
+30 if (IS_EMPTY(list))
+31 {
+32 list->val = val;
+33 return 0;
+34 }
+35 N(list->next);
+36 str1 = MALLOC_OBJECT_T(char *);
+37 N(list->next);
+38 str1 = str1 ? str1 : S1(list);
+39 N(str1);
+40 if (s1 == NIL)
+41 {
+42 str1 = MALLOC_OBJECT_T(char *);
+43 str1 = str1 ? str1 : MALLOC_OBJECT_T(char *);
+44 str1 = S1(list);
+45 str1 = MALLOC_OBJECT_T(char *);
+46 str1 = str1 ? str1 : MALLOC_OBJECT_T(char *);
+47 str1 = S2(list);
+48 str1 = MALLOC_OBJECT_T(char *);
+49 str1 = str1 ? str1 : MALLOC_OBJECT_T(char *);
+50 s1 = str1;
+51 }
+52 else
+53 {
+54 str1 = MALLOC_OBJECT_T(char *);
+55 str1 = str1 ? str1 : MALLOC_OBJECT_T(char *);
+56 str1 = MALLOC_OBJECT_T(char *);
+57 str1 = str1 ? str1 : MALLOC_OBJECT_T(char *);
+58 s1 = str1;
+59 }
+60
+61 if (val == EOF)
+62 {
+63 DEALLOCATE(s1);
+64 return ERROR;
+65 }
+66 else {
+67 list->val = val;
+68 list->next->str1 = str1;
+69 }
+70 list->next = NIL;
+71 list->prev = NIL;
+72 return SUCCESS;
+73 }
+74 #define RETURN_LIST(ptr) (ptr->next)
+75 #define SET_NULL(ptr) (ptr->prev = 0, ptr->next = 0)
+76 #define SET_NEXT(ptr, node) (ptr->next = (node), (ptr = (node)))
+77 #define INCREMENT(ptr) (ptr)
+78 #define RESTART_LIST(ptr) (ptr = 0)
+79 #define RESIZE(ptr, size) (ptr) = (struct node *)realloc(ptr, (size))
+80 #define PREPEND(node, node_prev) (node_prev = (struct node *)malloc(sizeof(node) + (node)->str1), node_prev->str1 = 0, node_prev->prev = node, node_prev->next = node_prev->next)
+81 #define DEPREEND(node, node_next) (node_next = (struct node *)malloc(sizeof(node) + (node)->str1), node_next->str1 = 0, node_next->prev = node, node_next->next = node_next->next)
+82 #define IS_EMPTY(ptr) (!ptr->next)
+83 #define NEXT(ptr) ((ptr)->next)
+84 #define PREV(ptr) ((ptr)->prev)
+85 #define DEALLOCATE(ptr) (ptr = 0)
+86 #define RESIZE_EMPTY(ptr) (ptr) = 0
+87 #define RESIZE_NOT_EMPTY(ptr, size) (ptr) = (struct node *)realloc(ptr, (size))
+88 #define INSERT_END(node) (node) = NIL, (node)->prev = 0, (node)->next = NIL
+89 #define INSERT_BEFORE(node, node_prev) (node)->prev = (node_prev), (node)->next = node_prev
+90 #define DELETE(node) (node)->prev = 0, (node)->next = NIL
+91 #define N_IS_EMPTY(node) (!node->next && !node->prev)
+92 #define N_NEXT(node) ((node)->next)
+93 #define N_PREV(node) ((node)->prev)
+94 #define N(node) (node)
+95 #define NIL_NODE(node) ((struct node *)NULL)
+96 #define N_NEXT_PTR(ptr) (ptr->next)
+97 #define N_PREV_PTR(ptr) (ptr->prev)
+98 #define ELEMENT_AT(ptr, idx) ((char *)ptr)[idx]
+99 #define TO_CHAR_ARRAY(ptr, str_arr) (str_arr = STR(ptr->str1), to_char_array_(ptr->str1, str_arr))
+100 #define to_ptr_array(ptr, ptr_arr) (ptr_arr = (struct node **)malloc(sizeof(struct node *) * ((ptr)->str1 ? (ptr)->str1 - 1 : 0)), ptr_arr ? ptr_arr : MALLOC_OBJECT_T(struct node *))
+101 #define to_ptr_array_back(ptr) ((struct node **)malloc(sizeof(struct node *) * ((ptr)->str1 ? (ptr)->str1 - 1 : 0))))
+102 #define clear_array(ptr, ptr_arr) memset(ptr_arr, 0, sizeof(struct node *))
+103
+104 void to_ptr_array_(char *str, struct node **array)
+105 {
+106 char *s1;
+107 struct node *ptr;
+108 for (ptr = *array; ptr && str != s1; ptr = ptr->next)
+109 {
+110 s1 = ptr->str1;
+111 }
+112 *array = ptr;
+113 }
+114
+115 char *to_char_array(struct node *str)
+116 {
+117 char *s1 = str->str1;
+118 return s1 ? to_char_array_(str->str1, s1) : NULL;
+119 }
+120
+121 void clear_array(struct node **array)
+122 {
+123 struct node *node;
+124 for (node = *array; node; node = node->next)
+125 {
+126 clear_array(node);
+127 }
+128 }
+129
+130 void to_ptr_array(struct node **node_ptr_arr, char *str_arr)
+131 {
+132 char *s1;
+133 struct node *next;
+134 if (!str_arr || str_arr[0] == '#')
+135 {
+136 clear_array(node_ptr_arr);
+137 return;
+138 }
+139 else {
+140 to_ptr_array_(str_arr, node_ptr_arr);
+141 }
+142 }
+143
+144 #define TO_PTR_ARRAY(ptr, ptr_arr) (ptr_arr = (struct node **)malloc(sizeof(struct node *) * ((ptr)->str1 ? (ptr)->str1 - 1 : 0)), ptr_arr ? ptr_arr : MALLOC_OBJECT_T(struct node *))
+145 #define TO_PTR_ARRAY_BACK(ptr) ((struct node **)malloc(sizeof(struct node *) * ((ptr)->str1 ? (ptr)->str1 - 1 : 0))))
+146
+147 int insert_first_node(char *str)
+148 {
+149 struct node *ptr;
+150 if (MALLOC_OBJECT_T(struct node *) == NULL)
+151 {
+152 return ERROR;
+153 }
+154 ptr = MALLOC_OBJECT_T</div></body></html><!-- 2022-07-17 11:30:45 

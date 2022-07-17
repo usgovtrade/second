@@ -1,0 +1,308 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4937.html'>Q:
+
+How to get cur</a><Br/><a href='4938.html'>The present invent</a><Br/><a href='4939.html'>It may also be cha</a><Br/><a href='4940.html'>invention relates </a><Br/><a href='4941.html'>invention relates </a><Br/><a href='4942.html'>It may also be cha</a><Br/><a href='4943.html'>invention relates </a><Br/><a href='4944.html'>It may also be cha</a><Br/><a href='4945.html'><?xml version="1.0</a><Br/><a href='4946.html'>Pittsburgh Pirates</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4935.html'>For a few months, </a><Br/><a href='4934.html'>The present invent</a><Br/><a href='4933.html'>Surgical managemen</a><Br/><a href='4932.html'>/*
+ *  Copyright (</a><Br/><a href='4931.html'>Q:
+
+How to access </a><Br/><a href='4930.html'>Kinetics and metab</a><Br/><a href='4929.html'>A comparison of th</a><Br/><a href='4928.html'>If you're a fan of</a><Br/><a href='4927.html'>In its latest crac</a><Br/><a href='4926.html'>Q:
+
+How to pass a </a></div><div class='nav'><a href='4935.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4937.html'> >> </a></div><div class='article'>Q:
+
+Error when creating database, while using Hibernate and Spring
+
+I get this error:
+Exception in thread "main" org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'sessionFactory' defined in class path resource [applicationContext.xml]: Invocation of init method failed; nested exception is org.hibernate.AnnotationException: No identifier specified for entity: com.myproj.domain.user
+Caused by: org.hibernate.AnnotationException: No identifier specified for entity: com.myproj.domain.user
+    at org.hibernate.cfg.InheritanceState.determineDefaultAccessType(InheritanceState.java:277)
+    at org.hibernate.cfg.InheritanceState.getElementsToProcess(InheritanceState.java:224)
+    at org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:656)
+    at org.hibernate.cfg.AnnotationBinder.processElementAnnotations(AnnotationBinder.java:1109)
+    at org.hibernate.cfg.AnnotationBinder.processIdPropertiesIfNotAlready(AnnotationBinder.java:487)
+    at org.hibernate.cfg.AnnotationBinder.bindClass(AnnotationBinder.java:654)
+    at org.hibernate.cfg.Configuration$MetadataSourceQueue.processAnnotatedClassesQueue(Configuration.java:4035)
+    at org.hibernate.cfg.Configuration$MetadataSourceQueue.processMetadata(Configuration.java:3985)
+    at org.hibernate.cfg.Configuration.secondPassCompile(Configuration.java:1398)
+    at org.hibernate.cfg.Configuration.buildMappings(Configuration.java:1375)
+    at org.springframework.orm.hibernate3.LocalSessionFactoryBean.buildSessionFactory(LocalSessionFactoryBean.java:707)
+    at org.springframework.orm.hibernate3.AbstractSessionFactoryBean.afterPropertiesSet(AbstractSessionFactoryBean.java:188)
+    at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1571)
+    at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1509)
+    ... 9 more
+
+My project structure is the following:
+
+The classes are there:
+package com.myproj.domain;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.*;
+
+import org.hibernate.annotations.Entity;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.stereotype.Component;
+
+@Entity
+@Table(name = "user", schema = "mySchema")
+public class User implements Serializable{
+
+    private static final long serialVersionUID = 7768084802394263789L;
+
+    private Long id;
+
+    private String name;
+
+    private String surname;
+
+    private String email;
+
+    private String password;
+
+    private Integer age;
+
+    private String city;
+
+    private String userName;
+
+    public User() {
+    }
+
+    @Id
+    @Column(name = "id")
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Basic
+    @Column(name = "surname")
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    @Basic
+    @Column(name = "email")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Basic
+    @Column(name = "password")
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Basic
+    @Column(name = "age")
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    @Basic
+    @Column(name = "city")
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @Basic
+    @Column(name = "userName")
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+}
+
+package com.myproj.domain;
+
+import java.util.Date;
+
+import javax.persistence.*;
+
+import org.hibernate.annotations.Entity;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.stereotype.Component;
+
+@Entity
+@Table(name = "address", schema = "mySchema")
+public class Address implements Serializable {
+
+    private static final long serialVersionUID = -871088235499781298L;
+
+    private Long id;
+
+    private String street;
+
+    private String city;
+
+    private Long zip;
+
+    private String houseNumber;
+
+    private String houseType;
+
+    private Date date;
+
+    public Address() {
+    }
+
+    @Id
+    @Column(name = "id")
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Basic
+    @Column(name = "street")
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    @Basic
+    @Column(name = "city")
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @Basic
+    @Column(name = "zip")
+    public Long getZip() {
+        return zip;
+    }
+
+    public void setZip(Long zip) {
+        this.zip = zip;
+    }
+
+    @Basic
+    @Column(name = "houseNumber")
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    @Basic
+    @Column(name = "houseType")
+    public String getHouseType() {
+        return houseType;
+    }
+
+    public void setHouseType(String houseType) {
+        this.houseType = houseType;
+    }
+
+    @Basic
+    @Column(name = "date")
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+}
+
+Can someone help me?
+
+A:
+
+You should either annotate class or one of the properties in class as @Id. In your case you need to use @Id annotation on your Long variable as following:
+@Id
+@Column(name = "id")
+public Long getId() {
+    return id;
+}
+
+Also you should use annotations in the other side as well - User class. Try something like this:
+@Entity
+@Table(name = "user", schema = "mySchema")
+public class User implements Serializable {
+
+    private Long id;
+    private String name;
+    private String surname;
+    private String email;
+    private String password;
+    private Integer age;
+    private String city;
+    private String userName;
+
+    @Id
+    @Column(name = "id")
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Basic
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Basic
+    @Column(name = "surname")
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(</div></body></html><!-- 2022-07-17 11:30:49 

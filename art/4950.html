@@ -1,0 +1,132 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4951.html'>Seventh Edition
+
+7</a><Br/><a href='4952.html'>
+
+The $1,000,000,0</a><Br/><a href='4953.html'>It's time to celeb</a><Br/><a href='4954.html'>Q:
+
+Sorting an NSA</a><Br/><a href='4955.html'>package client // </a><Br/><a href='4956.html'>I recently discove</a><Br/><a href='4957.html'>Beta-endorphin doe</a><Br/><a href='4958.html'>Q:
+
+Is there a sta</a><Br/><a href='4959.html'>The present invent</a><Br/><a href='4960.html'>Gmina Stary Targ
+
+</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4949.html'>package org.apereo</a><Br/><a href='4948.html'>The present invent</a><Br/><a href='4947.html'>Q:
+
+How can I get </a><Br/><a href='4946.html'>Pittsburgh Pirates</a><Br/><a href='4945.html'><?xml version="1.0</a><Br/><a href='4944.html'>It may also be cha</a><Br/><a href='4943.html'>invention relates </a><Br/><a href='4942.html'>It may also be cha</a><Br/><a href='4941.html'>invention relates </a><Br/><a href='4940.html'>invention relates </a></div><div class='nav'><a href='4949.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4951.html'> >> </a></div><div class='article'>Q:
+
+Error 'Failed to find provider info for 'com.google.android.gms.location''
+
+I am new in Android programming. I am doing an Android location tracking in which my application is asking for the location permission after I gave my application location permissions. 
+In AndroidManifest.xml I have written the below code:
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+and in android Activity I wrote the following code to initialize Google Location Services:
+LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+locationManager.requestLocationUpdates(provider, MIN_TIME_BW_UPDATES, MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+
+After all I am getting error 'Failed to find provider info for com.google.android.gms.location' in my LogCat. Can anyone please help me to solve this error.
+
+A:
+
+This error occurs because of you have written permission in xml, but missed it in java. You need to add permission in java also.
+public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private GoogleMap mMap;
+    private Marker mCurrentPosition;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+        {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                //start location service here
+
+                LocationServices.FusedLocationApi.requestLocationUpdates(
+                        mGoogleApiClient,
+                        mLocationRequest,
+                        this);
+            }
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+
+        // Add a marker in Sydney and move the camera
+        LatLng sydney = new LatLng(-33.87365, 151.20689);
+        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+}
+
+For more info check this.
+
+A:
+
+You need to add the following permission in your manifest file.
+<uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
+Hope it works for you.
+
+A:
+
+Just go through the docs for Google Location Service:
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+Add this permission and build the project.
+
+A:
+
+You need to add the below dependency in your module-level gradle file.
+implementation 'com.google.android.gms:play-services-location:15.0.1'
+
+Also need to add the following permission
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+For Android Manifest
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+For Gradle
+implementation 'com.google.android.gms:play-services-location:15.0.1'
+
+Check Official Documentation
+https://developers.google.com/android/guides/setup
+
+Note: 
+Add this code in your app level gradle file 
+defaultConfig {
+    ..
+    ..
+    ..
+    renderscriptTargetApi 24
+    renderscriptSupportModeEnabled true
+}
+
+Also add this code in your build.gradle file of your app. 
+android {
+    defaultConfig {
+        ..
+        ..
+        ..
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+Check Official Documentation for Release Build Types 
+https://developer.android.com/topic/libraries/architecture/adding-components.html
+
+</div></body></html><!-- 2022-07-17 11:30:52 

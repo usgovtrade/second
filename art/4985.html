@@ -1,0 +1,77 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4984.html'>The present invent</a><Br/><a href='4983.html'>Q:
+
+What is the us</a><Br/><a href='4982.html'>Oliver, Wisconsin
+</a><Br/><a href='4981.html'>/*
+ * Licensed to </a><Br/><a href='4980.html'>Q:
+
+Python: How to</a><Br/><a href='4979.html'>Tales from The Loo</a><Br/><a href='4978.html'>Inhibitory effect </a><Br/><a href='4977.html'>If so, would you e</a><Br/><a href='4976.html'>Square Enix has an</a><Br/><a href='4975.html'>Q:
+
+Square root (s</a></div><div class='nav'><a href='4984.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;</div><div class='article'>Q:
+
+How can I change how many items are on a line in a QTreeView?
+
+Using PyQt5 I have the code below:
+self.model = QtGui.QStandardItemModel(self)
+...
+self.ui.listview.setModel(self.model)
+...
+class MyModel(QtGui.QStandardItemModel):
+    def __init__(self):
+        QtGui.QStandardItemModel.__init__(self)
+        self.items = []
+        self.headings = ['A', 'B', 'C', 'D']
+        for item in self.headings:
+            self.items.append(QtGui.QStandardItem(item))
+            self.appendRow(self.items[0])
+
+The items are added as below:
+items = [QtGui.QStandardItem(item) for item in self.headings]
+
+This results in the following UI layout:
+
+How can I control the number of items on each line?
+The desired layout should be:
+[A]
+[B]
+[C]
+[D]
+How can I achieve this?
+
+A:
+
+One simple solution would be to subclass QStandardItemModel and override QStandardItemModel.rowCount to return the correct number.
+class LimitedItemModel(QtGui.QStandardItemModel):
+    def __init__(self, parent=None):
+        QtGui.QStandardItemModel.__init__(self, parent)
+        self.items = []
+        self.headings = ['A', 'B', 'C', 'D']
+        for item in self.headings:
+            self.items.append(QtGui.QStandardItem(item))
+            self.appendRow(self.items[0])
+
+    def rowCount(self, parent=None, *args, **kwargs):
+        return min(len(self.items), parent.rowCount() + 1)
+
+Then use the LimitedItemModel as the model of the QTreeView:
+class MainWindow(QtWidgets.QMainWindow):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+
+        self.listview = QtWidgets.QListView(self)
+        self.listview.setModel(LimitedItemModel())
+        ...
+
+Result:
+
+Edit: The above solution would make each item expand to fill the width of the column, since its width would be that of the longest item in its column, which would be very wide. To make each item be only as wide as its text you can set setStretchFactor(0) on the QStandardItem widgets:
+class LimitedItemModel(QtGui.QStandardItemModel):
+    def __init__(self, parent=None):
+        QtGui.QStandardItemModel.__init__(self, parent)
+        self.items = []
+        self.headings = ['A', 'B', 'C', 'D']
+        for item in self.headings:
+            self.items.append(QtGui.QStandardItem(item))
+            self.appendRow(self.items[0])
+
+    def rowCount(self, parent=None, *args, **kwargs):
+        return min(len(</div></body></html><!-- 2022-07-17 11:30:58 

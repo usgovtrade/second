@@ -1,0 +1,179 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4906.html'>I went from my loc</a><Br/><a href='4907.html'>Cruciate ligaments</a><Br/><a href='4908.html'>Nutritional factor</a><Br/><a href='4909.html'>What is JotForm?
+J</a><Br/><a href='4910.html'>Q:
+
+What should ha</a><Br/><a href='4911.html'>Q:
+
+Get error whil</a><Br/><a href='4912.html'>The new "Star Wars</a><Br/><a href='4913.html'>Q:
+
+Doubly Linked </a><Br/><a href='4914.html'>{
+    "id": "afb8b</a><Br/><a href='4915.html'>The effects of met</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4904.html'>A few months ago, </a><Br/><a href='4903.html'>Miguel López
+
+Migu</a><Br/><a href='4902.html'>The present invent</a><Br/><a href='4901.html'>Raman spectroscopy</a><Br/><a href='4900.html'>New! Playable Pikm</a><Br/><a href='4899.html'>The D-backs, White</a><Br/><a href='4898.html'>1. Introduction {#</a><Br/><a href='4897.html'>There are over 40 </a><Br/><a href='4896.html'>In this episode, S</a><Br/><a href='4895.html'>F.C. Bravo
+
+FC Bra</a></div><div class='nav'><a href='4904.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4906.html'> >> </a></div><div class='article'>Q:
+
+MongoDB: Select * from a table that contains both unique and non-unique entries
+
+I am in a situation where I have two collection, one for unique values and the other for non-unique entries.
+I am looking for a way to get the records from both collections, however, I need to fetch the values from only the first collection (I have taken only unique values) for each key.
+Say, I have two collection and they look like this:
+uniqueCollection = {
+    key1 : A,
+    key2 : B,
+    key3 : C
+}
+
+nonUniqueCollection = {
+    key1 : A,
+    key2 : B,
+    key3 : C,
+    key4 : D
+}
+
+Now, I need to write a query to retrieve only the unique collection values, that is A and B.
+The reason why I have two collections is because they cannot have duplicate entries, one contains unique values and the other one contains non-unique entries.
+I can use $unwind or $lookup for my requirement, but this would first result to two arrays, one containing unique values and the other non-unique values. Then I would need to merge them with $fiter. Then it would mean I would lose my index and would have to get each and every value from the database. This approach will be time consuming.
+In an ideal scenario, I should have the key-value pairs as below:
+key1 : A,
+key2 : B,
+key3 : C,
+key4 : D
+
+How can I get the desired result in one single query?
+
+A:
+
+So I came up with this solution and it works as expected. It is simple and as I wanted in the beginning. The only drawback is that it will query your data twice. Please let me know if you can suggest improvements to this.
+I will first explain the data model.
+
+key1 is the key and can contain multiple values (only one value for each key)
+key2 is the key and can contain multiple values (only one value for each key)
+key3 is the key and can contain multiple values (only one value for each key)
+key4 is the key and can contain multiple values (only one value for each key)
+uniqueCollection is the name for collection which can contain only unique values (only one value for each key). For non-unique values, I use a mapping (associative array) to store multiple values for a single key.
+nonUniqueCollection is the name for collection which can contain multiple values for a single key.
+
+Example 1: Let's say you have three documents in your database
+/* 1 */
+{
+    "key1" : "A",
+    "key2" : "B",
+    "key3" : "C",
+    "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a19"),
+    "unique" : [ 
+        {
+            "key1" : "A",
+            "key2" : "B",
+            "key3" : "C",
+            "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a20"),
+            "value" : "value1"
+        }
+    ]
+}
+
+/* 2 */
+{
+    "key1" : "A",
+    "key2" : "B",
+    "key3" : "C",
+    "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a21"),
+    "unique" : [ 
+        {
+            "key1" : "A",
+            "key2" : "B",
+            "key3" : "C",
+            "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a22"),
+            "value" : "value2"
+        }, 
+        {
+            "key1" : "A",
+            "key2" : "B",
+            "key3" : "C",
+            "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a23"),
+            "value" : "value3"
+        }
+    ]
+}
+
+/* 3 */
+{
+    "key1" : "A",
+    "key2" : "B",
+    "key3" : "C",
+    "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a24"),
+    "unique" : [ 
+        {
+            "key1" : "A",
+            "key2" : "B",
+            "key3" : "C",
+            "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a25"),
+            "value" : "value4"
+        }
+    ]
+}
+
+So, uniqueColl will contain only unique values (value1, value2, value3), while nonUniqueColl contains both unique and non-unique values (value1, value2, value3, value4)
+In my implementation, I use $arrayToObject operator to convert both the collections into an object with the keys as unique and non-unique. To explain further, if key1 is unique and key2 is unique or non-unique, $arrayToObject operator will convert the object to an object containing key1, key2, key3, key4 and value. See the explanation below:
+{
+    "key1" : "A",
+    "key2" : "B",
+    "key3" : "C",
+    "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a19"),
+    "unique" : [ 
+        {
+            "key1" : "A",
+            "key2" : "B",
+            "key3" : "C",
+            "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a20"),
+            "value" : "value1"
+        }
+    ]
+}
+
+This above object is converted to an object which looks like this:
+{
+    "key1" : "A",
+    "key2" : "B",
+    "key3" : "C",
+    "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a19"),
+    "unique" : [ 
+        {
+            "key1" : "A",
+            "key2" : "B",
+            "key3" : "C",
+            "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a20"),
+            "value" : "value1"
+        }
+    ]
+}
+
+Same for the other objects. Now, using $filter operator, I can get the desired result. See the below code.
+db.getCollection('uniqueCollection').aggregate([
+  {$match: {_id: ObjectId("5adbbc7c8dcd2e25ebf39a19")}},
+  {$lookup: {from: "nonUniqueCollection", localField: "key1", foreignField: "key1", as: "value"}},
+  {$lookup: {from: "nonUniqueCollection", localField: "key2", foreignField: "key2", as: "value"}},
+  {$lookup: {from: "nonUniqueCollection", localField: "key3", foreignField: "key3", as: "value"}},
+  {$project: {unique: {_id: 0, key1: "$$value.key1", key2: "$$value.key2", key3: "$$value.key3"}, value: 1}}
+ ]);
+
+This will result to a collection as below.
+/* 1 */
+{
+    "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a19"),
+    "unique" : [ 
+        {
+            "key1" : "A",
+            "key2" : "B",
+            "key3" : "C",
+            "_id" : ObjectId("5adbbc7c8dcd2e25ebf39a20"),
+            "value" : "value1"
+        }
+    ]
+}
+
+So, using $arrayToObject, I can get the unique values from this collection as follows.
+db.getCollection('uniqueCollection').aggregate([
+  {$match: {_id: ObjectId("5adbbc7c8dcd2e25ebf39a19")}},
+  {$lookup: {from: "nonUniqueCollection", localField: "key1", foreignField: "key1", as: "value"}},
+  {$lookup: {from: "nonUniqueCollection", localField: "key2", foreignField: "key2", as: "value"}},
+  {$lookup: {from: "non</div></body></html><!-- 2022-07-17 11:30:44 

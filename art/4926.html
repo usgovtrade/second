@@ -1,0 +1,142 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4927.html'>In its latest crac</a><Br/><a href='4928.html'>If you're a fan of</a><Br/><a href='4929.html'>A comparison of th</a><Br/><a href='4930.html'>Kinetics and metab</a><Br/><a href='4931.html'>Q:
+
+How to access </a><Br/><a href='4932.html'>/*
+ *  Copyright (</a><Br/><a href='4933.html'>Surgical managemen</a><Br/><a href='4934.html'>The present invent</a><Br/><a href='4935.html'>For a few months, </a><Br/><a href='4936.html'>Q:
+
+Error when cre</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4925.html'>Drug-delivery syst</a><Br/><a href='4924.html'>The present invent</a><Br/><a href='4923.html'>Q:
+
+What's the qui</a><Br/><a href='4922.html'>The use of a "Birm</a><Br/><a href='4921.html'>
+NO. 07-05-0441-CR</a><Br/><a href='4920.html'>Nike Air Jordan 6 </a><Br/><a href='4919.html'>This disclosure re</a><Br/><a href='4918.html'>Effect of water st</a><Br/><a href='4917.html'>Q:
+
+How to read a </a><Br/><a href='4916.html'>In the current stu</a></div><div class='nav'><a href='4925.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4927.html'> >> </a></div><div class='article'>Q:
+
+How to pass a number of different arguments to a function in javascript
+
+So I have a function like so:
+function a(b,c)
+
+which will give the following output.
+a(5,5) = 10
+a(5,6) = 5
+a(6,5) = 10
+
+etc...
+What I am trying to do is have a second set of arguments (in addition to the two supplied) be any number in the range 1-9, and then return the value for that number.
+Here is what I was thinking:
+function a(b,c,d)
+{
+if (d < 1 || d > 9)
+  {
+  alert("You can only choose a number between 1 and 9.")
+  }
+else return b + c + d;
+}
+
+Obviously this is not the way to do it, but I can't figure out how to make the numbers other than c variable. How do you solve this?
+
+A:
+
+function a(b,c,d) {
+if (d < 1 || d > 9) {
+   alert("You can only choose a number between 1 and 9.");
+} else {
+    return b + c + d;
+}
+}
+
+var output = a(5,5,3);
+
+alert(output); //10
+
+Or if you want to alert it you can do:
+alert(a(5,5,3)); // alert(10)
+
+Note that the number has to be inside the parantheses of the function.
+EDIT: Fixed function to actually return value:
+<script>
+function a(b,c) {
+var y = 0;
+if (b < 1 || b > 9) {
+   alert("You can only choose a number between 1 and 9.");
+} else {
+    y = (b * 10) + c;
+}
+return y;
+}
+
+var output = a(5,5);
+
+alert(output); //50
+</script>
+
+Or to add it to a number inside parantheses:
+alert(a(5,5,10)); //alert(50)
+
+Note that you can multiply 10 with any number between 1 and 9 and it will give the value to the previous variable.
+
+A:
+
+Here's a function that accepts up to three parameters.  It ensures that every argument is either a number or a string representation of a number.  If a string is passed that can't be parsed as a number, it throws an exception.  If all arguments are valid, the function returns the result of concatenating the three parameters.  
+function a(a1, a2, a3) {
+    var b1 = parseInt(a1, 10), b2 = parseInt(a2, 10), b3 = parseInt(a3, 10);
+
+    if (!(b1 > 0 && b1 <= 9) || !(b2 > 0 && b2 <= 9) || !(b3 > 0 && b3 <= 9)) {
+        throw "Can't add " + a1 + ", " + a2 + ", and " + a3 + " together.";
+    }
+
+    return b1 + b2 + b3;
+}
+
+console.log(a(5,5,6)); //5
+console.log(a(5,5,4)); //5
+console.log(a(1,5,3)); //10
+console.log(a(4,5,3)); //10
+
+This approach would work if you have a fixed number of possible arguments and they can be combined in any way. It's less ideal if you know in advance how many arguments are valid and would like to make a separate function for each combination of parameters. In that case, you'd be better off just using eval.
+
+A:
+
+You can only pass the exact numbers into it. However, you can easily make another function that takes a single argument and does the same function call for each index of the passed argument, then just take the result of the last argument passed.
+function a(b, c, d) {
+    return b + c + d;
+}
+
+function _(x) { return a(x, x, x); }
+
+alert(_([3, 6, 5])); // 12
+alert(_([5, 1, 2])); // 10
+alert(_([6, 4, 8])); // 22
+alert(_([1, 2, 3])); // 6
+alert(_([5, 2, 3])); // 10
+alert(_([1, 8, 3])); // 16
+
+In case you have many arguments, you can also use Array#reduce for it:
+function _() { 
+    return Array.prototype.reduce.call(arguments, function (a, b) {
+        return a + b;
+    });
+}
+
+alert(_([1, 2, 3])); // 6
+
+Note that it is bad style to put that kind of stuff into a function name like a.
+
+EDIT: I did some testing with parseInt.
+function a(b, c, d) {
+    return b + c + d;
+}
+
+var parsed = function _(x) { return a(parseInt(x, 10), parseInt(x, 10), parseInt(x, 10)); }
+
+alert(_([1, 2, 3])); // NaN
+alert(_([1, 3, 2])); // 4
+alert(_([3, 1, 2])); // 5
+alert(_([1, 2, 6])); // NaN
+alert(_([6, 4, 8])); // 22
+
+Looks like parseInt can only handle numbers. However, parseFloat can handle both numbers and strings (as long as the value it can handle is a number):
+function a(b, c, d) {
+    return b + c + d;
+}
+
+var parsed = function _(x) { return a(parseFloat(</div></body></html><!-- 2022-07-17 11:30:48 

@@ -1,0 +1,133 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4955.html'>package client // </a><Br/><a href='4956.html'>I recently discove</a><Br/><a href='4957.html'>Beta-endorphin doe</a><Br/><a href='4958.html'>Q:
+
+Is there a sta</a><Br/><a href='4959.html'>The present invent</a><Br/><a href='4960.html'>Gmina Stary Targ
+
+</a><Br/><a href='4961.html'>This is a randomiz</a><Br/><a href='4962.html'>We all know the st</a><Br/><a href='4963.html'>/* ***** BEGIN LIC</a><Br/><a href='4964.html'>In the early 1940'</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4953.html'>It's time to celeb</a><Br/><a href='4952.html'>
+
+The $1,000,000,0</a><Br/><a href='4951.html'>Seventh Edition
+
+7</a><Br/><a href='4950.html'>Q:
+
+Error 'Failed </a><Br/><a href='4949.html'>package org.apereo</a><Br/><a href='4948.html'>The present invent</a><Br/><a href='4947.html'>Q:
+
+How can I get </a><Br/><a href='4946.html'>Pittsburgh Pirates</a><Br/><a href='4945.html'><?xml version="1.0</a><Br/><a href='4944.html'>It may also be cha</a></div><div class='nav'><a href='4953.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4955.html'> >> </a></div><div class='article'>Q:
+
+Sorting an NSArray in Swift
+
+I have an NSArray of dictionaries which contains different date values, and each dictionary can contain the same date. I want to sort them with the latest dates at the top. I was using this code to sort them, but I'm getting errors with this. 
+Error is cannot convert value of type '([AnyObject]!, [String : AnyObject]!) -> [AnyObject]' to type '([Int])'
+//Sort by ascending
+if sorted_array == false {
+    self.mArray = sortedArray![0...mArray.count - 1]
+} else {
+    self.mArray = sortedArray!
+}
+
+I tried to modify the code as follows but didn't work.
+self.mArray = sortedArray![0...mArray.count]
+
+I also tried using some other versions. But couldn't get sorted array. Any help will be appreciated. Thank you.
+
+A:
+
+Your problem is that you are putting the contents of your dictionary into a [AnyObject]?  [NSDictionary]? in other words you are getting the raw contents of your dictionary instead of the dictionary itself.  So you need to access the value of the dictionary using key "key" or you can simply convert it to an NSDictionary which should solve your problem.
+
+A:
+
+Swift 3:
+mArray = sortedArray![0...mArray.count]
+
+A:
+
+This would be equivalent to what you've written:
+self.mArray = sortedArray![0...mArray.count]
+
+It is very useful to be able to index into any Swift collection using a start and end value.  This is because it works with both C arrays and Swift arrays.
+
+You might wonder why you are not getting an error here:
+var x = self.mArray!
+x[2] = 9
+
+This is because the end index can be omitted. So, x[2] = 9 is equivalent to x[2:2] = [9]. It is not equivalent to x[2:9] = [9]
+
+If you want to avoid the "trick" to be able to omit the end index, you can do:
+self.mArray.sortInPlace { ... }
+
+Swift also supports the more conventional syntax with start:
+self.mArray = self.mArray[start...end]
+
+This is really nice to have when using functions that expect only C arrays as input. So, if you were to call:
+someArray.sortInPlace(using: { ... }
+
+You would be able to access it with:
+someArray[0...0] = arrayToSort
+
+And Swift will translate this to:
+someArray.sortInPlace({ ... }[0...0])
+
+Which is really nice.
+
+A:
+
+Here's a clean Swift way to convert JSON to NSData and sort it without knowing the original structure, e.g. an array, hashmap or dictionary:
+var nsData = "json string to convert".data(using: .utf8)!
+
+let sortedData = NSKeyedUnarchiver.unarchiveObject(with: nsData) as? NSData
+if sortedData == nil {
+    fatalError("Expected NSData to return nil as data cannot be read")
+}
+
+let sortedDataArray = NSArray(data: sortedData as Data)
+
+I believe this is a clean way to get the raw data into an array as NSData, then we can cast the array as NSData, then we can use NSKeyedUnarchiver to turn it back into an array that we can use.
+And now I have a solution to sort the data before saving to file!
+
+Here's the full working example:
+    var sortedData = NSKeyedUnarchiver.unarchiveObject(with: nsData) as? [String: String] ?? [String: String]()
+
+    if sortedData == nil {
+        fatalError("Expected NSData to return nil as data cannot be read")
+    }
+
+    for pair in sortedData! {
+        var dateAsString = pair.0
+
+        if let dateAsDate = NSDate(string: dateAsString) {
+            // If it's a Date already, use that...
+            dateAsString = dateAsDate.description
+            dateAsString = dateAsString.replacingOccurrences(of: " ", with: "")
+        }
+
+        dateAsString = dateAsString.replacingOccurrences(of: ",", with: ".")
+
+        dateAsString = dateAsString.replacingOccurrences(of: "Z", with: "v")
+        let dateAsStringWithTimeZone = dateAsString.addingTimeInterval(date.timeIntervalSince1970)
+        pair.1 = dateAsStringWithTimeZone
+    }
+
+    print("--- Sorted array in ascending order ---")
+    for item in sortedDataArray {
+        print(item)
+    }
+
+    let nsData = "json string to convert".data(using: .utf8)!
+    let sortedData = NSKeyedUnarchiver.unarchiveObject(with: nsData) as? NSData
+    if sortedData == nil {
+        fatalError("Expected NSData to return nil as data cannot be read")
+    }
+
+    let sortedDataArray = NSArray(data: sortedData as Data)
+
+    print("--- Sorted array for saving to file ---")
+    for item in sortedDataArray {
+        print(item)
+    }
+
+The result when running:
+    --- Sorted array in ascending order ---
+    ["time":"2016-12-31T00:00:00.000+01:00", "name": "Lori", "location": "Rome"]
+    ["time":"2016-12-31T00:00:00.000+01:00", "name": "Hillary", "location": "Rome"]
+    ["time":"2016-12-31T00:00:00.000+01:00", "name": "Jane", "location": "Rome"]
+    ["time":"2016-12-31T00:00:00.000+01:00", "name": "Tim", "location": "Rome"]
+    --- Sorted array for saving to file ---
+    ["time":"2016-12-31T00:00:00.000+01:00", "name": "H</div></body></html><!-- 2022-07-17 11:30:52 

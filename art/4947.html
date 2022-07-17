@@ -1,0 +1,113 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4948.html'>The present invent</a><Br/><a href='4949.html'>package org.apereo</a><Br/><a href='4950.html'>Q:
+
+Error 'Failed </a><Br/><a href='4951.html'>Seventh Edition
+
+7</a><Br/><a href='4952.html'>
+
+The $1,000,000,0</a><Br/><a href='4953.html'>It's time to celeb</a><Br/><a href='4954.html'>Q:
+
+Sorting an NSA</a><Br/><a href='4955.html'>package client // </a><Br/><a href='4956.html'>I recently discove</a><Br/><a href='4957.html'>Beta-endorphin doe</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4946.html'>Pittsburgh Pirates</a><Br/><a href='4945.html'><?xml version="1.0</a><Br/><a href='4944.html'>It may also be cha</a><Br/><a href='4943.html'>invention relates </a><Br/><a href='4942.html'>It may also be cha</a><Br/><a href='4941.html'>invention relates </a><Br/><a href='4940.html'>invention relates </a><Br/><a href='4939.html'>It may also be cha</a><Br/><a href='4938.html'>The present invent</a><Br/><a href='4937.html'>Q:
+
+How to get cur</a></div><div class='nav'><a href='4946.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4948.html'> >> </a></div><div class='article'>Q:
+
+How can I get a better understanding of what my program does in Eclipse?
+
+I am writing a small Java project with a main class that calls another class. After I run the main class in Eclipse, I can see that the main method ran the second class, but I have no way to see what the class did in the console.
+I can see from the Eclipse console that the class prints "Hello," but this is a simple output and I want to see the actual work the class does.
+Can anyone tell me what Eclipse has to offer to see what a class does? I'm using Eclipse Luna 4.4.1
+
+A:
+
+The only way is to add your class as argument for a process and then debug the process:
+ProcessBuilder processBuilder = new ProcessBuilder();
+processBuilder.command( "java -cp path/to/your/class.class other.jar my.classname.MainClass");
+Process process = processBuilder.start();
+// wait for the process to exit
+// process.waitFor();
+
+However, this is only going to print out the standard output of your class, and not the standard error. If you are talking about a class file that doesn't even have any output or anything, then it will not output anything when debugging.
+
+As mentioned by @Andreas-the-h : Eclipse has a feature to print the content of a class. You can press CTRL + SHIFT + O.
+
+A:
+
+As far as I'm aware there's no way to "look" directly into the content of your Java program to see what's going on. I don't know if it's a limitation of your IDE, but at least on Windows 7, Eclipse doesn't provide an option in the run view that would show you some sort of debugging information.
+However, there's a way to see the execution path of the program. This is useful if you're interested in knowing what classes a method is calling or if you are debugging the application itself. For example, it can help to find where some exceptions are being thrown in your program.
+This feature is called Step Filters. It works by adding a method call in your program to be able to access information about the execution path of your program.
+Here's a screenshot of a simple Java program that demonstrates the concept of Step Filters. In this simple example, I've only added a System.out.println call to the beginning and at the end of the code to show that the program is working. The debug window of Eclipse has the same view.
+
+This is what happens when I run this program:
+
+In the above window, the vertical numbers represent the execution order of the program. You can see that on the top, I've added the following lines of code:
+System.out.println("Step 0: Start");
+System.out.println("Step 1: End");
+
+I have also added this statement to the beginning of the code so I can use the Step Filter to see what happened in the program.
+System.out.println("MyMethod(): Start");
+
+And you can see that after the method is called, there is a log message saying that it has returned.
+Now, when I run the program, I get something like this:
+
+Step 0: Start
+MyMethod(): Start
+Step 1: End
+
+And this shows the execution path of the program. In this case, the only code path that I see is MyMethod() which means that the whole program execution was between those two lines.
+
+Note that this feature can be very useful for debugging purposes. For example, if I want to figure out how one specific class is calling another class (for example, I'm trying to figure out where my Exception is being thrown from).
+It can also be used in combination with breakpoints (as mentioned in a comment above by Slawa).
+
+A:
+
+In my opinion, I think there are no good tools for inspecting the runtime behaviour of Java code.
+So the answer is no (or perhaps not yet). But you can use Java bytecode instrumentation which allows you to trace and modify code.  It is available for Java 1.6 and later.  For this, you can use a Java agent such as jcabi-agent.  Unfortunately, the tooling for this is pretty bad.  If you want to see some basic information about the bytecode, there is a bytecode viewer in the tools.jar which you can use by invoking it with the command line.
+As a rough rule of thumb, instrumentation works for almost everything, but for some things, you have to rely on other forms of instrumentation such as logging.
+
+A:
+
+Another thing to look at would be using a Java profiler such as YourKit or YourAnalyzer which basically records runtime information in a very detailed manner and allows you to trace the execution paths. The drawback is that you can only do this with a running java application and you can only analyze code as it is run.
+An example is this:
+
+As you can see, the profiler has recorded each method in each class. When you run the program again it becomes quite clear what the code does:
+
+However, this example is very simplified. If you look at the real time profiler screenshot above (from YourAnalyzer) you can see that the profile is rather complex and you can't get a "quick look" at the code from the profiler, although it does contain a lot of information (I've highlighted a part of the profile to show what you can see in the detail view).
+This isn't really an answer for your question, but I think that if you combine the information from both the eclipse console output and the YourAnalyzer profiler then you should be able to understand what the code is doing, and if there are some errors in the code, it would help to identify them.
+
+A:
+
+When you get a lot of different code, maybe hundreds of classes, it is often useful to turn on the following options in Eclipse:
+Settings -> Java -> Debug -> Logging -> Log Levels -> Java -> Debug
+
+Then in the Debug perspective you can see more detailed information, like the content of methods. You can print to System.out, to a log file, or to the Eclipse console.
+You can also run this with the Debugger in the Console view:
+View -> Show View -> Console.
+Then go to the Debug perspective and use Debug as -> Debug Configuration... in the Debug Perspective.
+For example, when printing to System.out in the Debugger you can check the values of different system properties:
+System.setProperty("myProp", "myValue");
+
+In Debug, when you hover over the value "myProp", it shows its value (when you run the application you must have "myProp" printed to the console).
+
+You can also do a simple console debug to get some information:
+public class MyClass {
+    public static void main(String[] args) {
+        System.out.println(123);
+    }
+}
+
+You can check all system properties:
+public class MyClass2 {
+    public static void main(String[] args) {
+        System.setProperty("myProp", "myValue");
+        System.out.println(System.getProperty("myProp"));
+    }
+}
+
+You can even call methods and check the output from System.out.println (but then you need to have System.out in the Debug configuration):
+public class MyClass3 {
+    public static void main(String[] args) {
+        System.out.println("abc");
+        System.out.println(System.getProperty("user.dir"));
+    }
+}
+
+</div></body></html><!-- 2022-07-17 11:30:51 

@@ -1,0 +1,199 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4968.html'>Q:
+
+How to add a f</a><Br/><a href='4969.html'>The goal of this p</a><Br/><a href='4970.html'>Synthetic lethalit</a><Br/><a href='4971.html'>In this article we</a><Br/><a href='4972.html'>Q:
+
+Is there a way</a><Br/><a href='4973.html'>Q:
+
+Find a value i</a><Br/><a href='4974.html'>Introduction {#Sec</a><Br/><a href='4975.html'>Q:
+
+Square root (s</a><Br/><a href='4976.html'>Square Enix has an</a><Br/><a href='4977.html'>If so, would you e</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4966.html'>package org.eclips</a><Br/><a href='4965.html'>We use cookies to </a><Br/><a href='4964.html'>In the early 1940'</a><Br/><a href='4963.html'>/* ***** BEGIN LIC</a><Br/><a href='4962.html'>We all know the st</a><Br/><a href='4961.html'>This is a randomiz</a><Br/><a href='4960.html'>Gmina Stary Targ
+
+</a><Br/><a href='4959.html'>The present invent</a><Br/><a href='4958.html'>Q:
+
+Is there a sta</a><Br/><a href='4957.html'>Beta-endorphin doe</a></div><div class='nav'><a href='4966.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4968.html'> >> </a></div><div class='article'>Q:
+
+D3 force graph - force simulation to not let node connect to itself or adjacent node?
+
+I am using D3.js force graph to make a force directed graph and have created a function that lets you move a node by clicking and dragging its node over the graph:
+ var click = function() {
+    nodes.append("rect")
+    .attr("x", d => x(d.x))
+    .attr("y", d => y(d.y))
+    .attr("height", d => height - y(d.y))
+    .attr("width", d => width - x(d.x))
+    .style("fill", "white")
+    .on("click", d => {d.fixed = !d.fixed;});
+}
+
+Which I then call with this line:
+d3.select(window).on("mousedown", click);
+
+However the nodes can connect to themselves and other nodes around them and I am not sure how to prevent this. What I would like to happen is to:
+
+only allow a node to be connected to another node
+only allow a node to move if there is not already a node connected to the end of the node that the user wants to move
+if there is already a node connected to that node, then when the user tries to move the node, an error message would show up telling the user the current node is fixed and they must disconnect any nodes connected to that node.
+
+A:
+
+It looks like you may be confusing the issue of fixed nodes and unconnected nodes. The first two requirements above do not have to do with whether a node is fixed or not, and whether it is connected to another node or not. Instead, it sounds like your users should be able to only move a node if it is not already connected to any other nodes. This would probably be accomplished by checking the connectedNodes array for the target node.
+To accomplish the third requirement, you could use a selection.each() function and check the nodes array for the connected nodes. For example:
+d3.select(window).on("mousedown", function(d) {
+    if(d3.event.defaultPrevented) return;
+    var t = d3.event.target;
+    if (t.tagName === "circle") {
+        // do whatever else you do here
+        // ...
+
+        // get the node to move, d
+        var d = d3.event.selection;
+
+        // get the current list of nodes
+        var n = d3.select(this).selectAll("circle").data();
+
+        // go through each node in the list, starting at the first
+        d3.select(n).each(function(d, i) {
+            // check for connected nodes
+            if (d3.select(this).selectAll("line").size() > 0) {
+                // if a node is already connected, don't allow
+                // the connection
+                return;
+            }
+
+            // allow the connection
+            d3.select(this).append("line")
+                .attr("id", function(n) {
+                    // return a unique ID for this line
+                    return "line" + n.id;
+                })
+                .attr("x1", function(n) {
+                    // find the index of the node to connect to
+                    return d.x;
+                })
+                .attr("y1", function(n) {
+                    // find the index of the node to connect to
+                    return d.y;
+                })
+                .attr("x2", function(n) {
+                    // find the index of the node to connect to
+                    return d.x;
+                })
+                .attr("y2", function(n) {
+                    // find the index of the node to connect to
+                    return d.y;
+                })
+                .style("stroke", "steelblue")
+                .style("stroke-width", "2px")
+                .style("stroke-linejoin", "round")
+                .style("stroke-linecap", "round");
+            });
+        }
+    });
+});
+
+Here's an example:
+
+var data = [{
+    "id": "node1",
+    "x": "250",
+    "y": "300"
+}, {
+    "id": "node2",
+    "x": "100",
+    "y": "100"
+}, {
+    "id": "node3",
+    "x": "350",
+    "y": "350"
+}];
+
+var svg = d3.select("body").append("svg")
+  .attr("width", 500)
+  .attr("height", 500);
+
+var node = svg.selectAll(null)
+  .data(data)
+  .enter()
+  .append("circle")
+  .attr("class", "node")
+  .attr("r", 20)
+  .attr("cx", d => d.x)
+  .attr("cy", d => d.y)
+  .on("mouseover", function(d) {
+      d3.select(this).style("stroke", "red");
+  })
+  .on("mouseout", function(d) {
+      d3.select(this).style("stroke", "gray");
+  })
+  .on("click", function(d) {
+      d3.select(this).append("line")
+           .attr("x1", d => d.x)
+           .attr("y1", d => d.y)
+           .attr("x2", d => d.x)
+           .attr("y2", d => d.y)
+           .style("stroke", "red");
+ });
+
+node.on("dblclick", function(d) {
+      d3.select(this).append("circle")
+           .attr("r", "40")
+           .attr("class", "nodelink");
+});
+
+d3.select(window).on("mousedown", function(d) {
+      if(d3.event.defaultPrevented) return;
+      var t = d3.event.target;
+      if (t.tagName === "circle") {
+          // do whatever else you do here
+//        var x = d3.event.selection[0];
+          var x = d.x;
+          if (x == d.x && !d.fixed) {
+              alert("This node is already connected to a node and cannot be moved.");
+              d3.event.stopPropagation();
+              return;
+          }
+          // get the node to move, d
+          var d = d3.event.selection;
+          // get the current list of nodes
+          var n = d3.select(this).selectAll("circle").data();
+          // go through each node in the list, starting at the first
+          d3.select(n).each(function(d, i) {
+              // check for connected nodes
+              if (d3.select(this).selectAll("line").size() > 0) {
+                  // if a node is already connected, don't allow
+                  // the connection
+                  return;
+              }
+              // allow the connection
+              d3.select(this).append("line")
+                  .attr("id", function(n) {
+                      // return a unique ID for this line
+                      return "line" + n.id;
+                  })
+                  .attr("x1", function(n) {
+                      // find the index of the node to connect to
+                      return d.x;
+                  })
+                  .attr("y1", function(n) {
+                      // find the index of the node to connect to
+                      return d.y;
+                  })
+                  .attr("x2", function(n) {
+                      // find the index of the node to connect to
+                      return d.x;
+                  })
+                  .attr("y2", function(n) {
+                      // find the index of the node to connect to
+                      return d.y;
+                  })
+                  .style("stroke", "steelblue")
+                  .style("stroke-width", "2px")
+                  .style("stroke-linejoin", "round")
+                  .style("stroke-linecap", "round");
+          });
+      }
+});
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<svg></svg>
+
+</div></body></html><!-- 2022-07-17 11:30:55 

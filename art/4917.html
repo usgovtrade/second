@@ -1,0 +1,135 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4918.html'>Effect of water st</a><Br/><a href='4919.html'>This disclosure re</a><Br/><a href='4920.html'>Nike Air Jordan 6 </a><Br/><a href='4921.html'>
+NO. 07-05-0441-CR</a><Br/><a href='4922.html'>The use of a "Birm</a><Br/><a href='4923.html'>Q:
+
+What's the qui</a><Br/><a href='4924.html'>The present invent</a><Br/><a href='4925.html'>Drug-delivery syst</a><Br/><a href='4926.html'>Q:
+
+How to pass a </a><Br/><a href='4927.html'>In its latest crac</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4916.html'>In the current stu</a><Br/><a href='4915.html'>The effects of met</a><Br/><a href='4914.html'>{
+    "id": "afb8b</a><Br/><a href='4913.html'>Q:
+
+Doubly Linked </a><Br/><a href='4912.html'>The new "Star Wars</a><Br/><a href='4911.html'>Q:
+
+Get error whil</a><Br/><a href='4910.html'>Q:
+
+What should ha</a><Br/><a href='4909.html'>What is JotForm?
+J</a><Br/><a href='4908.html'>Nutritional factor</a><Br/><a href='4907.html'>Cruciate ligaments</a></div><div class='nav'><a href='4916.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4918.html'> >> </a></div><div class='article'>Q:
+
+How to read a string variable as a string and not as an array in php
+
+I am parsing string variables using the $_GET function to obtain the variable. But every string value is an array which I want to remove. I cannot parse it manually as it has different length. 
+E.g.
+ $title="DSC_0001";
+ $image="DSC_0001_01.jpg";
+ $description="this is description";
+ $type="image";
+
+The result of $title contains DSC_0001 instead of "DSC_0001". The result of $image contains DSC_0001_01.jpg instead of DSC_0001_01.jpg. The result of $type contains string instead of "image".
+This is how I am calling this functions:
+if($_SERVER['REQUEST_METHOD'] == 'POST'){ 
+        $type = $_POST['type'];
+        $title = $_POST['title'];
+        $image = $_POST['image'];
+        $description = $_POST['description'];
+}
+
+This is how I parse the values of the post function
+<?php 
+echo $_POST['title'][0];
+echo $_POST['image'][0];
+echo $_POST['type'][0];
+echo $_POST['description'][0];
+?>
+
+How can I parse the values and echo them? 
+Please note that: 
+echo $_POST['title'][0]
+echo $_POST['title'][1]
+echo $_POST['title'][2]
+echo $_POST['title'][3] 
+and so on..... 
+
+How can I extract "DSC_0001", "DSC_0001_01.jpg" and "this is description" from these values? 
+It must also work for "this is string", "this is test" and "this is test.jpg"
+
+A:
+
+As you want to parse the whole $_POST it may be helpful to read its documentation. The result you are getting are the keys of $_POST which is array as default. You can check the keys of $_POST using print_r($_POST);.
+Now if you want to retrieve values for each key, then use the $_POST[$key] array. Example:
+$_POST['title']; // gives you the array/arraystring or boolean as per the key
+
+So to retrieve value use:
+echo $_POST['title'][0]; // returns DSC_0001
+
+If you want all elements use foreach:
+foreach ($_POST as $key=>$value) {
+  echo $key; // print each element of your POST array.
+}
+
+The code to retrieve your post variables:
+<?php 
+$post = $_POST; // stores all post variables into $post
+foreach($post as $key=>$value) { 
+ echo $key; // print your post variables
+}
+?>
+
+Hope this helps you. Thanks.
+
+A:
+
+PHP is an interpreted language that parses its statements one by one. 
+For example:
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){ 
+    $type = $_POST['type'];
+    $title = $_POST['title'];
+    $image = $_POST['image'];
+    $description = $_POST['description'];
+}
+
+In above code you have two ways to access these variables.  
+1. One way is to access these variables using index. For example: 
+echo $_POST['title'][0]; // will give you "DSC_0001"
+echo $_POST['image'][0]; // will give you "DSC_0001_01.jpg"
+echo $_POST['type'][0]; // will give you "image"
+echo $_POST['description'][0]; // will give you "this is description"
+
+2. Second way is using keys.
+echo $_POST['title']->[0]; // will give you "DSC_0001"
+echo $_POST['image']->[0]; // will give you "DSC_0001_01.jpg"
+echo $_POST['type']->[0]; // will give you "image"
+echo $_POST['description']->[0]; // will give you "this is description"
+
+In the last two lines of code -> means using keys.
+If you access like this:
+$post = array('title'=>'title', 'image'=>'image', 'type'=>'type', 'description'=>'description');
+
+And echo $post[0]; will give you only title key, echo $post['title']; will give you title value. 
+Hope this will help you. Happy coding.
+
+A:
+
+I guess you can do it in this way:
+<?php 
+echo $_POST['title'][0];
+echo $_POST['image'][0];
+echo $_POST['type'][0];
+echo $_POST['description'][0];
+
+But better use this:
+$_POST['title'] . " " . $_POST['image'] . " " . $_POST['type'] . " " . $_POST['description'];
+
+Here you can check it how it will work.
+
+Hope this will help you!
+
+[UPDATE]
+Well it seems like you need this:
+if ($_POST['description'][0] != '') {
+    $desc = $_POST['description'][0];
+} else {
+    $desc = 'no description';
+}
+
+Here we check if description is empty and assign value accordingly. Same like as other.
+But the most important thing is that you need to make sure that when you submit the form with $_POST array, you need to give all of your values. Otherwise for example $_POST['title'][0] will not be available in that array as you need to make sure it is set.
+
+</div></body></html><!-- 2022-07-17 11:30:46 

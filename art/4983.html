@@ -1,0 +1,121 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4984.html'>The present invent</a><Br/><a href='4985.html'>Q:
+
+How can I chan</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4982.html'>Oliver, Wisconsin
+</a><Br/><a href='4981.html'>/*
+ * Licensed to </a><Br/><a href='4980.html'>Q:
+
+Python: How to</a><Br/><a href='4979.html'>Tales from The Loo</a><Br/><a href='4978.html'>Inhibitory effect </a><Br/><a href='4977.html'>If so, would you e</a><Br/><a href='4976.html'>Square Enix has an</a><Br/><a href='4975.html'>Q:
+
+Square root (s</a><Br/><a href='4974.html'>Introduction {#Sec</a><Br/><a href='4973.html'>Q:
+
+Find a value i</a></div><div class='nav'><a href='4982.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4984.html'> >> </a></div><div class='article'>Q:
+
+What is the use of if (!p.empty())?
+
+What is the use of if (!p.empty())? Is it a standard and must be used everywhere?
+
+A:
+
+No, it's an un-standard way to check if a pointer points to anything.
+It has a use. When you know the size of your array, you can use it. For example, if your pointers are to the bytes of an array and you want to make sure there is no trailing whitespace on each line of text, you could check that it is not a nul-byte, or a byte value of 0, with
+ if (!(*it != '\0') && !(*it == 0))
+
+but you can do this without an if statement, and instead you can do
+if (it != nullptr)
+
+to test for a nullptr, which is the standard way to test for non-null pointers.
+
+A:
+
+It's not a standard language construct, no. It's just a way of writing code to make the intent more clear. It's also a standard usage of the standard library header std::string - the std::string class has operator bool which does the same thing.
+The equivalent standard idiom is:
+if (p)
+  // do something
+
+or, equivalently:
+if (!p.empty())
+  // do something
+
+which in turn, is equivalent to
+if (p.length() > 0)
+  // do something
+
+but the latter form can be a lot harder to read when what you want to do depends on whether or not the pointer points to a NULL-terminated string. If you don't want to hard-code the array size into the code, you can do the following:
+if (p && p[0] != '\0')
+  // do something
+
+You can of course mix all of these:
+if (p && p[0] != '\0' && !p->empty())
+  // do something
+
+or even:
+if (p && (p[0] != '\0' || p->empty()))
+  // do something
+
+You can also do things like:
+if (p)
+  // do something
+
+if (p && p[0])
+  // do something
+
+if (p && p[0] && p[1])
+  // do something
+
+There are plenty of reasons why you might want to use a non-standard construct like that in your code, but it's far from standard.
+(I believe the reason it exists in std::string is simply because std::string is intended to be an interface rather than a container, so it doesn't really matter what the internal state of a std::string object is.)
+
+A:
+
+The only useful use of if (!p.empty()) is to make sure you don't pass nullptr or 0 (or whatever your NULL value is) to a function expecting a pointer to an object. If you only want to see if a pointer points to something, you should consider using nullptr, not empty.
+If your value is a pointer, then if (value != NULL) is preferable, because NULL is defined as ((void*)0). Also, 0 is a valid pointer.
+Your last example would probably not do what you want. If a pointer is not 0, it's not equal to a nullptr. Instead, if you're looking for a non-null pointer, try if (value).
+
+Edit:
+My apologies for not making it clear that it is important to check the pointer before you access it. If your pointer points to a string, for example, then what you want to do is:
+
+If you have a string with some characters (i.e. there is at least one character)
+Then call your function
+
+If your pointer is null, then
+
+Your pointer is null, so you can't do anything with it
+
+If your pointer is non-null, then
+
+Your pointer is not null, so you can call your function
+
+In general, you would use a boolean expression or a special value (e.g. bool or nullptr) rather than empty to allow for more than one value, for example:
+
+bool value = p != 0; // Set the value to true when p is not 0, false otherwise
+
+Since, in most cases, we don't want to use a bool for such a function, we can use a special object. We can use an object since it's impossible for an empty pointer to be != to an object.
+
+int or char or bool or nullptr. For the object, we use some object pointer we've allocated (via new). We will need to return this object, so we will store the pointer to this object in a variable, and return it.
+In most cases, an object will store information about whether the pointer is not equal to 0, and will return true when the pointer is not null. Since the pointer is not null, the object can be returned.
+
+We do this by doing something like this:
+
+int or char or bool or nullptr value = p;
+
+The value can then be used as a boolean expression, and we can do a comparison:
+
+if (value != 0) { /* Do something */ }
+
+This way, we are making sure that we are checking the pointer, before trying to use the pointer.
+
+Also, note that while you can use this approach with most classes, it isn't a good idea to use it on something like an array, which won't provide information on whether a pointer is not null.
+
+Also, it is important to note that empty is not a function. It is a type, specifically, an object.
+
+void* empty = 0;
+
+This would set the value of the pointer to 0, regardless of the object it was pointing to.
+
+Empty, not null, is not the same as false. It's not equal to false, and it's not even a boolean.
+
+You can't write if (!empty), since the compiler will think you want the boolean value of the function, not the value of the object.
+
+You can write empty() or !empty() to call the function (to get the function's value, rather than the object's value), and thus test the function value for truthiness.
+
+</div></body></html><!-- 2022-07-17 11:30:57 

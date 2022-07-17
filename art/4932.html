@@ -1,0 +1,203 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4933.html'>Surgical managemen</a><Br/><a href='4934.html'>The present invent</a><Br/><a href='4935.html'>For a few months, </a><Br/><a href='4936.html'>Q:
+
+Error when cre</a><Br/><a href='4937.html'>Q:
+
+How to get cur</a><Br/><a href='4938.html'>The present invent</a><Br/><a href='4939.html'>It may also be cha</a><Br/><a href='4940.html'>invention relates </a><Br/><a href='4941.html'>invention relates </a><Br/><a href='4942.html'>It may also be cha</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4931.html'>Q:
+
+How to access </a><Br/><a href='4930.html'>Kinetics and metab</a><Br/><a href='4929.html'>A comparison of th</a><Br/><a href='4928.html'>If you're a fan of</a><Br/><a href='4927.html'>In its latest crac</a><Br/><a href='4926.html'>Q:
+
+How to pass a </a><Br/><a href='4925.html'>Drug-delivery syst</a><Br/><a href='4924.html'>The present invent</a><Br/><a href='4923.html'>Q:
+
+What's the qui</a><Br/><a href='4922.html'>The use of a "Birm</a></div><div class='nav'><a href='4931.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4933.html'> >> </a></div><div class='article'>/*
+ *  Copyright (C) 2004-2020 Edward F. Valeev
+ *
+ *  This file is part of Libint.
+ *
+ *  Libint is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Libint is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU Lesser General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with Libint.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+#ifndef LIBINT_CONFIG_H
+#define LIBINT_CONFIG_H
+
+#include <cassert>
+#include <cstdlib>
+#include <climits>
+#include <cstdarg>
+#include <vector>
+
+#define HEX_VALUE_MAX 1024
+#define OCT_VALUE_MAX 16384
+
+// Use C++17's `alignof` and `decltype` instead of
+// `__alignof__` and `__cdecl`
+
+// TODO: Support other integer sizes.
+// #include <new>
+
+// TODO: Use <atomic> instead of <mutex>.
+#include <condition_variable>
+
+#define LIBINT_NO_STD_MUTEX
+//typedef std::mutex* libint_mutex_t;
+//extern libint_mutex_t mut;
+
+// TODO: Use <threading>.
+typedef std::lock_guard<std::mutex> libint_mutex_locker_t;
+
+// TODO: Support other integer sizes.
+#define PRECISE_MODE
+//#define DOUBLE_MODE
+
+// On Windows the compiler does not accept `__restrict__` and `_Alignas` keywords
+// in the same declaration. Therefore, enable C++17 compiler extension to apply
+// the first directive to all declarations.
+#if defined(_MSC_VER) && !defined(__clang__)
+#define __restrict__
+#endif
+
+#ifndef __restrict__
+// TODO: Support `__restrict`.
+#define __restrict__ restrict
+#endif
+
+// TODO: Use <codecvt> instead of <cxxabi.h>.
+#include <cxxabi.h>
+
+namespace std {
+    template <typename T>
+    inline void swap(T &, T &) noexcept;
+}
+
+#include "libint_types.h"
+
+namespace libint2 {
+
+class configuration {
+  public:
+    using int_type = int;
+    using char_type = char;
+    using signed_int = signed char;
+
+    // The configuration stores different values for int_type, char_type, and signed_int.
+    // It depends on the type.
+
+    using string_type = std::string;
+
+    // The configuration stores the config file location.
+    // It depends on the type.
+
+    using libint_mutex_t = std::mutex;
+
+    // The configuration stores the default directory and file.
+    // It depends on the type.
+
+    // TODO: Use this: int_type is an integer type having at least 32 bits and
+    //        can represent all values of an integer.
+#if !defined(PRECISE_MODE)
+    using intmax_t = std::intmax_t;
+#else
+    using intmax_t = std::intmax_t;
+#endif
+
+    // The configuration stores the size of all integer types.
+    // It depends on the type.
+
+    // NOTE: This implementation has the same problem as long double on 32-bit systems.
+#ifdef PRECISE_MODE
+    using longdouble_t = libint_types::longdouble_t;
+#else
+    using longdouble_t = libint_types::longdouble_t;
+#endif
+};
+
+const configuration &get_configuration();
+void set_configuration(const configuration &);
+
+const std::vector<libint_mutex_t> &get_mutexes();
+void set_mutexes(const std::vector<libint_mutex_t> &);
+
+const string_type &get_config_directory();
+const string_type &get_config_file();
+
+template <typename T>
+inline void swap(T &a, T &b) noexcept
+{
+    T temp(std::move(a));
+    a = b;
+    b = std::move(temp);
+}
+
+// Use <exception>.
+// TODO: Use C++17's std::bad_alloc instead of <new>.
+// TODO: Avoid use std::bad_alloc.
+void rethrow_exception(const string_type &filename, int line, int column, const char *format, ...) noexcept;
+void rethrow_exception(const string_type &filename, int line, int column, const char *format) noexcept;
+void rethrow_exception(const string_type &filename, int line, int column) noexcept;
+// TODO: Rethrow exception in destructor.
+
+// TODO: Support other integer sizes.
+// TODO: Remove support for double and longdouble.
+#if !defined(__cplusplus) && !defined(PRECISE_MODE)
+const unsigned long long INFINITY = std::numeric_limits<unsigned long long>::infinity();
+const unsigned long long NAN = std::numeric_limits<unsigned long long>::quiet_NaN();
+//TODO: Deprecated alias std::inf;
+//TODO: Deprecated alias std::nan;
+#else
+const std::intmax_t INFINITY = std::numeric_limits<std::intmax_t>::max();
+const std::intmax_t NAN = std::numeric_limits<std::intmax_t>::quiet_NaN();
+//TODO: Deprecated alias std::inf;
+//TODO: Deprecated alias std::nan;
+#endif
+//typedef std::intmax_t bigint;
+//TODO: Removed in C++17.
+//using bigint = std::intmax_t;
+
+// TODO: Remove support for double and longdouble.
+const std::intmax_t MAX_INT = std::numeric_limits<std::intmax_t>::max();
+const std::intmax_t MIN_INT = std::numeric_limits<std::intmax_t>::min();
+const std::intmax_t MAX_LONG = std::numeric_limits<std::intmax_t>::max();
+const std::intmax_t MIN_LONG = std::numeric_limits<std::intmax_t>::min();
+const std::intmax_t MAX_LLONG = std::numeric_limits<std::intmax_t>::max();
+const std::intmax_t MIN_LLONG = std::numeric_limits<std::intmax_t>::min();
+//TODO: Deprecated alias std::max_int;
+//TODO: Deprecated alias std::min_int;
+//TODO: Deprecated alias std::max_long;
+//TODO: Deprecated alias std::min_long;
+//TODO: Deprecated alias std::max_llong;
+//TODO: Deprecated alias std::min_llong;
+
+#ifdef PRECISE_MODE
+const int MIN_LONGDOUBLE = std::numeric_limits<std::intmax_t>::min();
+const int INFINITY = std::numeric_limits<std::intmax_t>::max();
+#else
+const std::intmax_t MIN_LONGDOUBLE = std::numeric_limits<std::intmax_t>::min();
+const std::intmax_t INFINITY = std::numeric_limits<std::intmax_t>::max();
+#endif
+const std::intmax_t MIN_LLONGDOUBLE = std::numeric_limits<std::intmax_t>::min();
+const std::intmax_t INFINITY_LLONGDOUBLE = std::numeric_limits<std::intmax_t>::max();
+
+// The configuration stores the minimum range of integer types.
+// It depends on the type.
+
+
+// TODO: Don't write to string.
+// TODO: Use std::ostringstream.
+void print(std::ostream &out, int_type n);
+void print(std::ostream &out, char_type c);
+void print(std::ostream &out, signed_int n);
+void print(std::ostream &out, const std::string &s);
+
+// TODO: Use std::ostringstream.
+void print(std::ostream &</div></body></html><!-- 2022-07-17 11:30:49 

@@ -1,0 +1,84 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4932.html'>/*
+ *  Copyright (</a><Br/><a href='4933.html'>Surgical managemen</a><Br/><a href='4934.html'>The present invent</a><Br/><a href='4935.html'>For a few months, </a><Br/><a href='4936.html'>Q:
+
+Error when cre</a><Br/><a href='4937.html'>Q:
+
+How to get cur</a><Br/><a href='4938.html'>The present invent</a><Br/><a href='4939.html'>It may also be cha</a><Br/><a href='4940.html'>invention relates </a><Br/><a href='4941.html'>invention relates </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4930.html'>Kinetics and metab</a><Br/><a href='4929.html'>A comparison of th</a><Br/><a href='4928.html'>If you're a fan of</a><Br/><a href='4927.html'>In its latest crac</a><Br/><a href='4926.html'>Q:
+
+How to pass a </a><Br/><a href='4925.html'>Drug-delivery syst</a><Br/><a href='4924.html'>The present invent</a><Br/><a href='4923.html'>Q:
+
+What's the qui</a><Br/><a href='4922.html'>The use of a "Birm</a><Br/><a href='4921.html'>
+NO. 07-05-0441-CR</a></div><div class='nav'><a href='4930.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4932.html'> >> </a></div><div class='article'>Q:
+
+How to access a remote Jupyter Notebook server on Windows?
+
+I am trying to access a remote server, and I have two options:
+1) In windows PowerShell, I can simply write 
+jupyter notebook --NotebookApp.allow_origin='http://10.1.2.3:8000'
+
+(which works as expected).
+But if I try to write the same command in a python script, e.g. in a .bat file, I get this error:
+Error
+Any suggestions?
+
+A:
+
+This answer addresses the problem of calling the Jupyter Notebook Server with the Python API on Windows.
+To start the Jupyter Notebook Server on Windows, you need to have Python 2.7 or 3.4.2 installed as well as an executable like C:\Program Files\Anaconda2\python.exe, C:\Program Files\Anaconda3\python.exe or C:\Python34\python.exe. Then, you call the notebook server like this:
+C:\Anaconda2\python.exe C:\Anaconda2\Scripts\jupyter-notebook-script.py C:\Anaconda2\lib\site-packages\jupyter_server\start_notebook_server.py --port=8888 --NotebookApp.allow_origin=*
+
+The only difference with the Windows command in PowerShell is that --NotebookApp.allow_origin=* is passed as a string to the Jupyter Notebook server as a parameter.
+
+A:
+
+You don't have to install python to run jupyter notebook on windows machine. (if you want it as a service)
+To access jupyter notebook, open a new tab, write below command in your browser. 
+jupyter notebook
+Then, click on "Open in Browser". You should see the start page of jupyter notebook with "connect" button. click on it and it will ask for username and password. If you want to access your notebook as a service, enter your username and password as credentials and click on "save" in the dialog box. Your credentials will be remembered next time you access jupyter notebook.
+Hope this helps!
+
+A:
+
+I ran into a similar problem when setting up my Jupyter notebook server.
+I was not able to connect from the command line using the exact same command that works in the notebook.
+In my case I had to use -p and specify the port.
+C:\Python27\python.exe jupyter-notebook --port=8888 --NotebookApp.allow_origin='*'
+
+And I found this answer on stackoverflow.
+Setting up Jupyter Notebook server on Windows
+
+A:
+
+I have finally found the solution.
+The problem was with the Python path.
+All the suggestions using cmd worked on windows 10, but not on windows 8.1. I have a 64bit windows, so I installed python from Anaconda and I downloaded conda. After that I ran the following command:
+conda update --prefix=C:\Anaconda
+
+That finally installed the needed paths.
+After that I ran the next code:
+jupyter notebook --NotebookApp.allow_origin='*'
+
+And everything worked as expected.
+
+I run cmd as admin
+The path in my path was C:\Anaconda2\python.exe
+
+I hope this helps others as I spent several hours trying to figure this out.
+
+EDIT:
+Now this does not work anymore. I updated Anaconda to the last version and the problem persists.
+However, as suggested by gshetty, one can install anaconda on the C: drive and not have to worry about the path:
+conda create --yes conda
+conda install conda
+
+That seems to work fine on windows 10 and windows 8.1.
+
+EDIT:
+Now this does not work anymore. I updated Anaconda to the last version and the problem persists.
+However, as suggested by gshetty, one can install anaconda on the C: drive and not have to worry about the path:
+conda create --yes conda
+conda install conda
+
+That seems to work fine on windows 10 and windows 8.1.
+
+</div></body></html><!-- 2022-07-17 11:30:49 

@@ -1,0 +1,148 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4924.html'>The present invent</a><Br/><a href='4925.html'>Drug-delivery syst</a><Br/><a href='4926.html'>Q:
+
+How to pass a </a><Br/><a href='4927.html'>In its latest crac</a><Br/><a href='4928.html'>If you're a fan of</a><Br/><a href='4929.html'>A comparison of th</a><Br/><a href='4930.html'>Kinetics and metab</a><Br/><a href='4931.html'>Q:
+
+How to access </a><Br/><a href='4932.html'>/*
+ *  Copyright (</a><Br/><a href='4933.html'>Surgical managemen</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4922.html'>The use of a "Birm</a><Br/><a href='4921.html'>
+NO. 07-05-0441-CR</a><Br/><a href='4920.html'>Nike Air Jordan 6 </a><Br/><a href='4919.html'>This disclosure re</a><Br/><a href='4918.html'>Effect of water st</a><Br/><a href='4917.html'>Q:
+
+How to read a </a><Br/><a href='4916.html'>In the current stu</a><Br/><a href='4915.html'>The effects of met</a><Br/><a href='4914.html'>{
+    "id": "afb8b</a><Br/><a href='4913.html'>Q:
+
+Doubly Linked </a></div><div class='nav'><a href='4922.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4924.html'> >> </a></div><div class='article'>Q:
+
+What's the quickest way to get a list of all unread Emails from all mailboxes in Outlook 2010?
+
+What's the quickest way to get a list of all unread Emails from all mailboxes in Outlook 2010 ?
+The below process is a bit cumbersome and takes about 2-3 minutes.
+I've tried the below macro but it does not work on Outlook 2007 and Outlook 2003.
+Option Explicit
+
+Sub Test()
+
+    Dim objOutlook As Object
+    Dim objNameSpace As Object
+    Dim objFolder As Object
+    Dim objFolderItem As Object
+    Dim objMailItem As Object
+    Dim objUnreadEmail As Object
+    Dim intLoop As Integer
+
+    '~~> Specify which outlook version you are using
+    'Set objOutlook = CreateObject("Outlook.Application")
+
+    '~~> Get Outlook Instance
+    Set objOutlook = CreateObject("Outlook.Application")
+
+    '~~> Get the namespaces collection for Outlook
+    Set objNameSpace = objOutlook.GetNamespace("MAPI")
+
+    '~~> Start the loop to get all the folders in the inbox
+    For intLoop = 1 To objNameSpace.Folders.Count
+
+        '~~> Get the next folder in the folder collection
+        Set objFolder = objNameSpace.Folders.Item(intLoop)
+
+        '~~> Process the current Inbox
+        objFolder.ProcessAllFolders (olFolderInbox)
+
+    Next
+
+    '~~> Loop through all Inbox Items and delete the read ones
+    For Each objFolderItem In objFolder.Items
+        For Each objMailItem In objFolderItem.UnRead
+            objMailItem.Delete
+        Next
+    Next
+
+    Set objNameSpace = Nothing
+    Set objFolder = Nothing
+    Set objFolderItem = Nothing
+    Set objMailItem = Nothing
+
+End Sub
+
+A:
+
+I've had good results with something like this:
+Sub Test()
+
+    Dim objOutlook As Object
+    Dim objNameSpace As Outlook.NameSpace
+    Dim folder As Outlook.Folder
+
+    Dim subFolders As Outlook.Items
+    Dim subFolderItem As Object
+
+    '~~> Specify which outlook version you are using
+    Set objOutlook = New Outlook.Application
+    objOutlook.Session.Logon
+    Set objNameSpace = objOutlook.GetNamespace("MAPI")
+
+    '~~> Specify which folder you are working with
+    Set folder = objNameSpace.GetDefaultFolder(olFolderInbox)
+
+    '~~> Process all sub folders, and unread email items in each sub folder
+    For Each subFolder In folder.Folders
+        For Each subFolderItem In subFolder.Items
+            If subFolderItem.UnRead = True Then
+                subFolderItem.Delete
+            End If
+        Next
+    Next
+
+    Set folder = Nothing
+    Set subFolders = Nothing
+    Set subFolderItem = Nothing
+
+End Sub
+
+What it does is that it gets the default folder (usually Inbox), and from there it loops through every subfolder, and then through all of their emails, to check if the email is unread or not.
+Edit: In your case, you need to change this line:
+For Each objFolderItem In objFolder.Items
+
+To:
+For Each objFolderItem In objFolder.Items.Restrict("[UnRead = True]")
+
+This will only select folders and sub-folders that have unread messages.
+You can download my open-source code here
+
+A:
+
+While the other answer will work perfectly for most people, you may want to keep in mind that you can have "read" emails in the folder. You might want to do something like:
+For i = 1 To objFolder.Items.Count
+    On Error Resume Next
+    If Not objFolder.Items(i).RestrictedViews.RestrictionType = 3 Then
+        ' Do your delete code here.
+    End If
+Next
+
+Basically if the item has any restriction, don't even process the item.
+
+A:
+
+I think a quick macro to test, on Outlook 2010:
+Option Explicit
+Sub GetAllEmailsNotRead()
+
+    Dim ns As Outlook.NameSpace
+    Dim colFolders As Outlook.Folders
+    Dim fld As Outlook.Folder
+
+    Set ns = Application.GetNamespace("MAPI")
+    Set colFolders = ns.Folders
+
+    For Each fld In colFolders
+        fld.ProcessAllFolders (olFolderInbox)
+        fld.Items.Restrict("[UnRead]").Delete
+    Next fld
+
+    Set fld = Nothing
+    Set colFolders = Nothing
+    Set ns = Nothing
+
+End Sub
+
+EDIT1: Note that the "UnRead" method of Outlook (2003 and 2007+) will not return emails that have been marked as read by the user.  If you want to find emails that have not been read by anyone (as far as Outlook knows) then use Outlook.MailItems.Restrict([UnSeen]). See this article for more info.
+
+</div></body></html><!-- 2022-07-17 11:30:47 

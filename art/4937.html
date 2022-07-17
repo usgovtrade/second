@@ -1,0 +1,91 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4938.html'>The present invent</a><Br/><a href='4939.html'>It may also be cha</a><Br/><a href='4940.html'>invention relates </a><Br/><a href='4941.html'>invention relates </a><Br/><a href='4942.html'>It may also be cha</a><Br/><a href='4943.html'>invention relates </a><Br/><a href='4944.html'>It may also be cha</a><Br/><a href='4945.html'><?xml version="1.0</a><Br/><a href='4946.html'>Pittsburgh Pirates</a><Br/><a href='4947.html'>Q:
+
+How can I get </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4936.html'>Q:
+
+Error when cre</a><Br/><a href='4935.html'>For a few months, </a><Br/><a href='4934.html'>The present invent</a><Br/><a href='4933.html'>Surgical managemen</a><Br/><a href='4932.html'>/*
+ *  Copyright (</a><Br/><a href='4931.html'>Q:
+
+How to access </a><Br/><a href='4930.html'>Kinetics and metab</a><Br/><a href='4929.html'>A comparison of th</a><Br/><a href='4928.html'>If you're a fan of</a><Br/><a href='4927.html'>In its latest crac</a></div><div class='nav'><a href='4936.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4938.html'> >> </a></div><div class='article'>Q:
+
+How to get current date on a specific time zone for ASP.NET
+
+I've read this and this question but they don't seem to help me. I have a web app that is deployed in different time zones. I need to have the current date in a specific time zone (the one of the zone of the web app). For example, if the app is deployed in Brazil, I need to have the current date in Brazil, for example:
+Mon May 31 2012 13:07:43 BRST
+
+Thanks!
+
+A:
+
+You can easily use TimeZoneInfo.ConvertTimeFromUtc to convert local time to UTC then use TimeZoneInfo.ConvertTimeToUtc to convert UTC back to local time. You can do this globally, or per user (depending on your needs). 
+string LocalDateTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("Central Time (Mexico)"));
+
+EDIT
+The OP clarified that this was not really what was needed. He wanted to know how to get a specific time zone on the server without knowing the users location. Since most of the time you will be sending date/time data in UTC across the wire it makes sense to convert to local time before sending it back so it can be displayed locally for the user. 
+With that in mind, you can use TimeZoneInfo.Local instead of TimeZoneInfo.FindSystemTimeZoneById to get a specific time zone by name.
+
+A:
+
+If you really need the current time on a specific timezone you can try the following.
+DateTime DateTimeNow = DateTime.Now;
+TimeZoneInfo TimeZone = TimeZoneInfo.FindSystemTimeZoneById("Brazil Standard Time");
+DateTime BrazilDateTime = TimeZone.ToLocalTime(DateTimeNow);
+
+I took this info from here:
+http://blogs.msdn.com/b/codefx/archive/2008/08/25/tzdata-and-local-datetime-from-universal-datetime.aspx
+
+A:
+
+I've tried some ways to get current date time in Brazil time and it always worked for me, but the code is not so pretty:
+DateTime time = DateTime.UtcNow;
+string Date = string.Format("{0:yyyy-MM-ddTHH:mm:ssZ}Z", 
+                           TimeZoneInfo.ConvertTimeToUtc(time, TimeZoneInfo.Utc));
+
+Hope it works for you.
+
+Note:
+This should be DateTime.UtcNow and not DateTime.Now.
+
+You can read more here
+
+A:
+
+With .NET 4.0, there's a simpler way to do this using TimeZoneInfo.ConvertTimeBySystemTimeZoneId:
+TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Brazil Standard Time");
+DateTime BrazilDateTime = TimeZone.CurrentTimeZone.ToLocalTime(DateTime.UtcNow);
+
+If you're on .NET 3.5 or lower, see below.
+
+You can use TimeZoneInfo.ConvertTimeBySystemTimeZoneId:
+TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Brazil Standard Time");
+DateTime BrazilDateTime = TimeZone.CurrentTimeZone.ToLocalTime(DateTime.UtcNow);
+
+A little more explanation is necessary to understand how this works.
+When you pass in a DateTime object (in this case, DateTime.UtcNow), you get a DateTime object representing the current date and time in the TZID timezone you pass in. So, TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Brazil Standard Time") will actually convert that DateTime to UTC and then convert it to the local time of "Brazil Standard Time". It would look like this:
+TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Brazil Standard Time")
+{
+    TimeZoneInfo timeZone = TimeZoneInfo.FindSystemTimeZoneById("Brazil Standard Time");
+    DateTime date = new DateTime(2012, 5, 31, 13, 7, 43, DateTimeKind.Utc);
+    Console.WriteLine(timeZone.Id); // 11
+    Console.WriteLine(timeZone.StandardName); // Brasil Standard Time
+    Console.WriteLine(date.ToLocalTime()); // Brazil/Acre/Sao_Paulo: May 31, 2012, 3:07:43 AM
+    Console.WriteLine(timeZone.ToLocalTime(date).ToString()); // Brazil/Acre/Sao_Paulo: May 31, 2012, 3:07:43 AM
+    Console.WriteLine(timeZone.IsDaylightSavingTime(date)); // false
+}
+
+Note that while the TZID is Brasil Standard Time in this example, it's actually Brasilia Standard Time.
+
+If you want to get the current date and time using the current user's time zone, I recommend using TimeZoneInfo.Local rather than TimeZoneInfo.Utc:
+TimeZoneInfo timeZone = TimeZoneInfo.Local;
+DateTime BrazilDateTime = TimeZone.CurrentTimeZone.ToLocalTime(DateTime.UtcNow);
+
+This uses the same logic as the first example (convert to UTC and then to a specific time zone), but for some reason there is no ConvertTimeBySystemTimeZoneId in the TimeZoneInfo class for Local.
+If you try to use TimeZoneInfo.ConvertTimeBySystemTimeZoneId with the Local time zone (timeZone = TimeZoneInfo.Local), you get an exception saying that no conversion is possible.
+This makes sense when you think about it, because if you're getting the time for the current time zone, how could you possibly get the current time in a different time zone? If it isn't possible, that would be like saying "What's the date and time on the date and time?"
+However, I found a way around it. You can do what I did and use the same time zone (timeZone = TimeZoneInfo.Local) to get the current date and time in the local time zone.
+TimeZoneInfo timeZone = TimeZoneInfo.Local;
+DateTime BrazilDateTime = TimeZone.CurrentTimeZone.ToLocalTime(DateTime.UtcNow);
+// This will be the time in the user's local time zone, as if you set your server's time zone to the user's time zone.
+Console.WriteLine(timeZone.Id); // 11
+Console.WriteLine(timeZone.StandardName); // Brasil Standard Time
+Console.WriteLine(DateTime.Now.ToLocalTime().ToString());
+Console.WriteLine(timeZone.ToLocalTime(DateTime.Now).ToString());</div></body></html><!-- 2022-07-17 11:30:50 

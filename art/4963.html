@@ -1,0 +1,329 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4964.html'>In the early 1940'</a><Br/><a href='4965.html'>We use cookies to </a><Br/><a href='4966.html'>package org.eclips</a><Br/><a href='4967.html'>Q:
+
+D3 force graph</a><Br/><a href='4968.html'>Q:
+
+How to add a f</a><Br/><a href='4969.html'>The goal of this p</a><Br/><a href='4970.html'>Synthetic lethalit</a><Br/><a href='4971.html'>In this article we</a><Br/><a href='4972.html'>Q:
+
+Is there a way</a><Br/><a href='4973.html'>Q:
+
+Find a value i</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4962.html'>We all know the st</a><Br/><a href='4961.html'>This is a randomiz</a><Br/><a href='4960.html'>Gmina Stary Targ
+
+</a><Br/><a href='4959.html'>The present invent</a><Br/><a href='4958.html'>Q:
+
+Is there a sta</a><Br/><a href='4957.html'>Beta-endorphin doe</a><Br/><a href='4956.html'>I recently discove</a><Br/><a href='4955.html'>package client // </a><Br/><a href='4954.html'>Q:
+
+Sorting an NSA</a><Br/><a href='4953.html'>It's time to celeb</a></div><div class='nav'><a href='4962.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4964.html'> >> </a></div><div class='article'>/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is Mozilla Communicator client code, released
+ * March 31, 1998.
+ *
+ * The Initial Developer of the Original Code is
+ * Netscape Communications Corporation.
+ * Portions created by the Initial Developer are Copyright (C) 1998
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+
+/**
+ * The Error class represents JavaScript errors
+ *
+ * <p>The Error class is a lightweight object used for passing 
+ * information about JavaScript errors. This includes, 
+ * information about the error such as the type of error 
+ * or error message, and more. While the JavaScript 
+ * language has other means of reporting errors (such as 
+ * exceptions), this class can be used by code running in 
+ * the browser, so it has cross-platform support.</p>
+ *
+ * <p>The Error class should not be used in conjunction with native 
+ * JavaScript exception handling.</p>
+ *
+ * <p><b>Note:</b> The methods in this class are not guaranteed to be 
+ * thread-safe.</p>
+ *
+ * <p>If Error is called with no arguments, a reference to the 
+ * global object is returned.</p>
+ *
+ * @author Eric Bidelman <ebidel@netscape.com>
+ * @author Prentice Sellers <psellers@google.com>
+ * @author Chris Garman <chrisgarman@gmail.com>
+ * @since  1.0
+ */
+
+var Components = Components.classes;
+
+// Error and related values are defined in nsIExceptionService.idl
+
+/**
+ * Create a new exception
+ * @param exception [in] A reference to the error.
+ * @constructor
+ */
+function Error(exception) {
+  this.name = "Error";
+  this.message = null;
+  this.line = 0;
+  this.lineNumber = 0;
+  this.column = 0;
+  this.file = null;
+  this.name = null;
+  this.toString =  Error.prototype.toString;
+  this.stack = null;
+}
+
+//
+// Define internal methods
+//
+Error.prototype = {
+
+    /**
+     * Get error message from exception
+     *
+     * @return error message as a string.
+     */
+    get message() {
+        return this.message;
+    },
+
+    /**
+     * Get JavaScript stack from exception
+     *
+     * @return error message as a string.
+     */
+    get stack() {
+        return this.stack;
+    },
+
+    /**
+     * Get line number from error
+     *
+     * @return error line number.
+     */
+    get line() {
+        return this.line;
+    },
+
+    /**
+     * Get column number from error
+     *
+     * @return error column number.
+     */
+    get column() {
+        return this.column;
+    },
+
+    /**
+     * Get file name from error
+     *
+     * @return error file name.
+     */
+    get file() {
+        return this.file;
+    },
+
+    /**
+     * Get line number from error
+     *
+     * @return error line number.
+     */
+    get source() {
+        return this.lineNumber;
+    },
+
+    /**
+     * Get column number from error
+     *
+     * @return error column number.
+     */
+    get sourceName() {
+        return this.columnNumber;
+    },
+
+    /**
+     * Get line number from error
+     *
+     * @return error line number.
+     */
+    get lineNumber() {
+        return this.lineNumber;
+    },
+
+    /**
+     * Get column number from error
+     *
+     * @return error column number.
+     */
+    get columnNumber() {
+        return this.columnNumber;
+    },
+
+    /**
+     * Get file name from error
+     *
+     * @return error file name.
+     */
+    get sourceURL() {
+        return this.file;
+    },
+
+    /**
+     * Get file name from error
+     *
+     * @return error file name.
+     */
+    get scriptName() {
+        return this.file;
+    },
+
+    /**
+     * Get file name from error
+     *
+     * @return error file name.
+     */
+    get scriptCode() {
+        return this.file;
+    },
+
+    /**
+     * Get line number from error
+     *
+     * @return error line number.
+     */
+    get lineOfScript() {
+        return this.lineNumber;
+    },
+
+    /**
+     * Set message
+     *
+     * @param message [in] message.
+     */
+    set message(message) {
+        if (message != null) {
+            this.message = message;
+        }
+        else {
+            this.message = "Unknown error";
+        }
+    },
+
+    /**
+     * Get toString method
+     *
+     * @return string representation of error.
+     */
+    toString: function () {
+        return this.message + ": " + this.source;
+    }
+};
+
+//
+// Define global error prototype.
+//
+Error.prototype.clone = Error.prototype.toString;
+
+//
+// Define the error constructor.
+//
+function makeDOMException(name) {
+    var exception = makeError();
+    exception.name = name;
+    return exception;
+}
+
+//
+// Define the Error method
+//
+function makeError() {
+    return new Error();
+}
+
+//
+// Define the Error.prototype.toString method.
+//
+makeError.prototype.toString = function () {
+    var s = Error.prototype.toString.call(this);
+    if (s.length > 0 && s.charAt(0) != "Error") {
+        s = "Error\n";
+    }
+    return s;
+};
+
+//
+// Define the throwError method.
+//
+function throwError(code, name) {
+    if (name == undefined) {
+        name = "Undefined";
+    }
+    var message = "(" + name + "): " + code;
+    throw new Error(message);
+}
+
+//
+// Define the throwError method.
+//
+makeError.prototype.toString = function () {
+    var s = Error.prototype.toString.call(this);
+    if (s.length > 0 && s.charAt(0) != "Error") {
+        s = "Error\n";
+    }
+    return s;
+};
+
+//
+// ******************************************************
+//
+// * Definitions of XML dataType constants
+//
+// ******************************************************
+//
+
+//
+// Defines the XML error type
+//
+var EXS_ERR_TYPE = null;
+
+//
+// Defines the XML ParseError type
+//
+var EXS_PARSE_ERROR = 0;
+
+//
+// Defines the XML DOMParser type
+//
+var EXS_PARSE_DOMPARSER = 1;
+
+//
+// Defines the XML DOMParser type
+//
+var EXS_PARSE_XMLPARSER = 2;
+
+//
+// Defines the XML DOM</div></body></html><!-- 2022-07-17 11:30:54 

@@ -1,0 +1,227 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4956.html'>I recently discove</a><Br/><a href='4957.html'>Beta-endorphin doe</a><Br/><a href='4958.html'>Q:
+
+Is there a sta</a><Br/><a href='4959.html'>The present invent</a><Br/><a href='4960.html'>Gmina Stary Targ
+
+</a><Br/><a href='4961.html'>This is a randomiz</a><Br/><a href='4962.html'>We all know the st</a><Br/><a href='4963.html'>/* ***** BEGIN LIC</a><Br/><a href='4964.html'>In the early 1940'</a><Br/><a href='4965.html'>We use cookies to </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4954.html'>Q:
+
+Sorting an NSA</a><Br/><a href='4953.html'>It's time to celeb</a><Br/><a href='4952.html'>
+
+The $1,000,000,0</a><Br/><a href='4951.html'>Seventh Edition
+
+7</a><Br/><a href='4950.html'>Q:
+
+Error 'Failed </a><Br/><a href='4949.html'>package org.apereo</a><Br/><a href='4948.html'>The present invent</a><Br/><a href='4947.html'>Q:
+
+How can I get </a><Br/><a href='4946.html'>Pittsburgh Pirates</a><Br/><a href='4945.html'><?xml version="1.0</a></div><div class='nav'><a href='4954.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4956.html'> >> </a></div><div class='article'>package client // import "github.com/docker/docker/client"
+
+import (
+	"context"
+	"io"
+	"net"
+	"net/http"
+	"net/url"
+	"strings"
+
+	"golang.org/x/net/context/ctxhttp"
+)
+
+// Dial connects to the given address via the proxy.
+func (cli *Client) Dial(ctx context.Context, network, address string) (net.Conn, error) {
+	parsed, err := url.Parse(address)
+	if err != nil {
+		return nil, err
+	}
+
+	proxyURL, err := parseProxyURL(cli.endpoint, parsed)
+	if err != nil {
+		return nil, err
+	}
+
+	var forwardResponse ResponseWriter
+	if cli.proxyURL != nil && parsed.Host != cli.proxyURL.Host {
+		// The Docker client can be used as a http.Client, so the proxy is no
+		// longer needed.
+		if strings.HasSuffix(parsed.Path, "/") {
+			// Using "/" as host for proxied connection to ease URL dialing on mobile devices
+			parsed, err = ctxhttp.NewProxyURL(parsed, cli.proxyURL.Host)
+			if err != nil {
+				return nil, err
+			}
+			proxyURL = *parsed
+		}
+
+		httpClient := &http.Client{
+			Transport: &http.Transport{
+				Proxy: http.ProxyFromEnvironment,
+				DialContext: (&net.Dialer{
+					Timeout:   30 * time.Second,
+					KeepAlive: 30 * time.Second,
+				}).DialContext,
+			},
+			CheckRedirect: redirectPolicy(),
+			Jar:           cli.jar,
+		}
+		for key, authInfo := range cli.authInfo.Auth {
+			switch authInfo.AuthMethod {
+			case AuthMethodNotRequired:
+				continue
+			case AuthMethodUsernamePassword:
+				username, password, ok := parseAuth(authInfo.Username, authInfo.Password)
+				if !ok {
+					return nil, fmt.Errorf("unrecognized auth configuration: %v", authInfo)
+				}
+
+				if username != "" && password != "" {
+					u, _ := url.Parse(addr)
+					req := &url.URL{
+						User:     username,
+						Password: password,
+						Host:     u.Host,
+						Port:     u.Port,
+					}
+					if reauthToken != "" {
+						req.Header.Set("Reauth-Token", reauthToken)
+					}
+					proxyURL.Scheme = u.Scheme
+					proxyURL.Host = u.Host
+					var err error
+					proxyURL.Path, err = url.Parse(parsed.Path)
+					if err != nil {
+						return nil, fmt.Errorf("malformed proxy URL: %v", err)
+					}
+					// Drop the host before forwarding
+					// to properly compute the RemoteAddr
+					host, _, _ := net.SplitHostPort(req.Host)
+					if host == "" {
+						req.Host = req.Host[:strings.LastIndex(req.Host, ":")]
+						host = req.Host
+					}
+					if req.Host != host {
+						req.Host = strings.TrimSuffix(req.Host, ".")
+					}
+					u.Host = req.Host
+					if err := httpClient.Do(&req, &forwardResponse); err != nil {
+						return nil, fmt.Errorf("error forwarding request to proxy: %v", err)
+					}
+				} else {
+					// Drop the host before forwarding
+					// to properly compute the RemoteAddr
+					host, _, _ := net.SplitHostPort(req.Host)
+					if host == "" {
+						req.Host = req.Host[:strings.LastIndex(req.Host, ":")]
+						host = req.Host
+					}
+					if host == "localhost" {
+						req.Host = ""
+						req.Host = req.Host[:strings.LastIndex(req.Host, ":")]
+						host = req.Host
+					}
+					u.Host = host
+					req.URL.Host = u.Host
+					if err := httpClient.Do(&req, &forwardResponse); err != nil {
+						return nil, fmt.Errorf("error forwarding request to proxy: %v", err)
+					}
+				}
+			}
+		}
+	}
+
+	return forwardResponse.Body, nil
+}
+
+// reauthTokenURL is shared between the various URL re-auth flow
+// implementations that keep track of and cache the OAuth2 token.
+var reauthTokenURL string
+
+// tokenCache is a token cache implementation.
+type tokenCache struct {
+	cache map[string]string
+}
+
+// getToken returns a token if available in the cache otherwise retrieves
+// the refresh token.
+func (t *tokenCache) getToken(req *http.Request) string {
+	tok := t.cache[req.URL.String()]
+	if tok != "" {
+		return tok
+	}
+	tok = reauthToken(req.Header.Get("Reauth-Token"))
+	if tok != "" {
+		return tok
+	}
+	return t.getRefreshToken(req)
+}
+
+// tokenSource fetches a token for the given URL and updates cache
+// with the new token.
+func (t *tokenCache) tokenSource(ctx context.Context, url string) (*Token, error) {
+	t.cache = make(map[string]string)
+	// code adapted from TokenSource in golang.org/x/oauth2
+	// Copyright 2012 The Go Authors. All rights reserved.
+	f := ctxhttp.New(ctx, nil)
+	for _, s := range t.authInfo.OAuth2 {
+		if strings.Contains(s.Type, ".") {
+			continue
+		}
+		if s.ReauthFunc != nil {
+			data, err := s.ReauthFunc()
+			if err != nil {
+				return nil, fmt.Errorf("oauth2: cannot fetch token: %v", err)
+			}
+			ttl, err := context.WithTimeout(ctx, s.ReauthTokenTTL)
+			if err != nil {
+				return nil, fmt.Errorf("oauth2: cannot fetch token: %v", err)
+			}
+			for i := 0; i < data.ExpiresIn; i++ {
+				if err := tokenCopy(data, ttl); err != nil {
+					return nil, fmt.Errorf("oauth2: cannot fetch token: %v", err)
+				}
+			}
+			continue
+		}
+		location := oauth2.ReuseTokenSource(data, ctx, s.ReauthToken)
+		if override := s.ReauthOverride; override != nil {
+			authOpts := override.(*ReauthOptions)
+			if !authOpts.AllowReauth {
+				continue
+			}
+			pp := make([]string, 0, len(authOpts.Scopes))
+			for k, v := range authOpts.Scopes {
+				switch k {
+				case "oauth2":
+					pp = append(pp, v)
+				}
+			}
+			token := &Token{
+				AccessToken:  s.AccessToken,
+				TokenSecret:  s.TokenSecret,
+				Expiry:       s.Expiry,
+				RefreshToken: s.RefreshToken,
+				Raw:          data,
+				Location:     location,
+				Extra:        pp,
+			}
+			if s.IDToken != "" {
+				token.IDToken = s.IDToken
+			}
+			token.TokenType = s.TokenType
+			token.AccessToken = s.AccessToken
+			token.TokenSecret = s.TokenSecret
+			return token, nil
+		}
+	}
+	if ttl := s.TokenRefreshToken; s.TokenRefreshToken != "" {
+		ttl, _ = context.WithTimeout(ctx, s.TokenRefreshTimeout)
+		v := url.Values{}
+		v.Set("grant_type", "refresh_token")
+		v.Set("refresh_token", s.TokenRefreshToken)
+		form := url.Values{}
+		form.Set("access_token", token.AccessToken)
+		form.Set("token", token.TokenID)
+		form.Set("token_type", token.TokenType)
+		u := &url.URL{
+			RawQuery: form.Encode(),
+		}
+		req, err := http.NewRequest("POST", u.String(), form)
+		if err != nil {
+			return</div></body></html><!-- 2022-07-17 11:30:53 

@@ -1,0 +1,65 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4911.html'>Q:
+
+Get error whil</a><Br/><a href='4912.html'>The new "Star Wars</a><Br/><a href='4913.html'>Q:
+
+Doubly Linked </a><Br/><a href='4914.html'>{
+    "id": "afb8b</a><Br/><a href='4915.html'>The effects of met</a><Br/><a href='4916.html'>In the current stu</a><Br/><a href='4917.html'>Q:
+
+How to read a </a><Br/><a href='4918.html'>Effect of water st</a><Br/><a href='4919.html'>This disclosure re</a><Br/><a href='4920.html'>Nike Air Jordan 6 </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4909.html'>What is JotForm?
+J</a><Br/><a href='4908.html'>Nutritional factor</a><Br/><a href='4907.html'>Cruciate ligaments</a><Br/><a href='4906.html'>I went from my loc</a><Br/><a href='4905.html'>Q:
+
+MongoDB: Selec</a><Br/><a href='4904.html'>A few months ago, </a><Br/><a href='4903.html'>Miguel López
+
+Migu</a><Br/><a href='4902.html'>The present invent</a><Br/><a href='4901.html'>Raman spectroscopy</a><Br/><a href='4900.html'>New! Playable Pikm</a></div><div class='nav'><a href='4909.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4911.html'> >> </a></div><div class='article'>Q:
+
+What should happen when one of the main servers is down?
+
+I've just switched from Windows to Ubuntu. When I'm doing an installation, I get an option to "choose the location of the main boot loader", and it gives me the options /dev/sda and /dev/sda1.
+What does this mean? What should I choose in this case?
+I'm going to replace Windows, not install it alongside Ubuntu, so it seems to me that sda would be the one I should choose.
+I installed Ubuntu alongside Windows, so I have two options - what should I choose in this case?
+
+A:
+
+Since the new version of Windows doesn't always get booted correctly, so you can still get the old version of Windows shown. Therefore we should first remove the old Windows. If you want to remove the old Windows, you will need the name of its hard disk drive. It is usually called 'C:', so you can type that in the search window at the bottom.
+
+To uninstall, click next. Then it asks if you would like to boot your PC to get into windows: it is because I always choose this option as it saves me the time of reinstalling windows again.
+
+If it can't detect the Windows, click "Advanced options". You'll see "Installation Type" is set to "Something else". Click Change and then enter your administrator password to give your admin rights.
+In the new window, click sda(for bootloader). It will ask you to check/uncheck two options, do so.
+Now comes the important part, "Device for boot loader installation". Click your Windows C: drive. You can see it's highlighted by the color. This is because of the disk label is set to Windows, and the Windows bootloader is inside this disk. Now click on the partition with Linux and Ubuntu inside and the Linux OS. It is highlighted by the color, indicating it is set to Linux. Now click OK.
+If you choose "Device for boot loader installation" option wrongly, your bootloader won't work after installing it. I'm not sure about Windows, but if you use Ubuntu, I suppose you'll have to reinstall it once more.
+
+If you don't want to remove your Windows, you just have to change the partition where the bootloader is. Boot from the live CD(or USB) or whatever your computer uses. 
+From step 3, click on Devices on the left. At the bottom, it says "Device for boot loader installation". Click that and then select your Windows C: drive.
+Note: I've only used this to replace Windows without installing it. If you choose not to format your existing C: partition, your data is safe.
+
+A:
+
+If you have another partition besides the Windows partition you want to use for Linux then put it first in the boot list. It will give you that option. However, you have to have some reason to leave it unformatted. 
+
+A:
+
+When you see your Windows install disk, you should be able to delete the Windows partition from inside it, which will leave the boot files intact. It will not affect your Linux install at all.
+(Windows installations use BIOS Boot Partition, which is formatted with NTFS. For BIOS, linux cannot natively boot this type of partition. Linux does not need BIOS itself, but rather uses EFI boot (often called UEFI) instead).
+Since Ubuntu is already installed, I suggest you choose /dev/sda2 as the boot partition.
+
+The reason you may not have seen this option is that you probably haven't installed Linux on a new computer yet. It will only show up when you install Windows on a drive that has already been formatted for Ubuntu.
+
+See: 
+https://help.ubuntu.com/community/UEFI
+https://help.ubuntu.com/community/WindowsDualBoot
+
+If you are unsure whether you have BIOS or UEFI, you can look at the output of:
+sudo dmidecode --type bios-boot
+
+If you see a line that begins BIOS-Boot:UEFI, then you have UEFI.
+I suggest if you're installing from a USB drive that you create a live USB using the boot-repair program instead of Ubuntu's "Startup Disk Creator". It's an extra step, but this will be much easier to troubleshoot any problems you may have installing Ubuntu alongside Windows.
+
+https://help.ubuntu.com/community/LiveCDCustomization
+
+Another important thing to remember is that Linux already comes with all of the drivers you need to install on the hard drive. (And if it doesn't you can always go into the "Additional Drivers" panel in Settings to add those).
+The only driver that Windows needs is Nvidia or AMD driver, which is available in their website.
+If you have a dual boot system, then Ubuntu may need to boot first to ensure that the boot partition is accessible. Since the boot partition is formatted to NTFS, the Linux kernel is not able to access the partition directly. The driver you installed will also install its own entry on the GRUB boot menu.
+
+</div></body></html><!-- 2022-07-17 11:30:45 

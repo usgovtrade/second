@@ -1,0 +1,149 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4973.html'>Q:
+
+Find a value i</a><Br/><a href='4974.html'>Introduction {#Sec</a><Br/><a href='4975.html'>Q:
+
+Square root (s</a><Br/><a href='4976.html'>Square Enix has an</a><Br/><a href='4977.html'>If so, would you e</a><Br/><a href='4978.html'>Inhibitory effect </a><Br/><a href='4979.html'>Tales from The Loo</a><Br/><a href='4980.html'>Q:
+
+Python: How to</a><Br/><a href='4981.html'>/*
+ * Licensed to </a><Br/><a href='4982.html'>Oliver, Wisconsin
+</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4971.html'>In this article we</a><Br/><a href='4970.html'>Synthetic lethalit</a><Br/><a href='4969.html'>The goal of this p</a><Br/><a href='4968.html'>Q:
+
+How to add a f</a><Br/><a href='4967.html'>Q:
+
+D3 force graph</a><Br/><a href='4966.html'>package org.eclips</a><Br/><a href='4965.html'>We use cookies to </a><Br/><a href='4964.html'>In the early 1940'</a><Br/><a href='4963.html'>/* ***** BEGIN LIC</a><Br/><a href='4962.html'>We all know the st</a></div><div class='nav'><a href='4971.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4973.html'> >> </a></div><div class='article'>Q:
+
+Is there a way to get the text from a custom UITableViewCell in an array
+
+I would like to put all the text in a cell into an array. 
+It seems my UITableViewCell is "empty" I tried to get the text but it didn't work.
+When I did print it, I had a value (the one that I set in the code).
+Here's the code of my tableview cell
+class MessageCell: UITableViewCell {
+
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var likeLabel: UILabel!
+    @IBOutlet weak var commentButton: UIButton!
+    @IBOutlet weak var nameLabel: UILabel!
+
+    var data: [String] = ["hello","hi"]
+    var message: [String] = ["hello","hi"]
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        messageLabel.text = data[indexPath.row]
+    }
+}
+
+I have the indexPath set as:
+func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
+        cell.data = self.data[indexPath.row]
+        cell.message = self.message[indexPath.row]
+
+        return cell
+    }
+
+But when I print data[indexPath.row], I get "empty".
+And when I print message[indexPath.row] I get the last string of data.
+Why am I not getting the first one?
+When I print it the first time:
+class Messages: UIViewController {
+        func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+            let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
+
+            cell.messageLabel.text = self.message[indexPath.row]
+            cell.messageLabel.text = self.data[indexPath.row]
+            cell.messageLabel.text = self.data[indexPath.row]
+
+            return cell
+        }
+
+What I want:
+cell.messageLabel.text = "hello"
+
+The print I had:
+
+And when I print it the second time:
+
+A:
+
+The problem is that cellForRowAtIndexPath is called when the view is loaded but data is loaded in awakeFromNib, so when cellForRowAtIndexPath is called there is no data to display because it hasn't been loaded yet, it will get done in viewDidLoad, the way to fix this is to call cellForRowAtIndexPath when data is loaded.  
+You can use a closure (and I usually recommend using it anyway):
+func dataLoaded(cell: MessageCell, cellForRowAtIndexPath indexPath: NSIndexPath) {
+    cell.messageLabel.text = self.data[indexPath.row]
+}
+
+func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    let cell = tableView.dequeueReusableCellWithIdentifier("MessageCell", forIndexPath: indexPath) as! MessageCell
+
+    cell.data = self.data[indexPath.row]
+
+    return cell
+}
+
+Then call it from viewDidLoad when the data is loaded:
+override func viewDidLoad() {
+    super.viewDidLoad()
+    self.dataLoaded(cell: self.messageCell, cellForRowAtIndexPath: self.indexPath)
+}
+
+This is how I usually do this (and when your data is loaded in viewDidLoad, you don't even need cellForRowAtIndexPath unless you have a different cell to display, it can be the same one):
+class Messages: UIViewController {
+
+    func dataLoaded(cell: MessageCell, cellForRowAtIndexPath indexPath: NSIndexPath) {
+        cell.data = self.data[indexPath.row]
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dataLoaded(cell: messageCell, cellForRowAtIndexPath: indexPath)
+    }
+
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var likeLabel: UILabel!
+    @IBOutlet weak var commentButton: UIButton!
+    @IBOutlet weak var nameLabel: UILabel!
+
+    var data: [String] = ["hello","hi"]
+    var message: [String] = ["hello","hi"]
+
+}
+
+class MessageCell: UITableViewCell {
+
+    @IBOutlet weak var messageLabel: UILabel!
+    @IBOutlet weak var likeLabel: UILabel!
+    @IBOutlet weak var commentButton: UIButton!
+    @IBOutlet weak var nameLabel: UILabel!
+
+    var data: [String] = ["hello","hi"]
+    var message: [String] = ["hello","hi"]
+
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        messageLabel.text = data[indexPath.row]
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        // This way your cell is free to reuse and will preserve the data
+        // for the next time this cell is needed
+        cell = nil
+    }
+}
+
+With these changes your code works without a problem:
+
+You can check if the problem was with the reloadData (because you were reloading every time, so you were seeing the data but the previous cell wasn't there anymore) by setting a breakpoint in cellForRowAtIndexPath.  
+Or you can test it by setting a breakpoint in viewDidLoad when data is loaded, then in the debugger press stepover and check the content of data[0] and data[1] you should get hello twice and the like (but it's good practice to initialize it always).
+
+A few things to add:
+
+You should use a UITableViewCell not a MessageCell in your tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell.
+You should declare the message property as private, if you use lazy to initialize the data it is not required to declare it as a property.
+
+Hope this helps.
+
+</div></body></html><!-- 2022-07-17 11:30:55 

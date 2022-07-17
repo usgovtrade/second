@@ -1,0 +1,93 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4959.html'>The present invent</a><Br/><a href='4960.html'>Gmina Stary Targ
+
+</a><Br/><a href='4961.html'>This is a randomiz</a><Br/><a href='4962.html'>We all know the st</a><Br/><a href='4963.html'>/* ***** BEGIN LIC</a><Br/><a href='4964.html'>In the early 1940'</a><Br/><a href='4965.html'>We use cookies to </a><Br/><a href='4966.html'>package org.eclips</a><Br/><a href='4967.html'>Q:
+
+D3 force graph</a><Br/><a href='4968.html'>Q:
+
+How to add a f</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4957.html'>Beta-endorphin doe</a><Br/><a href='4956.html'>I recently discove</a><Br/><a href='4955.html'>package client // </a><Br/><a href='4954.html'>Q:
+
+Sorting an NSA</a><Br/><a href='4953.html'>It's time to celeb</a><Br/><a href='4952.html'>
+
+The $1,000,000,0</a><Br/><a href='4951.html'>Seventh Edition
+
+7</a><Br/><a href='4950.html'>Q:
+
+Error 'Failed </a><Br/><a href='4949.html'>package org.apereo</a><Br/><a href='4948.html'>The present invent</a></div><div class='nav'><a href='4957.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4959.html'> >> </a></div><div class='article'>Q:
+
+Is there a standard function to compare strings that ignores all changes to the special characters?
+
+I have this code to make sure that special characters, like ' or " are not in the string. I came up with this function:
+def check_text(mytext):
+   special = set(['"', "'", ']', '[', '\\', '(', ')', '|', '/', ','])
+   if not any(c in mytext for c in special):
+      return mytext
+   else:
+      return False
+
+Is there a more common method in Python to do this?
+
+A:
+
+you can use str.translate to do this:
+mytext = mytext.translate(None, '""’)(())[]/\"\\]^'|,)')-+
+
+This is a little less efficient than what you have but it's a little more readable.
+it converts everything that isn't a letter, to ''
+
+A:
+
+You can use str.translate, which has the argument errors.
+mytext.translate(str.maketrans("''", "''"))
+
+However, it is much more efficient to use regex than the standard library method; using a regex such as /[\\’"\\]/ would do the job of converting special characters to be normal ones. 
+The reason it's more efficient is because the regex library optimizes it internally, whereas the function you have had to work around the optimizer.
+
+A:
+
+You can use the builtin string.maketrans method to map bad characters to be equal to the space character. That way the space character can be removed later.
+def mytext(s):
+    t = s.translate(str.maketrans('"\'[]()/\\’,', ' '))
+    return t
+
+print mytext('""’)(())[]/'\'\]\^'|,)'-+'hello')
+
+It's not as fast as using regex, but it's more pythonic.
+There is a big downside though: it doesn't do any replacements of the already replaced characters, so if there are characters such as ', it will remove that, resulting in ' in the output.
+
+If you're really into optimizations, use the compile method to compile the regular expression.
+
+You could also use regular expressions (see e.g. here or on google). However, you'd want to make your regexp as restrictive as possible, otherwise you'd have to use some regex flavor which may be slow or even worse fail on large input strings. So the following should work:
+# this converts the input string s to a regexp with a bunch of backreferences
+
+import re
+def badregex(s):
+    patt = r'\W'
+    return re.compile(patt + '|' + patt*2 + '|' + patt*3)
+
+# this is the function that removes bad characters
+def mytext(s):
+    return re.sub(badregex(s), '', s)
+
+Note that the use of re.sub is pretty efficient. And the usage of the regex flavor that is compiled by this is pretty optimized as well. But keep in mind that this is not a good idea if your input strings contain too many of the bad characters. If that is the case, a much better way to solve the problem is to use a real database with a proper quoting mechanism instead.
+
+A:
+
+If you're concerned about a large number of characters, it's not going to be as fast, but you can avoid using special characters and instead use re.escape:
+import re
+def check_text(mytext):
+   return re.escape(mytext) == mytext
+
+As an example of an alternate way to do this without using string.maketrans, consider:
+def check_text(mytext):
+    return ''.join(sorted(mytext)) == mytext
+
+This has the advantage of only requiring as many calls to sorted as necessary rather than converting to a string and then back.
+Note that your example code is checking for literal quotes, but not for single or double quotes inside of a string, which would be considered a literal quote.  E.g. 'He said ""I want you now"'' or '"" is a literal quote.
+
+Another similar way to implement this is to use filter:
+def check_text(mytext):
+   return filter(None, mytext) == mytext
+
+The only potential disadvantage of this is that it's not obvious which characters are considered "bad". This problem is resolved if you have a fixed list of "bad" characters.
+
+</div></body></html><!-- 2022-07-17 11:30:53 
