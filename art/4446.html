@@ -1,0 +1,61 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4447.html'>Q:
+
+How to display</a><Br/><a href='4448.html'>The world's longes</a><Br/><a href='4449.html'>
+
+For the first ti</a><Br/><a href='4450.html'>A comparison of tw</a><Br/><a href='4451.html'>Games for Android
+</a><Br/><a href='4452.html'>Egypt, which suffe</a><Br/><a href='4453.html'>Browse by Category</a><Br/><a href='4454.html'>Phenotypical chara</a><Br/><a href='4455.html'>The present invent</a><Br/><a href='4456.html'>A comparison of th</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4445.html'>The Gambling Commi</a><Br/><a href='4444.html'>{
+  "images" : [
+ </a><Br/><a href='4443.html'>#ifndef BOOST_SERI</a><Br/><a href='4442.html'>The Trump administ</a><Br/><a href='4441.html'>The U.S. Departmen</a><Br/><a href='4440.html'>The Bitter Biscuit</a><Br/><a href='4439.html'>It's like a movie </a><Br/><a href='4438.html'>If this is your fi</a><Br/><a href='4437.html'>Invasive and trans</a><Br/><a href='4436.html'>Namco Bandai has n</a></div><div class='nav'><a href='4445.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4447.html'> >> </a></div><div class='article'>Q:
+
+How does it take $O(\log m)$ time to merge $m$ sorted arrays into one sorted array?
+
+I'm reading The Algorithm Design Manual (Skiena) which contains this graph on page 10:
+
+It says that merging $m$ sorted arrays takes $O(\log m)$ time. However, it seems to me that that would take $\Theta(m \log m)$ time. How can it take $O(\log m)$ time when adding elements $i \in \mathbb{Z}^+$ to a pre-sorted array of size $N$ takes $\Theta(N \log N)$ time and we only have $m$ of these sorted arrays?
+I do see that if there are duplicate entries in the arrays, they would be merged the first time, resulting in fewer than $m$ array elements. If there are no duplicate entries, there's only $m$ arrays. So that probably does allow it to take $O(\log m)$ time.
+
+A:
+
+As you've noted, we can only apply this technique if the input arrays are in sorted order. This is because we can't merge two already sorted lists (at least without doing extra work).
+It is also important to note that we are not allowing other operations to happen in parallel with the merging, which would most definitely make this merge $O(m \log m)$. In reality, we probably don't even sort the lists themselves, but instead keep the list in the most natural order (i.e. left-to-right on disk).
+For some more discussion, see Wikipedia's article on External sorting.
+
+A:
+
+In this case merging does not necessarily mean merging lists in place, but merging them and then adding their elements to a list, all in linear time. If you just want to do the merging then that will definitely take $\Theta(m\log m)$.
+
+A:
+
+In the context of the algorithm, it does not mean merging the sorted arrays in place. It means building a sorted array of them. Then, at each step, the arrays are not sorted. That means they can be sorted on-the-fly. When you find that the last two elements are equal, you know that you have finished merging. That's when you start adding elements to the new array, since you now have sorted data.
+
+A:
+
+Since the algorithms are meant to operate on a list of arrays, it makes sense to me that the merges will not be linear on the number of arrays, but the number of arrays less the number of duplicates. That is, I could read it as "if you want $n$ sorted arrays with no duplicates, merge them, then $O(n)$ for the merge and $O(1)$ for each array; or as "if you want $n$ sorted arrays with a lot of duplicates, then $O(n)$ for the merge and $O(n \log n)$ for each array"
+
+But note that "can be" and "should be" are different things. :) The given algorithms will perform in $O(n)$ in both cases, because that is how they are meant to be used. You should not use them to work with a list of arrays where the number of array is not constant, however.
+
+If we had $n$ sorted arrays with no duplicates, it makes more sense that the runtime would be $O(n)$ to merge them. However, how could the runtime be $O(m \log m)$ for an arbitrary $m$?
+
+When you have $m$ sorted arrays, the arrays are just a list of elements in no particular order. You can do any operations on these lists at the same time, including sorting. You can say, "If the list is too big, I don't want to sort it, I want to return it in the way it is stored in memory" and you can do so. Once you have sorted each of the lists separately, you can merge them.
+
+And after that, if you try to add a 5th array with no duplicates, it will take $O(n)$ to create a sorted list of length $n + 1$, plus another $O(n)$ to merge it with the other 5 lists.
+
+To me, this analysis does not sound like what is meant by "Merging."
+
+In this case merging does not mean merging lists in place, but merging them and then adding their elements to a list, all in linear time. If you just want to do the merging then that will definitely take $\Theta(m\log m)$.
+
+I disagree. Here, merging means to merge all the arrays, but you do not keep the merged lists.
+
+What you are probably meant to do is to look at two arrays to see if they are equal, and just leave them separate if they are not. But the question is just about sorting in general, so in practice this strategy does not work.
+
+Or you could go the other way and say "Sorting by inserting each element to the end has $O(n)$ time complexity". That's obviously not correct, since it's not the same problem as what we're discussing here.
+
+Again, a question of wording. I am sure the meaning is not that, but this question is not about this specific point.
+
+Consider how you would implement a merge-sort in the non-constant case. You would have to have the sorted list available as a contiguous piece of memory. How do you allocate a list of $n$ elements if $n$ is not a constant?
+
+That is true for an implementation, but the "Merge" operation is meant to run on a list of sorted arrays. You shouldn't try to "implement merge sort in non-constant space" because it has a different purpose.
+
+What would you say if someone told you that there was an algorithm for sorting lists of $m$ sorted arrays in $O(\log m)$ time, with the caveat that they may not be unique and not required to be a list?
+
+I would say that this is not an algorithm for sorting lists of sorted arrays, but for sorting of $m$ lists of sorted arrays, if that's what they mean. If this algorithm for sorting is implemented for lists of uns</div></body></html><!-- 2022-07-17 11:29:23 

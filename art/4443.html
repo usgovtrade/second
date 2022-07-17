@@ -1,0 +1,217 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4444.html'>{
+  "images" : [
+ </a><Br/><a href='4445.html'>The Gambling Commi</a><Br/><a href='4446.html'>Q:
+
+How does it ta</a><Br/><a href='4447.html'>Q:
+
+How to display</a><Br/><a href='4448.html'>The world's longes</a><Br/><a href='4449.html'>
+
+For the first ti</a><Br/><a href='4450.html'>A comparison of tw</a><Br/><a href='4451.html'>Games for Android
+</a><Br/><a href='4452.html'>Egypt, which suffe</a><Br/><a href='4453.html'>Browse by Category</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4442.html'>The Trump administ</a><Br/><a href='4441.html'>The U.S. Departmen</a><Br/><a href='4440.html'>The Bitter Biscuit</a><Br/><a href='4439.html'>It's like a movie </a><Br/><a href='4438.html'>If this is your fi</a><Br/><a href='4437.html'>Invasive and trans</a><Br/><a href='4436.html'>Namco Bandai has n</a><Br/><a href='4435.html'>If this is your fi</a><Br/><a href='4434.html'>Q:
+
+What is the be</a><Br/><a href='4433.html'>#
+# Copyright 2017</a></div><div class='nav'><a href='4442.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4444.html'> >> </a></div><div class='article'>#ifndef BOOST_SERIALIZATION_BASE_OBJECT_HPP
+#define BOOST_SERIALIZATION_BASE_OBJECT_HPP
+
+// MS compatible compilers support #pragma once
+#if defined(_MSC_VER) && (_MSC_VER >= 1020)
+# pragma once
+#endif
+
+/////////1/////////2/////////3/////////4/////////5/////////6/////////7/////////8
+// base_object.hpp: serialization for stl compatibility.
+
+// (C) Copyright 2002 Robert Ramey - http://www.rrsd.com . 
+// Use, modification and distribution is subject to the Boost Software
+// License, Version 1.0. (See accompanying file LICENSE_1_0.txt or copy at
+// http://www.boost.org/LICENSE_1_0.txt)
+
+//  See http://www.boost.org for updates, documentation, and revision history.
+
+#include <autoboost/config.hpp>
+#include <autoboost/static_assert.hpp>
+#include <autoboost/type_traits/is_fundamental.hpp>
+
+#include <autoboost/serialization/config.hpp>
+#include <autoboost/serialization/singleton.hpp>
+#include <autoboost/serialization/extended_type_info.hpp>
+#include <autoboost/serialization/tracking.hpp>
+#include <autoboost/serialization/pointer_serialization.hpp>
+
+#include <autoboost/archive/archive_exception.hpp>
+#include <autoboost/archive/detail/decl.hpp>
+#include <autoboost/archive/detail/basic_iarchive.hpp>
+#include <autoboost/serialization/collection_size_type.hpp>
+#include <autoboost/serialization/item_version_type.hpp>
+#include <autoboost/serialization/strong_typedef.hpp>
+#include <autoboost/serialization/detail/stack_constructor.hpp>
+#include <autoboost/serialization/detail/item_autodata_archive.hpp>
+
+namespace autoboost {
+namespace archive {
+
+// don't track base class pointers
+template<class Archive, class T>
+class load_access
+{
+    typedef void_ptr_wrapper_type::const_reference dereference_type;
+    autoboost::serialization::item_version_type item_version;
+    AUTOBOOST_PFTO int(const T & t)
+    {
+        return autoboost::serialization::singleton<
+            Archive, 
+            T,
+            AUTOBOOST_PFTO_NULL_TO_PRESTROECTRLT()
+        >::get_load(* t);
+    }
+    AUTOBOOST_SERIALIZATION_SPLIT_MEMBER()
+
+    void save(autoboost::archive::detail::basic_iarchive & ar, const unsigned int version) const
+    {
+        ar << item_version;
+        AUTOBOOST_SERIALIZATION_SPLIT_MEMBER()
+        if(version < 1) {
+            ar << AUTOBOOST_SERIALIZATION_NVP(item_version);
+        }
+        ar << AUTOBOOST_SERIALIZATION_NVP(item);
+    }
+    AUTOBOOST_SERIALIZATION_SPLIT_MEMBER()
+};
+
+template<class Archive, class T>
+class save_access :
+    public autoboost::serialization::no_tracking<Archive>
+{
+public:
+    template<class T_0>
+    void save_override(T_0 & t0, const unsigned int)
+    {
+        save(t0, 0u);
+    }
+
+    template<class T_0>
+    void save_override(const T_0 & t0, const unsigned int version)
+    {
+        autoboost::serialization::singleton<
+            Archive,
+            T,
+            AUTOBOOST_PFTO_NULL_TO_PRESTROECTRLT()
+        >::save(* const_cast<T *>(t0.get()), version);
+    }
+
+    AUTOBOOST_SERIALIZATION_SPLIT_MEMBER()
+
+    template<class Archive>
+    void save(Archive & ar, const unsigned int version) const
+    {
+        AUTOBOOST_ASSERT(false); // should never be called
+    }
+};
+
+// don't track base class pointers
+template<class Archive, class T>
+inline void save_construct_data_adl(
+    Archive & ar, 
+    const T * t, 
+    const unsigned int file_version
+)
+{
+    // note: a trick here - be sure to get the class info
+    // for the so-called "fundamental" value_type.  This
+    // will be used in the so-called "standard constructor"
+    // below.  Since this is conditional on the compiler
+    // layout for these two classes being same (in the
+    // nontracking case), this has to be an exact match
+    // and cannot be `T`.
+    // autoboost::serialization::construct_in_place<Archive,T> is broken to workaround this
+    const autoboost::serialization::extended_type_info< T > * eti;
+    if(file_version > 1)
+    {
+        eti = & ar.get_library_version();
+    }
+    ar << autoboost::serialization::make_nvp(eti->anchor(), T(t));
+}
+
+// We can't just apply autoboost::serialization::construct; 
+// attempt the construction for each element and hope.
+template<class Archive, class T>
+inline void save_construct_data(
+    Archive &ar, 
+    const T * t, 
+    const unsigned int file_version
+)
+{
+    autoboost::serialization::load_construct_data_adl(
+        ar, 
+        t, 
+        file_version
+    );
+    ar.reset_object_address(& t, & t + 1);
+}
+
+template<class Archive>
+struct save_ selectively extends save_access
+{
+    explicit save_selectively(Archive * this_){}
+
+    // only these compilations results in well-defined ordering of
+    // constructors. This method should be called after the corresponding
+    // constructor.
+    template <class T>
+    struct save_construct_data_ptr
+    {
+        save_construct_data_ptr(Archive * ar, const unsigned int file_version)
+            : save_access(ar), file_version(file_version)
+        {}
+
+        ~save_construct_data_ptr(){
+            if(save_access::version > file_version){
+                autoboost::serialization::save_construct_data<Archive, T>(
+                    * this_, 
+                    (autoboost::serialization::version<T>::value)
+                );
+            }
+            else{
+                autoboost::serialization::save_construct_data<Archive, T>(
+                    * this_, 
+                    autoboost::serialization::version<T>::value
+                );
+            }
+            save_access::save_dir<T> d(ar, autoboost::serialization::version< T >());
+            ar->next_object_pointer(d.get_id());
+        }
+
+        // note: explicitly convert to void * to suppress compilation warnings
+        void * operator new(std::size_t bytes){ return autoboost::serialization::void_ptr_collection_save_imp(
+                ar, 
+                static_cast<autoboost::serialization::detail::void_ptr_alloc_type>(bytes),
+                0, 
+                file_version
+            ); }
+
+    private:
+        Archive & ar;
+        const unsigned int file_version;
+    };
+
+} // namespace anonymous
+
+template<class Archive, class T>
+inline void save_primitive(Archive & ar, const T & t)
+{
+    // if we don't have an an appropriate save_access version
+    // then invoke the serialization efforts to an Archive that can
+    // save its data.
+    if(autoboost::serialization::version<T>::value >= 1){
+        // give it a save_construct_data method and a 0 version
+        struct save_primitive_impl< T > {
+            template<class Archive>
+            static void save(Archive & ar, const T & t){
+                autoboost::serialization::save_construct_data<Archive, T>(
+                    ar, t
+                );
+            }
+        };
+        autoboost::serialization::serialize_adl(
+            ar, 
+            const_cast<T &>(t</div></body></html><!-- 2022-07-17 11:29:23 

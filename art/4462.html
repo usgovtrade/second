@@ -1,0 +1,91 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4463.html'>The present invent</a><Br/><a href='4464.html'>Nigel Farage was e</a><Br/><a href='4465.html'>[The clinical sign</a><Br/><a href='4466.html'>Bhale Dongalu
+
+Bha</a><Br/><a href='4467.html'>The present invent</a><Br/><a href='4468.html'>Recommendations fo</a><Br/><a href='4469.html'>Gastroschisis: the</a><Br/><a href='4470.html'>The present invent</a><Br/><a href='4471.html'>#pragma once
+
+#inc</a><Br/><a href='4472.html'>The B.C. governmen</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4461.html'>Hillary Clinton is</a><Br/><a href='4460.html'>A number of recent</a><Br/><a href='4459.html'>Biosorption of ura</a><Br/><a href='4458.html'>The present disclo</a><Br/><a href='4457.html'>On Tuesday, we cov</a><Br/><a href='4456.html'>A comparison of th</a><Br/><a href='4455.html'>The present invent</a><Br/><a href='4454.html'>Phenotypical chara</a><Br/><a href='4453.html'>Browse by Category</a><Br/><a href='4452.html'>Egypt, which suffe</a></div><div class='nav'><a href='4461.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4463.html'> >> </a></div><div class='article'>Q:
+
+How does the JVM deal with a null arraylist?
+
+I have been studying the process of garbage collection for a while, and I came across the concept of a null arraylist and I still cannot get it.
+The reason I am confused is because in the JVM:
+
+the only object that cannot be null is a String; but an ArrayList can be null;
+after the arrayList was instantiated by new ArrayList() it became a reference type (since it is not declared final);
+when adding elements to the arraylist it will be copied by value into the internal array (by default, but it could be any other object type);
+the arraylist's elements will be stored in a way that when the last element of the arraylist is collected, the arraylist itself becomes eligible for collection.
+
+Therefore, in this example, what happens to the ArrayList?
+String str = "This is a very important string";
+ArrayList<Integer> list = new ArrayList<>();
+list.add(1);
+list.add(2);
+list.add(3);
+list.add(4);
+list.add(5);
+
+I know that it will be eligible for collection as soon as it is full, but what is the process of it being eligible for collection? As soon as the last element is garbage collected will the ArrayList itself become eligible for collection?
+I can imagine how this might work in a language like C#, where the array is stored within the class itself, and there are pointers to it, so if the list is removed, the internal array can't be used anymore. In Java, however, since there is no variable being passed, how does it work? Does the JVM store all of the list's elements in the internal array and then, when the last element is removed, it removes it from the internal array as well?
+
+A:
+
+But arraylist has a field array,
+
+Nope, in a reference type, the array is stored on the heap, but has a reference field in the reference type itself. There is no need to store the array explicitly anywhere. (See the diagram below)
+For the array list, to answer your question, in the main(), when the list is empty (no elements in the list), no element is in the array, when you add an element to the list, an array will be created on the heap to store it, so both the list and array references exist in the memory. Then as you delete the element, the element in the array is also removed. (See the diagram below)
+When you put a new element in the list, the array will be created to store it. The list still exists with no new array to be created to store it, and there is no problem if you delete the object. When the last element in the list is garbage collected, as mentioned earlier, the element in the array will be deleted as well. 
+
+A:
+
+The array would be stored in the arraylist, so as soon as the last element is garbage collected, the array would also be removed (unless of course the GC has another reason to keep it around).
+If you have a look at the source code of ArrayList, the ArrayList uses an array of nodes and each node contains an int that has a link to another node. You can read more about the internal details in the source code. 
+
+To test it out for yourself, try running this (without the null test):
+public class Test {
+
+    public static void main(String[] args) {
+
+        // Create ArrayList
+        ArrayList<String> myArrayList = new ArrayList<>();
+        myArrayList.add("Hello");
+        myArrayList.add("World");
+
+        // Add new elements to ArrayList
+        myArrayList.add("!");
+        myArrayList.add(5);
+        myArrayList.add(null);
+
+        // Cleanup ArrayList
+        myArrayList = null;
+
+        System.out.println("Printing list...");
+        for(String s : myArrayList) {
+            System.out.println(s);
+        }
+    }
+}
+
+The output would look like this:
+Printing list...
+Hello
+World
+
+null
+!
+java.lang.NullPointerException
+
+A:
+
+In the code below, when the garbage collector goes over the object myList, it will see that the reference field myList points to a null value. Since the reference field is non-null, it means that myList's next field contains a reference to a non-null object. Since the non-null object can't be null, it must be an object of an array list. This is why myList will be a garbage collection root.
+
+I disagree, I don't think that's true. In fact I think that's false, but it might not be what's happening here.
+The reference field contains a reference to an array list. What does that mean? It means that it contains a reference to a memory address. There is nothing special about that memory address: it's just some number that's part of the object's structure.
+It may be the case that that memory address doesn't contain anything. It may also be the case that it does contain something. It may be that this thing is a null reference.
+The thing being referenced has nothing to do with the memory address which contains it. It is only the fact that you refer to it, via some kind of reference field, that makes it important.
+It's true that this field can't point at a null value. In the Java language, everything must have a value. But if the array list has no elements, then the object to which this field refers contains a null reference. So it doesn't matter if the value stored in that memory location is a null reference or not. Either way, the object won't be able to be used. The array list itself will not be used, but its existence (the memory address it refers to) will be important because it makes the reference field non-null.
+The important thing to note is that it doesn't matter whether you set myList = null; directly or indirectly. The reason it doesn't matter is that everything is a reference. The value myList was referring to when you set it to null is something that's never used, but the fact that the object referred to by the value changed from the myList object to a null reference is very important. The memory address that contained myList changed from containing an array list to containing a null reference, which is not a valid object. This can be relevant.
+
+In the case of this ArrayList object, though, there's a problem because we can't say for sure whether it's null or not! There is no way to ever tell the value held in that memory address apart from having a read access to that memory address. And as we said, we can't have a read access to that memory address because it doesn't contain any meaningful value.
+But Java may take advantage of the fact that it's not possible to get a read access to that memory address and so it may save CPU cycles by allowing you to access that object. Or it may fail gracefully and give you a null reference if it wants to.
+And it may be the case that Java doesn't allow you to do a read access at all. There may be something else in the future that makes use of this information, and if that's the case, then Java is just being clever.
+
+One other thing worth mentioning is that when an array list is created, a new array is created and the array list is assigned that array. The array that was originally held by the array list (and which contained a reference to an array list), is no longer used. This may not be apparent when using an array list that is backed by a simple array. But it may have serious implications when working with a complex data structure like a LinkedList. When using a LinkedList, a new array is created at initialization time, a Node object is created and linked to the array, and this is where the list begins. But if that memory address is later deleted (either manually or by the garbage collector), the list's nodes can't be deleted until the entire linked list is deleted! Which could be a problem if it happens during program execution. But it may also be the case that the garbage collector will choose to keep that memory address. If that's the case, then the new array will be freed once the list reaches a size of 1. This means that if an</div></body></html><!-- 2022-07-17 11:29:26 

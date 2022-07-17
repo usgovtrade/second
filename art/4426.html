@@ -1,0 +1,147 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4427.html'>Q:
+
+how to remove </a><Br/><a href='4428.html'>/*
+ * This file is</a><Br/><a href='4429.html'>The present disclo</a><Br/><a href='4430.html'>Kentucky Football </a><Br/><a href='4431.html'>---
+abstract: 'Ion</a><Br/><a href='4432.html'>It's just like a b</a><Br/><a href='4433.html'>#
+# Copyright 2017</a><Br/><a href='4434.html'>Q:
+
+What is the be</a><Br/><a href='4435.html'>If this is your fi</a><Br/><a href='4436.html'>Namco Bandai has n</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4425.html'>Q:
+
+How to access </a><Br/><a href='4424.html'>New Mexico Gov. Su</a><Br/><a href='4423.html'>This invention rel</a><Br/><a href='4422.html'>It may be just wee</a><Br/><a href='4421.html'>AUSTIN - After two</a><Br/><a href='4420.html'>Brasil: Ao menos c</a><Br/><a href='4419.html'>In recent years, t</a><Br/><a href='4418.html'>As part of a pilot</a><Br/><a href='4417.html'>//  SuperTux
+//  C</a><Br/><a href='4416.html'>The present invent</a></div><div class='nav'><a href='4425.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4427.html'> >> </a></div><div class='article'>Q:
+
+How to create a class that contains multiple function definitions in C#?
+
+I want to create a class which can contain multiple functions, for example, I want to do this:
+class A{
+   public:
+   void test1(); //function one
+   void test2(); //function two
+   void test3(); //function three
+}
+
+and if I want to add another function, I would do something like this:
+class A{
+   public:
+   void test1(); //function one
+   void test2(); //function two
+   void test3(); //function three
+
+   void test4(); //add new function
+}
+
+I am not good at C# as I have only learned in a few months, if there's anything that can improve my question, please let me know! Thanks!
+
+A:
+
+A C# class, or any kind of programming element, cannot have multiple definitions. The best you can do is a static method, and provide an instance as a parameter to that method.
+
+A:
+
+I think you mean 'public' methods.  You have to mark one or more of the methods with the keyword 'static' to make them 'class' methods.  A good place to start for learning C# is: http://www.csharp-station.com/Tutorials/.
+
+A:
+
+Make it static.
+public static void test1() { ... }
+public static void test2() { ... }
+
+...
+
+public static void test5() { ... }
+
+Or, use C++/CLI style in C#.
+
+A:
+
+It's all about your C++ background. You have been used to create functions, methods and the like in different ways, and now you are coming to C# and seeing two different meanings of classes. 
+The easiest way to call a group of functions from one method is to create a delegate:
+private delegate void DoSomething();
+
+private DoSomething test1 {
+   get { return delegate { foo(); }
+}
+
+private DoSomething test2 {
+   get { return delegate { bar(); }
+}
+
+private DoSomething test3 {
+   get { return delegate { baz(); }
+}
+
+private DoSomething test4 {
+   get { return delegate { qux(); }
+}
+
+private DoSomething test5 {
+   get { return delegate { gee(); }
+}
+
+private DoSomething test6 {
+   get { return delegate { zap(); }
+}
+
+...and call them like so:
+private void MyMethod(DoSomething doSomething) {
+   if(doSomething == null) {
+      return;
+   }
+
+   if (doSomething.MethodName == "foo") {
+      // do foo
+   } else if (doSomething.MethodName == "bar") {
+      // do bar
+   } else if (doSomething.MethodName == "baz") {
+      // do baz
+   } else if (doSomething.MethodName == "qux") {
+      // do qux
+   } else if (doSomething.MethodName == "gee") {
+      // do gee
+   } else if (doSomething.MethodName == "zap") {
+      // do zap
+   }
+}
+
+Alternatively, you can use a class instead of a delegate, and create multiple methods with different names:
+public class DoSomething {
+   public void foo() { }
+   public void bar() { }
+   public void baz() { }
+   public void qux() { }
+   public void gee() { }
+   public void zap() { }
+}
+
+public class MyMethod {
+   private DoSomething doSomething;
+
+   private void MyMethod(DoSomething doSomething) {
+      if(doSomething == null) {
+         return;
+      }
+
+      if (doSomething.MethodName == "foo") {
+         // do foo
+      } else if (doSomething.MethodName == "bar") {
+         // do bar
+      } else if (doSomething.MethodName == "baz") {
+         // do baz
+      } else if (doSomething.MethodName == "qux") {
+         // do qux
+      } else if (doSomething.MethodName == "gee") {
+         // do gee
+      } else if (doSomething.MethodName == "zap") {
+         // do zap
+      }
+   }
+}
+
+You could do it that way, as well, it is up to you.
+
+A:
+
+You're looking for a static method (as the others have suggested). However, as @Ladislav mentioned, you shouldn't use static unless you're really that certain of your code won't need to be interacted with outside of the class.
+I'd suggest you use public void methods or classes (or whatever they're called in C#) instead, they're more flexible and you can even add an instance to the class and pass an instance to the method if you want. (This is not recommended for functions that don't need access to data that other classes can access though.)
+
+</div></body></html><!-- 2022-07-17 11:29:20 

@@ -1,0 +1,94 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4405.html'>Cochlear developme</a><Br/><a href='4406.html'>Vision from the he</a><Br/><a href='4407.html'>"He was the one wh</a><Br/><a href='4408.html'>[Study of the mech</a><Br/><a href='4409.html'>Therapeutic drug m</a><Br/><a href='4410.html'>Q:
+
+Can I have an </a><Br/><a href='4411.html'>
+Show HN: A JavaSc</a><Br/><a href='4412.html'>I’ve been using Wo</a><Br/><a href='4413.html'>Introduction {#Sec</a><Br/><a href='4414.html'>#ifndef __STDLIB_H</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4403.html'>Cotton fabrics are</a><Br/><a href='4402.html'>Carcinoma arising </a><Br/><a href='4401.html'>---
+abstract: 'We </a><Br/><a href='4400.html'>WASHINGTON — The T</a><Br/><a href='4399.html'>The present invent</a><Br/><a href='4398.html'>In case you missed</a><Br/><a href='4397.html'>Q:
+
+How to fix "A </a><Br/><a href='4396.html'>
+
+For every $1,000</a><Br/><a href='4395.html'>This application c</a><Br/><a href='4394.html'>Introduction {#Sec</a></div><div class='nav'><a href='4403.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4405.html'> >> </a></div><div class='article'>Q:
+
+Avoiding SQL Injections using Entity Framework 6?
+
+Is it possible to do a database query using a string variable to prevent SQL injections?  Example:
+string name = txtQuery.Text;
+string output = from s in context.MyTable
+                where s.Name == name
+                select s.Name;
+
+I know I can just write my own SQL queries, but I like Entity Framework.  If it's possible, how?
+
+A:
+
+You could use the method syntax, as shown in the code below.
+var result = await context.Database.SqlQuery<string>("select Name from MyTable where Name = @0", name).FirstOrDefaultAsync();
+
+Or you could use the expression syntax if you're ok with using System.Linq;
+string result = await context.Database.SqlQuery<string>(@"select Name from MyTable where Name = @0", name).FirstOrDefaultAsync();
+
+You could also do something like this;
+string result = context.MyTable
+                        .Where(s => s.Name == name)
+                        .Select(s => s.Name)
+                        .FirstOrDefault();
+
+Just like the queries you posted in your question.
+It will not matter in the end though, as it will be converted to T-SQL anyway.
+
+A:
+
+Yes, you can do that like this:
+string output = context.Database.SqlQuery<string>(
+    "select Name from MyTable where Name = @0", name).FirstOrDefault();
+
+It will be converted to T-SQL.
+
+A:
+
+I'm not sure I understand your problem. The entity framework is translated to SQL in the background and you can freely access the underlying command as such:
+var cmd = context.Database.Connection.CreateCommand();
+var results = cmd.ExecuteReader().Select(row => row["Name"]);
+
+var result = cmd.Parameters.AddWithValue("@0", name).Value;
+
+Alternatively, you could just access a raw string via ExecuteStoreCommand().
+You have to be very careful when constructing dynamic SQL to guard against SQL Injections, you have to be very careful when interpolating strings with a variable into SQL code, you have to be very careful when escaping strings with SQL chars. In short, you have to use parameters to create secure code, because your code isn't secure. The main problem here is that raw string or dynamic SQL makes your code harder to test and more difficult to understand.
+
+A:
+
+No need to escape the names of the fields and tables or the where clauses. The database protects you from sql injection. It is even advised to use stored procedures (or at least parameterized adhoc sql) in code, in order to avoid sql injection, especially since an application can do much more damage then an attacker who gained access to your database. 
+Just avoid inserting arbitrary strings directly into a query, which is often called "blind sql injection". But sql injection in your code and sql injection in your queries are two different things. 
+
+If you make a dynamic sql query like that, just use parameters:
+var name = "Sven";
+
+var result = context.Database.SqlQuery<string>
+                    ("select Name from MyTable where Name = @0", name).FirstOrDefault();
+
+(or ExecuteStoreCommand())
+
+If you actually have a string, such as the one returned from a client, you would normally do this:
+var result = context.Database.SqlQuery<string>("select Name from MyTable where Name = @0", "Sven").FirstOrDefault();
+
+You could create the parameter to be used in the query from your client, and pass it to context.Database.SqlQuery<T>(). The command object is created in the database context and sent as parameter of the ExecuteReader() method.  
+private static int id;
+private string query = "select Name from MyTable where Name = @0";
+
+private string PrepareSql()
+{
+    var parameter = new OracleParameter("@0", OracleDbType.Varchar2);
+    parameter.Value = id;
+    return query;
+}
+
+var result = context.Database.ExecuteReader(CommandBehavior.CloseConnection); // This is optional.
+
+Note that the connection is automatically closed, if you use CommandBehavior.CloseConnection
+
+To prevent your code from SQL Injections, you can use the String.Contains() method. 
+
+Note that these are pretty broad topics. I recommend you to take a look at the OWASP security recommendations. 
+
+But also use parameterized adhoc queries or stored procedures (which can be even done by using a library like Dapper) 
+
+</div></body></html><!-- 2022-07-17 11:29:16 

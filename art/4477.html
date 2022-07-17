@@ -1,0 +1,337 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4478.html'>As the Trump admin</a><Br/><a href='4479.html'>The present invent</a><Br/><a href='4480.html'>Q:
+
+How to make a </a><Br/><a href='4481.html'>In addition, our p</a><Br/><a href='4482.html'>Q:
+
+In what order </a><Br/><a href='4483.html'>Category: Internet</a><Br/><a href='4484.html'>When I read about </a><Br/><a href='4485.html'>What do you think?</a><Br/><a href='4486.html'>Phenomenon and cli</a><Br/><a href='4487.html'>WILT is a digital </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4476.html'>The present invent</a><Br/><a href='4475.html'>1. Field of the In</a><Br/><a href='4474.html'>"We've had a lot o</a><Br/><a href='4473.html'>Familial amyotroph</a><Br/><a href='4472.html'>The B.C. governmen</a><Br/><a href='4471.html'>#pragma once
+
+#inc</a><Br/><a href='4470.html'>The present invent</a><Br/><a href='4469.html'>Gastroschisis: the</a><Br/><a href='4468.html'>Recommendations fo</a><Br/><a href='4467.html'>The present invent</a></div><div class='nav'><a href='4476.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4478.html'> >> </a></div><div class='article'><?php
+
+namespace Illuminate\Auth\Passwords;
+
+use Illuminate\Support\Str;
+use InvalidArgumentException;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+
+/**
+ * @mixin \Illuminate\Contracts\Auth\CanResetPassword
+ */
+class PasswordBrokerManager implements PasswordBrokerManagerInterface
+{
+    /**
+     * The application implementation of the user provider.
+     *
+     * @var \Illuminate\Contracts\Auth\UserProviderInterface
+     */
+    protected $provider;
+
+    /**
+     * The user resets lockout period.
+     *
+     * @var int|null
+     */
+    protected $resetPasswordsWithin = null;
+
+    /**
+     * Create a new password broker manager instance.
+     *
+     * @param  \Illuminate\Contracts\Auth\UserProviderInterface $provider
+     * @param int|null                                       $resetPasswordsWithin
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function __construct(
+        UserProviderInterface $provider,
+        $resetPasswordsWithin = null
+    ) {
+        $this->provider = $provider;
+
+        if ($resetPasswordsWithin === null) {
+            $resetPasswordsWithin = config('auth.passwords.reset_within');
+        }
+
+        if (! $resetPasswordsWithin) {
+            throw new InvalidArgumentException(
+                'The user provider needs to be able to retrieve the ' .
+                    'reset password within value.'
+            );
+        }
+
+        $this->resetPasswordsWithin = $resetPasswordsWithin;
+    }
+
+    /**
+     * Create a new password reset hash instance.
+     *
+     * @param  string $user
+     *
+     * @return string
+     */
+    public function createPasswordResetHash($user)
+    {
+        return sha1($this->provider->getAuthIdentifier($user));
+    }
+
+    /**
+     * Determine if the password broker supports the given token.
+     *
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function supportsToken($token)
+    {
+        return $this->supports($token, 'token');
+    }
+
+    /**
+     * Determine if the password broker supports the given login.
+     *
+     * @param string $login
+     *
+     * @return bool
+     */
+    public function supportsLogin($login)
+    {
+        return $this->supports($login, 'login');
+    }
+
+    /**
+     * Determine if the password broker supports the given reset token.
+     *
+     * @param string $resetToken
+     *
+     * @return bool
+     */
+    public function supportsReset($resetToken)
+    {
+        return $this->supports($resetToken, 'reset');
+    }
+
+    /**
+     * Determine if the password broker supports the given reset password.
+     *
+     * @param string $reset
+     *
+     * @return bool
+     */
+    public function supportsResetPassword($reset)
+    {
+        return $this->supports($reset, 'reset');
+    }
+
+    /**
+     * Reset a user's password with the given token.
+     *
+     * @param string $token
+     */
+    public function resetPassword($token)
+    {
+        $user = $this->provider->retrieveByToken($token);
+
+        if ($user) {
+            $user->setPassword(null);
+        }
+    }
+
+    /**
+     * Reset a user's password with the given login.
+     *
+     * @param string $login
+     */
+    public function resetLogin($login)
+    {
+        $user = $this->provider->retrieveByCredentials(
+            $login, $this->resetPasswordsWithin
+        );
+
+        if ($user) {
+            $user->setPassword(null);
+
+            $this->provider->removeUser($user);
+        }
+    }
+
+    /**
+     * Update a user's password with the given token.
+     *
+     * @param string $token
+     * @param string $password
+     *
+     * @return void
+     */
+    public function updatePassword($token, $password)
+    {
+        $user = $this->provider->retrieveByToken($token);
+
+        if (! is_null($user)) {
+            $user->setPassword($password);
+
+            $this->provider->updateUser($user);
+        }
+    }
+
+    /**
+     * Determine if the password broker has the given token.
+     *
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function hasToken($token)
+    {
+        return $this->getToken($token) !== null;
+    }
+
+    /**
+     * Determine if the password broker has the given login.
+     *
+     * @param string $login
+     *
+     * @return bool
+     */
+    public function hasLogin($login)
+    {
+        return $this->getToken($login) !== null;
+    }
+
+    /**
+     * Retrieve a user's token.
+     *
+     * @param string $login
+     *
+     * @return string|null
+     */
+    public function getLogin($login)
+    {
+        return $this->provider->retrieveByCredentials(
+            $login, $this->resetPasswordsWithin
+        );
+    }
+
+    /**
+     * Retrieve a user's token.
+     *
+     * @param string $email
+     *
+     * @return string|null
+     */
+    public function getEmail($email)
+    {
+        return $this->provider->retrieveByEmail($email);
+    }
+
+    /**
+     * Clear a user's password from the broker.
+     *
+     * @param string $token
+     */
+    public function forget($token)
+    {
+        if (! $token = $this->getToken($token)) {
+            return;
+        }
+
+        $user = $this->provider->retrieveByToken($token);
+
+/*
+        if (method_exists($user, 'clear')) {
+            $user->clear();
+        }
+*/
+
+        $this->provider->forgetByToken($token);
+    }
+
+    /**
+     * Remove the given user from the broker.
+     *
+     * @param string $login
+     *
+     * @return void
+     */
+    public function forgetByLogin($login)
+    {
+        if (! $user = $this->getLogin($login)) {
+            return;
+        }
+
+        $this->provider->forgetByLogin($user);
+    }
+
+    /**
+     * Get a token for the given logins.
+     *
+     * @param string $login
+     * @param string $password
+     *
+     * @return string|null
+     */
+    public function getLoginToken($login, $password)
+    {
+        return $this->provider->generateToken(
+            $this->resetPasswordsWithin ? null : $login, $password
+        );
+    }
+
+    /**
+     * Get the token for a given user.
+     *
+     * @param string $user
+     *
+     * @return string|null
+     */
+    public function getToken($user)
+    {
+        return $this->provider->retrieveByToken($user);
+    }
+
+    /**
+     * Retrieve a user by their token.
+     *
+     * @param string $token
+     *
+     * @return string|null
+     */
+    public function retrieveByToken($token)
+    {
+        return $this->provider->retrieveByToken($token);
+    }
+
+    /**
+     * Determine if the password broker has a user with the given token.
+     *
+     * @param string $token
+     *
+     * @return bool
+     */
+    public function hasUser($token)
+    {
+        return $this->getUserByToken($token) !== null;
+    }
+
+    /**
+     * Determine if the password broker has a user with the given login.
+     *
+     * @param string $login
+     *
+     * @return bool
+     */
+    public function hasUserByLogin($login)
+    {
+        return $this->getUserByLogin($login) !== null;
+    }
+
+    /**
+     * Retrieve a user by token.
+     *
+     * @param string $token
+     *
+     * @return User|null
+     */
+    public function getUserByToken($token)
+    {
+        return $this->provider->retrieveByToken($token);
+    }
+
+    /**
+     * Retrieve a user by</div></body></html><!-- 2022-07-17 11:29:28 

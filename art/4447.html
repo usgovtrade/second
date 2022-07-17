@@ -1,0 +1,165 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4448.html'>The world's longes</a><Br/><a href='4449.html'>
+
+For the first ti</a><Br/><a href='4450.html'>A comparison of tw</a><Br/><a href='4451.html'>Games for Android
+</a><Br/><a href='4452.html'>Egypt, which suffe</a><Br/><a href='4453.html'>Browse by Category</a><Br/><a href='4454.html'>Phenotypical chara</a><Br/><a href='4455.html'>The present invent</a><Br/><a href='4456.html'>A comparison of th</a><Br/><a href='4457.html'>On Tuesday, we cov</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4446.html'>Q:
+
+How does it ta</a><Br/><a href='4445.html'>The Gambling Commi</a><Br/><a href='4444.html'>{
+  "images" : [
+ </a><Br/><a href='4443.html'>#ifndef BOOST_SERI</a><Br/><a href='4442.html'>The Trump administ</a><Br/><a href='4441.html'>The U.S. Departmen</a><Br/><a href='4440.html'>The Bitter Biscuit</a><Br/><a href='4439.html'>It's like a movie </a><Br/><a href='4438.html'>If this is your fi</a><Br/><a href='4437.html'>Invasive and trans</a></div><div class='nav'><a href='4446.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4448.html'> >> </a></div><div class='article'>Q:
+
+How to display all database data to a html table in ruby on rails?
+
+I am new to Ruby on Rails. I am struggling with fetching all the data from the database to a html table.
+This is the controller that fetches the data from the db and pass it to a view. 
+    @result = Result.all
+
+and this is the view:
+    <p>
+        <b>Name</b>
+        <%= @result.name %>
+    </p>
+    <p>
+        <b>Address</b>
+        <%= @result.address %>
+    </p>
+    <p>
+        <b>Contact No.</b>
+        <%= @result.contactno %>
+    </p>
+    <p>
+        <b>Age</b>
+        <%= @result.age %>
+    </p>
+    <p>
+        <b>Gender</b>
+        <%= @result.gender %>
+    </p>
+    <p>
+        <b>Date</b>
+        <%= @result.date %>
+    </p>
+
+A:
+
+You can do this by looping through all of the results:
+<ul>
+<% @result.each do |res| %>
+  <li><%= res.name %></li>
+<% end %>
+</ul>
+
+To use the index of the iteration, you can use the index operator:
+<ul>
+<% @result.each_with_index do |res,index| %>
+  <li><%= res.name %></li>
+<% end %>
+</ul>
+
+A:
+
+If you have more than one result, it's recommended that you use a method to loop through the result set:
+<ul>
+<% @results.each do |result| %>
+  <li><%= result.name %></li>
+  <li><%= result.date %></li>
+  <li><%= result.gender %></li>
+  <li><%= result.age %></li>
+<% end %>
+</ul>
+
+or, alternatively, use a <% @results.each do |result| %> block in your view.
+
+A:
+
+In short, display it in a table, like this:
+- @results.each do |row|
+  - row.each do |attribute|
+    - puts attribute.to_s
+
+That will display each row, and each attribute in the table.
+
+A:
+
+Create view like this and run
+<table>
+<% @result.each do |result| %>
+    <tr><td><%= result.name %></td></tr>
+    <tr><td><%= result.date %></td></tr>
+    <tr><td><%= result.gender %></td></tr>
+    <tr><td><%= result.age %></td></tr>
+<% end %>
+</table>
+
+And that will create a table like this : 
++-----+-----+-------+-------+-------+------+--------+
+| name| date| gender| age   | address| contact| city   |
++-----+-----+-------+-------+-------+------+--------+
+| Joe | 03  | male  | 30    | x    |     | Paris  |
++-----+-----+-------+-------+-------+------+--------+
+
+Update: 
+If you want to use form to update the rows, create view like this 
+<table>
+<% @result.each do |result| %>
+    <tr><td><%= result.name %></td></tr>
+    <tr><td><%= result.date %></td></tr>
+    <tr><td><%= result.gender %></td></tr>
+    <tr><td><%= result.age %></td></tr>
+<% end %>
+</table>
+
+And fill these inputs with their names, update button with id attribute_1_upadte so when click on that it will change values of input. Do not forget to set id for every input. I have updated code below for you:
+<input id="<%= "name_"+index %>" name="name" type="text">
+<input id="<%= "date_"+index %>" name="date" type="text">
+<input id="<%= "gender_"+index %>" name="gender" type="text">
+<input id="<%= "age_"+index %>" name="age" type="text">
+<button onclick="updte(index);">Update</button>
+
+<script>
+    function updte(index){
+    var value = "name_"+index.toString();
+    document.getElementById(value).value = "Mike";
+    var value = "date_"+index.toString();
+    document.getElementById(value).value = "05/01/1988";
+    var value = "gender_"+index.toString();
+    document.getElementById(value).value = "male";
+    var value = "age_"+index.toString();
+    document.getElementById(value).value = "30";
+}
+</script>
+
+After click Update your table will change like this :
++-----+-----+-------+-------+-------+------+--------+
+| name| date| gender| age   | address| contact| city   |
++-----+-----+-------+-------+-------+------+--------+
+| Mike| 05  | male  | 30    | x    |     | Paris  |
++-----+-----+-------+-------+-------+------+--------+
+
+Update: (if you want to fetch all your results without form)
+<table>
+<% @result.each do |result| %>
+    <tr><td><%= result.name %></td></tr>
+    <tr><td><%= result.date %></td></tr>
+    <tr><td><%= result.gender %></td></tr>
+    <tr><td><%= result.age %></td></tr>
+<% end %>
+</table>
+
+<script>
+    function updte(index){
+    var value = "name_"+index.toString();
+    document.getElementById(value).value = "Mike";
+    var value = "date_"+index.toString();
+    document.getElementById(value).value = "05/01/1988";
+    var value = "gender_"+index.toString();
+    document.getElementById(value).value = "male";
+    var value = "age_"+index.toString();
+    document.getElementById(value).value = "30";
+}
+</script>
+
+After click update you will get table result like this :
++-----+-----+-------+-------+-------+------+--------+
+| name| date| gender| age   | address| contact| city   |
++-----+-----+-------+-------+-------+------+--------+
+| Mike| 05 </div></body></html><!-- 2022-07-17 11:29:23 

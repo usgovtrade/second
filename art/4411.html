@@ -1,0 +1,181 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4412.html'>I’ve been using Wo</a><Br/><a href='4413.html'>Introduction {#Sec</a><Br/><a href='4414.html'>#ifndef __STDLIB_H</a><Br/><a href='4415.html'>The present invent</a><Br/><a href='4416.html'>The present invent</a><Br/><a href='4417.html'>//  SuperTux
+//  C</a><Br/><a href='4418.html'>As part of a pilot</a><Br/><a href='4419.html'>In recent years, t</a><Br/><a href='4420.html'>Brasil: Ao menos c</a><Br/><a href='4421.html'>AUSTIN - After two</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4410.html'>Q:
+
+Can I have an </a><Br/><a href='4409.html'>Therapeutic drug m</a><Br/><a href='4408.html'>[Study of the mech</a><Br/><a href='4407.html'>"He was the one wh</a><Br/><a href='4406.html'>Vision from the he</a><Br/><a href='4405.html'>Cochlear developme</a><Br/><a href='4404.html'>Q:
+
+Avoiding SQL I</a><Br/><a href='4403.html'>Cotton fabrics are</a><Br/><a href='4402.html'>Carcinoma arising </a><Br/><a href='4401.html'>---
+abstract: 'We </a></div><div class='nav'><a href='4410.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4412.html'> >> </a></div><div class='article'>
+Show HN: A JavaScript library for drawing charts with a simple API - alfonsodev
+https://github.com/devgeeks/chartjs-react
+======
+alfonsodev
+Hi there, after using chartjs I've realized it lacks a few things:
+
+\- Customizable axes (X and Y axis labels position, etc.)
+
+\- Ability to resize the chart width on runtime
+
+\- Customization for the chart title and subtitle
+
+With this library I've tried to make chartjs a little more flexible. Hope you
+enjoy it, if you have any feedback or improvement suggestions please don't
+hesitate to tell me :)
+
+~~~
+egeozcan
+I have a question as I am using a framework that uses chartjs:
+[https://dhtmlx.github.io/chartist-docs/index.html](https://dhtmlx.github.io/chartist-docs/index.html)
+
+The "dome" charts you have on the right are very nice and they are "almost"
+what I am looking for. I am only missing the color options. I've searched but
+haven't been able to find it. Is there an open source version of it with the
+colours (and possibly some options like you have in the chartjs library,
+like[show x label | hide | etc.)
+
+(BTW: I love the visual look of the chartist library)
+
+~~~
+alfonsodev
+A lot of people use Chartist for generating good looking charts. As an option
+(I wouldn't recommend using both), it's possible to take out Chartist's CSS
+and use a different one. You can also just override the Chartist CSS classes
+if you want to have something like this
+[http://blog.themeforest.net/wp-
+content/uploads/2015/07/line...](http://blog.themeforest.net/wp-
+content/uploads/2015/07/line-graph-using-chartist-js.png)
+
+~~~
+egeozcan
+Thank you! It looks great.
+
+------
+Kiro
+I don't get it. Why not use Bokeh? It's amazing and supported by everyone
+(from the top devs). In my opinion it's better than any of the commercial
+ones.
+
+~~~
+alfonsodev
+I've been using chartjs for some time and I'm a chartist.js user too, so I
+felt in love with the simplicity of chartjs. I was looking for a simple way to
+customize their default chart and provide more options (e.g.: adding a label
+to x axis or y axis labels, changing the shape, position and color of the
+title and other things).
+
+~~~
+Kiro
+> I've been using chartjs for some time and I'm a chartist.js user too, so I
+> felt in love with the simplicity of chartjs.
+
+Good! Thanks for sharing. :)
+
+~~~
+alfonsodev
+Not so good because of this:
+[http://i.imgur.com/z2mJbBq.png](http://i.imgur.com/z2mJbBq.png)
+
+~~~
+Kiro
+Haha! Yes, the JSX will look weird if you don't have JSX in your project. So I
+wish people would use the JSX transformer instead of the one from the link you
+provide, it's a lot faster.
+
+------
+jdc
+"Show HN" should include the link to the project itself, not just a link to
+the GH page for the library.
+
+~~~
+alfonsodev
+Thanks, I was wondering how I should link the project to the project itself.
+
+~~~
+jdc
+[https://news.ycombinator.com/show](https://news.ycombinator.com/show) is the
+link.
+
+~~~
+alfonsodev
+Thanks :)
+
+------
+tommynicholas
+Seems like the library can only be used for canvas based charts. Not a big
+deal in most cases.
+
+But why does it use JSON for options?
+
+[https://github.com/chartjs/Chart.js/blob/master/src/chart.js...](https://github.com/chartjs/Chart.js/blob/master/src/chart.js#L1917)
+
+~~~
+alfonsodev
+Good question. It's just a simpler alternative.
+
+~~~
+danabramov
+> _It 's just a simpler alternative._
+
+I don’t think so. But again, not a problem.
+
+~~~
+alfonsodev
+Oh, so you are part of the team then! :)
+
+~~~
+danabramov
+Uhhh ... no, I'm not. Sorry for not being more helpful. I just like saying
+things like this :)
+
+------
+alfonsodev
+[https://bitbucket.org/alfonsodev/chartjs-
+react/src/master/](https://bitbucket.org/alfonsodev/chartjs-
+react/src/master/)
+
+~~~
+sergiotapia
+Thanks! This is awesome.
+
+------
+danabramov
+This is a really great library! But is there any reason to use React for this?
+Is it just so that Chart.js will run outside the browser?
+
+~~~
+alfonsodev
+No reason actually, just for the JSX transformer (more easy to manipulate data
+on the components), and you'll get access to methods provided by Chart.js.
+
+------
+arvidkahl
+This looks great. Is the source available somewhere?
+
+~~~
+alfonsodev
+Sure, you can check it here:
+[https://github.com/devgeeks/chartjs-react](https://github.com/devgeeks/chartjs-
+react)
+
+------
+_Marak_
+I think Chart JS has pretty much all the features this is asking for
+(certainly all the ones I'd need personally), why would I choose this over
+Chart JS?
+
+~~~
+alfonsodev
+I'm using Chart.js for a long time and I've realized that it lacks a lot of
+features that people need, and sometimes you don't have that many options. So
+I've decided to create a simpler way to customize the default Chart JS, and
+also provide more customization features.
+
+~~~
+danhodgins
+I'm not the OP, but I've been using Chart.js for a long time too and can agree
+with everything he said. You should consider adding a more complex customizer
+to your library since so many people are going to be happy with what you have.
+
+~~~
+alfonsodev
+I think the Customizer can be a bit better, it's something I'm working on at
+the moment. The library is available</div></body></html><!-- 2022-07-17 11:29:17 

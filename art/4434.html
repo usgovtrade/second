@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4435.html'>If this is your fi</a><Br/><a href='4436.html'>Namco Bandai has n</a><Br/><a href='4437.html'>Invasive and trans</a><Br/><a href='4438.html'>If this is your fi</a><Br/><a href='4439.html'>It's like a movie </a><Br/><a href='4440.html'>The Bitter Biscuit</a><Br/><a href='4441.html'>The U.S. Departmen</a><Br/><a href='4442.html'>The Trump administ</a><Br/><a href='4443.html'>#ifndef BOOST_SERI</a><Br/><a href='4444.html'>{
+  "images" : [
+ </a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4433.html'>#
+# Copyright 2017</a><Br/><a href='4432.html'>It's just like a b</a><Br/><a href='4431.html'>---
+abstract: 'Ion</a><Br/><a href='4430.html'>Kentucky Football </a><Br/><a href='4429.html'>The present disclo</a><Br/><a href='4428.html'>/*
+ * This file is</a><Br/><a href='4427.html'>Q:
+
+how to remove </a><Br/><a href='4426.html'>Q:
+
+How to create </a><Br/><a href='4425.html'>Q:
+
+How to access </a><Br/><a href='4424.html'>New Mexico Gov. Su</a></div><div class='nav'><a href='4433.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4435.html'> >> </a></div><div class='article'>Q:
+
+What is the best way to manage this situation?
+
+I have an application with a lot of buttons. A button works like a search bar, but I don't want to create a search bar. Also, I want to make buttons that work like buttons for the menu and the filters in a database, but I don't know if this can be accomplished with a search bar (and what would be the name of it?).
+Thank you in advance for your time.
+
+A:
+
+There is no single "best way". If your app has a lot of buttons, you're doing something wrong and you should reconsider your UI. 
+What you want is a button that looks like a button and interacts like a button, but behind it you're storing details in some kind of database for use when the button is pressed. 
+You already know how to add these buttons. The only problem is making them work like buttons, so it depends on what "buttons" you want to implement. 
+This sounds like a job for a UIToolbar. For example:
+
+In Xcode, open the Editor menu, and choose Create → View → Toolbar. 
+From the Object Library, drag a UIBarButtonItem into your toolbar and set its style to Custom, and set its view to a custom view containing your button. 
+Connect your button to a method that acts appropriately when it's tapped. You can read more about how to use a UIBarButtonItem in this thread. 
+
+Note that in your view controller, you can add the tool bar programmatically by calling: 
+[self setToolbarItems:[NSArray arrayWithObject:myButton] animated:NO];
+
+As a side note, you don't need the Search Bar item to be a UISearchBar. You only need a bar that contains your custom view with your button. 
+
+With this done, you can have custom UIBarButtonItems with whatever actions you want (they don't need to be UIBarButtonItems). 
+
+See this thread for more information: How to put UIBarButtonItems in the toolbar?
+
+Also, if you're feeling ambitious, you might try extending UIButton to create your own button classes with multiple functionality: MultipleButtons
+
+A:
+
+If your buttons don't act like buttons, don't call them buttons. A button is something that looks and acts like a button. It must be a button.
+
+A:
+
+This sounds like an implementation of the Command pattern:
+http://en.wikipedia.org/wiki/Command_pattern
+Each button would be a command. Your view controller/model object that performs the actions when pressed would be the controller.
+
+A:
+
+If you want your buttons to behave as buttons, don't make them into a custom class.  Instead, use UIBarButtonItem as they were meant to be used.
+EDIT
+Also, rather than having a custom view with buttons in it, I would advise you use a toolbar that is attached to your view, similar to this:
+UIView *addButtonBar = [[UIView alloc] initWithFrame:CGRectMake(0,0,320,44)];
+
+UIButton *addButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,100,44)];
+[addButton addTarget:self action:@selector(addButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+[addButton setTitle:@"Add" forState:UIControlStateNormal];
+UIBarButtonItem *addButtonItem = [[UIBarButtonItem alloc] initWithCustomView:addButton];
+[addButtonBar addSubview:addButtonItem];
+
+[self.view addSubview:addButtonBar];
+[self.view addSubview:self.tableView];
+
+This would be in your view controller, and you can put whatever code you want to do when the addButton is pressed inside the action method. I'm not sure why you wouldn't just use a button that has a custom view attached, but if that's what you want to do then that's the solution.
+
+Here is how you can put that same thing in your storyboard. Open your storyboard and go to the utilities area. Scroll down a little bit to the bottom and look for the object library. Select the view controller that you want to add the bar button items to and then drag a bar button item on top of it.
+
+</div></body></html><!-- 2022-07-17 11:29:21 

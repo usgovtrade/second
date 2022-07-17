@@ -1,0 +1,57 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4413.html'>Introduction {#Sec</a><Br/><a href='4414.html'>#ifndef __STDLIB_H</a><Br/><a href='4415.html'>The present invent</a><Br/><a href='4416.html'>The present invent</a><Br/><a href='4417.html'>//  SuperTux
+//  C</a><Br/><a href='4418.html'>As part of a pilot</a><Br/><a href='4419.html'>In recent years, t</a><Br/><a href='4420.html'>Brasil: Ao menos c</a><Br/><a href='4421.html'>AUSTIN - After two</a><Br/><a href='4422.html'>It may be just wee</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4411.html'>
+Show HN: A JavaSc</a><Br/><a href='4410.html'>Q:
+
+Can I have an </a><Br/><a href='4409.html'>Therapeutic drug m</a><Br/><a href='4408.html'>[Study of the mech</a><Br/><a href='4407.html'>"He was the one wh</a><Br/><a href='4406.html'>Vision from the he</a><Br/><a href='4405.html'>Cochlear developme</a><Br/><a href='4404.html'>Q:
+
+Avoiding SQL I</a><Br/><a href='4403.html'>Cotton fabrics are</a><Br/><a href='4402.html'>Carcinoma arising </a></div><div class='nav'><a href='4411.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4413.html'> >> </a></div><div class='article'>I’ve been using WordPress.com with customizing in mind from day one. Unfortunately, it took me a while to get to a point that I was happy with. One thing that stopped me is that the core of WordPress is so flexible that you can tailor it for whatever the task is you are trying to accomplish. The trick is to find the right balance between flexibility and control. In most cases, this means a bit more work, but it will all be worth it in the end.
+
+My current day-to-day setup is that I have an individual WordPress installation for each site I manage (I run up to 5 sites at once), hosted in an Azure VM. My sites are not static sites (read this post).
+
+The benefits of hosting a WordPress blog in Azure are:
+
+SSD for the storage
+
+Managed by Windows Azure for server side scripting and load balancing
+
+Managed by WordPress for content
+
+What makes this setup unique is that it is a full stack of managed services. The core of WordPress is managed by Windows Azure with Windows and Web Server services. This means that all the hard stuff is taken care of by Microsoft. All my sites get the latest updates automatically without any additional work (e.g. backups, monitoring, etc).
+
+Having full control of the stack (all open source) allows me to upgrade as needed (when I need something). I’ve upgraded the VMs from Windows Server 2012 Standard to Windows Server 2012 R2 Essentials to enable Windows Updates. The VM already runs a bunch of custom scripts to automatically run on each site for me, every few hours. It also runs a custom page on each of the sites that checks if the site is using the latest release. It uses some APIs to auto-update it, and I’m considering moving the page into a Windows Azure Web Role (it would be great if I could change some of my sites to use this API with just one click). All these are already managed by Windows Azure.
+
+The result is that all my sites are running the latest version of WordPress, where I can run plugins and themes that I pick and choose as I wish (e.g. all of my sites use WP-API because I need it for various applications), all without any code modifications.
+
+This is just my setup, and you can find thousands of tutorials on the Web about the specific services. My goal here was to share with you an example of a full-stack setup that allows me to leverage a wide variety of services in a cost effective manner.
+
+I hope you enjoyed this post. Let me know what you think, and if you have any questions or comments.
+
+P.S. I’ve created a new free WordPress theme named Acropolis for this post. If you like it, you can install it on your site and use it to host the sites. However, since the VMs are a bit too small for this, you will have to transfer the data to a VM on another Windows Azure account, or run the new site locally on your laptop. You can follow the instructions here to learn how to install Acropolis for WordPress on an Azure VM. Note that I used only the default core of WordPress and plugins from the WP-Gallery. I will add more features and add-ons (e.g. auto-updating of the Windows Azure services, etc) over time. Feel free to leave a comment, and let me know what you think of the new site.
+
+This is a follow-up post to the previous post on moving all of my sites into a single subdomain on WordPress.com.
+
+How does this work? WordPress.com automatically moves all the posts of a given blog into their own section. By default, each blog section has its own URL on WordPress.com that allows it to be shared publicly (e.g. http://envelope.wordpress.com/). This is a great feature, and it makes sharing the posts with other people easy.
+
+All the technical details (how does the move take place, what happens when we access the new URL, etc) can be found in the previous post, but to summarize:
+
+I host my sites using Windows Azure Web Sites, which is a managed, Windows-based web platform for building and deploying websites. It is pretty cool! Read more about Windows Azure Web Sites on their website. I’ll briefly describe it here, as it relates to this post.
+
+I can deploy a Windows Azure VM with Windows Server 2012 R2, Microsoft SQL Server, a web server that runs IIS and PHP, and WordPress on it. This has the following benefits:
+
+I can use a variety of features that Microsoft has provided with Windows Server R2, such as IIS 8 for my web sites
+
+It is an updated version of Windows Server with SQL Server 2012 R2, which has a lot of built-in, enterprise-level features
+
+It allows me to use Microsoft SQL Server 2012 R2, which supports modern applications including Windows 8 apps, Windows Store apps, and more
+
+It allows me to take advantage of Microsoft’s enterprise features, such as App-V, WSUS, etc. This allows me to automatically update the Windows machine and the database as needed, without any issues.
+
+After I deploy my sites to Windows Azure and configure it, I have full control of the stack (i.e. I can do all the heavy lifting – I’m not bound to use anything that Microsoft has provided). This includes the following:
+
+The sites are always up-to-date because they are automatically updated by the management services
+
+I can choose to keep them up-to-date by hand, or just use them as they are
+
+I have complete control over the data (I can remove and modify it at any time, by hand)
+
+When I deployed the sites to WordPress.com, I did not use IIS, PHP, or any of the Windows software. Rather, I configured my sites with WordPress and created a special subdomain that points to one of the sites. This is similar to other services, such as Google Blogger (Google Sites), Blogspot (BlogFrog), and Tumblr (Tumblr for WordPress). Each blog has a subdomain that is customized with WordPress, so that the content appears as a blog, rather than a page. In</div></body></html><!-- 2022-07-17 11:29:17 

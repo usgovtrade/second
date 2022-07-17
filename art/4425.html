@@ -1,0 +1,170 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4426.html'>Q:
+
+How to create </a><Br/><a href='4427.html'>Q:
+
+how to remove </a><Br/><a href='4428.html'>/*
+ * This file is</a><Br/><a href='4429.html'>The present disclo</a><Br/><a href='4430.html'>Kentucky Football </a><Br/><a href='4431.html'>---
+abstract: 'Ion</a><Br/><a href='4432.html'>It's just like a b</a><Br/><a href='4433.html'>#
+# Copyright 2017</a><Br/><a href='4434.html'>Q:
+
+What is the be</a><Br/><a href='4435.html'>If this is your fi</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4424.html'>New Mexico Gov. Su</a><Br/><a href='4423.html'>This invention rel</a><Br/><a href='4422.html'>It may be just wee</a><Br/><a href='4421.html'>AUSTIN - After two</a><Br/><a href='4420.html'>Brasil: Ao menos c</a><Br/><a href='4419.html'>In recent years, t</a><Br/><a href='4418.html'>As part of a pilot</a><Br/><a href='4417.html'>//  SuperTux
+//  C</a><Br/><a href='4416.html'>The present invent</a><Br/><a href='4415.html'>The present invent</a></div><div class='nav'><a href='4424.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4426.html'> >> </a></div><div class='article'>Q:
+
+How to access values in a nested JSON format by giving a property name?
+
+I am working with an API which returns the following JSON format as response:
+{
+"query": {
+    "count": 898,
+    "created": "2018-05-17T07:58:17Z",
+    "lang": "en-US",
+    "diagnostics": {
+        "results": [
+            {
+                "warningCount": 0,
+                "results": [
+                    {
+                        "answerKey": "5d6da1e3-a57d-4a1e-8025-9ee0acff4ac5",
+                        "parent": "https://api.yelp.com/v3/businesses/BcIw8RmYCnLnE1TzpYh1wBh/answers/12353339",
+                        "answer": {
+                            "text": "3 Seasons Eatery & Bistro",
+                            "quality": 10,
+                            "rating": 3.6,
+                            "yelp_business_id": "BcIw8RmYCnLnE1TzpYh1wBh",
+                            "picture": "https://s3-media4.fl.yelpcdn.com/bphoto/D44G1sPwH-B6gBmJ1R1Kw/o.jpg",
+                            "snippet_image_url": "https://s3-media3.fl.yelpcdn.com/photo/5R6K7l0xRGd7vG6tUu3WQ/ms.jpg"
+                        }
+                    }
+                ],
+                "sorting": "rank"
+            },
+            {
+                "warningCount": 0,
+                "results": [
+                    {
+                        "answerKey": "5d6da1e3-a57d-4a1e-8025-9ee0acff4ac5",
+                        "parent": "https://api.yelp.com/v3/businesses/BcIw8RmYCnLnE1TzpYh1wBh/answers/12353445",
+                        "answer": {
+                            "text": "3 Seasons Eatery & Bistro",
+                            "quality": 10,
+                            "rating": 3.6,
+                            "yelp_business_id": "BcIw8RmYCnLnE1TzpYh1wBh",
+                            "picture": "https://s3-media4.fl.yelpcdn.com/bphoto/D44G1sPwH-B6gBmJ1R1Kw/o.jpg",
+                            "snippet_image_url": "https://s3-media3.fl.yelpcdn.com/photo/5R6K7l0xRGd7vG6tUu3WQ/ms.jpg"
+                        }
+                    }
+                ],
+                "sorting": "rank"
+            },
+
+I want to loop through it and print the value for the parent property. 
+So far I have this (I know this is not the right approach, that's why I wanted some tips):
+import java.util.Scanner;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+
+public class JsonTest {
+
+    public static void main(String[] args) throws JsonParseException, JsonMappingException, ClassNotFoundException, IOException {
+
+        // Create ObjectMapper
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        // set the module on the objectMapper
+        SimpleModule simpleModule = new SimpleModule("Module", new Version(1,0,0,null, null, null));
+
+        // set the customise feature for handling of Json to String
+        SimpleModule jsonSerializeModule = new SimpleModule("JsonSerialize", new Version(1,0,0,null, null, null));
+        jsonSerializeModule.addSerializer(JsonSerialize.class, new JsonSerializeSerializer());
+        simpleModule.addSerializer(JsonSerialize.class, new JsonSerializeSerializer());
+        simpleModule.setSerializationInclusion(JsonSerialize.class, SimpleModule.Feature.ALWAYS_INCLUDE);
+
+        // set the module on the objectMapper
+        objectMapper.registerModule(simpleModule);
+
+        String uri = "http://api.yelp.com/v3/businesses/12353445?fields=address,reviews.review_score";
+
+        System.out.println(objectMapper.readValue(uri, JsonTest.class));
+    }
+}
+
+class JsonSerializeSerializer implements Serializer<JsonTest> {
+
+    @Override
+    public void serialize(JsonTest business, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
+
+        jgen.writeStartObject();
+        jgen.writeStringField("address", business.getAddress());
+
+        jgen.writeObject(new JsonTestResults(),"results");
+
+        jgen.writeObjectFieldStart("answerKey");
+        jgen.writeStringField("itemType", business.getId());
+        jgen.writeStringField("parent", business.getParent());
+        jgen.writeStringField("text", business.getAnswerText());
+        jgen.writeStringField("quality", business.getAnswerQuality());
+        jgen.writeStringField("rating", business.getRating());
+        jgen.writeStringField("yelp_business_id", business.getId());
+        jgen.writeStringField("picture", business.getImageUrl());
+        jgen.writeStringField("snippet_image_url", business.getImageUrl());
+        jgen.writeEndObject();
+
+        jgen.writeEndObject();
+
+    }
+}
+
+class JsonTestResults {
+
+    private List<JsonTestResultsResults> results;
+
+    public List<JsonTestResultsResults> getResults() {
+        return results;
+    }
+
+    public void setResults(List<JsonTestResultsResults> results) {
+        this.results = results;
+    }
+
+}
+
+class JsonTestResultsResults {
+
+    private String answerKey;
+
+    public String getAnswerKey() {
+        return answerKey;
+    }
+
+    public void setAnswerKey(String answerKey) {
+        this.answerKey = answerKey;
+    }
+
+}
+
+I am pretty new to JSON and Jackson. Any help would be really appreciated. Thanks. 
+
+A:
+
+Use JsonPath
+JsonPath is a java library that makes it easy to extract data from Json (and it can also do the opposite, by converting objects to json). In your case, it can look for JSON elements using a path, and return them as Java objects. This way, you can use it to create a Java object hierarchy that represents the nested structure of your JSON:
+Map<String, String> map = new ObjectMapper().readValue(result, Map.class);
+
+String parent = map.get("query");
+Map<String, Map<String, String>> mapResult = new ObjectMapper().readValue(parent, Map.class);
+
+Map<String, String> businessParent = mapResult.get("businesses");
+
+Map<String, Map<String, String>> reviews = new ObjectMapper().readValue(businessParent.get("reviews"), Map.class);
+Map<String, String> answerKey = reviews.get("results").get("0").get("answerKey");
+
+System.out.println(answerKey);
+
+Prints:
+5d6da1e3-a57d-4a1e-8025-9ee0acff4ac5
+
+</div></body></html><!-- 2022-07-17 11:29:20 

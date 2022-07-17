@@ -1,0 +1,249 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4472.html'>The B.C. governmen</a><Br/><a href='4473.html'>Familial amyotroph</a><Br/><a href='4474.html'>"We've had a lot o</a><Br/><a href='4475.html'>1. Field of the In</a><Br/><a href='4476.html'>The present invent</a><Br/><a href='4477.html'><?php
+
+namespace I</a><Br/><a href='4478.html'>As the Trump admin</a><Br/><a href='4479.html'>The present invent</a><Br/><a href='4480.html'>Q:
+
+How to make a </a><Br/><a href='4481.html'>In addition, our p</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4470.html'>The present invent</a><Br/><a href='4469.html'>Gastroschisis: the</a><Br/><a href='4468.html'>Recommendations fo</a><Br/><a href='4467.html'>The present invent</a><Br/><a href='4466.html'>Bhale Dongalu
+
+Bha</a><Br/><a href='4465.html'>[The clinical sign</a><Br/><a href='4464.html'>Nigel Farage was e</a><Br/><a href='4463.html'>The present invent</a><Br/><a href='4462.html'>Q:
+
+How does the J</a><Br/><a href='4461.html'>Hillary Clinton is</a></div><div class='nav'><a href='4470.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4472.html'> >> </a></div><div class='article'>#pragma once
+
+#include "td/utils/common.h"
+#include "td/utils/logging.h"
+#include "td/utils/port/detail/ThreadFiber.h"
+
+#include "object_pool.h"
+
+#include "type_traits.h"
+
+namespace td {
+
+class PoolCatchupInterface {
+ public:
+  virtual ~PoolCatchupInterface() = default;
+  virtual void resume() = 0;
+};
+
+class PoolCatchup {
+ public:
+  template <class T>
+  explicit PoolCatchup(T &&p) : thread_fiber(std::forward<T>(p)) {
+    if (thread_fiber) {
+      thread_fiber->resume();
+    }
+  }
+
+  template <class T>
+  PoolCatchup(const T &p) : thread_fiber(const_cast<T &>(p)) {
+    if (thread_fiber) {
+      thread_fiber->resume();
+    }
+  }
+  template <class T>
+  ~PoolCatchup() {
+    if (thread_fiber) {
+      thread_fiber->stop_loop();
+      thread_fiber.reset();
+    }
+  }
+  private:
+  ThreadFiber thread_fiber;
+  /// Only ThreadFiber may call this method.
+  template <class T>
+  void resume() {
+    if (thread_fiber) {
+      thread_fiber->resume();
+    }
+  }
+};
+
+class CatchupInterface {
+ public:
+  virtual ~CatchupInterface() = default;
+
+  virtual PoolCatchupInterface &get_pool_catchup() = 0;
+};
+
+class Pool {
+ public:
+  template <class T>
+  static Pool *new_threadsafe(T &&t) {
+    return new ThreadSafePool(std::forward<T>(t));
+  }
+  template <class T>
+  static Pool *new_threadsafe() {
+    return new ThreadSafePool();
+  }
+};
+
+class PoolCatchup : public CatchupInterface {
+ public:
+  PoolCatchup() {
+    thread_fiber.reset(new ThreadFiber(true));
+  }
+  ~PoolCatchup() {
+    if (thread_fiber) {
+      thread_fiber->stop_loop();
+    }
+  }
+  CatchupInterface &get_pool_catchup() {
+    return thread_fiber;
+  }
+ private:
+  thread_fiber_id id;
+  ThreadFiber thread_fiber;
+};
+
+class PoolNoCatchup : public CatchupInterface {
+ public:
+  PoolNoCatchup() {
+    thread_fiber.reset(new ThreadFiber(false));
+  }
+  ~PoolNoCatchup() {
+    if (thread_fiber) {
+      thread_fiber->stop_loop();
+    }
+  }
+  CatchupInterface &get_pool_catchup() {
+    return nullptr;
+  }
+ private:
+  thread_fiber_id id;
+  ThreadFiber thread_fiber;
+};
+
+class Pool {
+ public:
+  Pool(size_t size = 100) :
+   pool_catchup(std::make_unique<PoolCatchup>()),
+   pool_no_catchup(std::make_unique<PoolNoCatchup>()) {
+   register_custom_caughtup(pool_catchup.get_pool_catchup(), size);
+ }
+  Pool(int, size_t size = 100) :
+   pool_catchup(std::make_unique<PoolCatchup>()),
+   pool_no_catchup(std::make_unique<PoolNoCatchup>()) {
+   register_custom_caughtup(pool_catchup.get_pool_catchup(), size);
+ }
+  private:
+  template <class T>
+  static Pool *new_instance(T &&t) {
+    return new T(std::forward<T>(t));
+  }
+  template <class T>
+  static Pool *new_instance() {
+    return new T();
+ }
+  ThreadFiber pool_catchup;
+  ThreadFiber pool_no_catchup;
+};
+
+class ThreadSafePoolNoCatchup : public ThreadSafePool {
+ public:
+  ThreadSafePoolNoCatchup() : ThreadSafePool(1000) {
+  }
+};
+
+template <class T>
+Pool *PoolFactory<T>::new_instance(T &&t) {
+  return new Pool(t);
+}
+
+template <class T>
+Pool *PoolFactory<T>::new_instance() {
+  return new Pool();
+}
+
+template <class T>
+Pool *PoolFactory<T>::new_threadsafe(T &&t) {
+  return ThreadSafePool(std::forward<T>(t));
+}
+
+template <class T>
+Pool *PoolFactory<T>::new_threadsafe() {
+  return new ThreadSafePool();
+}
+
+template <class T>
+void PoolFactory<T>::register_custom_caughtup(CatchupInterface *iface, int size) {
+  if (!iface) {
+    return;
+  }
+  if (iface->get_pool_catchup() != nullptr) {
+    // The custom pool must wait for the thread to finish, it cannot be re-used to
+    // wait on any thread in the future.
+    dassert(false, "The custom pool cannot be re-used");
+  }
+  iface->set_pool_catchup(new PoolCatchup(size));
+}
+
+template <class T>
+void PoolFactory<T>::register_threadsafe_pool() {
+  Pool *pool = new_instance();
+  pool->register_custom_caughtup(pool->pool_no_catchup.get_pool_catchup(), 100);
+}
+
+template <class T>
+void PoolFactory<T>::deregister_custom_caughtup(CatchupInterface *iface) {
+  if (!iface) {
+    return;
+  }
+  iface->set_pool_catchup(nullptr);
+}
+
+template <class T>
+void PoolFactory<T>::deregister_threadsafe_pool() {
+  Pool *pool = new_instance();
+  pool->deregister_custom_caughtup(pool->pool_catchup.get_pool_catchup());
+  pool->deregister_custom_caughtup(pool->pool_no_catchup.get_pool_catchup());
+  delete pool;
+}
+
+template <class T>
+PoolFactory<T>::PoolFactory() {
+  register_threadsafe_pool();
+ 
+}
+ 
+template <class T>
+template <class E>
+void PoolFactory<T>::register_custom_spawn(E &&thread, E *return_code) {
+  if (!thread) {
+    return;
+  }
+  this->pool->register_custom_caughtup(this->pool->pool_no_catchup.get_pool_catchup(), 1);
+  Catchup<std::decay_t<E>>::get()->set_callback([thread, return_code]() {
+    ThreadSafePoolNoCatchup &pool = *new_instance();
+    pool.pool_catchup.reset(new ThreadFiber(false));
+    if (!pool.pool_catchup) {
+      LOG_ERROR("thread safe pool cannot be created");
+      return;
+    }
+    pool.pool_catchup->resume();
+    *return_code = pool.pool_catchup->get_caughtup_returncode();
+    pool.pool_catchup->stop_loop();
+    pool.pool_catchup.reset();
+  });
+}
+ 
+template <class T>
+template <class E>
+void PoolFactory<T>::deregister_custom_spawn(E &&thread) {
+  if (thread) {
+    // ThreadFactory will automatically unregister itself
+    return;
+  }
+  if (!thread) {
+    return;
+  }
+  this->pool->deregister_custom_caughtup(this->pool->pool_no_catchup.get_pool_catchup());
+  ThreadFiber *fiber = Catchup<std::decay_t<E>>::get()->get_caughtup();
+  fiber->stop_loop();
+}
+ 
+template <class T>
+template <class E>
+void PoolFactory<T>::register_custom_spawn(E &&thread) {
+  if (!thread) {
+    return;
+  }
+  this->pool->register_custom_caughtup(this->pool->pool_no_catchup.get_</div></body></html><!-- 2022-07-17 11:29:27 

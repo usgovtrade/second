@@ -1,0 +1,213 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4411.html'>
+Show HN: A JavaSc</a><Br/><a href='4412.html'>I’ve been using Wo</a><Br/><a href='4413.html'>Introduction {#Sec</a><Br/><a href='4414.html'>#ifndef __STDLIB_H</a><Br/><a href='4415.html'>The present invent</a><Br/><a href='4416.html'>The present invent</a><Br/><a href='4417.html'>//  SuperTux
+//  C</a><Br/><a href='4418.html'>As part of a pilot</a><Br/><a href='4419.html'>In recent years, t</a><Br/><a href='4420.html'>Brasil: Ao menos c</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4409.html'>Therapeutic drug m</a><Br/><a href='4408.html'>[Study of the mech</a><Br/><a href='4407.html'>"He was the one wh</a><Br/><a href='4406.html'>Vision from the he</a><Br/><a href='4405.html'>Cochlear developme</a><Br/><a href='4404.html'>Q:
+
+Avoiding SQL I</a><Br/><a href='4403.html'>Cotton fabrics are</a><Br/><a href='4402.html'>Carcinoma arising </a><Br/><a href='4401.html'>---
+abstract: 'We </a><Br/><a href='4400.html'>WASHINGTON — The T</a></div><div class='nav'><a href='4409.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4411.html'> >> </a></div><div class='article'>Q:
+
+Can I have an object that has a constructor and a method that can be called from another objects?
+
+I've got an object that keeps track of some information to be manipulated by a GUI. This object needs to have access to the event dispatch mechanism, so I put it in a separate object. In order to make it easier for the GUI to manage all of this information, I added some methods to this object:
+/* This is what the GUI would have to do otherwise, for every change. */
+
+void My_Object::doSomething(string str)
+{
+  // Do something
+}
+
+void My_Object::doSomethingElse(string str)
+{
+  // Do something else
+}
+
+void My_Object::doSomethingElse(int i)
+{
+  // Do something else
+}
+
+These methods just manipulate other objects of this type. This objects may hold pointers to other objects as well, so there is no other way to pass them without using a pointer.
+Is it possible to use a pointer to a function instead? Or is there any other way to do this that doesn't involve pointers? I've seen function pointers in STL containers, and used them in my own implementation of it, but there is a reason why we don't normally use them like this: There is a way to do what pointers are for, which is passing the address of a memory location.
+I'm new to c++, and don't understand everything yet, but I know that there are several ways of doing it. So far, I thought that the only way is to use a pointer and a function object. My confusion was about the type of the methods in the "function object". I understand that we could declare "func1" as a member of the object, but I cannot declare "myFunc" as a member of the object without telling the type of object it belongs to. If that function is declared as a member of the object that uses it, the object is not of that type.
+So I thought I could do it this way:
+struct My_Object
+{
+    private:
+    func1<My_Object> f;
+    /* But this didn't work. The My_Object* that's needed to construct
+     * the function object also requires a variable of type My_Object
+     * that can't be done if you're writing in a class. I don't know
+     * what to do.
+     */
+
+    public:
+    My_Object(/*args, including My_Object*...*/) {
+        f = &func2;
+    }
+
+    void doSomething(string str)
+    {
+        f(str);
+    }
+
+    void doSomethingElse(string str)
+    {
+        f(str);
+    }
+
+    void doSomethingElse(int i)
+    {
+        f(i);
+    }
+};
+
+void func2(string);
+
+That doesn't work, but hopefully it shows you what I want to achieve. So far, I've found out that there is a way to avoid pointers, but then I need a different method to pass the arguments I want, and I can't figure out how to use it.
+So, how can I solve this problem? Is this a limitation of c++? And if so, is it possible to solve it using templates? I think templates and typedefs can solve this problem, but only if the type has known values, like "int" or "double".
+Also, why can't I do this?
+struct My_Object
+{
+    void (*f)(string);
+    void (*f)(int);
+};
+
+My_Object my;
+my.f = &My_Object::doSomething;
+
+A:
+
+You need to use std::function:
+struct My_Object
+{
+  private:
+    std::function<void(std::string)> f;
+
+  public:
+    My_Object(/*args*/) : f{} {}
+
+    void doSomething(std::string str) { f(str); }
+};
+
+Then:
+My_Object a;
+std::bind(&My_Object::doSomething, a, "foo");
+
+std::bind is a wrapper around a function and can be used to wrap the call to f() and it will store the result of f() by value in the bind object.  The bind object can be bound to a variable, passed to a function as an argument, std::bind is called, the result stored in the bind object, and then used as the argument to the function that has the bind object as its parameter, eg. for example:
+void some_function(std::string s);
+void another_function(std::string s);
+
+void another_func()
+{
+    auto c = std::bind(&some_function, "Test");
+
+    std::cout << "Do stuff with " << s << std::endl;
+}
+
+void some_func()
+{
+    auto c = std::bind(&another_func, "Hey");
+
+    std::cout << "Do another thing with " << s << std::endl;
+}
+
+A:
+
+What you are looking for is an "object" which would be able to register a callable and then call that callable when the object is destroyed. That can be done as follow:
+class MyObject {
+
+    typedef std::function<void (std::string)> Callable;
+
+    typedef std::function<void (std::string)>* RegisterAction;
+
+    RegisterAction registerAction;
+
+public:
+    MyObject()
+        : registerAction(&MyObject::doSomething)
+    {
+    }
+
+    void doSomething(std::string str)
+    {
+        // do something
+    }
+
+    void doSomethingElse(std::string str)
+    {
+        // do something else
+    }
+
+    void doSomethingElse(int i)
+    {
+        // do something else
+    }
+
+    void registerAction(RegisterAction action)
+    {
+        this->registerAction = action;
+    }
+
+    ~MyObject() {
+        if (this->registerAction != NULL) {
+            registerAction(this->registerAction);
+        }
+    }
+};
+
+The following example shows how this can be used:
+int main() {
+
+    MyObject obj;
+    obj.registerAction(&obj.doSomething);
+
+    obj.doSomething("test");
+
+    std::cin.get();
+
+    return 0;
+}
+
+This way the registration of callables is done outside of the class and hence the "doSomething" function can be used as if it was part of the class itself (which is how the example was used).
+
+A:
+
+A few options.
+If all you need is to allow classes or data objects to be 'callable' then a function or functor type can work for you. This can be built with lambdas, or with std::bind.
+class My_Object
+{
+  public:
+    using CallFunc = std::function<void()>;
+    My_Object(CallFunc callable) : m_CallFunc(std::move(callable))
+    {
+    }
+    void doSomething(std::string str) {
+      m_CallFunc();
+    }
+
+  private:
+    CallFunc m_CallFunc;
+};
+
+The above example is a bit of an overkill, as usually some kind of registration or object is required. For this I would use the facilities available to handle this, such as std::function. You may also be able to use boost::signals2 to help here.
+#include <functional>
+
+class My_Object
+{
+    using Handle = std::function<void(std::string)>;
+    Handle m_CallFunc;
+
+    Handle& my_func(const std::string& str) { return m_CallFunc(str); }
+
+    void doSomething(std::string str) {
+      // CallFunc stored in member pointer
+      m_CallFunc = [str]() { doSomething(str); };
+    }
+};
+
+For this to work properly you would need a unique instance of the Handle or CallFunc, which means only one callable function can be registered. A better alternative is to have the object create the instance of the Handle, and register it as a data member.
+#include <functional>
+
+class My_Object
+{
+    std::function<void(std::string)> m_CallFunc;
+    My_Object(const std</div></body></html><!-- 2022-07-17 11:29:17 

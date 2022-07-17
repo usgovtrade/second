@@ -1,0 +1,228 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4429.html'>The present disclo</a><Br/><a href='4430.html'>Kentucky Football </a><Br/><a href='4431.html'>---
+abstract: 'Ion</a><Br/><a href='4432.html'>It's just like a b</a><Br/><a href='4433.html'>#
+# Copyright 2017</a><Br/><a href='4434.html'>Q:
+
+What is the be</a><Br/><a href='4435.html'>If this is your fi</a><Br/><a href='4436.html'>Namco Bandai has n</a><Br/><a href='4437.html'>Invasive and trans</a><Br/><a href='4438.html'>If this is your fi</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4427.html'>Q:
+
+how to remove </a><Br/><a href='4426.html'>Q:
+
+How to create </a><Br/><a href='4425.html'>Q:
+
+How to access </a><Br/><a href='4424.html'>New Mexico Gov. Su</a><Br/><a href='4423.html'>This invention rel</a><Br/><a href='4422.html'>It may be just wee</a><Br/><a href='4421.html'>AUSTIN - After two</a><Br/><a href='4420.html'>Brasil: Ao menos c</a><Br/><a href='4419.html'>In recent years, t</a><Br/><a href='4418.html'>As part of a pilot</a></div><div class='nav'><a href='4427.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4429.html'> >> </a></div><div class='article'>/*
+ * This file is part of LibrePlan
+ *
+ * Copyright (C) 2009-2010 Fundación para o Fomento da Calidade Industrial e
+ *                         Desenvolvemento Tecnolóxico de Galicia
+ * Copyright (C) 2010-2011 Igalia, S.L.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.libreplan.web.common;
+
+import org.libreplan.business.common.entities.EntityChange;
+import org.libreplan.business.resources.entities.Resource;
+import org.libreplan.web.planner.order.PlannerUserOrder;
+import org.libreplan.web.planner.order.OrderType;
+import org.libreplan.web.planner.orders.OrderController;
+import org.zkoss.zk.ui.event.Event;
+import org.zkoss.zk.ui.event.Events;
+import org.zkoss.zk.ui.select.SelectorComposer;
+import org.zkoss.zk.ui.select.SelectorComposerFactory;
+import org.zkoss.zul.Button;
+import org.zkoss.zul.GenericPopupDialog;
+import org.zkoss.zul.Label;
+import org.zkoss.zul.SelectCheckbox;
+import org.zkoss.zul.SelectItem;
+import org.zkoss.zul.Separator;
+import org.zkoss.zul.Tab;
+import org.zkoss.zul.Tabpanels;
+import org.zkoss.zul.Toolbar;
+
+/**
+ * This action displays an order creation form for given resource. The dialog is used
+ * when the request has been performed on Resource
+ * 
+ * @author Manuel Rego Casasnovas <rego@igalia.com>
+ */
+public class OrderPlanning extends GenericPopupDialog {
+
+    private OrderController orderController;
+
+    private SelectorComposer<Tab> selectors = new SelectorComposerFactory<Tab>().create("tabs");
+
+    private Tab tabGeneral, tabOrderTypes, tabOrderDetails;
+
+    private Resource resource;
+
+    private EntityChange lastChanged = null;
+
+    public OrderPlanning(Event event, OrderType orderType) {
+        super(new OrderPlanning(), new GenericPopupDialog.DialogSkin() {
+
+            @Override
+            public String getTitle() {
+                return Messages.OrderPlanning_dialog_title;
+            }
+
+            @Override
+            protected void onInit() {
+                super.onInit();
+
+                add(selectors);
+            }
+
+            @Override
+            protected void onResize() {
+                super.onResize();
+
+                selectors.setHeight("80px");
+
+                if (orderController == null) {
+                    orderController = OrderController.get();
+                }
+                orderController.resetOrderTypes(null);
+
+                tabGeneral = new Tab(new Label(_(
+                        "label.planning.order.general"),
+                        ResourceModel.get().getI18nModule("planner")), false);
+
+                add(tabGeneral);
+                tabGeneral.setVisible(true);
+
+                selectors.select(tabOrderTypes);
+                selectors.select(tabOrderDetails);
+
+                // disable the select-all checkbox
+                OrderType orderType = orderController.getActiveOrderType();
+
+                Button chkAll = (Button) tabOrderTypes.select(0).getChildren().get(0);
+                chkAll.setEnabled(!orderType.equals(OrderType.ALLOCATION));
+                lastChanged = null;
+            }
+
+            @Override
+            protected void onShow() {
+                if (orderController == null) {
+                    orderController = OrderController.get();
+                }
+                OrderType orderType = orderController.getActiveOrderType();
+
+                orderController.getModel().addPlanningListener(e -> {
+                    lastChanged = e.getPlannedEntity();
+                });
+
+                getView().setOrderName(ResourceModel.get().getI18nModule("planner") + ": "
+                        + orderController.getOrderPlanning().getName(resource));
+
+                if (lastChanged == null) {
+                    lastChanged = orderController.getPlanningFromLastSave();
+                }
+                if (lastChanged != null) {
+                    refreshOrderDetails(lastChanged);
+                }
+
+                super.onShow();
+            }
+        });
+
+        if (event instanceof LoadEvent) {
+            int resourceId = ((LoadEvent) event).getResourceId();
+
+            resource = (Resource) OrderModel.get().find(resourceId);
+
+            if (resource != null) {
+                resource.setOrderPlanning(this);
+
+                OrderType orderType = orderController.getActiveOrderType();
+                Resource newResource = OrderModel.get().create(resource, orderType);
+
+                orderController.resetOrderTypes(newResource);
+
+                orderController.setOrderPlanning(newResource, orderType);
+                orderController.checkValidOrderPlanning(newResource, orderType);
+
+                lastChanged = null;
+
+                if (resource == newResource) {
+                    return;
+                }
+
+                Resource another = OrderModel.get().findByName(newResource.getName());
+
+                if (resource.getUniqueId() != another.getUniqueId()) {
+                    OrderType otherOrderType = OrderType.valueOf(resource.getOrderType());
+
+                    if (otherOrderType != OrderType.ALLOCATION) {
+                        orderController.resetOrderTypes(resource);
+
+                        orderController.setOrderPlanning(resource, OrderType.ALLOCATION);
+                        orderController.checkValidOrderPlanning(resource, orderType);
+
+                        return;
+                    }
+
+                    orderController.resetOrderTypes(resource);
+
+                    orderController.setOrderPlanning(resource, otherOrderType);
+                    orderController.checkValidOrderPlanning(resource, otherOrderType);
+                }
+            }
+
+        }
+
+        if (tabOrderTypes != null) {
+            final SelectItem planItem = new SelectItem();
+
+            planItem.setHref("javascript:addNewPlanning(this.parent.itemType)");
+            planItem.setValue("General");
+            planItem.setLabel(_("label.planning.type"));
+
+            final SelectItem budgetItem = new SelectItem();
+            budgetItem.setHref("javascript:addNewPlanning(this.parent.budget)");
+            budgetItem.setValue("Budget");
+            budgetItem.setLabel(_("label.planning.type.budget"));
+
+            tabOrderTypes.add(planItem);
+            tabOrderTypes.add(budgetItem);
+        }
+
+        if (tabOrderDetails != null) {
+            final SelectItem resourceNameItem = new SelectItem();
+            resourceNameItem.setHref("javascript:orderPlanningDetails(this.parent.itemType)");
+            resourceNameItem.setValue("");
+
+            final SelectItem userOrderItem = new SelectItem();
+            userOrderItem.setHref("javascript:orderPlanningDetails(this.parent.userOrder)");
+            userOrderItem.setValue("");
+
+            final SelectItem plannedDateItem = new SelectItem();
+            plannedDateItem.setHref("javascript:orderPlanningDetails(this.parent.plannedDate)");
+            plannedDateItem.setValue("");
+
+            final SelectItem budgetItem = new SelectItem();
+            budgetItem.setHref("javascript:orderPlanningDetails(this.parent.budget)");
+            budgetItem.setValue("");
+
+            final SelectItem detailItem = new SelectItem();
+            detailItem.setHref("javascript:orderPlanningDetails(this.parent.detail)");
+            detailItem.setValue("");
+
+            final SelectItem workOrderItem = new SelectItem();
+            workOrderItem.setHref("javascript:orderPlanningDetails(this.parent.workOrder)");
+            workOrderItem.setValue("");
+
+            Resource planItem = resource;
+
+            if (planItem.getType().equals(ResourceModel.get().getWorkOrder())) {
+                tabOrderDetails.setTitle(_("label.planning.order.</div></body></html><!-- 2022-07-17 11:29:20 

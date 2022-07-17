@@ -1,0 +1,183 @@
+<!DOCTYPE html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width, initial-scale=1'><script async src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8422244967817077' crossorigin=anonymous'></script><link rel='stylesheet' href='/class.css'><script src='/script.js'></script></head><body><div class='topnav'></div><div class='list'><Br/><a href='4398.html'>In case you missed</a><Br/><a href='4399.html'>The present invent</a><Br/><a href='4400.html'>WASHINGTON — The T</a><Br/><a href='4401.html'>---
+abstract: 'We </a><Br/><a href='4402.html'>Carcinoma arising </a><Br/><a href='4403.html'>Cotton fabrics are</a><Br/><a href='4404.html'>Q:
+
+Avoiding SQL I</a><Br/><a href='4405.html'>Cochlear developme</a><Br/><a href='4406.html'>Vision from the he</a><Br/><a href='4407.html'>"He was the one wh</a></div><div class='stats'><div class='logodiv'><a href='/'><img class='logoimg' src='/img/elephant.svg' /></a></div> <Br/><a href='4396.html'>
+
+For every $1,000</a><Br/><a href='4395.html'>This application c</a><Br/><a href='4394.html'>Introduction {#Sec</a><Br/><a href='4393.html'>Q:
+
+What is the di</a><Br/><a href='4392.html'>A lot of people ar</a><Br/><a href='4391.html'>The present invent</a><Br/><a href='4390.html'>Introduction {#s1}</a><Br/><a href='4389.html'>The present invent</a><Br/><a href='4388.html'>Q:
+
+PHP - How to s</a><Br/><a href='4387.html'>
+The Evolution of </a></div><div class='nav'><a href='4396.html'> << </a>&nbsp;&nbsp;&nbsp;&nbsp;<a href='4398.html'> >> </a></div><div class='article'>Q:
+
+How to fix "A field initializer cannot reference the nonstatic field, method, or property"
+
+i'm a newbie in C# and i'm really stuck in a point, 
+i've tried some ways but nothing works...
+Here is my code:
+public class Calculator
+{
+    public static void Main()
+    {
+
+        float a = 0;
+        float b = 0;
+        int c = 0;
+        int x = 0;
+        float boh = 0;
+        float bohoh = 0;
+
+        Console.WriteLine("Enter the first Number");
+        a = Convert.ToSingle(Console.ReadLine());
+        Console.WriteLine("Enter the second Number");
+        b = Convert.ToSingle(Console.ReadLine());
+        boh = Math.Sqrt(a);
+        bohoh = Math.Pow(b, b);
+
+        Console.WriteLine("the result = " + bohoh);
+
+    }
+
+}
+
+Error 1 'a' is a field but is used like a method    
+Error 2 'b' is a field but is used like a method    
+Error 3 The name 'c' does not exist in the current context    
+Error 4 'x' does not exist in the current context    
+Error 5 'boh' does not exist in the current context    
+Error 6 'bohoh' does not exist in the current context
+
+A:
+
+In the main method, variables a, b, c, x, boh and bohoh are not visible. You have to initialize them in the method and make them static:
+public class Calculator
+{
+    private static float a, b, c, x, boh, bohoh;
+
+    public static void Main()
+    {
+
+        Console.WriteLine("Enter the first Number");
+        a = Convert.ToSingle(Console.ReadLine());
+        Console.WriteLine("Enter the second Number");
+        b = Convert.ToSingle(Console.ReadLine());
+        boh = Math.Sqrt(a);
+        bohoh = Math.Pow(b, b);
+
+        Console.WriteLine("the result = " + bohoh);
+    }
+}
+
+The fields are only accessible inside the class.
+
+A:
+
+Change all the fields to class variables and initialize them inside your Main method as you have seen in your error messages.
+//fields declaration
+float a = 0;
+float b = 0;
+int c = 0;
+int x = 0;
+float boh = 0;
+float bohoh = 0;
+
+public static void Main()
+{
+
+    Console.WriteLine("Enter the first Number");
+    a = Convert.ToSingle(Console.ReadLine());
+    Console.WriteLine("Enter the second Number");
+    b = Convert.ToSingle(Console.ReadLine());
+    boh = Math.Sqrt(a);
+    bohoh = Math.Pow(b, b);
+
+    Console.WriteLine("the result = " + bohoh);
+}
+
+This will fix your compilation errors.
+
+A:
+
+Use static variables if you want to use them within the class.
+private static float a, b, c, x, boh, bohoh;
+
+public static void Main()
+{
+
+    Console.WriteLine("Enter the first Number");
+    a = Convert.ToSingle(Console.ReadLine());
+    Console.WriteLine("Enter the second Number");
+    b = Convert.ToSingle(Console.ReadLine());
+    boh = Math.Sqrt(a);
+    bohoh = Math.Pow(b, b);
+
+    Console.WriteLine("the result = " + bohoh);
+}
+
+OR use 
+public static void Main()
+{
+    static float a, b, c, x, boh, bohoh;
+    Console.WriteLine("Enter the first Number");
+    a = Convert.ToSingle(Console.ReadLine());
+    Console.WriteLine("Enter the second Number");
+    b = Convert.ToSingle(Console.ReadLine());
+    boh = Math.Sqrt(a);
+    bohoh = Math.Pow(b, b);
+
+    Console.WriteLine("the result = " + bohoh);
+}
+
+OR you can create a constructor.
+    public class Calculator
+{
+    public float a;
+    public float b;
+    public int c;
+    public int x;
+    public float boh;
+    public float bohoh;
+
+    public Calculator()
+    {
+        Console.WriteLine("Enter the first Number");
+        a = Convert.ToSingle(Console.ReadLine());
+        Console.WriteLine("Enter the second Number");
+        b = Convert.ToSingle(Console.ReadLine());
+        boh = Math.Sqrt(a);
+        bohoh = Math.Pow(b, b);
+
+        Console.WriteLine("the result = " + bohoh);
+    }
+
+    static void Main()
+    {
+        Calculator calc = new Calculator();
+
+    }
+}
+
+OR use only this class fields instead of a constructor.
+public class Calculator
+{
+    public static float a;
+    public static float b;
+    public static int c;
+    public static int x;
+    public static float boh;
+    public static float bohoh;
+
+    static void Main()
+    {
+        Console.WriteLine("Enter the first Number");
+        a = Convert.ToSingle(Console.ReadLine());
+        Console.WriteLine("Enter the second Number");
+        b = Convert.ToSingle(Console.ReadLine());
+        boh = Math.Sqrt(a);
+        bohoh = Math.Pow(b, b);
+
+        Console.WriteLine("the result = " + bohoh);
+    }
+}
+
+</div></body></html><!-- 2022-07-17 11:29:15 
